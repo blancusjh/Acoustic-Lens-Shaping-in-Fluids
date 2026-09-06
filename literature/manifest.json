@@ -1,0 +1,51 @@
+[
+  {
+    "file": "papers/bertin-2012-morphologies.pdf",
+    "source": "/Users/blancus/Downloads/bertin2012.pdf",
+    "doi": "10.1103/PhysRevLett.109.244304",
+    "sha256": "6a9c9b37edaf52704cee4877543c7cd0e06440b4df1830a334c846b575e23fe8",
+    "bytes": 1417960
+  },
+  {
+    "file": "papers/gu-2020-holography.pdf",
+    "source": "/Users/blancus/Downloads/gu2020.pdf",
+    "doi": "10.1021/acsnano.0c03754",
+    "sha256": "9ac956184d2035f5cd300a4579584e6c7e08a2650063bbc80e09a614d4dedc2c",
+    "bytes": 5164952
+  },
+  {
+    "file": "papers/sisombat-2023-interface.pdf",
+    "source": "/Users/blancus/Downloads/s41598-023-39464-0.pdf",
+    "doi": "10.1038/s41598-023-39464-0",
+    "sha256": "ab79266940be8a8c424e5499c03b29ec8691cb61bfbd8bd81c08543bcd831ada",
+    "bytes": 1589022
+  },
+  {
+    "file": "papers/elgarisi-2021-freeform.pdf",
+    "source": "/Users/blancus/Private/CFD-research/acoustic-lens-shaping-ei1lg0ry5/2026-09-05/literature/elgarisi-2021-freeform.pdf",
+    "doi": "10.1364/OPTICA.438763",
+    "sha256": "63e420e967bfc0c0f8ebc06fb6f35a54e5c430b969be1fcb3feed89b6df7a3f4",
+    "bytes": 1052968
+  },
+  {
+    "file": "papers/na-2024-fluidic-lenses.pdf",
+    "source": "/Users/blancus/Private/CFD-research/acoustic-lens-shaping-ei1lg0ry5/2026-09-05/literature/na-2024-fluidic-lenses.pdf",
+    "doi": "10.1145/3680528.3687584",
+    "sha256": "d378ee33ef82a4670a08eec20aa7e11bd74b140b30b7f05034b56fb2780a8aa0",
+    "bytes": 13956295
+  },
+  {
+    "file": "papers/chesneau-2022-coupling.pdf",
+    "source": "https://arxiv.org/pdf/2206.00300",
+    "doi": "10.1103/PhysRevE.106.065104",
+    "sha256": "c170d6bee67a6358b21488dce3c09ba8f511910a83ec1a12628341d4afc6da27",
+    "bytes": 1284658
+  },
+  {
+    "file": "papers/denner-2016-capillary-dispersion.pdf",
+    "source": "https://arxiv.org/pdf/1607.08266",
+    "doi": "10.1103/PhysRevE.94.023110",
+    "sha256": "aa78e62805ebe798d65760dd05db4a248429430e372c8f53a0bdf0cf454d0818",
+    "bytes": 463652
+  }
+]

@@ -1,0 +1,59 @@
+name = "idealized_viscous_pair"
+description = "Two deep viscous liquids: linear Stokes relaxation under a coherent asymmetric array. This is a verification fixture, not a named commercial resin."
+material_status = "Idealized equal-density two-fluid benchmark. All numbers are explicit test parameters, not measured resin properties."
+
+[grid]
+nx = 256
+ny = 256
+lx_m = 0.056
+ly_m = 0.056
+
+[lower]
+name = "idealized lower viscous liquid"
+density_kg_m3 = 1000.0
+sound_speed_m_s = 1500.0
+viscosity_pa_s = 0.2
+
+[upper]
+name = "idealized upper viscous liquid"
+density_kg_m3 = 1000.0
+sound_speed_m_s = 1700.0
+viscosity_pa_s = 0.2
+
+[interface]
+surface_tension_n_m = 0.01
+gravity_m_s2 = 9.81
+model = "stokes"
+
+[array]
+nx = 16
+ny = 16
+pitch_m = 0.0007
+element_width_m = 0.0006
+source_distance_m = 0.006
+frequency_hz = 1000000.0
+pressure_amplitude_pa = 8000.0
+retain_evanescent = false
+
+[[beams]]
+name = "split"
+foci = [{x_m = -0.0017, y_m = -0.0010, weight = 1.0}, {x_m = 0.0014, y_m = 0.0012, weight = 0.8}]
+
+[[pulses]]
+beam = "split"
+start_s = 0.002
+stop_s = 0.052
+ramp_s = 0.004
+gain = 1.0
+
+[[pulses]]
+beam = "split"
+start_s = 0.080
+stop_s = 0.130
+ramp_s = 0.004
+gain = 1.0
+
+[timing]
+end_s = 0.3
+step_s = 0.0002
+save_every = 10

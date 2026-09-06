@@ -1,0 +1,59 @@
+name = "water_air_split_focus"
+description = "A coherent 256-element array creates a non-axisymmetric double focus. Two smooth pulses expose capillary memory."
+material_status = "Representative room-temperature water/air benchmark constants; not a calibrated resin and not an experimental reproduction."
+
+[grid]
+nx = 256
+ny = 256
+lx_m = 0.056
+ly_m = 0.056
+
+[lower]
+name = "water benchmark"
+density_kg_m3 = 998.0
+sound_speed_m_s = 1480.0
+viscosity_pa_s = 0.001
+
+[upper]
+name = "air benchmark"
+density_kg_m3 = 1.2
+sound_speed_m_s = 343.0
+viscosity_pa_s = 0.000018
+
+[interface]
+surface_tension_n_m = 0.072
+gravity_m_s2 = 9.81
+model = "weakly_damped"
+
+[array]
+nx = 16
+ny = 16
+pitch_m = 0.0007
+element_width_m = 0.0006
+source_distance_m = 0.006
+frequency_hz = 1000000.0
+pressure_amplitude_pa = 8000.0
+retain_evanescent = false
+
+[[beams]]
+name = "split"
+foci = [{x_m = -0.0017, y_m = -0.0010, weight = 1.0}, {x_m = 0.0014, y_m = 0.0012, weight = 0.8}]
+
+[[pulses]]
+beam = "split"
+start_s = 0.002
+stop_s = 0.014
+ramp_s = 0.002
+gain = 1.0
+
+[[pulses]]
+beam = "split"
+start_s = 0.032
+stop_s = 0.044
+ramp_s = 0.002
+gain = 1.0
+
+[timing]
+end_s = 0.06
+step_s = 0.0001
+save_every = 5
