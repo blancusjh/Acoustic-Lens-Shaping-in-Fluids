@@ -22,17 +22,19 @@
   },
   {
     "file": "papers/elgarisi-2021-freeform.pdf",
-    "source": "/Users/blancus/Private/CFD-research/acoustic-lens-shaping-ei1lg0ry5/2026-09-05/literature/elgarisi-2021-freeform.pdf",
+    "source": "https://arxiv.org/abs/2103.02765",
     "doi": "10.1364/OPTICA.438763",
     "sha256": "63e420e967bfc0c0f8ebc06fb6f35a54e5c430b969be1fcb3feed89b6df7a3f4",
-    "bytes": 1052968
+    "bytes": 1052968,
+    "acquisition": "Copied from the pre-existing private literature collection."
   },
   {
     "file": "papers/na-2024-fluidic-lenses.pdf",
-    "source": "/Users/blancus/Private/CFD-research/acoustic-lens-shaping-ei1lg0ry5/2026-09-05/literature/na-2024-fluidic-lenses.pdf",
+    "source": "https://vccimaging.org/Publications/Jimenez2024E2EFLuidic/",
     "doi": "10.1145/3680528.3687584",
     "sha256": "d378ee33ef82a4670a08eec20aa7e11bd74b140b30b7f05034b56fb2780a8aa0",
-    "bytes": 13956295
+    "bytes": 13956295,
+    "acquisition": "Copied from the pre-existing private literature collection."
   },
   {
     "file": "papers/chesneau-2022-coupling.pdf",
@@ -47,5 +49,11 @@
     "doi": "10.1103/PhysRevE.94.023110",
     "sha256": "aa78e62805ebe798d65760dd05db4a248429430e372c8f53a0bdf0cf454d0818",
     "bytes": 463652
+  },
+  {
+    "file": "papers/norland-noa61-technical-data.pdf",
+    "source": "https://norlandproducts.com/wp-content/uploads/2025/02/Norland-Products-NOA-61-TDS.pdf",
+    "sha256": "26f0f3dfe507114f67bbf8304ff4dbda5c791d2369d70182b4a21072248d186e",
+    "bytes": 735939
   }
 ]

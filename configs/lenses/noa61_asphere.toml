@@ -1,0 +1,31 @@
+# Design inputs, in SI units. Material provenance: docs/model.md.
+[lens]
+name = "noa61_asphere"
+radius_m = 0.004
+clear_radius_m = 0.003
+depth_m = 0.006
+wall_thickness_m = 0.0008
+base_thickness_m = 0.0007
+focal_distance_m = 0.020
+refractive_index = 1.52
+wavelength_m = 5.893e-7
+density_kg_m3 = 1231.0
+viscosity_pa_s = 0.3
+surface_tension_n_m = 0.04
+gravity_m_s2 = 9.81
+# The manufacturer does not report these two acoustic properties.
+sound_speed_m_s = 1600.0
+attenuation_np_m = 5.0
+frequency_hz = 1350000.0
+array_rows = 16
+array_sectors = 16
+element_fill = 0.84
+max_wall_speed_m_s = 0.16
+pressure_penalty = 2.0
+surface_modes = 32
+mesh_radial = 64
+mesh_vertical = 96
+acoustic_order = 3
+end_s = 1.8
+step_s = 0.02
+ramp_s = 1.2

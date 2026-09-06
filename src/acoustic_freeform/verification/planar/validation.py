@@ -25,9 +25,9 @@ def relative_l2(a, b):
 def validate_forward_model(directory: Path) -> dict:
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    root = Path(__file__).resolve().parents[2]
-    water = load_experiment(root / "examples/water_air.toml")
-    stokes = load_experiment(root / "examples/stokes_pair.toml")
+    root = Path(__file__).resolve().parents[4]
+    water = load_experiment(root / "configs/verification/water_air.toml")
+    stokes = load_experiment(root / "configs/verification/stokes_pair.toml")
     report = {
         "scope": "Numerical verification of the declared linear, periodic reference only; "
         "not a material calibration or experimental error estimate."

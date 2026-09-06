@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acoustic Freeform Lab · Liquid asphere</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <span class="eyebrow">ACOUSTIC FREEFORM LAB / EXPERIMENT 01</span>
+        <h1>A liquid asphere, shaped by sound</h1>
+        <p>
+          6 mm clear aperture <span>·</span> 20 mm target focus
+          <span>·</span> uncured optical resin
+        </p>
+      </div>
+      <a href="report.json" target="_blank" class="report-link"
+        >Numerical report ↗</a
+      >
+    </header>
+    <main>
+      <section class="scene-panel">
+        <div id="scene" aria-label="Interactive 3D lens apparatus"></div>
+        <div class="scene-top">
+          <span id="view-name">APPARATUS / CUTAWAY</span
+          ><span>Geometry 1:1 · mm</span>
+        </div>
+        <div class="view-buttons" role="group" aria-label="Camera presets">
+          <button data-view="apparatus" class="active">Apparatus</button>
+          <button data-view="lens">Lens surface</button>
+          <button data-view="optics">Optical rays</button>
+          <button data-view="section">Cross-section</button>
+        </div>
+        <div id="pressure-legend">
+          <span>Acoustic amplitude</span>
+          <div></div>
+          <small>0 <b id="pressure-max"></b></small>
+        </div>
+        <div class="scene-bottom">
+          <span>Drag to orbit · scroll to zoom · shift-drag to pan</span
+          ><span id="state-name">Held asphere</span>
+        </div>
+        <div id="loading">Loading the computed trajectory…</div>
+      </section>
+      <aside>
+        <div class="section-label">COMPUTED OPTICAL PERFORMANCE</div>
+        <div class="metrics">
+          <div>
+            <strong id="spot-value">—</strong><span>µm RMS ray spot</span>
+          </div>
+          <div>
+            <strong id="focus-value">—</strong><span>mm best focus</span>
+          </div>
+          <div><strong id="sag-value">—</strong><span>mm cap height</span></div>
+          <div>
+            <strong id="shape-value">—</strong
+            ><span>µm target figure error</span>
+          </div>
+        </div>
+        <p class="metric-note">
+          Ray spot at the fixed target plane. Geometric optics; this number is
+          not a measured diffraction spot.
+        </p>
+        <div class="section-label">APPARATUS & FIELDS</div>
+        <div id="layers">
+          <label
+            ><input type="checkbox" data-layer="liquid" checked /><i
+              class="dot liquid"
+            ></i>
+            Liquid lens</label
+          >
+          <label
+            ><input type="checkbox" data-layer="cylinder" checked /><i
+              class="dot cylinder"
+            ></i>
+            Cylinder / pinned rim</label
+          >
+          <label
+            ><input type="checkbox" data-layer="base" checked /><i
+              class="dot base"
+            ></i>
+            Flat optical window</label
+          >
+          <label
+            ><input type="checkbox" data-layer="array" checked /><i
+              class="dot array"
+            ></i>
+            256 array sectors</label
+          >
+          <label
+            ><input type="checkbox" data-layer="pressure" /><i
+              class="dot pressure"
+            ></i>
+            Acoustic pressure section</label
+          >
+          <label
+            ><input type="checkbox" data-layer="flow" /><i class="dot flow"></i>
+            Liquid motion vectors</label
+          >
+          <label
+            ><input type="checkbox" data-layer="rays" /><i class="dot rays"></i>
+            Refracted light rays</label
+          >
+          <label class="cutaway"
+            ><input type="checkbox" id="cutaway" checked /> Cut away front half
+            of housing</label
+          >
+        </div>
+        <p id="field-note" class="metric-note">
+          Array color shows phase; brightness shows drive amplitude. The 16
+          sectors in each row share a drive.
+        </p>
+        <div class="section-label">PHYSICAL STATE</div>
+        <div class="state-grid">
+          <span>Acoustic frequency</span><b>1.35 MHz</b
+          ><span>Peak cavity pressure</span><b id="peak-pressure">—</b>
+          <span>Source input power</span><b id="power-value">—</b
+          ><span>Maximum liquid speed</span><b id="speed-value">—</b>
+        </div>
+        <details>
+          <summary>Model scope & material data</summary>
+          <p>
+            Finite, axisymmetric liquid chamber. The curved acoustic field and
+            viscous liquid motion are solved as the surface evolves. An ideal
+            controller observes the full surface.
+          </p>
+          <p>
+            NOA 61 liquid index, density, viscosity and surface tension use
+            manufacturer data. Sound speed and attenuation are declared
+            assumptions. Heating, streaming, cavitation, piezo mechanics and
+            curing are not simulated.
+          </p>
+          <p>
+            This is a numerical lens design, not an experimentally validated
+            fabrication process.
+          </p>
+        </details>
+      </aside>
+      <section class="timeline">
+        <button id="play" aria-label="Play time evolution">▶ Play</button>
+        <button id="restart" aria-label="Return to initial liquid state">
+          ↤
+        </button>
+        <div class="scrub">
+          <div>
+            <span>PHYSICAL FLUID TIME</span><output id="time-label">—</output>
+          </div>
+          <input
+            id="time"
+            type="range"
+            min="0"
+            max="1"
+            step="1"
+            aria-label="Physical time frame"
+          />
+          <div class="time-labels">
+            <span>Unforced equilibrium</span
+            ><span id="end-label">Held asphere</span>
+          </div>
+        </div>
+        <label class="speed-label"
+          >Playback<select id="speed">
+            <option value="0.05">0.05×</option>
+            <option value="0.1" selected>0.1×</option>
+            <option value="0.25">0.25×</option>
+            <option value="1">1×</option>
+          </select></label
+        >
+      </section>
+      <section class="charts">
+        <article>
+          <h2>Lens cross-section <span>mm</span></h2>
+          <canvas id="profile-chart"></canvas>
+          <p>
+            <i class="key current"></i> Computed
+            <i class="key target"></i> Target
+            <i class="key initial"></i> Initial
+          </p>
+        </article>
+        <article>
+          <h2>Departure from a sphere <span>µm</span></h2>
+          <canvas id="departure-chart"></canvas>
+          <p>
+            Reference: best-fit sphere of the final lens, over the clear
+            aperture.
+          </p>
+        </article>
+        <article>
+          <h2>Focusing through time <span>µm RMS, log scale</span></h2>
+          <canvas id="history-chart"></canvas>
+          <p>Vertical marker follows the selected physical state.</p>
+        </article>
+      </section>
+    </main>
+    <footer>
+      <span
+        >Finite resin volume · nonlinear capillarity · curved-cavity acoustics ·
+        viscous flow</span
+      ><span>PyVista geometry / VTK.js interaction</span>
+    </footer>
+    <script src="static/vtk-runtime.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

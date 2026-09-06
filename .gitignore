@@ -5,6 +5,9 @@ __pycache__/
 .ruff_cache/
 .ipynb_checkpoints/
 .DS_Store
-literature/papers/
-runs/
+references/papers/
+artifacts/
+.local/
 *.egg-info/
+web/node_modules/
+web/static/vtk-runtime.js

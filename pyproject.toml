@@ -11,16 +11,21 @@ dependencies = [
   "imageio>=2.36,<3",
   "imageio-ffmpeg>=0.6,<1",
   "jupyterlab>=4.3,<5",
-  "jupytext>=1.16,<2",
   "nbclient>=0.10,<1",
   "ipykernel>=6.29,<8",
+  "scikit-fem>=12,<13",
+  "flask>=3,<4",
 ]
 
 [project.scripts]
 lenslab = "acoustic_freeform.cli:main"
 
 [dependency-groups]
-dev = ["pytest>=8,<10", "ruff>=0.11"]
+dev = [
+    "playwright>=1.50,<2",
+    "pytest>=8,<10",
+    "ruff>=0.11",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -34,6 +39,3 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 100
-
-[tool.jupytext]
-formats = "ipynb,py:percent"

@@ -5,11 +5,11 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from acoustic_freeform.acoustics import PlanarAcoustics, RadiationBasis
-from acoustic_freeform.array import PressureArray
-from acoustic_freeform.config import Array, Beam, Fluid, Focus, Grid, Interface
-from acoustic_freeform.interface import SurfaceDynamics
-from acoustic_freeform.spectral import SpectralGrid
+from acoustic_freeform.verification.planar.acoustics import PlanarAcoustics, RadiationBasis
+from acoustic_freeform.verification.planar.array import PressureArray
+from acoustic_freeform.verification.planar.config import Array, Beam, Fluid, Focus, Grid, Interface
+from acoustic_freeform.verification.planar.interface import SurfaceDynamics
+from acoustic_freeform.verification.planar.spectral import SpectralGrid
 
 WATER = Fluid("water", 998.0, 1480.0, 0.001)
 AIR = Fluid("air", 1.2, 343.0, 0.000018)
