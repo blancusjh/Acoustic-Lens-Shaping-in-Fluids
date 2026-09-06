@@ -29,26 +29,40 @@ def fit_array(
     initial_drive=None,
     regularization=1e-5,
     pressure_penalty=None,
+    linearization_state=None,
 ) -> ArrayDesign:
     cfg, q = space.config, space.tangent
     if pressure_penalty is None:
         pressure_penalty = cfg.pressure_penalty
-    gradient, hessian = space.derivatives(target)
+    current = np.asarray(target if linearization_state is None else linearization_state)
+    gradient, hessian = space.derivatives(current)
     # Project the force mismatch through capillary stiffness. This gives a
     # local shape correction, with pressure/volume gauge removed exactly.
     compliance = q @ np.linalg.solve(q.T @ hessian @ q, q.T)
     pupil = cfg.clear_radius_m / cfg.radius_m * np.sqrt((np.arange(100) + 0.5) / 100)
     shape_map = space.basis(pupil) @ compliance
     shape_map *= cfg.radius_m / 1e-6 / np.sqrt(len(pupil))  # micrometres, pupil RMS
-    plane = cfg.radius_m * space.evaluate(target, np.array([0]))[0] + cfg.focal_distance_m
+    plane = space.optical_vertex_m + cfg.focal_distance_m
+    shape_offset = (
+        cfg.radius_m * space.evaluate(current - target, pupil) / 1e-6 / np.sqrt(len(pupil))
+    )
+    ray_offset = (
+        (
+            pupil_intercepts(space, current, pupil * cfg.radius_m, plane)
+            - pupil_intercepts(space, target, pupil * cfg.radius_m, plane)
+        )
+        / 1e-6
+        / np.sqrt(len(pupil))
+    )
     ray_jacobian = []
     for mode in range(space.count):
         change = np.eye(space.count)[mode] * 1e-7
-        plus = pupil_intercepts(space, target + change, pupil * cfg.radius_m, plane)
-        minus = pupil_intercepts(space, target - change, pupil * cfg.radius_m, plane)
+        plus = pupil_intercepts(space, current + change, pupil * cfg.radius_m, plane)
+        minus = pupil_intercepts(space, current - change, pupil * cfg.radius_m, plane)
         ray_jacobian.append((plus - minus) / 2e-7)
     ray_map = np.stack(ray_jacobian, axis=1) @ compliance / 1e-6 / np.sqrt(len(pupil))
     objective_map = np.vstack([0.2 * shape_map, ray_map])
+    objective_offset = np.r_[0.2 * shape_offset, ray_offset]
     scale = 0.01
     bound = cfg.max_wall_speed_m_s / (np.sqrt(2) * scale)
     rows = cfg.array_rows
@@ -81,7 +95,7 @@ def fit_array(
 
     def residual(x):
         drive = unpack(x)
-        error = objective_map @ (field.force(drive) - gradient)
+        error = objective_offset + objective_map @ (field.force(drive) - gradient)
         return np.r_[error, regularization * x, pressure_jacobian @ x]
 
     def jacobian(x):
@@ -129,7 +143,7 @@ def fit_array(
         row = {
             "start": i,
             "predicted_pupil_rms_um": float(
-                np.linalg.norm(shape_map @ (field.force(unpack(fit.x)) - gradient))
+                np.linalg.norm(shape_offset + shape_map @ (field.force(unpack(fit.x)) - gradient))
             ),
             "predicted_ray_rms_um": float(np.linalg.norm(error[len(pupil) : 2 * len(pupil)])),
             "evaluations": fit.nfev,
@@ -147,7 +161,7 @@ def fit_array(
     return ArrayDesign(
         drive,
         np.asarray(target),
-        float(np.linalg.norm(shape_map @ (field.force(drive) - gradient))) * 1e-6,
+        float(np.linalg.norm(shape_offset + shape_map @ (field.force(drive) - gradient))) * 1e-6,
         float(np.linalg.norm(mismatch)),
         objective,
         attempts,
@@ -175,3 +189,43 @@ def coupled_equilibrium(
             raise RuntimeError("Steady iteration left the single-valued lens geometry envelope")
         c += relaxation * (next_c - c)
     return c, history, field
+
+
+def design_stationary(space, starts=3, initial_drive=None, tolerance_m=5e-11, max_iterations=60):
+    """Joint inverse design of a self-consistent surface and holding drive.
+
+    Alternates array fitting on the current cavity with a fixed-volume
+    nonlinear capillary solve. Iterations are NOT physical fluid times.
+    A frozen-target fit need not produce its predicted shape when the field
+    changes with the surface; this iteration includes that change explicitly.
+    Stability and a physical approach trajectory require separate checks.
+    """
+    target, volume = space.target()
+    c = target.copy()
+    acoustic = CavityAcoustics(space.config, space)
+    drive = initial_drive
+    history = []
+    for iteration in range(max_iterations):
+        field = acoustic.solve_basis(c)
+        fit = fit_array(
+            space,
+            field,
+            target,
+            starts=starts if iteration == 0 else 1,
+            initial_drive=drive,
+            linearization_state=c,
+        )
+        drive = fit.drive_m_s
+        force = field.force(drive)
+        balanced = space.equilibrium(force, volume, initial=c)
+        delta_m = space.config.radius_m * np.sqrt(
+            (balanced - c) @ space.mass @ (balanced - c) / np.sum(space.w)
+        )
+        history.append({"iteration": iteration, "capillary_update_rms_m": float(delta_m)})
+        print(f"stationary design {iteration}: capillary update {delta_m * 1e6:.6f} um", flush=True)
+        if delta_m < tolerance_m:
+            return c, drive, field, history
+        c += 0.5 * (balanced - c)
+    raise RuntimeError(
+        f"Joint stationary array design did not converge after {max_iterations} steps."
+    )

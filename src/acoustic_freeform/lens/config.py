@@ -15,6 +15,8 @@ class LensConfig:
     base_thickness_m: float = 0.0007
     focal_distance_m: float = 0.020
     refractive_index: float = 1.52
+    object_distance_m: float | None = None  # None: collimated incident wave in the liquid
+    image_refractive_index: float = 1.0
     wavelength_m: float = 589.3e-9
     density_kg_m3: float = 1231.0
     viscosity_pa_s: float = 0.3
@@ -46,7 +48,19 @@ class LensConfig:
 
     @property
     def conic_constant(self):
-        return -(self.refractive_index**2)
+        """Collimated-object limiting conic constant, not a finite-oval invariant."""
+        return -((self.refractive_index / self.image_refractive_index) ** 2)
+
+    @property
+    def diopter(self):
+        from .cartesian import CartesianDiopter
+
+        return CartesianDiopter(
+            self.refractive_index,
+            -float("inf") if self.object_distance_m is None else self.object_distance_m,
+            self.image_refractive_index,
+            self.focal_distance_m,
+        )
 
     def as_dict(self):
         return asdict(self)
@@ -56,6 +70,15 @@ class LensConfig:
             raise ValueError("A clear aperture must fit inside the finite cylindrical chamber.")
         if self.refractive_index <= 1 or self.focal_distance_m <= 0:
             raise ValueError("Expected a positive focusing liquid/air optical target.")
+        if self.image_refractive_index != 1.0:
+            raise ValueError(
+                "The current fluid apparatus has air above the liquid (n_i=1). Use CartesianDiopter for general optical indices."
+            )
+        if self.object_distance_m is not None and self.object_distance_m >= 0:
+            raise ValueError(
+                "Fluid evolution currently supports a real object (z_o<0), or a collimated wave. CartesianDiopter also supports virtual conjugates."
+            )
+        _ = self.diopter  # Validate the optical data before a fluid solve.
         if not 0 < self.element_fill < 1 or min(self.array_rows, self.array_sectors) < 1:
             raise ValueError("Invalid cylindrical array.")
         if self.step_s <= 0 or self.ramp_s > self.end_s or self.ramp_s <= 0:
@@ -64,7 +87,24 @@ class LensConfig:
 
 def load_config(path: str | Path) -> LensConfig:
     data = tomllib.loads(Path(path).read_text())
-    c = LensConfig(**data["lens"])
+    settings = dict(data["lens"])
+    if "diopter" in data:
+        names = {
+            "n_o": "refractive_index",
+            "z_o_m": "object_distance_m",
+            "n_i": "image_refractive_index",
+            "z_i_m": "focal_distance_m",
+        }
+        if set(data["diopter"]) != set(names):
+            raise ValueError("[diopter] requires n_o, z_o_m, n_i, z_i_m, with distances in metres.")
+        for key, value in data["diopter"].items():
+            destination = names[key]
+            if destination in settings:
+                raise ValueError(
+                    f"Specify {key} in [diopter] or {destination} in [lens], not both."
+                )
+            settings[destination] = None if key == "z_o_m" and value == -float("inf") else value
+    c = LensConfig(**settings)
     c.validate()
     return c
 

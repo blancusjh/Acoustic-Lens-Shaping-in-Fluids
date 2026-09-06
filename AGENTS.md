@@ -11,6 +11,13 @@ and an interactive time viewer showing the complete apparatus. The user's
 6 September instruction authorizes lens design and optimization for this
 milestone. Curing remains a later physical model.
 
+The current extension maps signed Cartesian-diopter conjugates (n_o, z_o,
+n_i, z_i), using Silva-Lora and Torres (2020), to a feasible surface, required
+traction and array amplitudes/phases. Preserve the original collimated result.
+Distinguish general optical construction from the liquid-air apparatus, and
+prescribed in-resin illumination from a source refracted by the bottom window.
+Axial stigmatism does not automatically imply aplanatism or achromatism.
+
 Benchmark tasks, Boreal transcripts, scores and QA analyses belong exclusively
 in /Users/blancus/Private/benchmark-archives, never in this project or its
 scientific artifacts. Superseded exploratory outputs belong in the separate

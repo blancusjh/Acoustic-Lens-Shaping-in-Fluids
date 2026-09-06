@@ -55,5 +55,13 @@
     "source": "https://norlandproducts.com/wp-content/uploads/2025/02/Norland-Products-NOA-61-TDS.pdf",
     "sha256": "26f0f3dfe507114f67bbf8304ff4dbda5c791d2369d70182b4a21072248d186e",
     "bytes": 735939
+  },
+  {
+    "file": "papers/silva-lora-torres-2020-cartesian-ovoids.pdf",
+    "source": "/Users/blancus/Scientific/Thesis/Literature/RafaelTorres/ASilva_RTorres(2020)-Superconical_Aplanetic_Ovoid_Singlet_Lenses.pdf",
+    "doi": "10.1364/JOSAA.392795",
+    "sha256": "7a26c86e71abf69f423ab59e62062a25d02f662aa9c35eee238de8a64efd1b5a",
+    "bytes": 1256448,
+    "acquisition": "User-provided thesis literature; private research copy."
   }
 ]

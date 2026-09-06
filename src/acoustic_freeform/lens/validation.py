@@ -85,37 +85,68 @@ def flat_cavity_check():
     }
 
 
-def fixed_drive_equilibrium(space, drive, initial):
-    """Solve force balance while re-solving acoustics on each trial geometry."""
+def fixed_drive_equilibrium(space, drive, initial, method="broyden1", tolerance_m=1e-10):
+    """Solve coupled force balance to a declared surface-correction tolerance.
+
+    The residual is measured as the capillary-compliance correction in pupil-
+    independent full-aperture area RMS. 0.1 nm avoids resolving algebraic digits
+    far below the finite-element error. Acoustic geometry is still re-solved
+    on every trial; this is not a frozen-field approximation.
+    """
+    if not np.isfinite(tolerance_m) or tolerance_m <= 0:
+        raise ValueError("The physical equilibrium tolerance must be finite and positive.")
+    if method not in ("broyden1", "hybr"):
+        raise ValueError("Use broyden1 or hybr for the stationary solve.")
     initial = np.asarray(initial).copy()
     q = space.tangent
     _, hessian = space.derivatives(initial)
     preconditioner = np.linalg.inv(q.T @ hessian @ q)
     acoustic = CavityAcoustics(space.config, space)
+    reduced_mass = q.T @ space.mass @ q
+
+    class Balanced(Exception):
+        def __init__(self, coefficients, error):
+            self.coefficients, self.error = coefficients, error
 
     def residual(x):
         coefficients = initial + q @ x
         gradient, _ = space.derivatives(coefficients)
         field = acoustic.solve_basis(coefficients)
-        return preconditioner @ (q.T @ (gradient - field.force(drive)))
+        value = preconditioner @ (q.T @ (gradient - field.force(drive)))
+        correction_m = space.config.radius_m * np.sqrt(
+            value @ reduced_mass @ value / np.sum(space.w)
+        )
+        if correction_m < tolerance_m:
+            raise Balanced(coefficients, float(np.linalg.norm(value)))
+        return value
 
-    solution = root(
-        residual,
-        np.zeros(q.shape[1]),
-        method="broyden1",
-        options={
+    options = (
+        {"eps": 1e-10, "xtol": 1e-9, "maxfev": 180, "factor": 0.1}
+        if method == "hybr"
+        else {
             "fatol": 1e-10,
             "maxiter": 60,
             "line_search": "armijo",
             "jac_options": {"alpha": -1},
-        },
+        }
     )
-    error = float(np.linalg.norm(residual(solution.x)))
-    if not solution.success:
-        raise RuntimeError(
-            f"Coupled stationary solve did not converge: {solution.message}; {error}"
+    try:
+        solution = root(
+            residual,
+            np.zeros(q.shape[1]),
+            method=method,
+            options=options,
         )
-    return initial + q @ solution.x, error
+        error = float(np.linalg.norm(residual(solution.x)))
+    except Balanced as converged:
+        return converged.coefficients, converged.error
+    # A solver's algebraic success flag cannot replace the physical criterion.
+    # Every evaluation satisfying it exits through Balanced, including the
+    # final residual call above.
+    raise RuntimeError(
+        f"Coupled stationary solve did not meet {tolerance_m:g} m correction tolerance: "
+        f"{solution.message}; dimensionless residual norm {error}"
+    )
 
 
 def spatial_convergence(result_directory):

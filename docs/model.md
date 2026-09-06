@@ -34,7 +34,7 @@ All geometry, material and timing values are in the experiment TOML.
 
 ## Optical objective
 
-Parallel rays enter through the flat base, propagate vertically through the liquid
+For the original `noa61_asphere` experiment, parallel rays enter through the flat base, propagate vertically through the liquid
 and refract at the curved liquid–air boundary. The target is equal optical path to
 a point 20 mm above the target vertex. If `n = 1.52`, `f = 20 mm` and
 `R = f(n − 1)`, its vertex-relative sag is
@@ -46,6 +46,14 @@ z(r)=-\frac{r^2}{R+\sqrt{R^2+(n^2-1)r^2}}.
 The height is shifted by `−z(4 mm)` to meet the rim. This is a hyperbolic conic with
 `K = −n² = −2.3104`, not an arbitrary sum of bumps. The simulation evolves surface
 coefficients; it does not enforce this conic as a kinematic constraint.
+
+The finite-conjugate extension uses the signed Cartesian-oval construction of
+Silva-Lora and Torres (2020). Its four optical parameters, prescribed incident
+wavefront inside the resin, mounting/fill constraint and exported excitations are
+specified in [Cartesian diopters](cartesian-diopters.md). The original formula
+above is its collimated-object limit. A finite-conjugate oval is generally not an
+exact conic. Both the incident conjugate and image plane remain fixed during each
+physical trajectory.
 
 After evolution, Snell rays and optical path are recomputed from the actual height
 and slope. Pupil sampling is uniform in area. The target detector remains at the

@@ -80,15 +80,19 @@ class SurfaceSpace:
         raise RuntimeError("Capillary equilibrium did not converge")
 
     def target(self):
-        """Exact single refracting-surface Cartesian oval, pinned at chamber rim."""
+        """Cartesian vertex branch, translated to meet the chamber rim."""
+        if hasattr(self, "_target_cache"):
+            c, volume = self._target_cache
+            return c.copy(), volume
         cfg = self.config
-        n, f, radius = cfg.refractive_index, cfg.focal_distance_m, cfg.radius_m
-        r = self.r * radius
-        curvature_radius = f * (n - 1)
-        sag = -r * r / (curvature_radius + np.sqrt(curvature_radius**2 + (n * n - 1) * r * r))
-        rim = -(radius**2) / (
-            curvature_radius + np.sqrt(curvature_radius**2 + (n * n - 1) * radius**2)
-        )
-        coefficients = self.fit((sag - rim) / radius)
+        radius = cfg.radius_m
+        heights = cfg.diopter.sag(np.r_[self.r * radius, radius])
+        coefficients = self.fit((heights[:-1] - heights[-1]) / radius)
         volume = self.volume_vector @ coefficients
+        self._target_cache = coefficients.copy(), float(volume)
         return coefficients, float(volume)
+
+    @property
+    def optical_vertex_m(self):
+        target, _ = self.target()
+        return float(self.config.radius_m * self.evaluate(target, np.array([0]))[0])

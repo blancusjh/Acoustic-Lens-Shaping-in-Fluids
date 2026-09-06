@@ -209,6 +209,9 @@ def export_viewer(result_directory):
         "ray_r_m": [r["pupil_r_m"].tolist() for r in rays],
         "ray_z_m": [r["surface_z_m"].tolist() for r in rays],
         "ray_spot_m": [r["target_spot_r_m"].tolist() for r in rays],
+        "ray_incident_slope": [
+            (r["incident_direction_r"] / r["incident_direction_z"]).tolist() for r in rays
+        ],
         "display": {
             "geometry_scale": 1,
             "units": "mm",
@@ -311,7 +314,15 @@ def render_figures(result_directory):
     )
     for ax in axes.flat:
         ax.grid(alpha=0.18)
-    fig.suptitle("6 mm clear-aperture liquid asphere · 20 mm target focus", fontsize=16)
+    conjugate = (
+        "collimated input"
+        if cfg.object_distance_m is None
+        else f"object {cfg.object_distance_m * 1000:g} mm"
+    )
+    fig.suptitle(
+        f"{2 * cfg.clear_radius_m * 1000:g} mm Cartesian diopter · {conjugate} · image +{cfg.focal_distance_m * 1000:g} mm",
+        fontsize=14,
+    )
     fig.savefig(out / "optical-validation.png", dpi=180)
     fig.savefig(out / "optical-validation.pdf")
     plt.close(fig)

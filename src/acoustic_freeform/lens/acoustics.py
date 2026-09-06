@@ -82,7 +82,9 @@ class CavityAcoustics:
         fixed = basis.get_dofs("surface").all()
         free = np.setdiff1d(np.arange(basis.N), fixed)
         solution = np.zeros((basis.N, cfg.array_rows), dtype=complex)
-        lu = splu(matrix[free][:, free])
+        # The complex-symmetric FEM sparsity benefits from symmetric ordering.
+        # This changes factor fill, not the equations or boundary conditions.
+        lu = splu(matrix[free][:, free], permc_spec="MMD_AT_PLUS_A")
         solution[free] = lu.solve(rhs[free])
         residual = np.linalg.norm(matrix[free] @ solution - rhs[free]) / max(
             np.linalg.norm(rhs[free]), 1e-30

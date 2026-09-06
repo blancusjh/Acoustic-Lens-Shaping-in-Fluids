@@ -136,6 +136,12 @@ def run_lens(config: LensConfig, destination, seed_drive=None, replay=None):
     )
     report = {
         "configuration": config.as_dict(),
+        "diopter": config.diopter.as_dict(),
+        "illumination": (
+            "Collimated incident wave inside the resin."
+            if config.object_distance_m is None
+            else "Prescribed spherical incident wavefront inside the resin, centered at the fixed object conjugate. External illumination and refraction through the base window are not designed."
+        ),
         "material": MATERIAL_PROVENANCE,
         "control": (
             "Replay of recorded complex wall velocities; no feedback."

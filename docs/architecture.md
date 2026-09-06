@@ -1,10 +1,13 @@
 # Project architecture
 
 The research repository has one executable package, one public command line, one
-viewer application and one active reference experiment. Benchmark infrastructure
+viewer application and separately configured optical experiments. Benchmark infrastructure
 and production evaluation data live in a different directory tree.
 
-`config` defines SI parameters and material provenance. `geometry` creates the
+`cartesian` constructs the signed optical vertex branch and independently implements
+the paper's parameterization and vector Snell refraction. `config` defines SI
+parameters and material provenance. Its optional `[diopter]` section accepts the
+four paper parameters without duplicating optical settings in `[lens]`. `geometry` creates the
 finite curved chamber from a surface state. `surface` owns nonlinear capillary
 energy, exact volume constraints and the optical target. `acoustics` computes the
 array response on that chamber; it does not prescribe the surface. `hydrodynamics`
@@ -12,6 +15,12 @@ computes a viscous mobility from finite-element fluid solves. `design` fits phys
 wall velocities to a requested optical surface. `simulation` advances the actual
 fluid state under the resulting force. `optics` evaluates that state independently
 of the design objective. `validation` supplies analytic and refinement checks.
+`excitation` exports the solved complex wall velocities, their amplitude/phase
+convention, the required surface perturbation and the continuum traction balance.
+`stationary` runs joint inverse design, an independent fixed-drive equilibrium
+check, spatial refinement and optional continuous local stability analysis.
+`stationary_visualization` renders these states with PyVista and shows their
+refinement comparison; it does not generate a physical timeline.
 
 The dependency direction is geometry/physics → integration → output. Visualization
 reads completed simulation artifacts. The browser has no optimization code and
@@ -35,6 +44,21 @@ Each completed experiment contains:
 - `geometry/`: native PyVista/VTK apparatus meshes in metres;
 - `figures/`: scientific figures and a PyVista apparatus rendering;
 - `verification/` and `spatial-convergence.json`: independent checks and browser evidence.
+
+Stationary experiments use `stationary.npz` instead of `trajectory.npz`, with
+initial, target and computed coefficients plus the complex holding drive. They
+contain `hold-drive.csv`, `surface-and-load.csv` and `excitation-definition.json`
+at the result root. A supplied optimizer seed is retained as `initial-drive.json`.
+Their interactive scenes are `stationary-viewer.html` and `optics-viewer.html`.
+Neither these files nor optimization iteration numbers represent time evolution.
+`spatial-convergence.json` and the refined coefficient files retain the same drive
+while changing acoustic resolution and surface modes. Numerical force balance,
+spatial accuracy and physical stability are separate results.
+
+`lenslab excitation <result>` adds `excitation/hold-drive.csv`, the full
+`drive-program.csv`, surface/load and traction-balance tables, and a definition
+file stating phase, amplitude, spatial taper, optical conjugates and calibration
+scope. This export reads the computed trajectory; it does not refit the array.
 
 Solver arrays use SI units and float64 arithmetic. Viewer geometry uses millimetres,
 with the conversion declared in the payload. Sampled field data are float32 for

@@ -4,6 +4,19 @@
   const D = window.LENS_DATA,
     cfg = D.config;
   const $ = (id) => document.getElementById(id);
+  const finiteObject = cfg.object_distance_m != null;
+  $("experiment-title").textContent = finiteObject
+    ? "Shaping a Cartesian diopter with sound"
+    : "A liquid asphere, shaped by sound";
+  $("experiment-subtitle").textContent =
+    `${2 * cfg.clear_radius_m * 1000} mm clear aperture · ` +
+    (finiteObject
+      ? `object ${cfg.object_distance_m * 1000} mm → image +${cfg.focal_distance_m * 1000} mm`
+      : `collimated input → focus ${cfg.focal_distance_m * 1000} mm`);
+  $("illumination-note").textContent = finiteObject
+    ? `nₒ = ${cfg.refractive_index}, nᵢ = ${cfg.image_refractive_index}. Conjugates are measured from the target vertex. Incident rays show the prescribed spherical wavefront inside the resin; external illumination through the window is not designed.`
+    : "Parallel incident rays inside the resin. Distances use the target surface vertex.";
+  $("frequency-value").textContent = `${cfg.frequency_hz / 1e6} MHz`;
   function decode(record) {
     const binary = atob(record.data),
       bytes = new Uint8Array(binary.length);
@@ -232,9 +245,12 @@
     for (let j = 1; j < D.ray_r_m[k].length; j += 2)
       for (const sign of [-1, 1]) {
         const radius = sign * D.ray_r_m[k][j] * 1000,
-          height = D.ray_z_m[k][j] * 1000;
+          height = D.ray_z_m[k][j] * 1000,
+          startZ = -cfg.depth_m * 1000 - (finiteObject ? 0 : 1.2),
+          incomingSlope = D.ray_incident_slope?.[k]?.[j] || 0,
+          startRadius = radius + sign * (startZ - height) * incomingSlope;
         raySegments.push([
-          [radius, -0.018, -cfg.depth_m * 1000 - 1.2],
+          [startRadius, -0.018, startZ],
           [radius, -0.018, height],
           [sign * D.ray_spot_m[k][j] * 1000, -0.018, plane],
         ]);
@@ -446,8 +462,11 @@
         },
         { x: radial, y: mm(D.height_m[k]), color: "#4ad8cb" },
       ],
-      [0, 4],
-      [0, 0.8],
+      [0, cfg.radius_m * 1000],
+      [
+        Math.min(0, ...D.height_m[k].map((v) => v * 1000)),
+        1.08 * Math.max(...D.target_height_m, ...D.height_m[0]) * 1000,
+      ],
     );
     const limit = Math.max(
       6,
@@ -462,7 +481,7 @@
           color: "#4ad8cb",
         },
       ],
-      [0, 3],
+      [0, cfg.clear_radius_m * 1000],
       [-limit, limit],
     );
     chart(
@@ -505,7 +524,7 @@
         ? "Unforced equilibrium"
         : D.times[frame] < cfg.ramp_s
           ? "Array shaping the liquid"
-          : "Target held by the array";
+          : "Computed driven state";
     updateGeometry(frame);
     drawCharts(frame);
     renderer.resetCameraClippingRange();
@@ -553,7 +572,7 @@
   }
   $("time").max = count - 1;
   $("end-label").textContent =
-    D.times[count - 1].toFixed(2) + " s · held asphere";
+    D.times[count - 1].toFixed(2) + " s · final computed state";
   $("time").addEventListener("input", () => {
     setPlaying(false);
     clockTime = D.times[Number($("time").value)];

@@ -4,6 +4,19 @@ Private scientific software for **acoustic array → finite liquid motion → op
 The current result is an axisymmetric, acoustically maintained **aspherical liquid lens**.
 Its shape is produced by a coupled fluid simulation and evaluated with optical rays.
 
+The [Cartesian-diopter extension](docs/cartesian-diopters.md) accepts the incident
+index/object distance and transmitted index/image distance `(n_o, z_o, n_i, z_i)`.
+It constructs the exact optical target, required surface perturbation and traction,
+then searches for array excitations in the stated liquid–air apparatus. The new
+finite-conjugate drive is a **preliminary stationary candidate**: refinement changes
+its ray RMS from 0.389 to 8.036 µm, and the nominal model has one unstable mode.
+It is not yet a demonstrated, stable stigmatic diopter. Start with the
+[finite-conjugate notebook](notebooks/02_cartesian_diopters.ipynb) and
+[four-parameter configuration](configs/lenses/noa61_cartesian_50_20.toml).
+The [research result](docs/cartesian-results.md) records the excitation, numerical
+limitations and reproducible commands. The original collimated asphere below remains
+the established result.
+
 Start with the [interactive time viewer](artifacts/asphere/viewer/index.html), the
 [optical validation figure](artifacts/asphere/figures/optical-validation.png), or the
 [equations and analysis notebook](notebooks/01_finite_asphere.ipynb).
@@ -53,6 +66,34 @@ The recorded reference integrated 1.8 seconds of fluid time in approximately
 384 seconds on this machine. A completed result is protected from replacement;
 use a new result directory for a new run.
 
+For a finite object/image pair:
+
+```bash
+uv run lenslab simulate configs/lenses/noa61_cartesian_50_20.toml --out artifacts/my_cartesian
+uv run lenslab excitation artifacts/my_cartesian
+uv run lenslab render artifacts/my_cartesian
+```
+
+This restricted-drive transient settles with 48.4 µm geometric ray RMS at the requested
+image plane; it does not produce the exact Cartesian target. Its excitation export
+provides holding amplitudes/phases for every coherent array
+row, a complete drive schedule, and the required surface perturbation. These are
+peak physical wall velocities. Electrical voltages require transducer calibration.
+
+For the separate stationary inverse design:
+
+```bash
+uv run lenslab stationary configs/lenses/noa61_cartesian_50_20_stationary.toml \
+  --seed configs/initialization/cartesian_50_20.json --starts 1 \
+  --out artifacts/my_stationary --stability
+uv run lenslab verify artifacts/my_stationary
+uv run lenslab render artifacts/my_stationary
+```
+
+The seed makes the recorded optimization branch reproducible. `stationary` does
+not compute an approach trajectory. Its figures compare design-mesh and refined
+ray fans, and its PyVista scene states the stability and refinement results.
+
 ```bash
 uv run pytest -q
 uv run lenslab verify artifacts/asphere
@@ -82,7 +123,9 @@ sample-and-hold drive without shape feedback. Notebook exports go under
 | `tools/` | Reproducible notebook and browser verification utilities |
 | `artifacts/<experiment>/` | Generated configuration, trajectory, report, viewer, figures and verification |
 
-The active result is `artifacts/asphere/`. Generated outputs, downloaded papers,
+The active experiments are `artifacts/asphere/`, the restricted-drive
+`artifacts/cartesian-50-20/` trajectory, and the preliminary
+`artifacts/cartesian-50-20-stationary-p4/` candidate. Generated outputs, downloaded papers,
 environments and dependency bundles are excluded from Git. This is a local private
 repository with no configured remote.
 
