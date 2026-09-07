@@ -1,0 +1,84 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,needspace}
+\usepackage{graphicx,xcolor,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=numeric,sorting=none,maxbibnames=20,giveninits=true,doi=true,url=false,isbn=false]{biblatex}
+\addbibresource{references.bib}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Acoustic Freeform Lab}
+\fancyhead[R]{\small Theoretical formulation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\numberwithin{equation}{section}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{remark}[proposition]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\nn}{\bm n}
+\newcommand{\Id}{\bm I}
+\newcommand{\Pg}{\bm P_\Gamma}
+\newcommand{\Gs}{\nabla_\Gamma}
+\newcommand{\jump}[1]{\left[\!\left[#1\right]\!\right]}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\inner}[2]{\left\langle#1,#2\right\rangle}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\hypersetup{pdftitle={Acoustic formation and stabilization of Cartesian optical interfaces},pdfauthor={Acoustic Freeform Lab},pdfsubject={General theoretical formulation of acoustic inverse design for stigmatic liquid diopters}}
+\title{Acoustic formation and stabilization of Cartesian optical interfaces\\[0.5em]
+\large A general formulation of optical targets, wave--fluid coupling, inverse design and control}
+\author{Acoustic Freeform Lab\\\small Private research manuscript}
+\date{6 September 2026 \quad---\quad Version 1.0}
+\begin{document}
+\maketitle
+\begin{abstract}
+This manuscript formulates the creation of optical liquid interfaces by acoustic
+actuation without prescribing a chamber, emitter arrangement, fluid pair or
+operating frequency. The principal targets are Cartesian surfaces that image one
+axial point stigmatically into another; more general aspherical targets enter the
+same mechanical problem. We distinguish transient formation, stable driven
+operation and persistence after actuation ends. A continuum model provides the
+reference description, while a conditional separation of acoustic and interface
+timescales yields explicit radiation-traction and actuator-response equations.
+The required static traction is derived by constrained variation of capillary and
+gravitational energy. The acoustic inverse problem is expressed through Hermitian
+quadratic forms, with feasibility conditions and a semidefinite relaxation whose
+physical interpretation depends on coherence. Implicit sensitivities, adjoint
+equations and constrained optimal-control conditions connect surface accuracy,
+formation trajectories and stability. A conditional obstruction shows why a
+finite acoustic pulse cannot permanently retain a non-equilibrium shape in a
+fully relaxed, unchanged liquid. All statements of feasibility and stability are
+conditional on specified material laws and boundary data. No numerical design,
+simulation result, or universal controllability claim is made.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/01_scope}
+\input{sections/02_optics}
+\input{sections/03_mechanics}
+\input{sections/04_acoustics}
+\input{sections/05_inverse}
+\input{sections/06_stability}
+\input{sections/07_control}
+\input{sections/08_validity}
+\appendix
+\input{sections/09_derivations}
+\clearpage
+\printbibliography[heading=bibintoc,title={References}]
+\end{document}

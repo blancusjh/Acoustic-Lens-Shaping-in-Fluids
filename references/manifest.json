@@ -63,5 +63,53 @@
     "sha256": "7a26c86e71abf69f423ab59e62062a25d02f662aa9c35eee238de8a64efd1b5a",
     "bytes": 1256448,
     "acquisition": "User-provided thesis literature; private research copy."
+  },
+  {
+    "file": "papers/bach-bruus-2018-boundary-layers.pdf",
+    "source": "https://arxiv.org/pdf/1804.05802",
+    "doi": "10.1121/1.5049579",
+    "sha256": "9a70d921761d4fbba719603247a4bcbfcb4df62124212b2cf9445ab148891a6d",
+    "bytes": 1547965,
+    "acquisition": "Author or institutional manuscript downloaded for private theoretical study."
+  },
+  {
+    "file": "papers/jorgensen-bruus-2021-thermoviscous.pdf",
+    "source": "https://arxiv.org/pdf/2012.07997",
+    "doi": "10.1121/10.0005005",
+    "sha256": "c94d771799918d2960b0135e6581ad968f3e78d08ea93a8d41922ad328d3ea92",
+    "bytes": 5908651,
+    "acquisition": "Author or institutional manuscript downloaded for private theoretical study."
+  },
+  {
+    "file": "papers/giles-pierce-2000-adjoint.pdf",
+    "source": "https://www.its.caltech.edu/~niles/refs/giles00.pdf",
+    "doi": "10.1023/A:1011430410075",
+    "sha256": "eb3bd25fe5a747b730fafcce942b36c5cbe80ac8f65e27fafc17359913d7ae36",
+    "bytes": 184017,
+    "acquisition": "Author or institutional manuscript downloaded for private theoretical study."
+  },
+  {
+    "file": "papers/boyd-1994-lmi.pdf",
+    "source": "https://web.stanford.edu/~boyd/lmibook/lmibook.pdf",
+    "doi": "10.1137/1.9781611970777",
+    "sha256": "ec834fb4a300b52da0e147ecb8a462db8933fb2661fe0495f95fa8a02b849b2b",
+    "bytes": 1165543,
+    "acquisition": "Author or institutional manuscript downloaded for private theoretical study."
+  },
+  {
+    "file": "papers/luo-2010-semidefinite-relaxation.pdf",
+    "source": "https://www-std.se.cuhk.edu.hk/~manchoso/papers/sdrapp-SPM.pdf",
+    "doi": "10.1109/MSP.2010.936019",
+    "sha256": "44b19498fcb2e500bc36b5989bac48e37ff472ace5861bf9edfd4ce91c821c73",
+    "bytes": 830452,
+    "acquisition": "Author manuscript downloaded for private theoretical study."
+  },
+  {
+    "file": "papers/qian-2006-contact-line.pdf",
+    "source": "https://arxiv.org/pdf/cond-mat/0602293",
+    "doi": "10.1017/S0022112006001935",
+    "sha256": "673a63c748e85afaa04ea5dfe7eb81d8d893555342eec88f62c4816b82e4ff44",
+    "bytes": 533837,
+    "acquisition": "Author manuscript downloaded for private theoretical study."
   }
 ]

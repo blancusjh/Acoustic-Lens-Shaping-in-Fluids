@@ -1,0 +1,143 @@
+\section{Problem, scope and conventions}\label{sec:scope}
+
+The design question is the following: given a desired refracting interface, what
+acoustic commands can form it from an admissible initial state and keep its
+optical performance within a prescribed tolerance? This question contains
+separate optical, mechanical, actuation and stability conditions. Equal optical
+path defines a stigmatic surface; it does not establish that a particular fluid
+or finite set of emitters can realize that surface.
+
+Existing observations establish deformation by radiation pressure and the
+importance of the interaction between the wave and its evolving interface
+\cite{bertin2012,chesneau2022}. Time-dependent deformations have also been
+measured under localized ultrasound \cite{sisombat2023}. These results motivate
+the present formulation, but do not establish arbitrary surface controllability
+or optical precision for an unspecified apparatus.
+
+\subsection{Geometry and data that remain unspecified}
+Let $t$ denote physical time, and let $T_f>0$ denote a chosen formation horizon.
+The position vector is $\bm x\in\R^3$. A connected lens-fluid region
+$\Omega^-(t)$ is surrounded, at least across its optical interface, by a second
+fluid region $\Omega^+(t)$. The superscript $-$ labels the lens material and $+$
+the adjoining fluid; either may be the incident optical medium. A gas is
+included as a possible adjoining fluid, without replacing it by a vacuum or a
+pressure-release boundary at this stage.
+
+Let $\Gamma(t)$ be the deformable fluid--fluid interface and
+$\Gamma_{\rm opt}(t)\subseteq\Gamma(t)$ its clear optical part. Other boundaries
+may support the liquid, radiate acoustic energy, or couple to elastic solids.
+The actuator boundary, when actuation is imposed on a boundary, is denoted by
+$\Gamma_a$. The contact line, when one exists, is
+$\mathcal C(t)=\partial\Gamma(t)$ on a supporting solid. No shape or dimension
+is assigned to these sets. Closed free interfaces have no contact line.
+
+The unit normal $\nn$ points from $\Omega^-$ to $\Omega^+$. Define the identity
+tensor $\Id$, tangential projector $\Pg=\Id-\nn\otimes\nn$, surface gradient
+$\Gs=\Pg\nabla$, and signed total curvature
+$\kappa=\Gs\cdot\nn$. Thus a spherical lens-fluid region has positive
+curvature. The symbol $\otimes$ denotes a tensor product. For a quantity with
+two interface traces, define its jump as
+$\jump{f}=f^+-f^-$. These choices fix the signs of all interfacial forces.
+
+The supplied physical data must eventually include the fluid constitutive laws,
+optical indices, body force, external boundaries, wetting law or pinning
+constraint, conserved fluid masses, actuator response and admissible command
+set. A device-independent formulation leaves those data as arguments of the
+problem; it cannot eliminate their influence on the answer. In particular,
+optical conjugates alone cannot determine electrical voltages.
+
+\subsection{Three meanings of a stable optical result}
+Let $\Gamma_\star$ denote a desired interface. We distinguish:
+\begin{enumerate}
+\item \emph{Transient formation}: the trajectory approaches $\Gamma_\star$
+within a finite time, possibly with nonzero fluid velocity or acoustic energy.
+\item \emph{Driven operation}: constant, periodic, or feedback-controlled
+actuation maintains acceptable optics and rejects specified disturbances.
+\item \emph{Unforced retention}: the shape remains acceptable after the sound,
+associated flows, and thermal transients have decayed.
+\end{enumerate}
+A pulse means actuation of finite temporal support, with a specified waveform
+and bandwidth. It does not imply an ideal Dirac impulse. A periodically repeated
+pulse train is continued actuation. Solidification is a change of constitutive
+law and belongs to a distinct retention problem.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,node distance=7mm and 8mm,
+ box/.style={draw=blue!40!black,rounded corners,align=center,
+ text width=42mm,minimum height=13mm,font=\small}]
+ \node[box] (opt) {Optical target and\ admissible branch};
+ \node[box,right=of opt] (mech) {Volume, boundaries and\ required fluid traction};
+ \node[box,right=of mech] (wave) {Actuator response and\ acoustic momentum transfer};
+ \node[box,below=of mech] (dyn) {Formation trajectory,\ stability and observation};
+ \draw[->] (opt)--(mech);
+ \draw[<->] (mech)--(wave);
+ \draw[->] (wave.south)|-(dyn.east);
+ \draw[->] (dyn.west)-|(opt.south);
+\end{tikzpicture}
+\caption{Dependencies of the inverse problem. Changes of shape alter the acoustic
+field; optical performance must be assessed along the resulting physical state.}
+\label{fig:dependencies}
+\end{figure}
+
+\subsection{Model hierarchy and mathematical status}
+The reference continuum description assumes immiscible phases, a regular sharp
+interface, and no mass transfer through that interface during shaping. A
+Newtonian stress law is supplied explicitly, while non-Newtonian rheology,
+solidification, cavitation and topology changes require additional equations.
+These are physical modeling choices, not assumptions about a particular
+container. Three conditional reductions are identified where used:
+\begin{enumerate}[label=(\roman*)]
+\item geometric optics in homogeneous isotropic optical media;
+\item small acoustic perturbations with a justified averaging timescale;
+\item quiescent, constant-density, constant-surface-tension equilibria for an
+explicit shape-to-traction formula.
+\end{enumerate}
+The dynamic formulation retains fluid inertia. Creeping flow appears only as an
+explicit limiting case. A stationary interface may coexist with streaming;
+such a state requires a steady-flow solve and is not a quiescent equilibrium.
+
+Derivatives below are conditional on a regular local solution and differentiable
+state and geometry maps. Smooth interface patches are taken at least $C^3$ for
+the displayed curvature variations. We neither prove global well-posedness of
+the moving-interface problem nor assert existence of a solution for every
+target. Propositions are stated with the assumptions needed for their proofs.
+The optimization objectives and design workflow are a proposed synthesis of
+these equations; no numerical execution is part of this manuscript.
+
+\subsection{Notation used throughout}
+The table defines the principal quantities before their subsequent use. More
+specialized symbols are introduced immediately before their equations. All
+physical lengths, times and stresses use SI units unless nondimensionalization
+is stated.
+\begin{longtable}{@{}p{29mm}p{112mm}@{}}
+\toprule Symbol & Meaning and units \\\midrule\endhead
+$\rho_\ell,\bm v_\ell,p_\ell$ & Instantaneous density, velocity and pressure in
+phase $\ell\in\{-,+\}$; $\mathrm{kg\,m^{-3}}$, $\mathrm{m\,s^{-1}}$, $\mathrm{Pa}$.\\
+$\bm T_\ell,\bm\tau_\ell$ & Total Cauchy stress and viscous stress; $\mathrm{Pa}$.\\
+$\mu_\ell,\zeta_\ell$ & Shear and bulk viscosities; $\mathrm{Pa\,s}$.\\
+$\Theta_\ell,e_\ell,k_\ell$ & Temperature, specific internal energy and thermal
+conductivity; $\mathrm K$, $\mathrm{J\,kg^{-1}}$, $\mathrm{W\,m^{-1}\,K^{-1}}$.\\
+$\sigma,\Phi$ & Surface tension and conservative body-force potential per unit
+mass; $\mathrm{N\,m^{-1}}$, $\mathrm{m^2\,s^{-2}}$. The body acceleration is $-\nabla\Phi$.\\
+$\lambda_V$ & Pressure multiplier imposing lens volume in an incompressible
+reduction; $\mathrm{Pa}$.\\
+$\bm U_\ell,p^h_\ell$ & Slow hydrodynamic velocity and pressure in an averaged
+description; $\mathrm{m\,s^{-1}}$, $\mathrm{Pa}$.\\
+$P_\ell,\bm V_\ell$ & Complex peak acoustic pressure and velocity amplitudes;
+$\mathrm{Pa}$ and $\mathrm{m\,s^{-1}}$. They are distinct from the slow fields.\\
+$\bm R_\ell,\bm t_{\rm ac},\Pi$ & Acoustic momentum-flux tensor, effective
+interfacial acoustic traction, and its outward normal component; $\mathrm{Pa}$.\\
+$n_o,n_i,\lambda_{\rm opt}$ & Incident and transmitted optical indices
+(dimensionless), and vacuum optical wavelength ($\mathrm m$).\\
+$\bm O,\bm I$ & Object and image points; the object subscript is the letter $o$.\\
+$\eta,\bm w$ & Normal surface displacement ($\mathrm m$) and complex peak
+mechanical emitter velocities ($\mathrm{m\,s^{-1}}$ per component).\\
+$\bm a,\bm y$ & General actuator commands and the full physical state; their
+components and units depend on the declared actuator and constitutive model.\\
+\bottomrule
+\end{longtable}
+Bold symbols denote vectors or tensors. The dagger $\dagger$ denotes conjugate
+transpose, the superscript $T$ ordinary transpose, and an asterisk complex
+conjugation. Inner products are real duality pairings unless explicitly complex;
+$\Rea$ and $\Ima$ denote real and imaginary parts.

@@ -4,6 +4,14 @@ The research repository has one executable package, one public command line, one
 viewer application and separately configured optical experiments. Benchmark infrastructure
 and production evaluation data live in a different directory tree.
 
+The current theory-first milestone is independent of that numerical apparatus.
+`docs/theory/main.tex` includes ordered section sources and a primary-source
+bibliography. `tools/build_theory.py` compiles only the document and records
+source/PDF checksums in `artifacts/theory/`. Auxiliary TeX files and review images
+remain there, while downloaded sources stay in `references/papers/`. The source
+map distinguishes established results, local derivations and unresolved model
+choices. It neither runs nor changes the physical experiments described below.
+
 `cartesian` constructs the signed optical vertex branch and independently implements
 the paper's parameterization and vector Snell refraction. `config` defines SI
 parameters and material provenance. Its optional `[diopter]` section accepts the

@@ -5,11 +5,14 @@ Keep research notes, papers, notebooks and simulation outputs here. Do not
 publish or add a remote without the user's instruction. Do not forecast model
 scores from past results.
 
-The current authorized objective is an organized scientific software project,
-a finite-volume aspherical liquid lens with quantified optical performance,
-and an interactive time viewer showing the complete apparatus. The user's
-6 September instruction authorizes lens design and optimization for this
-milestone. Curing remains a later physical model.
+The current authorized milestone is theory before further numerical execution:
+formulate general acoustic formation and stable operation of aspherical liquid
+interfaces, emphasizing Cartesian stigmatic surfaces. The canonical LaTeX
+manuscript is docs/theory/main.tex; compiled documents belong in artifacts/theory/.
+Do not resume simulations or optimizations merely because earlier milestones
+authorized them. The user has asked to settle the theoretical formulation first.
+The earlier finite-volume asphere and complete interactive time viewer remain
+separate numerical results. Curing remains a later physical model.
 
 The current extension maps signed Cartesian-diopter conjugates (n_o, z_o,
 n_i, z_i), using Silva-Lora and Torres (2020), to a feasible surface, required

@@ -1,7 +1,15 @@
 # Acoustic Freeform Lab
 
 Private scientific software for **acoustic array → finite liquid motion → optical surface**.
-The current result is an axisymmetric, acoustically maintained **aspherical liquid lens**.
+The current milestone is the **general theoretical formulation before further
+numerics**, centered on Cartesian stigmatic interfaces. Read the
+[LaTeX manuscript and source guide](docs/theory/README.md), or open the
+[compiled theoretical document](artifacts/theory/acoustic-cartesian-theory.pdf).
+It derives optical targets, required traction, actuator feasibility, stability
+and pulse/control objectives without selecting an apparatus. It reports no new
+simulation or optimized drive. Build it with `python3 tools/build_theory.py`.
+
+The established numerical result is an axisymmetric, acoustically maintained **aspherical liquid lens**.
 Its shape is produced by a coupled fluid simulation and evaluated with optical rays.
 
 The [Cartesian-diopter extension](docs/cartesian-diopters.md) accepts the incident
@@ -119,9 +127,11 @@ sample-and-hold drive without shape feedback. Notebook exports go under
 | `web/` | Time viewer source and locked frontend dependencies |
 | `references/` | Primary-source reading map, paper manifest and private PDF library |
 | `docs/` | Model contract, evidence, architecture and research decisions |
+| `docs/theory/` | General LaTeX formulation, equations, bibliography and derivation provenance |
 | `notebooks/` | Canonical Jupyter research notebooks |
 | `tools/` | Reproducible notebook and browser verification utilities |
 | `artifacts/<experiment>/` | Generated configuration, trajectory, report, viewer, figures and verification |
+| `artifacts/theory/` | Compiled manuscript, source checksums and document build/review files |
 
 The active experiments are `artifacts/asphere/`, the restricted-drive
 `artifacts/cartesian-50-20/` trajectory, and the preliminary
@@ -135,7 +145,8 @@ Superseded research prototypes are at
 `/Users/blancus/Private/research-archives/acoustic-freeform-lab/prototype-2026-09-05/`.
 Neither is an input to this scientific software.
 
-The next research step is to calibrate the acoustic apparatus and add missing
-second-order flow and thermal effects. Fully independent azimuthal control and
+Further numerical research follows review of the theoretical formulation.
+It will require calibration of the acoustic apparatus and a justified treatment
+of second-order flow, inertia and thermal effects. Fully independent azimuthal control and
 non-axisymmetric freeform optics require a 3D extension; the 256 depicted sectors
 are tied into 16 coherent rows in this asphere experiment. Curing is a later model.

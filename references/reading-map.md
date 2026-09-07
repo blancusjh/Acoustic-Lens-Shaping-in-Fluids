@@ -19,6 +19,26 @@ copies are for private study; the repository does not assert redistribution righ
 
 ## Suggested order
 
+For the current general formulation, start with the
+[theory manuscript and source map](../docs/theory/README.md). The map records
+exactly which ingredients are drawn from each source and which deductions are
+made in the manuscript. Additional primary sources acquired for this stage are:
+
+| Source | Role in the theory |
+|---|---|
+| [Bach and Bruus (2018)](https://doi.org/10.1121/1.5049579) | Viscous acoustic boundary layers and consistent streaming reductions |
+| [Joergensen and Bruus (2021)](https://doi.org/10.1121/10.0005005) | Thermoviscous state equations, temperature and mean-flow coupling |
+| [Qian, Wang and Sheng (2006)](https://doi.org/10.1017/S0022112006001935) | Moving-contact-line regularization and dissipative variational structure |
+| [Giles and Pierce (2000)](https://doi.org/10.1023/A:1011430410075) | General constrained-state adjoints and boundary terms |
+| [Luo et al. (2010)](https://doi.org/10.1109/MSP.2010.936019) | Quadratic lifting, rank constraints and semidefinite relaxation |
+| [Boyd et al. (1994)](https://doi.org/10.1137/1.9781611970777) | Lyapunov inequalities, decay rates and state-feedback synthesis |
+
+Finn's *Equilibrium Capillary Surfaces* (1986) and Huh and Scriven's moving-line
+paper (1971) supply further background references with the access limits stated
+in the source map. Their full texts have not been acquired in this stage.
+
+For the earlier experimental context:
+
 Read Sisombat for an experimentally tangible transient first. Use Chesneau's
 Sections II–III for the governing acoustic stress and coupling logic, then compare
 Bertin's morphology evidence. Read Denner before choosing a viscous wave closure.
@@ -43,8 +63,6 @@ when finite resin geometry and final optical quality become the modeling target.
   *Viscous effects on small-amplitude surface waves*. Bibliographic details checked
   against the [author's publication list](https://pages.jh.edu/aprospe1/publ.html);
   full paper not downloaded in this milestone.
-- [Jørgensen and Bruus, JASA 149, 3599–3610 (2021)](https://doi.org/10.1121/10.0005005),
-  thermal and streaming modeling for a later scale analysis.
 
 The apparatus dimensions are design inputs. The original idealized viscous pair
 remains an isolated verification case. NOA 61 has sourced liquid optical/fluid data;
