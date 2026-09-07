@@ -17,6 +17,21 @@
     ? `nₒ = ${cfg.refractive_index}, nᵢ = ${cfg.image_refractive_index}. Conjugates are measured from the target vertex. Incident rays show the prescribed spherical wavefront inside the resin; external illumination through the window is not designed.`
     : "Parallel incident rays inside the resin. Distances use the target surface vertex.";
   $("frequency-value").textContent = `${cfg.frequency_hz / 1e6} MHz`;
+  $("initial-state-label").textContent =
+    D.report.initial_condition === "perturbation"
+      ? "Perturbed initial surface"
+      : D.report.initial_condition === "hold"
+        ? "Initial holding state"
+        : "Unforced starting shape";
+  if (D.report.scope)
+    $("model-dynamics").textContent = D.report.scope + " " + D.report.control;
+  if (cfg.bulk_streaming)
+    $("model-material").textContent =
+      "NOA 61 liquid optical and fluid data use manufacturer values. Sound speed and bulk attenuation are assumptions. Bulk absorption-driven circulation is included. " +
+      (cfg.viscous_wall_acoustics
+        ? "Viscous acoustic wall losses are included. "
+        : "") +
+      "Heating, wall boundary-layer mean streaming, optical-index modulation, piezo mechanics and curing are not simulated.";
   function decode(record) {
     const binary = atob(record.data),
       bytes = new Uint8Array(binary.length);
@@ -268,40 +283,41 @@
     }
     lineGeometry("aperture", [ring]);
     const flowSegments = [];
-    for (let ir = 5; ir < cfg.mesh_radial; ir += 8)
-      for (let iz = 8; iz < cfg.mesh_vertical; iz += 12) {
-        const j = ir * (cfg.mesh_vertical + 1) + iz;
-        const r = D.slice_r[j] * cfg.radius_m * 1000,
-          z =
-            1000 *
-            (-cfg.depth_m * (1 - D.slice_eta[j]) +
-              D.slice_eta[j] * interpolation(D.height_m[k], D.slice_r[j]));
-        const ur = fluid[2 * k * nv + j] * 1000,
-          uz = fluid[(2 * k + 1) * nv + j] * 1000;
-        for (const sign of [-1, 1]) {
-          const x = sign * r,
-            dx = sign * ur,
-            dz = uz,
-            length = Math.hypot(dx, dz);
-          if (length < 1e-5) continue;
-          const end = [x + dx, -0.055, z + dz],
-            wing = Math.min(0.06, length * 0.3);
-          flowSegments.push([[x, -0.055, z], end]);
-          flowSegments.push([
-            [
-              end[0] - (wing * (dx + 0.5 * dz)) / length,
-              -0.055,
-              end[2] - (wing * (dz - 0.5 * dx)) / length,
-            ],
-            end,
-            [
-              end[0] - (wing * (dx - 0.5 * dz)) / length,
-              -0.055,
-              end[2] - (wing * (dz + 0.5 * dx)) / length,
-            ],
-          ]);
-        }
+    const flowIndices =
+      D.flow_sample_indices ||
+      Array.from({ length: Math.floor(nv / 100) }, (_, i) => i * 100);
+    for (const j of flowIndices) {
+      const r = D.slice_r[j] * cfg.radius_m * 1000,
+        z =
+          1000 *
+          (-cfg.depth_m * (1 - D.slice_eta[j]) +
+            D.slice_eta[j] * interpolation(D.height_m[k], D.slice_r[j]));
+      const ur = fluid[2 * k * nv + j] * 1000,
+        uz = fluid[(2 * k + 1) * nv + j] * 1000;
+      for (const sign of [-1, 1]) {
+        const x = sign * r,
+          dx = sign * ur,
+          dz = uz,
+          length = Math.hypot(dx, dz);
+        if (length < 1e-5) continue;
+        const end = [x + dx, -0.055, z + dz],
+          wing = Math.min(0.06, length * 0.3);
+        flowSegments.push([[x, -0.055, z], end]);
+        flowSegments.push([
+          [
+            end[0] - (wing * (dx + 0.5 * dz)) / length,
+            -0.055,
+            end[2] - (wing * (dz - 0.5 * dx)) / length,
+          ],
+          end,
+          [
+            end[0] - (wing * (dx - 0.5 * dz)) / length,
+            -0.055,
+            end[2] - (wing * (dz + 0.5 * dx)) / length,
+          ],
+        ]);
       }
+    }
     lineGeometry("flow", flowSegments);
   }
   function applyLayers() {
@@ -324,8 +340,11 @@
       ? "block"
       : "none";
     $("field-note").textContent = actors.flow.getVisibility()
-      ? "White flow vectors show one second of travel at the instantaneous computed velocity. They are slow liquid motion, not acoustic oscillation or streaming."
-      : "Array color shows phase; brightness shows drive amplitude. The 16 sectors in each row share a drive.";
+      ? "White vectors show one second of travel at the computed mean liquid velocity." +
+        (cfg.bulk_streaming
+          ? " Absorption-driven circulation is included."
+          : " Acoustic oscillations and streaming are excluded from these vectors.")
+      : `Array color shows phase; brightness shows drive amplitude. The ${cfg.array_sectors} sectors in each row share a drive.`;
     $("view-name").textContent =
       activeView.toUpperCase() + (cutaway ? " / CUTAWAY" : " / FULL GEOMETRY");
     if (window.lensViewerState)
@@ -419,7 +438,11 @@
     for (let j = 0; j <= 4; ++j) {
       const x = xRange[0] + (j * (xRange[1] - xRange[0])) / 4;
       c.textAlign = "center";
-      c.fillText(x.toFixed(1), px(x), height - 5);
+      const xDigits = Math.max(
+        1,
+        Math.ceil(-Math.log10((xRange[1] - xRange[0]) / 4)),
+      );
+      c.fillText(x.toFixed(xDigits), px(x), height - 5);
     }
     c.save();
     c.beginPath();
@@ -521,7 +544,11 @@
       (row.maximum_fluid_speed_m_s * 1000).toFixed(3) + " mm/s";
     $("state-name").textContent =
       frame === 0
-        ? "Unforced equilibrium"
+        ? D.report.initial_condition === "perturbation"
+          ? "Perturbed initial surface"
+          : D.report.initial_condition === "hold"
+            ? "Initial holding state"
+            : "Unforced starting shape"
         : D.times[frame] < cfg.ramp_s
           ? "Array shaping the liquid"
           : "Computed driven state";

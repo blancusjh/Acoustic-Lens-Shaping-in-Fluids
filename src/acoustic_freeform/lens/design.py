@@ -19,6 +19,7 @@ class ArrayDesign:
     force_residual: float
     objective: float
     attempts: list[dict]
+    predicted_ray_error_m: float
 
 
 def fit_array(
@@ -30,6 +31,7 @@ def fit_array(
     regularization=1e-5,
     pressure_penalty=None,
     linearization_state=None,
+    extra_objective=None,
 ) -> ArrayDesign:
     cfg, q = space.config, space.tangent
     if pressure_penalty is None:
@@ -67,9 +69,7 @@ def fit_array(
     bound = cfg.max_wall_speed_m_s / (np.sqrt(2) * scale)
     rows = cfg.array_rows
     matrices = field.force_kernels
-    nodes = field.basis.nodal_dofs[0]
-    radial = field.basis.doflocs[0, nodes]
-    node_weights = np.sqrt(radial / max(radial.sum(), 1e-30))
+    eigenvalues, eigenvectors = np.linalg.eigh(field.volume_potential_gram())
     pressure_map = (
         cfg.density_kg_m3
         * 2
@@ -77,11 +77,10 @@ def fit_array(
         * cfg.frequency_hz
         * cfg.radius_m
         / 1e6
-        * node_weights[:, None]
-        * field.solutions[nodes]
+        * np.sqrt(np.maximum(eigenvalues, 0))[:, None]
+        * eigenvectors.conj().T
     )
-    # Volume-weighted pressure penalty, compressed without changing its norm.
-    _, pressure_map = np.linalg.qr(pressure_map, mode="reduced")
+    # Volume-weighted pressure norm in MPa, compressed by a Hermitian factor.
     pressure_jacobian = (
         scale
         * pressure_penalty
@@ -96,15 +95,17 @@ def fit_array(
     def residual(x):
         drive = unpack(x)
         error = objective_offset + objective_map @ (field.force(drive) - gradient)
-        return np.r_[error, regularization * x, pressure_jacobian @ x]
+        extra = np.empty(0) if extra_objective is None else extra_objective.residual(drive)
+        return np.r_[error, regularization * x, pressure_jacobian @ x, extra]
 
     def jacobian(x):
         drive = unpack(x)
         product = np.einsum("ijk,k->ij", matrices, drive)
         derivative = 2 * scale * np.concatenate([product.real, product.imag], axis=1)
-        return np.vstack(
-            [objective_map @ derivative, regularization * np.eye(2 * rows), pressure_jacobian]
-        )
+        parts = [objective_map @ derivative, regularization * np.eye(2 * rows), pressure_jacobian]
+        if extra_objective is not None:
+            parts.append(scale * extra_objective.jacobian(drive))
+        return np.vstack(parts)
 
     rng = np.random.default_rng(638217)
     attempts = []
@@ -165,6 +166,7 @@ def fit_array(
         float(np.linalg.norm(mismatch)),
         objective,
         attempts,
+        float(np.linalg.norm(ray_offset + ray_map @ (field.force(drive) - gradient))) * 1e-6,
     )
 
 
@@ -191,7 +193,16 @@ def coupled_equilibrium(
     return c, history, field
 
 
-def design_stationary(space, starts=3, initial_drive=None, tolerance_m=5e-11, max_iterations=60):
+def design_stationary(
+    space,
+    starts=3,
+    initial_drive=None,
+    tolerance_m=5e-11,
+    max_iterations=60,
+    extra_objective=None,
+    initial_coefficients=None,
+    checkpoint=None,
+):
     """Joint inverse design of a self-consistent surface and holding drive.
 
     Alternates array fitting on the current cavity with a fixed-volume
@@ -201,7 +212,7 @@ def design_stationary(space, starts=3, initial_drive=None, tolerance_m=5e-11, ma
     Stability and a physical approach trajectory require separate checks.
     """
     target, volume = space.target()
-    c = target.copy()
+    c = target.copy() if initial_coefficients is None else np.asarray(initial_coefficients).copy()
     acoustic = CavityAcoustics(space.config, space)
     drive = initial_drive
     history = []
@@ -214,6 +225,7 @@ def design_stationary(space, starts=3, initial_drive=None, tolerance_m=5e-11, ma
             starts=starts if iteration == 0 else 1,
             initial_drive=drive,
             linearization_state=c,
+            extra_objective=extra_objective,
         )
         drive = fit.drive_m_s
         force = field.force(drive)
@@ -222,6 +234,8 @@ def design_stationary(space, starts=3, initial_drive=None, tolerance_m=5e-11, ma
             (balanced - c) @ space.mass @ (balanced - c) / np.sum(space.w)
         )
         history.append({"iteration": iteration, "capillary_update_rms_m": float(delta_m)})
+        if checkpoint is not None:
+            checkpoint(c, drive, history)
         print(f"stationary design {iteration}: capillary update {delta_m * 1e6:.6f} um", flush=True)
         if delta_m < tolerance_m:
             return c, drive, field, history

@@ -1,5 +1,9 @@
 # Finite-conjugate Cartesian diopter: research result
 
+This page preserves the earlier preliminary result. The current
+[convergence and stability investigation](numerical-stability.md) corrects its
+geometry/discretization and records new models, excitations and dynamic checks.
+
 The exact optical construction is verified. A reproducible acoustic stationary
 candidate has been found, but its optical precision is not spatially converged
 and the nominal fixed-drive model predicts one growing mode. It must not be

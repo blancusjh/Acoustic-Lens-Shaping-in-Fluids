@@ -9,8 +9,9 @@ from pathlib import Path
 
 import numpy as np
 
+from ..provenance import capture_execution
 from .acoustics import CavityAcoustics
-from .config import MATERIAL_PROVENANCE
+from .config import MATERIAL_PROVENANCE, LensConfig
 from .design import design_stationary
 from .excitation import normal_shape_load
 from .hydrodynamics import stokes_mobility
@@ -187,11 +188,52 @@ def run_stationary(config, destination, stability=False, seed_drive=None, starts
     config.validate()
     if (Path(destination) / "report.json").exists():
         raise FileExistsError("Choose a new destination for the stationary design.")
+    capture_execution(destination)
     space = SurfaceSpace(config)
     c, drive, _, history = design_stationary(
         space, initial_drive=seed_drive, starts=starts, tolerance_m=1e-10
     )
     return export_stationary(config, destination, c, drive, history, stability=stability)
+
+
+def regrid_stationary(source, destination, resolution):
+    """Transfer fixed physical drives to another mesh and re-solve at equal volume."""
+    source, out = Path(source), Path(destination)
+    if (out / "report.json").exists():
+        raise FileExistsError(f"Completed stationary result already exists: {out}")
+    capture_execution(out)
+    original = LensConfig(**json.loads((source / "configuration.json").read_text()))
+    data = np.load(source / "stationary.npz")
+    cfg = replace(
+        original,
+        mesh_radial=resolution[0],
+        mesh_vertical=resolution[1],
+        surface_modes=resolution[2],
+    )
+    old_space, space = SurfaceSpace(original), SurfaceSpace(cfg)
+    volume = float(old_space.volume_vector @ data["coefficients"])
+    seed = np.zeros(space.count)
+    seed[: min(len(seed), len(data["coefficients"]))] = data["coefficients"][: len(seed)]
+    seed += (
+        space.volume_vector
+        * (volume - space.volume_vector @ seed)
+        / np.dot(space.volume_vector, space.volume_vector)
+    )
+    return export_stationary(
+        cfg,
+        out,
+        seed,
+        data["drive_m_s"],
+        [
+            {
+                "operation": "fixed_drive_regrid",
+                "source": str(source.resolve()),
+                "source_state_sha256": hashlib.sha256(
+                    (source / "stationary.npz").read_bytes()
+                ).hexdigest(),
+            }
+        ],
+    )
 
 
 def verify_stationary(result_directory):

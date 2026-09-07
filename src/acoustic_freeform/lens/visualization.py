@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import pyvista as pv
+from scipy.spatial import cKDTree
 
 from .config import LensConfig
 from .geometry import chamber_mesh
@@ -177,6 +178,11 @@ def export_viewer(result_directory):
         [1e6 * (cfg.radius_m * space.evaluate(c, rr / cfg.radius_m) - spherical_h) for c in states]
     )
     rays = [trace_surface(space, c, count=24) for c in states]
+    sample_r, sample_eta = np.meshgrid(np.linspace(0.12, 0.9, 7), np.linspace(0.12, 0.88, 6))
+    sample_points = np.c_[
+        sample_r.ravel(), (-cfg.depth_m / cfg.radius_m * (1 - sample_eta)).ravel()
+    ]
+    flow_indices = np.unique(cKDTree(p.T).query(sample_points)[1])
     payload = {
         "config": cfg.as_dict(),
         "report": report,
@@ -201,6 +207,7 @@ def export_viewer(result_directory):
         "slice_r": p[0].tolist(),
         "slice_eta": ((p[1] + cfg.depth_m / cfg.radius_m) / (cfg.depth_m / cfg.radius_m)).tolist(),
         "slice_vertex_count": int(vertex_count),
+        "flow_sample_indices": flow_indices.tolist(),
         "pressure_pa": encoded(data["acoustic_pressure_pa"]),
         "fluid_velocity": encoded(data["fluid_velocity_m_s"]),
         "radiation_pa": data["radiation_pressure_pa"].tolist(),
@@ -256,7 +263,7 @@ def render_figures(result_directory):
     initial, final, target = data["initial"], data["coefficients"][-1], data["target"]
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), layout="constrained")
     for c, label, color in [
-        (initial, "Unforced liquid", "#657186"),
+        (initial, "Initial liquid state", "#657186"),
         (target, "Optical target", "#e19437"),
         (final, "Computed driven liquid", "#009c9c"),
     ]:
@@ -289,7 +296,7 @@ def render_figures(result_directory):
         ylabel="Departure from best-fit sphere (µm)",
         title="Verified aspheric figure",
     )
-    for c, label, color in [(initial, "Unforced", "#657186"), (final, "Driven", "#009c9c")]:
+    for c, label, color in [(initial, "Initial", "#657186"), (final, "Final", "#009c9c")]:
         ray = trace_surface(space, c, count=14)
         for sign in [-1, 1]:
             for j in range(14):

@@ -122,12 +122,12 @@
         </div>
         <details>
           <summary>Model scope & material data</summary>
-          <p>
+          <p id="model-dynamics">
             Finite, axisymmetric liquid chamber. The curved acoustic field and
             viscous liquid motion are solved as the surface evolves. An ideal
             controller observes the full surface.
           </p>
-          <p>
+          <p id="model-material">
             NOA 61 liquid index, density, viscosity and surface tension use
             manufacturer data. Sound speed and attenuation are declared
             assumptions. Heating, streaming, cavitation, piezo mechanics and
@@ -157,7 +157,7 @@
             aria-label="Physical time frame"
           />
           <div class="time-labels">
-            <span>Unforced equilibrium</span
+            <span id="initial-state-label">Initial liquid state</span
             ><span id="end-label">Held asphere</span>
           </div>
         </div>

@@ -35,12 +35,101 @@ def main():
     stationary.add_argument(
         "--stability", action="store_true", help="Check continuous fixed-drive linear stability"
     )
+    regrid = commands.add_parser(
+        "regrid-stationary", help="Re-solve the same drive and liquid volume on another mesh"
+    )
+    regrid.add_argument("result", type=Path)
+    regrid.add_argument("--out", type=Path, required=True)
+    regrid.add_argument(
+        "--resolution", type=int, nargs=3, required=True, metavar=("NR", "NZ", "MODES")
+    )
     replay = commands.add_parser(
         "replay", help="Replay saved physical drives without shape feedback"
     )
     replay.add_argument("result", type=Path)
     replay.add_argument("--step", type=float, required=True, help="Fluid time step, seconds")
     replay.add_argument("--out", type=Path, required=True)
+    diagnosis = commands.add_parser(
+        "diagnose-cavity", help="Separate geometry and wave errors at fixed surface and drive"
+    )
+    diagnosis.add_argument("result", type=Path)
+    diagnosis.add_argument("--out", type=Path, required=True)
+    coupled = commands.add_parser(
+        "verify-coupled", help="Re-solve a holding drive on consistent, refined curved meshes"
+    )
+    coupled.add_argument("result", type=Path)
+    coupled.add_argument("--out", type=Path, required=True)
+    coupled.add_argument(
+        "--level", type=int, nargs=3, action="append", metavar=("NR", "NZ", "MODES")
+    )
+    coupled.add_argument("--method", choices=["hybr", "broyden1"], default="hybr")
+    control_model = commands.add_parser(
+        "control-model", help="Radiation/fluid control surrogate; omits streaming derivatives"
+    )
+    control_model.add_argument("result", type=Path)
+    control_model.add_argument("--out", type=Path, required=True)
+    control_model.add_argument("--difference-step", type=float, default=1e-6)
+    frequency = commands.add_parser(
+        "screen-frequency", help="Frozen-target frequency study; requires coupled verification"
+    )
+    frequency.add_argument("result", type=Path)
+    frequency.add_argument("--out", type=Path, required=True)
+    frequency.add_argument("--frequencies", type=float, nargs="+")
+    stability = commands.add_parser(
+        "stability", help="Fixed-drive acoustic sensitivity and inertial fluid stability"
+    )
+    stability.add_argument("result", type=Path)
+    stability.add_argument("--out", type=Path, required=True)
+    stability.add_argument("--difference-step", type=float, default=1e-6)
+    stabilize = commands.add_parser(
+        "stabilize", help="Optimize a holding drive with a local inertial stability penalty"
+    )
+    stabilize.add_argument("result", type=Path)
+    stabilize.add_argument("--stability", type=Path, required=True)
+    stabilize.add_argument("--out", type=Path, required=True)
+    stabilize.add_argument(
+        "--margin",
+        type=float,
+        default=5.0,
+        help="Requested continuous decay margin, inverse seconds",
+    )
+    budget = commands.add_parser(
+        "acoustic-budget", help="Energy, bulk absorption flow and fast-interface diagnostics"
+    )
+    budget.add_argument("result", type=Path)
+    budget.add_argument("--out", type=Path, required=True)
+    feedback = commands.add_parser(
+        "feedback", help="Synthesize surface feedback and check inertia plus sample delay"
+    )
+    feedback.add_argument("result", type=Path)
+    feedback.add_argument("--stability", type=Path, required=True)
+    feedback.add_argument("--out", type=Path, required=True)
+    feedback.add_argument("--decay", type=float, default=40.0)
+    feedback.add_argument("--period", type=float, default=0.005)
+    evolve = commands.add_parser(
+        "evolve",
+        help="Integrate nonlinear ALE flow for formation, holding or perturbation recovery",
+    )
+    evolve.add_argument("result", type=Path)
+    evolve.add_argument("--out", type=Path, required=True)
+    evolve.add_argument("--controller", type=Path)
+    evolve.add_argument(
+        "--initial", choices=["rest", "rest_fixed", "hold", "perturbation"], default="perturbation"
+    )
+    evolve.add_argument("--step", type=float, default=0.005)
+    evolve.add_argument("--duration", type=float, default=0.4)
+    evolve.add_argument(
+        "--perturbation",
+        type=float,
+        default=1e-6,
+        help="Full-aperture RMS height perturbation, metres",
+    )
+    evolve.add_argument("--mode", type=int, default=0)
+    evolve.add_argument(
+        "--noise", type=float, default=0.0, help="Independent height-observation RMS noise, metres"
+    )
+    evolve.add_argument("--ramp", type=float, default=1.2)
+    evolve.add_argument("--resolution", type=int, nargs=3, metavar=("NR", "NZ", "MODES"))
     for name, help_text in [
         ("render", "Build the offline time viewer, PyVista scene and optical figures"),
         ("view", "Serve the interactive viewer on the local machine"),
@@ -57,7 +146,63 @@ def main():
     args = parser.parse_args()
     from .lens.config import LensConfig, load_config
 
-    if args.command == "simulate":
+    if args.command == "evolve":
+        from .lens.transient import run_transient
+
+        run_transient(
+            args.result,
+            args.out,
+            step_s=args.step,
+            end_s=args.duration,
+            initial=args.initial,
+            perturbation_m=args.perturbation,
+            perturbation_mode=args.mode,
+            controller_directory=args.controller,
+            noise_rms_m=args.noise,
+            ramp_s=args.ramp,
+            resolution=args.resolution,
+        )
+    elif args.command == "feedback":
+        from .lens.feedback import design_feedback
+
+        design_feedback(args.result, args.stability, args.out, args.decay, args.period)
+    elif args.command == "acoustic-budget":
+        from .verification.acoustic_budget import acoustic_budget
+
+        acoustic_budget(args.result, args.out)
+    elif args.command == "stabilize":
+        from .lens.stable_design import run_stable_design
+
+        run_stable_design(args.result, args.stability, args.out, args.margin)
+    elif args.command in ("stability", "control-model"):
+        from .lens.dynamics import linearize_for_control, stability_report
+        from .lens.surface import SurfaceSpace
+
+        cfg = LensConfig(**json.loads((args.result / "configuration.json").read_text()))
+        state = np.load(args.result / "stationary.npz")
+        analyze = stability_report if args.command == "stability" else linearize_for_control
+        analyze(
+            SurfaceSpace(cfg),
+            state["coefficients"],
+            state["drive_m_s"],
+            args.out,
+            args.difference_step,
+        )
+    elif args.command == "verify-coupled":
+        from .verification.coupled import coupled_study
+
+        kwargs = {} if args.level is None else {"levels": args.level}
+        coupled_study(args.result, args.out, method=args.method, **kwargs)
+    elif args.command == "screen-frequency":
+        from .verification.frequency import frequency_study
+
+        kwargs = {} if args.frequencies is None else {"frequencies": args.frequencies}
+        frequency_study(args.result, args.out, **kwargs)
+    elif args.command == "diagnose-cavity":
+        from .verification.curved import fixed_state_study
+
+        fixed_state_study(args.result, args.out)
+    elif args.command == "simulate":
         from .lens.simulation import run_lens
 
         run_lens(load_config(args.config), args.out)
@@ -85,6 +230,10 @@ def main():
         shutil.copy2(args.config, args.out / "input.toml")
         if args.seed:
             shutil.copy2(args.seed, args.out / "initial-drive.json")
+    elif args.command == "regrid-stationary":
+        from .lens.stationary import regrid_stationary
+
+        regrid_stationary(args.result, args.out, args.resolution)
     elif args.command == "replay":
         from .lens.simulation import run_lens
 

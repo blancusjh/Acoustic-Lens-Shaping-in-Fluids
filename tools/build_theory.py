@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
 import shutil
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from pathlib import Path
 
 
 def main() -> None:
@@ -20,28 +20,43 @@ def main() -> None:
     if latexmk is None:
         raise SystemExit("latexmk is required (with pdfLaTeX and biber).")
     command = [
-        latexmk, "-pdf", "-interaction=nonstopmode", "-halt-on-error",
-        "-file-line-error", "-jobname=acoustic-cartesian-theory",
-        f"-outdir={build}", "main.tex",
+        latexmk,
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        "-jobname=acoustic-cartesian-theory",
+        f"-outdir={build}",
+        "main.tex",
     ]
-    completed = subprocess.run(command, cwd=source, text=True, capture_output=True)
+    completed = subprocess.run(command, cwd=source, text=True, capture_output=True, check=False)
     log = completed.stdout + completed.stderr
     (build / "latexmk-output.log").write_text(log)
     if completed.returncode:
         print("\n".join(log.splitlines()[-70:]))
         raise SystemExit(completed.returncode)
     tex_log = (build / "acoustic-cartesian-theory.log").read_text(errors="replace")
-    problems = [line for line in tex_log.splitlines() if any(token in line for token in (
-        "undefined references", "undefined citations", "LaTeX Warning: Citation",
-        "Overfull \\hbox", "Overfull \\vbox",
-    ))]
+    problems = [
+        line
+        for line in tex_log.splitlines()
+        if any(
+            token in line
+            for token in (
+                "undefined references",
+                "undefined citations",
+                "LaTeX Warning: Citation",
+                "Overfull \\hbox",
+                "Overfull \\vbox",
+            )
+        )
+    ]
     if problems:
         raise SystemExit("Manuscript build needs review:\n" + "\n".join(problems))
     pdf = output / "acoustic-cartesian-theory.pdf"
     shutil.copy2(build / pdf.name, pdf)
     files = sorted(source.rglob("*.tex")) + [source / "references.bib", Path(__file__).resolve()]
     manifest = {
-        "built_utc": datetime.now(timezone.utc).isoformat(),
+        "built_utc": datetime.now(UTC).isoformat(),
         "artifact_kind": "theoretical_manuscript",
         "physics_simulations_executed": False,
         "command": command,

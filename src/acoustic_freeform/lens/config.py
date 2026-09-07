@@ -33,6 +33,12 @@ class LensConfig:
     mesh_radial: int = 40
     mesh_vertical: int = 48
     acoustic_order: int = 2
+    geometry_mapping: str = "quadratic"
+    mesh_radial_distribution: str = "uniform"
+    align_array_mesh: bool = False
+    acoustic_quadrature_order: int | None = None
+    bulk_streaming: bool = False
+    viscous_wall_acoustics: bool = False
     pressure_penalty: float = 2.0
     end_s: float = 1.0
     step_s: float = 0.01
@@ -83,6 +89,16 @@ class LensConfig:
             raise ValueError("Invalid cylindrical array.")
         if self.step_s <= 0 or self.ramp_s > self.end_s or self.ramp_s <= 0:
             raise ValueError("Invalid physical timing.")
+        if self.geometry_mapping not in ("quadratic", "exact_graph"):
+            raise ValueError("geometry_mapping must be quadratic or exact_graph.")
+        if self.mesh_radial_distribution not in ("uniform", "rim_clustered"):
+            raise ValueError("Unknown radial mesh distribution.")
+        if self.acoustic_order not in (2, 3, 4):
+            raise ValueError("Supported acoustic polynomial orders are 2, 3 and 4.")
+        if self.acoustic_quadrature_order is not None and not (
+            2 * self.acoustic_order <= self.acoustic_quadrature_order <= 19
+        ):
+            raise ValueError("Acoustic quadrature order must lie between 2*p and 19.")
 
 
 def load_config(path: str | Path) -> LensConfig:

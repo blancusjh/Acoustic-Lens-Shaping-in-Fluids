@@ -4,7 +4,7 @@ The research repository has one executable package, one public command line, one
 viewer application and separately configured optical experiments. Benchmark infrastructure
 and production evaluation data live in a different directory tree.
 
-The current theory-first milestone is independent of that numerical apparatus.
+The general theoretical formulation is independent of that numerical apparatus.
 `docs/theory/main.tex` includes ordered section sources and a primary-source
 bibliography. `tools/build_theory.py` compiles only the document and records
 source/PDF checksums in `artifacts/theory/`. Auxiliary TeX files and review images
@@ -29,6 +29,19 @@ convention, the required surface perturbation and the continuum traction balance
 check, spatial refinement and optional continuous local stability analysis.
 `stationary_visualization` renders these states with PyVista and shows their
 refinement comparison; it does not generate a physical timeline.
+
+The maintained-state extension adds `mapping` for exact graph geometry,
+`streaming` for distributed bulk absorption forcing and its stationary reciprocal
+kernels, `dynamics` for inertial fluid reductions and acoustic sensitivities,
+and `feedback` for explicitly sampled surface observation/control. `time_step`
+advances the ALE momentum and kinematic equations; `transient` records formation
+or disturbed-state recovery. A stationary streaming force is never substituted
+for a distributed load in the inertial plant. `provenance` archives executable
+sources at run entry so later edits cannot alter execution evidence.
+
+The verification package separates fixed-state cavity errors, fixed-drive
+coupled equilibrium refinement, absorption/energy budgets and frozen-target
+frequency screening. A screened drive is not a certified equilibrium.
 
 The dependency direction is geometry/physics → integration → output. Visualization
 reads completed simulation artifacts. The browser has no optimization code and

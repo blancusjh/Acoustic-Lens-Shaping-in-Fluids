@@ -5,14 +5,22 @@ Keep research notes, papers, notebooks and simulation outputs here. Do not
 publish or add a remote without the user's instruction. Do not forecast model
 scores from past results.
 
-The current authorized milestone is theory before further numerical execution:
-formulate general acoustic formation and stable operation of aspherical liquid
-interfaces, emphasizing Cartesian stigmatic surfaces. The canonical LaTeX
-manuscript is docs/theory/main.tex; compiled documents belong in artifacts/theory/.
-Do not resume simulations or optimizations merely because earlier milestones
-authorized them. The user has asked to settle the theoretical formulation first.
-The earlier finite-volume asphere and complete interactive time viewer remain
-separate numerical results. Curing remains a later physical model.
+The current user instruction resumes numerical investigation after the theoretical
+formulation. Address spatial convergence, acoustic load feasibility, dynamical
+stability and physical approach trajectories for Cartesian stigmatic interfaces.
+Use the existing -50/+20 mm, 6 mm clear-aperture example unless later steering
+changes it. Establish force and optical convergence with fixed physical drives
+before interpreting re-optimization. The canonical LaTeX theory remains in
+docs/theory/; its compiled artifact is in artifacts/theory/.
+Preserve earlier experiment outputs. New experiments require separate named
+artifact directories, configuration, provenance and verification. Curing remains
+a distinct physical model; stable driven liquid optics is the current objective.
+Snapshot executable sources before long numerical runs. Keep incomplete runs
+explicitly marked. Do not equate frozen-sensitivity optimization with recomputed
+stability, or a quiescent spectrum with stability of a streaming base flow.
+The 2026-09-06 wall-loss diagnostic is load-bearing: viscous boundary losses were
+larger than bulk absorption in the original 1.8 MHz candidate and require a
+re-solved acoustic field. See docs/numerical-stability.md for the campaign.
 
 The current extension maps signed Cartesian-diopter conjugates (n_o, z_o,
 n_i, z_i), using Silva-Lora and Torres (2020), to a feasible surface, required

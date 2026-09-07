@@ -6,7 +6,7 @@ Energy is normalized by 2*pi*sigma*radius^2; volume by 2*pi*radius^3.
 """
 
 import numpy as np
-from numpy.polynomial.legendre import Legendre, leggauss
+from numpy.polynomial.legendre import Legendre, legder, leggauss, legval
 from scipy.linalg import null_space
 
 from .config import LensConfig
@@ -39,7 +39,17 @@ class SurfaceSpace:
         return np.stack(columns, axis=-1)
 
     def evaluate(self, coefficients, r, derivative=0):
-        return self.basis(r, derivative) @ coefficients
+        r = np.asarray(r)
+        polynomial = np.r_[-np.sum(coefficients), coefficients]
+        x = 2 * r * r - 1
+        if derivative == 0:
+            return legval(x, polynomial)
+        first = legval(x, legder(polynomial))
+        if derivative == 1:
+            return 4 * r * first
+        if derivative == 2:
+            return 4 * first + 16 * r * r * legval(x, legder(polynomial, 2))
+        raise ValueError("Supported surface derivatives are 0, 1 and 2.")
 
     def energy(self, c):
         h, slope = self.b @ c, self.dr @ c

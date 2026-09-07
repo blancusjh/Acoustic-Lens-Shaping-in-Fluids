@@ -27,6 +27,24 @@ from .geometry import chamber_mesh
 from .surface import SurfaceSpace
 
 
+def wall_gradient_matrix(basis):
+    """Tangential-gradient weak form on rigid walls/base, axisymmetric area weight.
+
+    Leading thin viscous layer, zero tangential wall drive, from Bach & Bruus
+    (2018), Eqs. 26c and 35. The effective outward boundary condition is
+    dn(P) = i*rho*omega*Vn - (1+i)*delta/2 * Laplace_tangent(P).
+    Terms beyond leading boundary-layer order and thermal layers are absent.
+    """
+    faces = np.concatenate([basis.mesh.boundaries["wall"], basis.mesh.boundaries["base"]])
+    boundary = FacetBasis(basis.mesh, basis.elem, facets=faces, intorder=10)
+
+    @BilinearForm
+    def tangent_gradient(u, v, w):
+        return w.x[0] * (dot(grad(u), grad(v)) - dot(grad(u), w.n) * dot(grad(v), w.n))
+
+    return asm(tangent_gradient, boundary).tocsc()
+
+
 @dataclass
 class CavityField:
     basis: Basis
@@ -37,12 +55,31 @@ class CavityField:
     quadrature_weights: np.ndarray
     wall_loads: np.ndarray
     residual: float
+    radiation_kernels: np.ndarray | None = None
 
     def force(self, drive):
         return np.einsum("j,ijk,k->i", drive.conj(), self.force_kernels, drive).real
 
+    def radiation_force(self, drive):
+        kernels = self.force_kernels if self.radiation_kernels is None else self.radiation_kernels
+        return np.einsum("j,ijk,k->i", drive.conj(), kernels, drive).real
+
     def surface_pressure(self, drive, density):
         return density / 4 * np.abs(self.normal_velocity_basis @ drive) ** 2
+
+    def volume_potential_gram(self):
+        """Exact FEM quadrature of the volume-mean squared pressure potential.
+
+        Nodal sample averages change their weighting on a graded mesh and are
+        not volume integrals. This small Hermitian matrix gives the same norm
+        as quadrature for every coherent array vector.
+        """
+        weights = self.basis.dx * self.basis.global_coordinates()[0]
+        values = np.stack(
+            [self.basis.interpolate(column).ravel() for column in self.solutions.T], axis=1
+        )
+        gram = values.conj().T @ (weights.ravel()[:, None] * values) / weights.sum()
+        return 0.5 * (gram + gram.conj().T)
 
 
 class CavityAcoustics:
@@ -53,7 +90,7 @@ class CavityAcoustics:
         cfg, space = self.config, self.surface
         mesh = chamber_mesh(cfg, space, coefficients)
         element = {2: ElementTriP2, 3: ElementTriP3, 4: ElementTriP4}[cfg.acoustic_order]()
-        order = 2 * cfg.acoustic_order + 2
+        order = cfg.acoustic_quadrature_order or 2 * cfg.acoustic_order + 2
         basis = Basis(mesh, element, intorder=order)
         omega = 2 * np.pi * cfg.frequency_hz
         wave_number = (omega / cfg.sound_speed_m_s + 1j * cfg.attenuation_np_m) * cfg.radius_m
@@ -63,6 +100,9 @@ class CavityAcoustics:
             return w.x[0] * (dot(grad(u), grad(v)) - wave_number**2 * u * v)
 
         matrix = asm(helmholtz, basis).tocsc()
+        if cfg.viscous_wall_acoustics:
+            thickness = np.sqrt(2 * cfg.viscosity_pa_s / (cfg.density_kg_m3 * omega))
+            matrix -= (1 + 1j) * thickness / (2 * cfg.radius_m) * wall_gradient_matrix(basis)
         wall = FacetBasis(mesh, element, facets=mesh.boundaries["wall"], intorder=max(8, order))
         loads = []
         depth = cfg.depth_m / cfg.radius_m
@@ -92,9 +132,8 @@ class CavityAcoustics:
         top = FacetBasis(mesh, element, facets=mesh.boundaries["surface"], intorder=max(8, order))
         coordinates = top.global_coordinates()
         radial = coordinates[0].ravel()
-        slope = space.evaluate(coefficients, radial, 1)
         # ds*n_z = dr; the graph force does work Pi*delta_h*2*pi*r*dr.
-        weights = top.dx.ravel() / np.sqrt(1 + slope * slope) * radial
+        weights = top.dx.ravel() * top.normals[1].ravel() * radial
         normal_velocity = []
         for i in range(cfg.array_rows):
             gradient = top.interpolate(solution[:, i]).grad
@@ -103,6 +142,14 @@ class CavityAcoustics:
         b = space.basis(radial)
         factor = cfg.density_kg_m3 * cfg.radius_m / (4 * cfg.surface_tension_n_m)
         kernels = factor * np.einsum("s,si,sj,sk->ijk", weights, b, velocities.conj(), velocities)
-        return CavityField(
+        result = CavityField(
             basis, solution, kernels, radial, velocities, weights, rhs, float(residual)
         )
+        if cfg.bulk_streaming:
+            from .streaming import stationary_streaming_kernels
+
+            result.radiation_kernels = kernels.copy()
+            result.force_kernels = kernels + stationary_streaming_kernels(
+                space, coefficients, result
+            )
+        return result

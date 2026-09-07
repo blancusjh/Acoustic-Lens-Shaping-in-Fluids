@@ -79,7 +79,7 @@ def export_excitation(result_directory):
             writer.writerow(names)
             writer.writerows(records(indices))
 
-    # Compare continuum shape loads with the independently solved acoustic traction.
+    # Radiation/shape comparison is a partial balance when mean flow is present.
     field = CavityAcoustics(cfg, space).solve_basis(final)
     radial = cfg.radius_m * field.radial_samples
     weights = field.quadrature_weights
@@ -131,7 +131,9 @@ def export_excitation(result_directory):
             np.sqrt(np.average(mismatch**2, weights=weights))
         ),
         "continuum_balance_residual_max_pa": float(np.max(abs(mismatch))),
-        "continuum_balance_note": "Strong-form residual includes finite surface/acoustic discretization error. Modal force balance is the equation integrated by the solver.",
+        "continuum_balance_note": "The CSV difference is shape load minus radiation minus a fitted constant. With bulk streaming it excludes the spatially varying mean-flow stress, so it is a PARTIAL balance, not an equilibrium residual. Without bulk flow it also contains finite surface/acoustic discretization error.",
+        "bulk_streaming_included": cfg.bulk_streaming,
+        "initial_surface_label": "Initial liquid surface",
         "max_wall_velocity_peak_m_s": float(np.max(abs(drives[-1]))),
         "max_wall_displacement_peak_m": float(np.max(abs(drives[-1])) / omega),
         "source_trajectory_sha256": hashlib.sha256(
@@ -158,7 +160,7 @@ def render_excitation(result_directory):
     rows = np.genfromtxt(source / "hold-drive.csv", delimiter=",", names=True)
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), layout="constrained")
     for key, label, color in [
-        ("initial_height_m", "Unforced liquid", "#6b7e92"),
+        ("initial_height_m", "Initial liquid", "#6b7e92"),
         ("target_height_m", "Cartesian target", "#d79d36"),
         ("computed_height_m", "Computed driven liquid", "#008f98"),
     ]:
@@ -170,7 +172,7 @@ def render_excitation(result_directory):
     axes[0, 1].plot(load["radius_m"] * 1000, load["target_perturbation_m"] * 1e6, color="#008f98")
     axes[0, 1].set(
         xlabel="Radius (mm)",
-        ylabel="Target − unforced height (µm)",
+        ylabel="Target − initial height (µm)",
         title="Required perturbation at conserved fill",
     )
     gauge = metadata["constant_pressure_gauge_pa"]
@@ -190,7 +192,9 @@ def render_excitation(result_directory):
     axes[1, 0].set(
         xlabel="Radius (mm)",
         ylabel="Normal traction (Pa)",
-        title="Radiation force on the actual cavity",
+        title="Radiation contribution; mean-flow stress not shown"
+        if metadata.get("bulk_streaming_included")
+        else "Radiation force on the actual cavity",
     )
     axes[1, 0].legend(fontsize=7)
     row = rows["row_from_bottom_1based"]

@@ -1,152 +1,117 @@
 # Acoustic Freeform Lab
 
-Private scientific software for **acoustic array → finite liquid motion → optical surface**.
-The current milestone is the **general theoretical formulation before further
-numerics**, centered on Cartesian stigmatic interfaces. Read the
-[LaTeX manuscript and source guide](docs/theory/README.md), or open the
-[compiled theoretical document](artifacts/theory/acoustic-cartesian-theory.pdf).
-It derives optical targets, required traction, actuator feasibility, stability
-and pulse/control objectives without selecting an apparatus. It reports no new
-simulation or optimized drive. Build it with `python3 tools/build_theory.py`.
+Private scientific software for **acoustic array → liquid motion → optical surface**.
+The current result is a **Cartesian liquid diopter that forms and recovers under a
+fixed 1 MHz excitation in the declared axisymmetric, isothermal numerical model**.
+Research, literature and results remain separate from benchmark task packages.
 
-The established numerical result is an axisymmetric, acoustically maintained **aspherical liquid lens**.
-Its shape is produced by a coupled fluid simulation and evaluated with optical rays.
+Open the [interactive formation viewer](artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html),
+[verification figure](artifacts/cartesian-maintenance-2026-09-06/verification/maintenance.png),
+or [research notebook](notebooks/03_stable_cartesian.ipynb).
+The viewer initially shows the last computed state at **0.2 s**. Restart/play
+shows the actual fluid trajectory with cylinder, base, liquid, rim, array,
+acoustic pressure, mean flow and refracted rays. It works offline.
 
-The [Cartesian-diopter extension](docs/cartesian-diopters.md) accepts the incident
-index/object distance and transmitted index/image distance `(n_o, z_o, n_i, z_i)`.
-It constructs the exact optical target, required surface perturbation and traction,
-then searches for array excitations in the stated liquid–air apparatus. The new
-finite-conjugate drive is a **preliminary stationary candidate**: refinement changes
-its ray RMS from 0.389 to 8.036 µm, and the nominal model has one unstable mode.
-It is not yet a demonstrated, stable stigmatic diopter. Start with the
-[finite-conjugate notebook](notebooks/02_cartesian_diopters.ipynb) and
-[four-parameter configuration](configs/lenses/noa61_cartesian_50_20.toml).
-The [research result](docs/cartesian-results.md) records the excitation, numerical
-limitations and reproducible commands. The original collimated asphere below remains
-the established result.
+For `n_o=1.52`, `z_o=-50 mm`, `n_i=1`, `z_i=+20 mm`, the 6 mm clear-aperture
+surface has approximately **0.05 µm geometric ray RMS** at the requested image
+plane. The same physical drives give 0.05410, 0.04995 and 0.04956 µm on three
+spatial resolutions. Formation and recovery runs use fixed drives, actual fluid
+inertia and convection, bulk absorption flow, and viscous acoustic wall losses.
+The early trajectory remains sensitive to time-step refinement, so a precise
+settling time is not claimed.
 
-Start with the [interactive time viewer](artifacts/asphere/viewer/index.html), the
-[optical validation figure](artifacts/asphere/figures/optical-validation.png), or the
-[equations and analysis notebook](notebooks/01_finite_asphere.ipynb).
-The viewer is self-contained and works offline. Its play button and time slider
-update the actual computed surface, acoustic field, drive phases, flow and rays.
+These are constant-index geometric-optics results for the mean surface, not
+measured focal spots or experimental stability. Thermal feedback, wall-layer
+mean streaming, non-axisymmetric disturbances and acoustic index modulation
+remain open. Sound speed, attenuation and loaded transducer response require
+calibration. The 256 depicted sectors are tied into **16 coherent array rows**.
 
-The lens has a **6 mm clear aperture**, a **20 mm focal distance** and a **0.735 mm
-cap height** above an 8 mm diameter chamber. A fitted conic gives **K = −2.31027**.
-The surface departs from its best-fit sphere by **4.846 µm peak to valley**.
+- [Numerical findings, equations and limitations](docs/numerical-stability.md)
+- [Reproduction commands and artifact guide](docs/stable-cartesian-reproduction.md)
+- [Holding amplitudes and phases](artifacts/cartesian-maintenance-2026-09-06/operating-state/hold-drive.csv)
+- [Excitation conventions](artifacts/cartesian-maintenance-2026-09-06/operating-state/excitation-definition.json)
+- [Machine-readable verification](artifacts/cartesian-maintenance-2026-09-06/verification/maintenance.json)
+- [Apparatus, boundary conditions and model scope](docs/model.md)
 
-| Optical comparison, same clear aperture | Geometric RMS ray radius at each surface's best focus |
-|---|---:|
-| Unforced liquid, same chamber and fill volume | 192.36 µm |
-| Best-fit sphere, freely refocused | 47.59 µm |
-| Computed driven asphere | 0.210 µm |
-| Same drive, refined acoustics and 48 surface modes | 0.213 µm |
-
-These are monochromatic geometric-optics results within the stated numerical model,
-not measured focal spots. Diffraction, material calibration and omitted physics
-limit what can be inferred for an experiment. See [model scope](docs/model.md) and
-[numerical evidence](docs/validation.md). NOA 61's **liquid** optical and fluid data
-come from the manufacturer; sound speed and attenuation remain explicit assumptions.
-
-## Use the existing result
-
-```bash
-uv run lenslab view artifacts/asphere
-```
-
-This serves the viewer at `http://127.0.0.1:8765` and opens a browser tab. Alternatively,
-open `artifacts/asphere/viewer/index.html` directly. The four camera presets show the
-apparatus, free optical surface, light rays and acoustic cross-section. Housing,
-window, liquid, array and fields have individual controls. Geometry is not exaggerated.
-
-## Reproduce
+## Open or reproduce the current result
 
 ```bash
 uv sync --dev
 npm --prefix web ci
 npm --prefix web run build
-uv run lenslab simulate configs/lenses/noa61_asphere.toml --out artifacts/my_asphere
-uv run lenslab render artifacts/my_asphere
-uv run lenslab view artifacts/my_asphere
+uv run lenslab view artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125
 ```
 
-The recorded reference integrated 1.8 seconds of fluid time in approximately
-384 seconds on this machine. A completed result is protected from replacement;
-use a new result directory for a new run.
+This serves the viewer at `http://127.0.0.1:8765` and opens a browser tab. It can
+also be opened directly as a local HTML file. Housing, window, liquid, array
+and fields have individual controls; four camera presets show the apparatus,
+optical surface, rays and acoustic cross-section. Geometry is not exaggerated.
 
-For a finite object/image pair:
+Re-run fixed-drive formation from the saved operating state:
 
 ```bash
-uv run lenslab simulate configs/lenses/noa61_cartesian_50_20.toml --out artifacts/my_cartesian
-uv run lenslab excitation artifacts/my_cartesian
-uv run lenslab render artifacts/my_cartesian
+uv run lenslab evolve artifacts/cartesian-maintenance-2026-09-06/operating-state \
+  --controller artifacts/cartesian-maintenance-2026-09-06/operating-state/hold-model \
+  --initial rest_fixed --step 0.00125 --duration 0.2 --out artifacts/my_formation
+uv run lenslab excitation artifacts/my_formation
+uv run lenslab render artifacts/my_formation
 ```
 
-This restricted-drive transient settles with 48.4 µm geometric ray RMS at the requested
-image plane; it does not produce the exact Cartesian target. Its excitation export
-provides holding amplitudes/phases for every coherent array
-row, a complete drive schedule, and the required surface perturbation. These are
-peak physical wall velocities. Electrical voltages require transducer calibration.
+The holding file has **zero feedback gain**; it supplies a radiation Jacobian
+for the implicit numerical update. Every physical drive remains unchanged.
+Completed results are protected from replacement. The reproduction guide also
+covers inverse design, fixed-drive regridding, convergence and control models.
+Electrical voltages cannot be exported without transducer calibration.
 
-For the separate stationary inverse design:
+## General formulation and earlier milestones
 
-```bash
-uv run lenslab stationary configs/lenses/noa61_cartesian_50_20_stationary.toml \
-  --seed configs/initialization/cartesian_50_20.json --starts 1 \
-  --out artifacts/my_stationary --stability
-uv run lenslab verify artifacts/my_stationary
-uv run lenslab render artifacts/my_stationary
-```
+The [LaTeX manuscript and source guide](docs/theory/README.md) and
+[compiled theoretical document](artifacts/theory/acoustic-cartesian-theory.pdf)
+derive optical targets, required traction, actuator feasibility, stability and
+pulse/control objectives. Build with `python3 tools/build_theory.py`.
+The [Cartesian-diopter construction](docs/cartesian-diopters.md) accepts signed
+optical parameters `(n_o, z_o, n_i, z_i)`; apparatus feasibility is a separate
+inverse problem. Axial stigmatism does not imply achromatism or aplanatism.
 
-The seed makes the recorded optimization branch reproducible. `stationary` does
-not compute an approach trajectory. Its figures compare design-mesh and refined
-ray fans, and its PyVista scene states the stability and refinement results.
+Earlier results remain inspectable under their original model assumptions:
+
+| Milestone | Evidence |
+|---|---|
+| Original collimated asphere, earlier Stokes/radiation model | [Time viewer](artifacts/asphere/viewer/index.html), [notebook](notebooks/01_finite_asphere.ipynb) |
+| First Cartesian construction and restricted-drive trajectory | [Notebook](notebooks/02_cartesian_diopters.ipynb), [results](docs/cartesian-results.md) |
+| Original stationary candidate and failed refinement | [Historical analysis](docs/cartesian-results.md) |
+| Corrected geometry, inertia, feedback and wall-loss investigation | [Campaign history](docs/numerical-stability.md) |
+
+The old 0.389 µm stationary Cartesian fit did not survive refinement and geometric
+corrections. It is superseded by the independently checked 1 MHz result above.
+Earlier artifacts are preserved, not silently regenerated with a new model.
+
+## Development and project map
 
 ```bash
 uv run pytest -q
-uv run lenslab verify artifacts/asphere
-uv run lenslab verify artifacts/asphere --spatial
-uv run lenslab replay artifacts/asphere --step 0.01 --out artifacts/replay_dt001
-uv run python tools/execute_notebooks.py
-uv run python tools/verify_viewer.py artifacts/asphere
+uv run ruff check src tests tools
+uv run python tools/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
+uv run python tools/verify_viewer.py artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125
 ```
-
-`verify --spatial` holds the final physical drive fixed while changing acoustic
-order, mesh resolution and the surface basis. `replay` uses the recorded
-sample-and-hold drive without shape feedback. Notebook exports go under
-`artifacts/notebooks/`; source notebooks remain clean.
-
-## Project map
 
 | Directory | Responsibility |
 |---|---|
-| `src/acoustic_freeform/lens/` | Finite chamber, acoustics, viscous flow, capillarity, control, optics and rendering |
-| `src/acoustic_freeform/verification/planar/` | Earlier planar limits, retained as isolated verification cases |
-| `configs/` | Versioned physical apparatus and numerical inputs |
-| `tests/` | Analytic limits, conservation and dissipation checks |
+| `src/acoustic_freeform/lens/` | Curved chamber, acoustics, flow, capillarity, inverse design, dynamics, optics and rendering |
+| `src/acoustic_freeform/verification/` | Analytic limits, geometry checks, coupled refinement and energy diagnostics |
+| `configs/` | Versioned physical apparatus, numerical inputs and optimizer seeds |
+| `tests/` | Independent limits, conservation and dissipation checks |
 | `web/` | Time viewer source and locked frontend dependencies |
-| `references/` | Primary-source reading map, paper manifest and private PDF library |
+| `references/` | Primary-source reading map, manifest and private PDF library |
 | `docs/` | Model contract, evidence, architecture and research decisions |
-| `docs/theory/` | General LaTeX formulation, equations, bibliography and derivation provenance |
-| `notebooks/` | Canonical Jupyter research notebooks |
-| `tools/` | Reproducible notebook and browser verification utilities |
-| `artifacts/<experiment>/` | Generated configuration, trajectory, report, viewer, figures and verification |
-| `artifacts/theory/` | Compiled manuscript, source checksums and document build/review files |
+| `docs/theory/` | General LaTeX formulation and bibliography |
+| `notebooks/` | Clean source Jupyter notebooks; execution/HTML copies go to `artifacts/notebooks/` |
+| `tools/` | Notebook, campaign reporting and browser verification utilities |
+| `artifacts/<experiment>/` | Configuration, numerical states, report, provenance, visualization and checks |
 
-The active experiments are `artifacts/asphere/`, the restricted-drive
-`artifacts/cartesian-50-20/` trajectory, and the preliminary
-`artifacts/cartesian-50-20-stationary-p4/` candidate. Generated outputs, downloaded papers,
-environments and dependency bundles are excluded from Git. This is a local private
-repository with no configured remote.
-
-Benchmark material is stored separately at
-`/Users/blancus/Private/benchmark-archives/acoustic-lens-shaping/`.
-Superseded research prototypes are at
-`/Users/blancus/Private/research-archives/acoustic-freeform-lab/prototype-2026-09-05/`.
-Neither is an input to this scientific software.
-
-Further numerical research follows review of the theoretical formulation.
-It will require calibration of the acoustic apparatus and a justified treatment
-of second-order flow, inertia and thermal effects. Fully independent azimuthal control and
-non-axisymmetric freeform optics require a 3D extension; the 256 depicted sectors
-are tied into 16 coherent rows in this asphere experiment. Curing is a later model.
+The current campaign is `artifacts/cartesian-maintenance-2026-09-06/`.
+Downloaded papers, outputs, environments and dependency bundles are excluded
+from Git. This local private repository has no configured remote.
+Benchmark material remains exclusively in `/Users/blancus/Private/benchmark-archives/`.
+Older research prototypes remain in `/Users/blancus/Private/research-archives/`.
+Neither directory supplies inputs to this scientific software.

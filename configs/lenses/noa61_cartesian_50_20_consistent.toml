@@ -1,0 +1,44 @@
+# Finite-conjugate Cartesian diopter. All distances use metres.
+# z_o describes the incident spherical wavefront INSIDE the resin.
+# External preoptics / base-window refraction are not part of this diopter design.
+[diopter]
+n_o = 1.52
+z_o_m = -0.050
+n_i = 1.0
+z_i_m = 0.020
+
+[lens]
+name = "noa61_cartesian_50_20_consistent"
+radius_m = 0.004
+clear_radius_m = 0.003
+depth_m = 0.006
+wall_thickness_m = 0.0008
+base_thickness_m = 0.0007
+wavelength_m = 5.893e-7
+density_kg_m3 = 1231.0
+viscosity_pa_s = 0.3
+surface_tension_n_m = 0.04
+gravity_m_s2 = 9.81
+# Declared acoustic assumptions, not measured NOA 61 data.
+sound_speed_m_s = 1600.0
+attenuation_np_m = 5.0
+frequency_hz = 1800000.0
+array_rows = 16
+array_sectors = 16
+element_fill = 0.84
+# Provisional design envelope, NOT a measured transducer specification.
+max_wall_speed_m_s = 1.28
+pressure_penalty = 2.0
+surface_modes = 48
+mesh_radial = 64
+mesh_vertical = 96
+acoustic_order = 4
+end_s = 1.8
+step_s = 0.02
+ramp_s = 1.2
+
+# Exact graph in all FEM mappings; nodes cluster where high modal curvature lives.
+geometry_mapping = "exact_graph"
+mesh_radial_distribution = "rim_clustered"
+align_array_mesh = true
+acoustic_quadrature_order = 10

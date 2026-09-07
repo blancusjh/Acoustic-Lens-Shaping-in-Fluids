@@ -1,5 +1,11 @@
 # Finite acoustic asphere: model contract
 
+This page retains the original apparatus and baseline model. The current
+[maintained-state investigation](numerical-stability.md) adds exact graph
+geometry, fluid inertia/convection, optional bulk absorption flow and optional
+viscous pressure-acoustic wall conditions. Each artifact declares its enabled
+physics; these options do not retroactively change older results.
+
 This is a numerical experiment in acoustically correcting a finite liquid lens.
 It is not an experimentally calibrated NOA 61 fabrication process. Every numerical
 state starts from the same declared chamber and fill volume.
