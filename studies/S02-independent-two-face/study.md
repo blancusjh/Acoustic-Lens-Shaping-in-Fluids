@@ -14,3 +14,5 @@ shared-conjugate stigmatic singlet.
 command height check. This is evidence of inverse discretization sensitivity,
 not a certificate that arbitrary acoustic sources cannot reach other targets.
 See the [fixed-command report](../../artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/report.md).
+The [historical LaTeX evidence section](historical-numerical-evidence.tex) was
+removed from the general theory manuscript and retained with this study.
