@@ -1,6 +1,6 @@
 # Acoustic shaping of custom lens surfaces
 
-Canonical LaTeX source, **version 3.9, 23 September 2026**. The organizing chain
+Canonical LaTeX source, **version 4.0, 25 September 2026**. The organizing chain
 is geometry → dual traction → continuous acoustic synthesis → finite source
 realization → formation and stability. The theory now explicitly treats both
 faces of one lens, with Cartesian ovoids as a geometric target family and a
@@ -14,13 +14,13 @@ faces of one lens, with Cartesian ovoids as a geometric target family and a
 
 ## Reading guide
 
-| Sections | Content |
+| Topic | Content |
 |---|---|
-| 1–3 | Scope, mechanics, geometric multiplier field, front/back loads, volume constraints and annulus design |
-| 4–6 | Waves, distributed sources, weak form, local constructive trace synthesis and a carrier-displacement bound |
-| 7–9 | Reachability, coherent finite arrays, the quadratic source integral and placement derivatives |
-| 10–13 | Source adjoints, three-dimensional stability, reduced inertial formation diagnostic, formation and feedback |
-| 14–18 | Cartesian construction, two-face maximum-error specification, initial numerical evidence, carrier-aware inverse, regimes and unresolved physics |
+| Geometric and mechanical inverse | Scope, multiplier field, front/back loads, volume constraints and annulus design |
+| Acoustic forward map | Waves, distributed sources, weak form, local constructive trace synthesis and a carrier-displacement bound |
+| Reachability and source optimality | Coherent finite arrays, the quadratic source integral, placement derivatives and source adjoints |
+| Driven operation | Three-dimensional stability, reduced inertial formation diagnostic, load inversion, formation and feedback |
+| Optical specialization and validity | Cartesian construction, two-face maximum-error specification, carrier-aware inverse and unresolved physics |
 | Appendices | Supporting derivations and optional optical-performance diagnostics |
 
 The source-to-wave-to-load equations and optimality conditions are reusable for
@@ -50,6 +50,14 @@ The [revision program](../research-program.md) records the discussion's role,
 available associated data, and the distinction between reported and reproduced results.
 
 ## Scientific status and preservation
+
+Version 4.0 removes the dated independent two-face campaign table from the
+general manuscript. Its original LaTeX section is preserved with
+[study S02](../../studies/S02-independent-two-face/historical-numerical-evidence.tex)
+and its numerical claims remain in the study reports. The version 3.9 PDF was
+preserved before replacement in the separate research archive at
+`revisions/2026-09-25-before-restructure/acoustic-fluid-shaping-theory-before-study-split.pdf`;
+the pre-restructure source is preserved in that revision's repository bundle.
 
 Version 3.9 derives the coupled viscous load inverse from a Rayleighian,
 including an inertial weak-form compatibility condition for normal-only
@@ -87,8 +95,9 @@ transmission subproblem. The general coupled and dynamic adjoints retain
 operator form; thermoviscous, wall and moving-interface specializations still
 need their detailed boundary and constitutive terms before implementation.
 
-The new `dual` implementation tests simultaneous stationary shaping in a
-declared inviscid three-layer model. Its numerical results are recorded in
+The `acoustics`, `mechanics`, `inverse` and `forward` packages implement a
+restricted simultaneous stationary model for an inviscid three-layer chamber.
+Its numerical results are recorded in
 `artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/`; those experiments do not establish physical
 10 nm accuracy, three-dimensional stability or formation. Existing single-face
 artifacts retain their original model assumptions and remain preserved.
