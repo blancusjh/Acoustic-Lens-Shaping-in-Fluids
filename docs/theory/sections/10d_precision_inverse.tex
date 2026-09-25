@@ -1,0 +1,218 @@
+\section{Carrier-aware numerical inverse and acceptance gates}
+At a prescribed geometry, the finite-source operators supply generalized loads
+$F_i(\bm a)=\bm a^\dagger\bm K_i\bm a$ and sampled graph-displacement
+amplitudes $b_s(\bm a)=\bm B_s\bm a$, with
+$\bm B_s=\bm V_s/(\omega|n_{z,s}|)$. Both maps arise from the same chamber
+solution. The matrices $\bm B_s$ have units of seconds when source commands
+have units of velocity. With the actual volume constraints already imposed,
+let $\bm K_m$ be the capillary--gravity Hessian and $\bm O$ evaluate a surface
+perturbation on the fixed apertures. The surrogate
+\begin{equation}
+ \bm d(\bm a)=\bm O\bm K_m^{-1}
+       [\bm F(\bm a)-\bm F_{\rm required}]
+\end{equation}
+has units of length but is \emph{not} the coupled equilibrium error.
+Its inverse stiffness omits the shape derivative of the acoustic load.
+A small surrogate residual cannot replace a fresh solution of the full
+stationary equations, much less a stability calculation.
+
+For the selected cycle-mean specification, the carrier penalty may be set
+to zero while retaining the full quadratic acoustic load and the same source
+constraints. Carrier-aware constructions below are optional stricter studies,
+not mandatory gates for mean geometry. A small frozen mean residual still
+requires the same independent coupled forward and fixed-command convergence
+tests; changing the metric does not convert a surrogate into an achieved shape.
+
+\subsection{Coherent source steps with explicit carrier constraints}
+A source-step model at $\bm a_k$ uses the exact directional derivative
+\begin{equation}
+ D F_i(\bm a_k)[\delta\bm a]
+       =2\Rea\{\bm a_k^\dagger\bm K_i\delta\bm a\}.
+\end{equation}
+The carrier trace is already linear. Thus one may minimize an epigraph
+variable $t$ subject to convex constraints on the linearized surrogate,
+the exact carrier trace and the physical source-amplitude disks:
+\begin{align}
+ |d_s(\bm a_k)+D d_s(\bm a_k)[\delta\bm a]|&\leq u_j,
+       &&s\text{ on face }j,\\
+ |\bm B_s(\bm a_k+\delta\bm a)|&\leq v_j,
+       &&s\text{ on face }j,\\
+ u_j+v_j&\leq t,&
+ |a_{k,\ell}+\delta a_\ell|&\leq a_{\ell,\max}.
+\end{align}
+A trust region bounds the source step; a separately declared annulus penalty
+can control the omitted non-optical region. The sum of separate facewise
+maxima is conservative relative to the maximum of the pointwise sum, but both
+remain sampling diagnostics. Each proposed step is checked against the
+\emph{true quadratic} frozen-geometry load before acceptance. The apparatus,
+targets and frequency stay fixed during these iterations: this is neither a
+physical trajectory nor target continuation. A numerical termination flag is
+reported separately from first-order stationarity, feasibility and attainment
+of the geometrical criterion.
+
+Source-coordinate conditioning may use the eigenspaces of
+$\bm G=\sum_i\bm K_i^\dagger\bm K_i$. Any eigenvalue truncation restricts the
+admissible numerical source space and must be declared. It does not establish
+the physical rank of the continuous source operator. More emitting regions
+can introduce nearly dependent controls rather than improve reachability.
+
+\subsection{Sampled peak majorants}
+An alternative smooth-away-from-zero source objective uses unnormalized
+finite-vector norms on each aperture. With $\epsilon=10^{-8}\,\mathrm m$,
+define $\bm h_j=\bm d_j/\epsilon$, $\bm c_j=\bm b_j/\epsilon$, and
+\begin{equation}
+ s_j=\|\bm h_j\|_p+\|\bm c_j\|_p,\qquad p\geq2.
+\end{equation}
+Then $\epsilon s_j\geq\max_s|d_{j,s}|+\max_s|b_{j,s}|$ on the declared
+sample sets, even if the two sets differ. No division by the sample count
+is made: such a normalization would destroy this majorant. The implemented
+least-squares objective uses the two residuals $s_j$ together with separate
+annulus and source-effort penalties. This is not exact minimax optimization.
+For a nonzero complex vector,
+\begin{equation}
+ D\|\bm v\|_p[\delta\bm v]
+ =\frac{\sum_k |v_k|^{p-2}\Rea(\overline{v_k}\,\delta v_k)}
+ {\|\bm v\|_p^{p-1}}.
+\end{equation}
+At the all-zero vector a zero subgradient is selected. Directional numerical
+checks cover both physical and reduced source coordinates. Neither this
+majorant nor a large choice of $p$ controls unsampled extrema or repairs
+the omitted acoustic shape derivative in $\bm d$.
+
+A complementary, deliberately conservative source restriction chooses an
+orthonormal matrix $\bm N$ with
+$\|\bm B\bm N\|_2\leq\epsilon_a/(\sqrt{N_s}a_{\max})$.
+Commands in its range satisfying $|a_\ell|\leq a_{\max}$ obey
+\begin{equation}
+ \|\bm B\bm a\|_\infty\leq\|\bm B\bm N\|_2\|\bm a\|_2
+ \leq\epsilon_a.
+\end{equation}
+The operator norm is checked after numerical eigenspace selection.
+This is only a sampled frozen-model carrier bound; failure to match the
+required traction in this restricted subspace is not a reachability result
+for the full source space.
+
+\subsection{A relaxation diagnostic, not a substitute waveform}
+In the lifted variable of \cref{eq:lifted-feasibility}, a sampled carrier bound
+is linear:
+\begin{equation}
+ \tr(\bm B_s^\dagger\bm B_s\bm W)\leq\epsilon_a^2.
+\end{equation}
+The corresponding minimum-carrier semidefinite relaxation can help distinguish
+an unsuccessful coherent inverse from a source-space limitation. A higher-rank
+covariance is not a coherent command. Inaccurate numerical solutions that
+violate positivity, traction equalities or source bounds supply neither a
+feasible design nor a verified lower-bound certificate. Bounds derived in a
+truncated source space cannot be extrapolated to the full continuous space.
+
+\subsection{Why the maximum spot also requires slope control}
+For fixed indices, write the physical Snell map as
+$\bm d_t=\eta_n\bm d+(\sqrt Q-\eta_n c)\bm m$, where
+$c=\bm d\cdot\bm m$ and $Q=1-\eta_n^2(1-c^2)>0$.
+Its first variation is
+\begin{align}
+ \delta\bm d_t={}&\eta_n\delta\bm d
+ +\left(\frac{\eta_n^2c}{\sqrt Q}-\eta_n\right)\delta c\,\bm m
+ +(\sqrt Q-\eta_n c)\delta\bm m,\\
+ \delta c={}&\delta\bm d\cdot\bm m+\bm d\cdot\delta\bm m.
+\end{align}
+At a fixed horizontal coordinate of a graph, its upward normal satisfies
+\[
+ \delta\bm m=
+ \frac{(\Id-\bm m\bm m^T)(-\nabla\delta h,0)}
+ {\sqrt{1+|\nabla h|^2}}.
+\]
+Evaluating the normal at a moving intersection adds the change of its
+evaluation point. Both effects, and the preceding interface's change to
+$\bm d$, must be included in a complete ray derivative. In particular,
+small height error without a slope bound does not bound the outgoing angle;
+the derivative also becomes ill-conditioned near $Q=0$.
+
+For propagation from $\bm x$ to a fixed detector plane $z=Z$, let
+$\tau=(Z-x_z)/d_z>0$ and $\bm y_\perp=\bm x_\perp+\tau\bm d_\perp$.
+Then
+\[
+ \delta\tau=-\frac{\delta x_z+\tau\delta d_z}{d_z},\qquad
+ \delta\bm y_\perp=\delta\bm x_\perp+
+       \tau\delta\bm d_\perp+\bm d_\perp\delta\tau.
+\]
+These expressions explain the amplification of short-scale surface errors
+into detector displacement. They do not approximate a diffraction image.
+
+A declared regularity proxy augments the frozen height observations with
+\[
+ \bm d_s(\bm a)=\ell\bm D_r\bm K_m^{-1}
+       [\bm F(\bm a)-\bm F_{\rm required}],
+ \qquad [\ell]=\mathrm m.
+\]
+Here $\bm D_r$ evaluates pupil slopes and $\bm d_s$ again has units of length.
+For $\ell=10^{-3}\,\mathrm m$, a $10^{-5}$ slope error contributes like a
+$10^{-8}\,\mathrm m$ height error. The already-derived source gradient is
+composed with this additional linear observation. It does not remove gravity
+from $\bm K_m$ or $\bm F_{\rm required}$. Unnormalized $p$-norms may majorize
+sampled height and scaled-slope peaks; for a mean-only specification the
+carrier contribution is explicitly omitted, while its diagnostic is retained.
+Neither the slope scale nor this majorant is an exact optical bound.
+
+The independent joint gate requires each clear-pupil mean height error to be
+at most $10^{-8}\,\mathrm m$ and the maximum geometric radius about the
+prescribed optical axis at the fixed detector to be at most
+$10^{-6}\,\mathrm m$. RMS radius, centroid recentering, refocusing, and
+discarding failed rays cannot substitute for this maximum. The intended
+illumination and pupils must be declared and checked for full transmission.
+Discrete ray samples must be refined and distinguished from a continuous-pupil
+certificate; these tests still do not establish maintained liquid accuracy.
+
+\subsection{Static acoustic feedback in the precision inverse}
+The source conditions above must not confuse the mechanical compliance with
+the coupled static response. At a fixed reference shape and command, write
+\[
+ \bm R(\bm q,\bm a)=\bm F_m(\bm q)-\bm F_a(\bm q,\bm a),\quad
+ \bm A_q=D_q\bm F_a,\quad
+ \bm J=\bm K_m-\bm A_q.
+\]
+The first-order equilibrium correction solves
+$\bm J\delta\bm q=-\bm R$. If $\bm J$ is invertible, the local equilibrium
+source derivative is $D_a\bm q=\bm J^{-1}D_a\bm F_a$.
+An observation of the actual coupled response therefore contains
+$\bm O\bm J^{-1}$, and the fixed-detector optical observation contains
+$\bm J_{\rm spot}\bm J^{-1}$. The latter includes both surfaces, not
+separate single-face focus errors. A small
+$\bm O\bm K_m^{-1}\bm R$ need not imply a small
+$\bm O\bm J^{-1}\bm R$: the acoustic shape feedback can strongly amplify
+some force defects, including those in the non-optical annuli.
+
+As an explicitly truncated diagnostic, choose admissible shape directions
+in the columns of $\bm V$ and, for positive definite $\bm K_m$, define
+\[
+ \bm W=(\bm V^T\bm K_m\bm V)^{-1}\bm V^T\bm K_m,
+ \qquad \bm L=\bm K_m^{-1}\bm A_q\bm V.
+\]
+Replacing $\bm A_q$ by $(\bm A_q\bm V)\bm W$ gives
+\begin{equation}
+ \bm C_V=\bm K_m^{-1}
+ +\bm L(\Id-\bm W\bm L)^{-1}\bm W\bm K_m^{-1}.
+\end{equation}
+Direct multiplication verifies this inverse whenever the small matrix is
+nonsingular. Central differences of newly solved wave fields can measure
+$\bm A_q\bm V$; the step and retained directions must be refined.
+This is a restriction of the general coupled linearization, not a replacement
+for it or for the continuous-source inverse conditions.
+
+Holding $\bm C_V$ fixed during a source step supplies only a local model.
+The acoustic derivative itself depends on the command, so finite source
+changes require fresh coupled validation and, when needed, an updated
+response operator. Rank-truncated static conditioning is neither a stability
+spectrum nor an infeasibility certificate. In particular it does not test
+three-dimensional disturbances, inertia, dissipative dynamics, a streaming
+base flow or thermal feedback.
+
+\subsection{Required independent verification}
+For any candidate, solve the nonlinear coupled equilibrium with fixed physical
+commands and refine both wave and surface spaces. The absolute mean error and
+carrier amplitude must be evaluated independently of design collocation.
+Passing a sampled ten-nanometre check still requires a numerical-error budget
+and control of unsampled extrema. Formation, stability about the appropriate
+streaming base flow, thermal feedback, material uncertainty and experimental
+validation remain additional gates. The numerical inverse does not remove
+those requirements by using more emitters or higher carrier frequencies.

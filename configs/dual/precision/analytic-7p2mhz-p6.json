@@ -1,0 +1,5 @@
+{
+  "name": "independent-planar-p6-limit",
+  "apparatus": {"frequency_hz": 7200000, "acoustic_order": 6},
+  "scope": "Analytic three-layer limit, not a lens accuracy experiment."
+}

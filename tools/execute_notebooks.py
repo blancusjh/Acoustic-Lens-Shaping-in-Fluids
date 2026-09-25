@@ -16,7 +16,10 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument(
     "notebooks", nargs="*", type=Path, help="Selected source notebooks; default: all"
 )
+parser.add_argument("--timeout", type=int, default=300, help="Execution timeout per cell, seconds")
 args = parser.parse_args()
+if args.timeout <= 0:
+    parser.error("--timeout must be positive")
 os.environ["PATH"] = str(Path(sys.executable).parent) + os.pathsep + os.environ["PATH"]
 destination = root / "artifacts" / "notebooks"
 destination.mkdir(parents=True, exist_ok=True)
@@ -30,7 +33,7 @@ for source in args.notebooks or sorted((root / "notebooks").glob("*.ipynb")):
     notebook.metadata["language_info"] = {"name": "python"}
     print(f"Executing {source.name}", flush=True)
     NotebookClient(
-        notebook, timeout=300, kernel_name="python3", resources={"metadata": {"path": str(root)}}
+        notebook, timeout=args.timeout, kernel_name="python3", resources={"metadata": {"path": str(root)}}
     ).execute()
     for cell in notebook.cells:
         if cell.cell_type == "code":

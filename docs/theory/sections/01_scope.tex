@@ -1,11 +1,12 @@
 \section{Problem, scope and conventions}\label{sec:scope}
 
-The design question is the following: given a desired refracting interface, what
-acoustic commands can form it from an admissible initial state and keep its
-optical performance within a prescribed tolerance? This question contains
-separate optical, mechanical, actuation and stability conditions. Equal optical
-path defines a stigmatic surface; it does not establish that a particular fluid
-or finite set of emitters can realize that surface.
+The design question is the following: given a smooth target interface inside a
+cylinder, which admissible acoustic source distributions can form it and
+maintain it with specified accuracy and stability? The target is initially an
+arbitrary surface. Its compatibility with the fluid volume and boundaries,
+the required stress, the range of realizable acoustic loads, and its dynamic
+stability are separate conditions. Cartesian optical surfaces enter only after
+these general conditions have been formulated.
 
 Existing observations establish deformation by radiation pressure and the
 importance of the interaction between the wave and its evolving interface
@@ -14,9 +15,17 @@ measured under localized ultrasound \cite{sisombat2023}. These results motivate
 the present formulation, but do not establish arbitrary surface controllability
 or optical precision for an unspecified apparatus.
 
-\subsection{Geometry and data that remain unspecified}
+\subsection{Cylindrical geometry and data left as arguments}
 Let $t$ denote physical time, and let $T_f>0$ denote a chosen formation horizon.
-The position vector is $\bm x\in\R^3$. A connected lens-fluid region
+The position vector is $\bm x=(x_1,x_2,z)\in\R^3$. Define a reference cylinder
+of radius $R_c>0$ and height $H_c=z_t-z_b>0$ by
+\begin{equation}
+ \mathcal D_c=\{\bm x:x_1^2+x_2^2<R_c^2,\ z_b<z<z_t\}.
+ \label{eq:cylinder}
+\end{equation}
+Here $z_b$ and $z_t$ are the bottom and top coordinates. The cylinder fixes
+the container geometry, not a symmetry of the state. An interface, source
+field or perturbation may depend on all three coordinates. A connected fluid region
 $\Omega^-(t)$ is surrounded, at least across its optical interface, by a second
 fluid region $\Omega^+(t)$. The superscript $-$ labels the lens material and $+$
 the adjoining fluid; either may be the incident optical medium. A gas is
@@ -28,8 +37,17 @@ $\Gamma_{\rm opt}(t)\subseteq\Gamma(t)$ its clear optical part. Other boundaries
 may support the liquid, radiate acoustic energy, or couple to elastic solids.
 The actuator boundary, when actuation is imposed on a boundary, is denoted by
 $\Gamma_a$. The contact line, when one exists, is
-$\mathcal C(t)=\partial\Gamma(t)$ on a supporting solid. No shape or dimension
-is assigned to these sets. Closed free interfaces have no contact line.
+$\mathcal C(t)=\partial\Gamma(t)$ on a supporting solid. The two phases
+partition the fluid-filled part of the cylinder; additional immersed bodies
+require their geometry and boundary conditions as explicit data. Closed free
+interfaces have no contact line. A graph over a circular disk is one admissible
+representation, not a requirement; overhangs need a general surface description.
+
+When acoustic motion is prescribed on a wall, $\partial\mathcal D_c$ is its
+reference or cycle-mean position. The full waveform problem uses the moving
+wall, and its linearization transfers the condition to that reference surface.
+An exactly fixed impermeable wall cannot also have a nonzero normal velocity.
+Any open boundary or volume source must declare its mass and energy exchange.
 
 The unit normal $\nn$ points from $\Omega^-$ to $\Omega^+$. Define the identity
 tensor $\Id$, tangential projector $\Pg=\Id-\nn\otimes\nn$, surface gradient
@@ -39,12 +57,16 @@ curvature. The symbol $\otimes$ denotes a tensor product. For a quantity with
 two interface traces, define its jump as
 $\jump{f}=f^+-f^-$. These choices fix the signs of all interfacial forces.
 
-The supplied physical data must eventually include the fluid constitutive laws,
-optical indices, body force, external boundaries, wetting law or pinning
+The supplied physical data must include the fluid constitutive laws,
+body force, external boundaries, wetting law or pinning
 constraint, conserved fluid masses, actuator response and admissible command
 set. A device-independent formulation leaves those data as arguments of the
 problem; it cannot eliminate their influence on the answer. In particular,
-optical conjugates alone cannot determine electrical voltages.
+optical conjugates alone cannot determine electrical voltages. No particular
+aperture, fill height, immersion fluid, source count or operating frequency is
+assigned. Arbitrary sources means arbitrary functions within a declared
+physical admissible set, not independent prescription of pressure and velocity
+at every interface point.
 
 \subsection{Three meanings of a stable optical result}
 Let $\Gamma_\star$ denote a desired interface. We distinguish:
@@ -66,9 +88,9 @@ law and belongs to a distinct retention problem.
 \begin{tikzpicture}[>=Latex,node distance=7mm and 8mm,
  box/.style={draw=blue!40!black,rounded corners,align=center,
  text width=42mm,minimum height=13mm,font=\small}]
- \node[box] (opt) {Optical target and\ admissible branch};
+ \node[box] (opt) {Admissible target\ and fluid boundaries};
  \node[box,right=of opt] (mech) {Volume, boundaries and\ required fluid traction};
- \node[box,right=of mech] (wave) {Actuator response and\ acoustic momentum transfer};
+ \node[box,right=of mech] (wave) {Distributed sources and\ acoustic momentum transfer};
  \node[box,below=of mech] (dyn) {Formation trajectory,\ stability and observation};
  \draw[->] (opt)--(mech);
  \draw[<->] (mech)--(wave);
@@ -103,7 +125,11 @@ the displayed curvature variations. We neither prove global well-posedness of
 the moving-interface problem nor assert existence of a solution for every
 target. Propositions are stated with the assumptions needed for their proofs.
 The optimization objectives and design workflow are a proposed synthesis of
-these equations; no numerical execution is part of this manuscript.
+these equations. Explicit weak forms, source adjoints and conditional proofs
+are given for identified subproblems; the full thermoviscous moving-interface
+system is a reference formulation, not a proved globally solvable inverse.
+Numerical continuation is neither an assumption nor a step required by the
+inverse equations. Numerical experiments will test this formulation.
 
 \subsection{Notation used throughout}
 The table defines the principal quantities before their subsequent use. More
@@ -133,8 +159,9 @@ $n_o,n_i,\lambda_{\rm opt}$ & Incident and transmitted optical indices
 $\bm O,\bm I$ & Object and image points; the object subscript is the letter $o$.\\
 $\eta,\bm w$ & Normal surface displacement ($\mathrm m$) and complex peak
 mechanical emitter velocities ($\mathrm{m\,s^{-1}}$ per component).\\
-$\bm a,\bm y$ & General actuator commands and the full physical state; their
-components and units depend on the declared actuator and constitutive model.\\
+$\bm a,\bm y$ & General actuator command field and full physical state; each
+may be an infinite-dimensional collection of fields. Units depend on the
+declared actuator and constitutive model.\\
 \bottomrule
 \end{longtable}
 Bold symbols denote vectors or tensors. The dagger $\dagger$ denotes conjugate

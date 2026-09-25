@@ -1,0 +1,142 @@
+\section{Acoustic transfer, radiation traction and temporal memory}\label{sec:acoustics}
+
+\subsection{When a harmonic reduction is justified}
+Let $\omega>0$ be angular carrier frequency, $T_a=2\pi/\omega$ its period,
+$T_e$ an envelope variation time, $T_\Gamma$ an interface variation time, and
+$\tau_r$ an acoustic energy ring-down time. A fast-time average over an interval
+$\Delta t$ requires
+\begin{equation}
+ T_a\ll\Delta t\ll\min(T_e,T_\Gamma).
+ \label{eq:averaging-separation}
+\end{equation}
+Replacing the field at each instant by a settled harmonic solution also requires
+$\tau_r\ll\min(T_e,T_\Gamma)$. A short carrier period alone does not imply
+short ring-down in a resonant cavity. When these conditions fail, causal wave
+dynamics or the reference continuum equations must be retained.
+
+For a fixed slow state, use the peak-phasor convention
+$p_{1\ell}(\bm x,t)=\Rea\{P_\ell(\bm x)e^{-\mathrm i\omega t}\}$ and
+$\bm v_{1\ell}(\bm x,t)=\Rea\{\bm V_\ell(\bm x)e^{-\mathrm i\omega t}\}$,
+where $\mathrm i^2=-1$ and the subscript $1$ denotes first-order acoustics.
+Thus the average of two real harmonic quantities with phasors $A,B$ is
+$\frac12\Rea(AB^*)$. For locally homogeneous, inviscid, adiabatic fluids with
+negligible mean advection, define the sound speed $c_\ell$ and obtain
+\begin{equation}
+ -\mathrm i\omega\rho_\ell\bm V_\ell=-\nabla P_\ell,\qquad
+ -\mathrm i\omega P_\ell=-\rho_\ell c_\ell^2\nabla\cdot\bm V_\ell,
+ \qquad
+ \nabla\cdot\left(\frac{\nabla P_\ell}{\rho_\ell}\right)
+       +\frac{\omega^2}{\rho_\ell c_\ell^2}P_\ell=0.
+ \label{eq:linear-acoustics}
+\end{equation}
+The sound speed is the isentropic derivative of the equation of state. Loss,
+thermal fields and elastic boundaries replace this simple operator when
+needed; they are not unspecified tuning coefficients. Boundary-layer
+reductions with declared scale conditions are developed in
+\cite{bach2018,jorgensen2021}.
+
+The acoustic interface conditions must follow by linearizing the kinematic and
+traction conditions on the displaced interface. Let $\Xi$ be its first-order
+normal-displacement phasor, in metres. About a quiescent interface,
+$\bm V^-\cdot\nn=\bm V^+\cdot\nn=-\mathrm i\omega\Xi$. First-order traction
+also contains the capillary curvature variation and the displacement through
+base pressure gradients. Neglecting those corrections can yield continuity
+of acoustic pressure and normal velocity, as in a common high-frequency
+fluid--fluid scattering model \cite{chesneau2022}. That simplification requires
+the fast interfacial restoring terms to be small; it is not an exact condition
+for capillary waves at all frequencies. A compliant solid or a free surface
+requires its own linearized boundary operator.
+
+\subsection{The sign and content of radiation traction}
+For the locally homogeneous inviscid acoustic reduction just specified, define
+the time-averaged acoustic \emph{momentum flux}
+\begin{equation}
+ \bm R_\ell=
+ \left(\frac{|P_\ell|^2}{4\rho_\ell c_\ell^2}
+            -\frac{\rho_\ell|\bm V_\ell|^2}{4}\right)\Id
+ +\frac{\rho_\ell}{2}\Rea(\bm V_\ell\otimes\bm V_\ell^*).
+ \label{eq:radiation-flux}
+\end{equation}
+It is minus the radiation-stress convention used in
+\cite{chesneau2022}; recording this sign is essential. The effective outward
+interfacial traction and its scalar normal component are
+\begin{equation}
+ \bm t_{\rm ac}=(\bm R_- -\bm R_+)\nn=-\jump{\bm R}\nn,
+ \qquad \Pi=\nn\cdot\bm t_{\rm ac}.
+ \label{eq:acoustic-traction}
+\end{equation}
+Let $\bm T^h=-p^h\Id+\bm\tau(\bm U)$ denote slow hydrodynamic stress with the
+mean-pressure convention associated with \cref{eq:radiation-flux}. The reduced
+interface balance becomes
+\begin{equation}
+ \jump{\bm T^h}\nn+\bm t_{\rm ac}
+       =\sigma\kappa\nn-\Gs\sigma.
+ \label{eq:averaged-jump}
+\end{equation}
+In a consistent bulk momentum balance the acoustic force is
+$-\nabla\cdot\bm R$ with the matching mean-pressure definition. A gradient
+part can be absorbed into $p^h$; it must not be counted again at the interface.
+In thermoviscous or inhomogeneous fluids, the averaged stress, heat source and
+boundary-layer forcing have to be derived together from the reference
+equations. A scalar normal pressure model does not cover all streaming or
+tangential stresses.
+
+Only in a one-sided pressure-release limit, with negligible adjoining-fluid
+momentum flux, $P_-\simeq0$ and negligible tangential acoustic velocity at the
+surface, does \cref{eq:acoustic-traction} reduce to
+\begin{equation}
+ \Pi\simeq\frac{\rho_-}{4}|\bm V_-\cdot\nn|^2.
+ \label{eq:pressure-release-limit}
+\end{equation}
+This factor uses peak amplitudes. It must not be transferred unchanged to an
+immersed liquid--liquid lens or to a surface supporting appreciable acoustic
+pressure. Experiments on liquid interfaces and coupled calculations motivate
+retaining the wave--shape interaction, rather than prescribing a load
+independent of the deformed geometry \cite{bertin2012,chesneau2022,sisombat2023}.
+
+\subsection{Impulses are causal histories, not instantaneous intensities}
+For a fixed geometry and linear acoustics, let $\bm z_a(t)$ collect the wave
+state, $\mathcal G_\Gamma(t)$ its causal propagation operator, and
+$\mathcal B_\Gamma$ the command-to-source operator. Let $t_0$ be the starting
+time and $\bm z_{a,0}$ the initial acoustic state. Then
+\begin{equation}
+ \bm z_a(t)=\mathcal G_\Gamma(t-t_0)\bm z_{a,0}
+       +\int_{t_0}^t\mathcal G_\Gamma(t-s)
+                         \mathcal B_\Gamma\bm a(s)\dd s.
+ \label{eq:acoustic-memory}
+\end{equation}
+The radiative load is quadratic in this accumulated field. Two commands with
+the same present amplitude can therefore yield different loads because their
+histories differ. Changing the interface makes the operator time dependent,
+so a fixed convolution kernel is then only a local approximation. Fluid
+inertia, viscous relaxation, streaming, temperature and actuator mechanics
+provide additional memory variables.
+
+An actual impulse has a restricted mechanical interpretation. Consider a
+declared inertial modal reduction with displacement coordinates $\bm q_f$,
+modal mass matrix $\mathsf M_f$ and generalized acoustic force
+$\bm f_a(t)$. Their component units are metres, kilograms and newtons,
+respectively. Let $t_-,t_+$ bracket the effective force pulse, including any
+relevant acoustic ring-down. If the shape and $\mathsf M_f$ change negligibly
+over that interval and integrated restoring and dissipative forces are small,
+integration of momentum gives
+\begin{equation}
+ \mathsf M_f[\dot{\bm q}_f(t_+)-\dot{\bm q}_f(t_-)]
+       \simeq\int_{t_-}^{t_+}\bm f_a(t)\dd t.
+ \label{eq:mechanical-impulse}
+\end{equation}
+The integral has units of momentum. In this limit a short force pulse primarily
+changes velocity; the subsequent interface shape follows the inertial,
+capillary and viscous evolution. This reduction does not apply when viscous
+forces dominate the pulse interval, and an acoustic cycle average still needs
+\cref{eq:averaging-separation}. Delivering the correct integrated force is not
+the same as arriving at the target with negligible residual motion.
+
+If several carriers $\omega_m$ are used, index $m$ labels their frequencies.
+Quadratic products contain cross terms proportional to
+$e^{-\mathrm i(\omega_m-\omega_n)t}$. They average away only with appropriate
+coherence statistics or an averaging interval satisfying
+$|\omega_m-\omega_n|\Delta t\gg1$, together with negligible relevant mechanical
+response to the unresolved beats. Nearby carriers can drive slow beat forces;
+a sum of independent intensities is not generally their physical load.
+

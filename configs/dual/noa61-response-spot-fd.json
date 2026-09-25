@@ -1,0 +1,8 @@
+{
+  "cache_directory": "artifacts/noa61-emitter-2026-09-23/force-448-c4-clear",
+  "source_file": "artifacts/noa61-emitter-2026-09-23/force-448-c4-clear-spot-conic/best-source.npz",
+  "ranks": [2],
+  "direction_family": "mechanical",
+  "difference_step_m": 1e-9,
+  "half_step_check_modes": 1
+}

@@ -1,0 +1,236 @@
+\section{Cartesian geometry as a target family}\label{sec:optics}
+
+\subsection{An unsquared optical-path construction}
+Fix a vacuum wavelength $\lambda_{\rm opt}$, positive unequal homogeneous indices
+$n_o,n_i$, and distinct conjugate points $\bm O,\bm I$. The signs $s_o,s_i$ are
+$+1$ for a real object or real image, respectively, and $-1$ for a virtual one.
+For an interface point $\bm x$ distinct from both foci, let
+$R_o=|\bm x-\bm O|$ and $R_i=|\bm x-\bm I|$. Define the signed optical path
+$\Psi$ and a constant path level $C$ by
+\begin{equation}
+ \Psi(\bm x)=s_o n_oR_o+s_i n_iR_i,\qquad
+ \Gamma_{\rm opt,\star}\subset\{\bm x:\Psi(\bm x)=C\}.
+ \label{eq:cartesian-implicit}
+\end{equation}
+Both $\Psi$ and $C$ have units of length. The constant is fixed by a chosen
+vertex or by compatible mounting and volume data. For two real conjugates this
+is the usual weighted sum of distances. Signed paths extend the construction to
+virtual conjugates. The formulas and Cartesian-surface classification follow
+Silva-Lora and Torres \cite{silva2020}; the preceding mechanical and control formulation is separate from that paper's two-surface singlet construction.
+
+Let $\bm d_o=s_o(\bm x-\bm O)/R_o$ be the incident propagation direction and
+$\bm d_i=s_i(\bm I-\bm x)/R_i$ the desired transmitted direction. Then
+\begin{equation}
+ \nabla\Psi=n_o\bm d_o-n_i\bm d_i,\qquad
+ \Gs\Psi=0\ \Longrightarrow\ n_o\Pg\bm d_o=n_i\Pg\bm d_i.
+ \label{eq:fermat-snell}
+\end{equation}
+This directly supplies the tangential Snell condition. Squaring
+\cref{eq:cartesian-implicit} gives a quartic, but can add branches; its real
+roots alone do not certify the intended refracting surface.
+
+To select transmission, let $\bm m$ be the unit surface normal pointing from the
+incident medium into the transmitted medium. Thus $\bm m=\pm\nn$ depending on
+which fluid light enters first. Set $c_o=\bm d_o\cdot\bm m$ and
+$\eta_n=n_o/n_i$. The physically transmitted unit direction $\bm d_t$ is
+\begin{equation}
+ \bm d_t=\eta_n\bm d_o+
+ \left[\sqrt{1-\eta_n^2(1-c_o^2)}-\eta_n c_o\right]\bm m.
+ \label{eq:snell-vector}
+\end{equation}
+The branch must satisfy $c_o>0$, a nonnegative square-root argument,
+$\bm d_t\cdot\bm m>0$, and $\bm d_t=\bm d_i$ throughout the admitted aperture.
+These exclude back-facing and totally internally reflecting branches. A finite
+distance from grazing transmission is also needed for well-conditioned optical
+sensitivities.
+
+\subsection{The four axial conjugate parameters}
+Choose the vertex as the origin, with optical propagation there in the positive
+$z$ direction. Let $z_o,z_i$ be the signed axial coordinates of the conjugates,
+and define cylindrical radius $r=\sqrt{x^2+y^2}$. For finite nonzero conjugates,
+$s_o=-\operatorname{sgn}(z_o)$ and $s_i=\operatorname{sgn}(z_i)$. The level fixed
+by the vertex is $C=-n_oz_o+n_iz_i$. In particular, for $z_o<0<z_i$,
+\begin{equation}
+ n_o\sqrt{r^2+(z-z_o)^2}+n_i\sqrt{r^2+(z_i-z)^2}
+ =-n_oz_o+n_iz_i.
+ \label{eq:real-cartesian}
+\end{equation}
+
+For the paper's parametric representation, define inverse lengths
+$a=1/z_o$, $b=1/z_i$, and $D=n_i a-n_o b$. When the denominators are nonzero,
+define the form parameters $\mathsf O$ (inverse length), $\mathsf G$
+(dimensionless), $\mathsf T$ (inverse length cubed), and $\mathsf S$ (inverse
+length squared) as
+\begin{align}
+ \mathsf O&=\frac{n_i b-n_o a}{n_i-n_o}, &
+ \mathsf G&=\frac{(n_i^2a-n_o^2b)^2}{n_i n_o D(n_i b-n_o a)},\label{eq:gots-a}\\
+ \mathsf T&=\frac{(n_i-n_o)(n_i+n_o)^2a^2b^2}{4n_i n_oD}, &
+ \mathsf S&=\frac{(n_i+n_o)(n_i^2a-n_o^2b)ab}{2n_i n_oD}.
+ \label{eq:gots-b}
+\end{align}
+The signed vertex graph curvature is $z''(0)=\mathsf O$; it is not the total
+mechanical curvature $\kappa$. For an upward physical normal at an axisymmetric
+vertex, $\kappa(0)=-2\mathsf O$.
+
+Define the polar distance $\varrho=\sqrt{r^2+z^2}$, which is \emph{not} the
+cylindrical radius $r$ or either fluid density. The parameters satisfy
+$\mathsf S^2=\mathsf O\mathsf G\mathsf T$. The Cartesian polynomial in these
+coordinates is
+\begin{equation}
+ \mathsf O\mathsf Gz^2-2(1+\mathsf S\varrho^2)z
+       +(\mathsf O+\mathsf T\varrho^2)\varrho^2=0.
+ \label{eq:gots-polynomial}
+\end{equation}
+Solving this quadratic in $z$, selecting the branch through the vertex, and
+rationalizing yields
+\begin{equation}
+ z(\varrho)=
+ \frac{(\mathsf O+\mathsf T\varrho^2)\varrho^2}
+ {1+\mathsf S\varrho^2+
+   \sqrt{1+(2\mathsf S-\mathsf O^2\mathsf G)\varrho^2}},\qquad
+ r(\varrho)=\sqrt{\varrho^2-z(\varrho)^2}.
+ \label{eq:gots-parametric}
+\end{equation}
+The unsquared path and transmission tests remain necessary. Singular GOTS
+coordinates need not imply a singular physical surface; in that event use
+\cref{eq:cartesian-implicit} directly. Equal indices, coincident foci, and
+degenerate conjugates require their own optical interpretation rather than
+division by a vanishing coefficient.
+
+For collimated incidence, take $z_o\to-\infty$ and subtract the divergent constant
+path. The finite condition for a real image is
+$n_oz+n_i(\sqrt{r^2+(z_i-z)^2}-z_i)=0$. Here $\mathsf S=\mathsf T=0$ and the
+conic constant $K=-(n_o/n_i)^2$. Writing the signed vertex curvature as
+$c_v=n_i/[z_i(n_i-n_o)]$ gives
+\begin{equation}
+ z(r)=\frac{c_v r^2}{1+\sqrt{1-(1+K)c_v^2r^2}}.
+ \label{eq:collimated-conic}
+\end{equation}
+For finite conjugates, a Cartesian surface is generally not an exact conic, and
+$\mathsf G$ must not be identified with a fitted conic constant.
+
+\subsection{A common intermediate conjugate for the two faces}
+Let the laboratory vertices be $v_0,v_1$, the object and final image positions
+be $z_0,z_2$, and the common intermediate axial point be $z_1$. With indices
+$n_0,n_1,n_2$, the two local prescriptions are
+\begin{align}
+ (n_o,z_o,n_i,z_i)_0&=(n_0,z_0-v_0,n_1,z_1-v_0),\\
+ (n_o,z_o,n_i,z_i)_1&=(n_1,z_1-v_1,n_2,z_2-v_1).
+\end{align}
+These are the vertex translations of the singlet construction of
+Silva-Lora and Torres \cite[Sec.~3]{silva2020}. Sharing a laboratory point
+does not mean equating the two vertex-relative distances or merely changing
+a sign: the vertex separation must also be included. When $z_1$ lies beyond
+both faces, the wave between them is converging: the first face has a real
+image and the second a virtual object at this same point.
+
+For this branch let $\bm x_0,\bm x_1$ be successive intersections and let
+$L_{01}=|\bm x_1-\bm x_0|$. Since the intermediate ray travels toward
+$\bm Z_1=(0,0,z_1)$ without passing it,
+$|\bm x_0-\bm Z_1|-|\bm x_1-\bm Z_1|=L_{01}$.
+Adding the two signed constant-path equations therefore yields
+\[
+ n_0|\bm x_0-\bm Z_0|+n_1L_{01}+n_2|\bm x_1-\bm Z_2|=C_0+C_1.
+\]
+The intermediate terms cancel into the actual positive propagation length.
+Together with the physical Snell branches, this constructs an axially
+stigmatic pair. Other real/virtual placements require their corresponding
+signed branch and interception checks. Two independently stigmatic surfaces
+with different intermediate points do not satisfy this construction.
+
+\subsection{Geometric compatibility and limits of arbitrariness}
+For fixed homogeneous indices and two fixed points, $\Psi$ is invariant under
+rotation about their joining axis. Consequently a regular connected Cartesian
+level surface belongs to a surface of revolution. An arbitrary non-axisymmetric
+surface is generally incompatible with exact single-interface point-to-point
+stigmatism under these optical assumptions. Arbitrary aspheres remain valid
+mechanical targets, but require a correspondingly different optical objective
+or incident wavefront.
+
+More generally, let $S_o(\bm x)$ and $S_i(\bm x)$ be incident and desired
+transmitted eikonal functions, measured as optical path lengths. In homogeneous
+media they satisfy $|\nabla S_o|=n_o$ and $|\nabla S_i|=n_i$, with gradients
+pointing along propagation. A purely refracting interface with no imposed
+phase discontinuity must lie on $S_o-S_i=C$. The point-conjugate choice is
+$S_o=s_on_oR_o$, $S_i=-s_in_iR_i$, recovering
+\cref{eq:cartesian-implicit}. A non-axisymmetric target can thus be coupled to
+a specified different wavefront-design problem, but the necessary incident
+wavefront must be physically supplied rather than assumed to arise from the
+same two point conjugates.
+
+The target must also be compatible with the available fluid mass, supporting
+boundaries and allowed contact-line motion. In an incompressible model, fixing
+the entire interface and its other boundaries fixes the enclosed volume. A
+single optical path constant cannot generally enforce an arbitrary boundary
+curve and an independently prescribed volume. Possible design freedoms are a
+non-optical annulus, a movable support, a reservoir, or revised conjugates; none
+is silently introduced here.
+
+The incident directions in \cref{eq:fermat-snell} are specified in a homogeneous
+incident medium. If light first crosses a window or another liquid surface,
+that preceding optical system must produce those directions and optical paths.
+Similarly, solidifying a liquid can change its index and shape. A liquid
+Cartesian diopter is therefore not automatically a Cartesian finished lens.
+Exact axial stigmatism at one wavelength does not establish the Abbe sine
+condition, off-axis aplanatism, or achromatism.
+
+\subsection{Specialization of the general inverse problem}
+For a Cartesian target this curvature can be evaluated analytically from its
+unsquared optical path. Define $\bm u_o=(\bm x-\bm O)/R_o$,
+$\bm u_i=(\bm x-\bm I)/R_i$, $\bm g_\Psi=\nabla\Psi$ and the path Hessian
+$\bm H_\Psi=\nabla\nabla\Psi$. Choose the orientation sign
+$\epsilon_n\in\{-1,1\}$ such that the physical normal is
+$\nn=\epsilon_n\bm g_\Psi/|\bm g_\Psi|$. Then
+\begin{align}
+ \bm H_\Psi&=\frac{s_on_o}{R_o}(\Id-\bm u_o\otimes\bm u_o)
+            +\frac{s_in_i}{R_i}(\Id-\bm u_i\otimes\bm u_i),\\
+ \kappa_{\rm C}&=\frac{\epsilon_n}{|\bm g_\Psi|}
+ \left(\tr\bm H_\Psi-
+       \frac{\bm g_\Psi^T\bm H_\Psi\bm g_\Psi}{|\bm g_\Psi|^2}\right),
+ \qquad
+ \Pi_{\rm C}=\sigma\kappa_{\rm C}+\Delta\rho\Phi-\lambda_V.
+ \label{eq:cartesian-traction-explicit}
+\end{align}
+Thus the four optical parameters determine an explicit required-load field on
+each selected Cartesian patch once its placement, material pair and body
+force are given. A non-optical continuation and its boundary conditions remain
+necessary for the complete fluid problem. This formula avoids differentiating
+a numerically fitted conic that is only approximately Cartesian.
+
+
+\subsection{From four optical parameters to a conditional source map}
+Let $\bm p=(n_o,z_o,n_i,z_i)$ denote the four axial optical parameters. Let
+$\mathscr D$ collect all separately specified physical and operating data:
+cylinder and optical placement, aperture, wavelength, fluid properties, fill,
+wall and wetting laws, source supports and response, limits, observations,
+initial state and required tolerances. The vertex and signed branch conventions
+above select a Cartesian patch $\Gamma_{\rm C}(\bm p;\mathscr D)$ when it
+exists. Completing the non-optical surface must also respect $\mathscr D$.
+
+Define $\mathfrak S(\bm p;\mathscr D)$ as the set of source fields and
+formation/holding policies for which the coupled equations, physical bounds,
+optical tolerances and specified stability conditions hold for that target.
+This set can be empty or contain many members. The useful design output is
+therefore a conditional selection
+\begin{equation}
+ (u_\star,\pi_\star)\in
+ \argmin_{(u,\pi)\in\mathfrak S(\bm p;\mathscr D)}J(u,\pi;\bm p,\mathscr D),
+ \label{eq:cartesian-source-selection}
+\end{equation}
+where $J$ is a declared effort, formation and optical objective, and $\pi$
+is a causal holding or formation policy when one is needed. The observation
+cost $J_{\rm obs}$ in the general formulation can now be a nonnegative
+combination of $J_W,J_d,J_{\rm spot}$, with the fast optical corrections just
+described. The operator equations are reused for each $\bm p$; their definition
+does not rely on a neighboring solved conjugate pair.
+
+This notation does not assert that the argmin is attained for the full
+nonlinear problem. The existence proposition in \cref{sec:reachability}
+applies only to its stated regularized fixed-geometry source subproblem.
+A device that accepts the four optical numbers must first fix $\mathscr D$
+and establish which parameter region admits an acceptable result. It should
+report a demonstrated infeasibility condition or an unresolved solve when
+appropriate, rather than label the nearest available surface an exact oval.
+Global phase and other source nonuniqueness also require a stated selection
+convention. These issues concern a general, reproducible inverse method;
+continuation remains an optional tool for investigating its solutions.

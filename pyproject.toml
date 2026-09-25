@@ -20,6 +20,9 @@ dependencies = [
 [project.scripts]
 lenslab = "acoustic_freeform.cli:main"
 
+[project.optional-dependencies]
+optimization = ["cvxpy>=1.6,<2"]
+
 [dependency-groups]
 dev = [
     "playwright>=1.50,<2",

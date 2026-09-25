@@ -1,0 +1,21 @@
+{
+  "material_reference": "configs/dual/noa61-water-pressure-reference.json",
+  "apparatus": {
+    "radial_ports": 64,
+    "side_ports_per_layer": 32,
+    "radial_cells": 96,
+    "cells_per_layer": 48,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "frequency_hz": 3600000,
+    "max_source_speed_m_s": 1,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "source_gram_cutoff": 1e-16,
+  "starts": 4,
+  "max_evaluations": 600,
+  "initial_peak_m_s": 0.2,
+  "seed": 2026092301,
+  "full_surface_defect_goal_m": 1e-12,
+  "scope": "Full-interface nominal source-force reachability, followed separately by fresh coupled equilibrium and held-command convergence. No relabeling of ideal-load success as acoustic success."
+}

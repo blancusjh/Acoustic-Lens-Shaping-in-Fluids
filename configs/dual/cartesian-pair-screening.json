@@ -1,0 +1,33 @@
+{
+  "name": "cartesian-pair-screening",
+  "model": "Three sealed inviscid fluid layers, nonlinear capillarity, ideal passive source ports; exploratory assumed materials.",
+  "apparatus": {
+    "radial_ports": 16,
+    "side_ports_per_layer": 8,
+    "radial_cells": 32,
+    "cells_per_layer": 16,
+    "acoustic_order": 3,
+    "surface_elements": 20,
+    "frequency_hz": 1000000.0,
+    "max_source_speed_m_s": 1.0
+  },
+  "max_evaluations": 800,
+  "refinements": [
+    {"radial_cells": 32, "cells_per_layer": 24, "acoustic_order": 4, "surface_elements": 28}
+  ],
+  "cases": [
+    {
+      "name": "asymmetric-pair-A",
+      "faces": [
+        {
+          "optical": {"n_o": 1.33, "z_o_m": -0.1, "n_i": 1.5, "z_i_m": 0.2},
+          "vertex_displacement_m": -0.00015
+        },
+        {
+          "optical": {"n_o": 1.5, "z_o_m": -0.15, "n_i": 1.33, "z_i_m": 0.15},
+          "vertex_displacement_m": 0.00012
+        }
+      ]
+    }
+  ]
+}

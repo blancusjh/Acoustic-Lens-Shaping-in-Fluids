@@ -5,29 +5,27 @@ Keep research notes, papers, notebooks and simulation outputs here. Do not
 publish or add a remote without the user's instruction. Do not forecast model
 scores from past results.
 
-The current user instruction resumes numerical investigation after the theoretical
-formulation. Address spatial convergence, acoustic load feasibility, dynamical
-stability and physical approach trajectories for Cartesian stigmatic interfaces.
-Use the existing -50/+20 mm, 6 mm clear-aperture example unless later steering
-changes it. Establish force and optical convergence with fixed physical drives
-before interpreting re-optimization. The canonical LaTeX theory remains in
-docs/theory/; its compiled artifact is in artifacts/theory/.
-Preserve earlier experiment outputs. New experiments require separate named
-artifact directories, configuration, provenance and verification. Curing remains
-a distinct physical model; stable driven liquid optics is the current objective.
-Snapshot executable sources before long numerical runs. Keep incomplete runs
-explicitly marked. Do not equate frozen-sensitivity optimization with recomputed
-stability, or a quiescent spectrum with stability of a streaming base flow.
-The 2026-09-06 wall-loss diagnostic is load-bearing: viscous boundary losses were
-larger than bulk absorption in the original 1.8 MHz candidate and require a
-re-solved acoustic field. See docs/numerical-stability.md for the campaign.
+The current research priority is the general theory of acoustic fluid shaping
+inside a cylinder, allowing arbitrary admissible source distributions and full
+three-dimensional perturbations. Derive the forward coupling, inverse
+conditions, source optimality equations, reachability and stability before new
+numerical experiments. Finite arrays are restrictions of the continuous source
+space. Cartesian targets (n_o, z_o, n_i, z_i) are a later specialization.
+Continuation is an optional exploration tool, not the proposed inverse method.
+The canonical LaTeX source is docs/theory/; the active compiled manuscript is
+artifacts/theory/acoustic-fluid-shaping-theory.pdf. Preserve source and artifact
+milestones in the separate research archive before replacing them.
 
-The current extension maps signed Cartesian-diopter conjugates (n_o, z_o,
-n_i, z_i), using Silva-Lora and Torres (2020), to a feasible surface, required
-traction and array amplitudes/phases. Preserve the original collimated result.
-Distinguish general optical construction from the liquid-air apparatus, and
-prescribed in-resin illumination from a source refracted by the bottom window.
-Axial stigmatism does not automatically imply aplanatism or achromatism.
+Earlier numerical experiments remain evidence for their declared models only.
+Preserve their outputs. Future experiments must test predictions of the general
+theory, with independent configurations, provenance and verification. Establish
+convergence with fixed physical commands before interpreting re-optimization.
+Do not equate a frozen-sensitivity fit with coupled stability, or a quiescent
+spectrum with stability of a streaming base flow. Thermal feedback, wall-layer
+mean streaming and three-dimensional disturbances remain material questions.
+Distinguish driven liquid optics, transient formation and curing. Axial
+stigmatism does not imply aplanatism or achromatism. The 2026-09-06 wall-loss
+finding and numerical limitations are documented in docs/numerical-stability.md.
 
 Benchmark tasks, Boreal transcripts, scores and QA analyses belong exclusively
 in /Users/blancus/Private/benchmark-archives, never in this project or its

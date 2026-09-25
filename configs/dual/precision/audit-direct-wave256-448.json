@@ -1,0 +1,24 @@
+{
+  "apparatus": {
+    "radial_ports": 128,
+    "side_ports_per_layer": 64,
+    "radial_cells": 128,
+    "cells_per_layer": 64,
+    "acoustic_order": 4,
+    "surface_elements": 104,
+    "frequency_hz": 7200000,
+    "max_source_speed_m_s": 1,
+    "gravity_m_s2": 9.81,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "state_file": "artifacts/dual-stigmatic-2026-09-23/kernel-audit-direct-448/force-comparison.npz",
+  "reference_force_file": "artifacts/dual-stigmatic-2026-09-23/fixed-wave-direct-448/wave128-quadrature11.npz",
+  "trials": [
+    {
+      "name": "wave256-quadrature17",
+      "apparatus_overrides": {"radial_cells": 256, "cells_per_layer": 128},
+      "integration_order": 17
+    }
+  ],
+  "purpose": "Complete the interrupted fine wave-grid check, retaining the existing 128-grid reference and exactly the same physical geometry and command."
+}

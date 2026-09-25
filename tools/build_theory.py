@@ -25,7 +25,7 @@ def main() -> None:
         "-interaction=nonstopmode",
         "-halt-on-error",
         "-file-line-error",
-        "-jobname=acoustic-cartesian-theory",
+        "-jobname=acoustic-fluid-shaping-theory",
         f"-outdir={build}",
         "main.tex",
     ]
@@ -35,7 +35,7 @@ def main() -> None:
     if completed.returncode:
         print("\n".join(log.splitlines()[-70:]))
         raise SystemExit(completed.returncode)
-    tex_log = (build / "acoustic-cartesian-theory.log").read_text(errors="replace")
+    tex_log = (build / "acoustic-fluid-shaping-theory.log").read_text(errors="replace")
     problems = [
         line
         for line in tex_log.splitlines()
@@ -45,6 +45,7 @@ def main() -> None:
                 "undefined references",
                 "undefined citations",
                 "LaTeX Warning: Citation",
+                "multiply defined",
                 "Overfull \\hbox",
                 "Overfull \\vbox",
             )
@@ -52,7 +53,7 @@ def main() -> None:
     ]
     if problems:
         raise SystemExit("Manuscript build needs review:\n" + "\n".join(problems))
-    pdf = output / "acoustic-cartesian-theory.pdf"
+    pdf = output / "acoustic-fluid-shaping-theory.pdf"
     shutil.copy2(build / pdf.name, pdf)
     files = sorted(source.rglob("*.tex")) + [source / "references.bib", Path(__file__).resolve()]
     manifest = {

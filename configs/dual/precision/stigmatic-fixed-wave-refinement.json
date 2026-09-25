@@ -1,0 +1,37 @@
+{
+  "apparatus": {
+    "radial_ports": 64,
+    "side_ports_per_layer": 32,
+    "radial_cells": 128,
+    "cells_per_layer": 64,
+    "acoustic_order": 4,
+    "surface_elements": 80,
+    "frequency_hz": 3600000,
+    "max_source_speed_m_s": 1,
+    "gravity_m_s2": 9.81,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "state_file": "artifacts/dual-stigmatic-2026-09-23/verify-224/shared-conjugate-pair/refined-1-state.npz",
+  "trials": [
+    {
+      "name": "wave-128-64",
+      "integration_order": 17
+    },
+    {
+      "name": "wave-192-96",
+      "integration_order": 17,
+      "apparatus_overrides": {
+        "radial_cells": 192,
+        "cells_per_layer": 96
+      }
+    },
+    {
+      "name": "wave-256-128",
+      "integration_order": 17,
+      "apparatus_overrides": {
+        "radial_cells": 256,
+        "cells_per_layer": 128
+      }
+    }
+  ]
+}

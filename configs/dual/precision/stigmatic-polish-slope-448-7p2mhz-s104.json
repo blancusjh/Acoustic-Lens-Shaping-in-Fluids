@@ -1,0 +1,53 @@
+{
+  "name": "shared-conjugate-polish-slope-448-7p2mhz-s104",
+  "accuracy_target": "cycle_mean",
+  "apparatus": {
+    "radial_ports": 128,
+    "side_ports_per_layer": 64,
+    "radial_cells": 128,
+    "cells_per_layer": 64,
+    "acoustic_order": 4,
+    "surface_elements": 104,
+    "frequency_hz": 7200000,
+    "max_source_speed_m_s": 1,
+    "gravity_m_s2": 9.81,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "initial_drive_file": "artifacts/dual-stigmatic-2026-09-23/inverse-slope-448-7p2mhz-s104/weight-0.npz",
+  "carrier_weights": [
+    0
+  ],
+  "max_evaluations": 6000,
+  "annulus_weight": 1,
+  "effort_weight": 0.00001,
+  "coordinates": "radiation_whitened",
+  "observation_sampling": "spline_quadrature",
+  "optimizer": "slsqp",
+  "constrained_objective_scale": 1,
+  "case": {
+    "name": "shared-conjugate-pair",
+    "faces": [
+      {
+        "optical": {
+          "n_o": 1.33,
+          "z_o_m": -0.09985,
+          "n_i": 1.5,
+          "z_i_m": 0.20215
+        },
+        "vertex_displacement_m": -0.00015
+      },
+      {
+        "optical": {
+          "n_o": 1.5,
+          "z_o_m": 0.19988,
+          "n_i": 1.33,
+          "z_i_m": 0.14988
+        },
+        "vertex_displacement_m": 0.00012
+      }
+    ]
+  },
+  "scope": "Same corrected targets and 2 mm pupils, gravity included. Frequency redesign with richer surface space; neither a convergence nor formation claim.",
+  "pupil_slope_scale_m": 0.001,
+  "include_carrier_in_peak": false
+}

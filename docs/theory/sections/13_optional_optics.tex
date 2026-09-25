@@ -1,0 +1,56 @@
+\section{Optional optical-performance diagnostics}\label{sec:optional-optics}
+
+These diagnostics concern a later optical-use problem. They do not replace the
+two-face geometric maximum in \cref{sec:accuracy}; refractive-index modulation
+is not part of the present shape-only objective.
+
+\subsection{Optical objectives and a slope-sensitive identity}
+Let $\mathcal P$ be a two-dimensional entrance pupil, $\bm\xi\in\mathcal P$ its
+ray label, and $\bm X_\Gamma(\bm\xi)$ the ray's first intended intersection with
+the interface. Every admitted ray must reach the intended transmitting patch
+and have an unobstructed optical continuation. Let $\mathrm d\mu(\bm\xi)$ be a
+nonnegative normalized illumination measure, $\int_{\mathcal P}\mathrm d\mu=1$.
+Define $\overline\Psi=\int_{\mathcal P}\Psi(\bm X_\Gamma)\mathrm d\mu$ and
+$W=\Psi(\bm X_\Gamma)-\overline\Psi$. With positive optical-path and angular
+tolerances $W_{\rm ref}$ and $\theta_{\rm ref}$, respectively,
+\begin{equation}
+ J_W=\int_{\mathcal P}\frac{W^2}{W_{\rm ref}^2}\mathrm d\mu,
+ \qquad J_d=\int_{\mathcal P}
+ \frac{\norm{\Pg(\bm d_t-\bm d_i)}^2}{\theta_{\rm ref}^2}\mathrm d\mu.
+ \label{eq:optical-objectives}
+\end{equation}
+Removing the optical piston does not move either conjugate. Tangential Snell
+refraction gives the exact identity
+\begin{equation}
+ n_i\Pg(\bm d_t-\bm d_i)=\Gs\Psi.
+ \label{eq:opd-slope-identity}
+\end{equation}
+A small-amplitude, rapidly varying path error can therefore give a large ray
+error. Near grazing transmission, tangential control alone is poorly
+conditioned for the full direction.
+
+For a real image and a detector plane through $\bm I$ with unit normal
+$\bm e_i$, require $\bm d_t\cdot\bm e_i>0$ and positive propagation distance.
+Then $\bm Y=\bm X_\Gamma+[(\bm I-\bm X_\Gamma)\cdot\bm e_i]
+\bm d_t/(\bm d_t\cdot\bm e_i)$. For a positive spot-radius tolerance,
+\begin{equation}
+ J_{\rm spot}=\int_{\mathcal P}\frac{|\bm Y-\bm I|^2}{r_{\rm ref}^2}\mathrm d\mu.
+ \label{eq:spot-cost}
+\end{equation}
+Geometric ray errors are distinct from diffraction and measured optical quality.
+
+\subsection{Fast optical modulation}
+Let $\xi_a=\Rea(\Xi e^{-\mathrm i\omega t})$ be normal acoustic displacement,
+and $\delta n_o,\delta n_i$ index perturbations along the ray segments
+$\mathcal L_o,\mathcal L_i$. For real conjugates and a nominal Fermat ray,
+\begin{equation}
+ \delta\Psi=(n_o\bm d_o-n_i\bm d_i)\cdot\nn\,\xi_a
+       +\int_{\mathcal L_o}\delta n_o\dd s
+       +\int_{\mathcal L_i}\delta n_i\dd s.
+ \label{eq:fast-optical-error}
+\end{equation}
+Here $s$ is arclength. Virtual conjugates use signed path segments. This is a
+first-order estimate, not a complete acousto-optic scattering calculation.
+Exposure time, index derivatives and the fast response determine its relevance.
+Physical interface vibration still belongs to the geometric error even when
+optical modulation is outside the experiment's objective.

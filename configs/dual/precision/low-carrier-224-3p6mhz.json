@@ -1,0 +1,48 @@
+{
+  "name": "low-carrier-subspace-224-3p6mhz",
+  "apparatus": {
+    "radial_ports": 64,
+    "side_ports_per_layer": 32,
+    "radial_cells": 64,
+    "cells_per_layer": 32,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "frequency_hz": 3600000,
+    "max_source_speed_m_s": 1,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "initial_drive_file": "artifacts/dual-precision-2026-09-22/carrier-224-3p6mhz/weight-1.npz",
+  "carrier_weights": [
+    0
+  ],
+  "max_evaluations": 3000,
+  "annulus_weight": 0.2,
+  "effort_weight": 0.00001,
+  "case": {
+    "name": "asymmetric-pair-A",
+    "faces": [
+      {
+        "optical": {
+          "n_o": 1.33,
+          "z_o_m": -0.1,
+          "n_i": 1.5,
+          "z_i_m": 0.2
+        },
+        "vertex_displacement_m": -0.00015
+      },
+      {
+        "optical": {
+          "n_o": 1.5,
+          "z_o_m": -0.15,
+          "n_i": 1.33,
+          "z_i_m": 0.15
+        },
+        "vertex_displacement_m": 0.00012
+      }
+    ]
+  },
+  "initial_source_refinement_factor": 1,
+  "coordinates": "radiation_whitened",
+  "optimizer": "least_squares",
+  "carrier_subspace_ceiling_m": 3e-9
+}
