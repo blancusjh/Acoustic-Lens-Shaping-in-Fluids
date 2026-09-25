@@ -22,19 +22,27 @@ The active optical height goal is 10 nm maximum cycle-mean error on each fixed
 clear aperture; spot and full-ray-coverage gates are separate. A convincing
 rendering or a small frozen inverse residual is not a verified physical lens.
 
-## Research figures
+## The modeled cell and formation
 
-![Calculated full-interface traction required for a shared-conjugate two-face target](figures/required-load-stigmatic-pair.png)
+![Three-dimensional cutaway of the modeled cylindrical cell, liquid surface, and ideal acoustic source bands](figures/modeled-single-interface-apparatus.png)
 
-*Required mean traction on both interfaces in the prescribed-load model. This
-calculation establishes a mechanical target; it does not establish that an
-acoustic source can produce the load. [Study S03](studies/S03-stigmatic-target-ideal-load/study.md).*
+*Numerical 3D view of the earlier single-interface apparatus. The wall, base,
+liquid surface and ideal source bands are modeled components at equal geometric
+scale; the bands are not fabricated transducers or a photographed experiment.*
 
-![Fixed-command refinement exposes loss of accuracy in an independent two-face source fit](figures/fixed-command-refinement.png)
+![Recorded forward interface formation and geometric ray spot evolution from 0 to 200 milliseconds](figures/interface-formation-and-spots.gif)
 
-*A historical independent-patch candidate loses height accuracy when the same
-physical source command is checked on a refined surface grid. Its small force
-residual does not certify the optical result. [Study S02](studies/S02-independent-two-face/study.md).*
+*Saved states from a fixed-command, single-interface ALE calculation. The
+surface and fixed-detector geometric ray spot update with the displayed physical
+time. Playback is slowed; the run ends with 228.5 nm maximum height error, above
+the 10 nm goal. This is a numerical result, not an experiment or simultaneous
+two-face formation. [Formation notes](docs/formation-notebook.md).*
+
+![Three-dimensional view of the modeled cylinder and both stationary fluid interfaces](figures/modeled-two-face-cell.png)
+
+*Two-face stationary geometry at equal scale. It shows both modeled interfaces
+inside the cylinder, not a formation trajectory; the 104-element state misses
+the 10 nm height goal. [Two-face study](studies/S02-independent-two-face/study.md).*
 
 ## Research path
 
