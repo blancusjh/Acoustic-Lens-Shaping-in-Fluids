@@ -2,9 +2,9 @@
 
 ## New: both interfaces forming in time
 
-[Notebook 06 — executed](../artifacts/notebooks/06_two_face_formation.executed.ipynb),
-[browser notebook](../artifacts/notebooks/06_two_face_formation.html),
-[interactive viewer](../artifacts/notebooks/06_two_face_formation/viewer.html).
+[Notebook 06 — executed](../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation.executed.ipynb),
+[browser notebook](../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation.html),
+[interactive viewer](../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation/viewer.html).
 
 This new, separate notebook shows an actual **two-interface forward trajectory**
 over 0–8 ms, both pupil errors, rays traced through both interfaces, and a 3D
@@ -21,7 +21,7 @@ manufacture settling. Error maxima are sampled, not certified. No 10 nm pass is
 claimed. No sound from the different single-face system is reused here.
 
 Run inputs, executable-source snapshots, accepted SI trajectories and validation
-are preserved under `artifacts/dual-formation-2026-09-23/`. The viewer's validation
+are preserved under `artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/`. The viewer's validation
 includes the time-step discrepancy. The canonical theory contains the derivation
 in “A two-interface inertial formation diagnostic.”
 
@@ -35,12 +35,12 @@ top/back interfaces, a 3D camera-rotation view, and a 2D profile/error compariso
 The selector chooses saved 52-, 80- and 104-element stationary solutions with
 unchanged commands. It is not a physical-time animation. The later single-face
 formation, spots and audio must not be attributed to this different apparatus.
-[Open the two-face setup alone](../artifacts/notebooks/05_formation_and_spots/two-face-setup/setup.html).
+[Open the two-face setup alone](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/two-face-setup/setup.html).
 
-- [Browser notebook](../artifacts/notebooks/05_formation_and_spots.html)
-- [Executed Jupyter notebook](../artifacts/notebooks/05_formation_and_spots.executed.ipynb)
+- [Browser notebook](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots.html)
+- [Executed Jupyter notebook](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots.executed.ipynb)
 - [Source notebook](../notebooks/05_formation_and_spots.ipynb)
-- [Standalone synchronized animation](../artifacts/notebooks/05_formation_and_spots/formation-and-spots.html)
+- [Standalone synchronized animation](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/formation-and-spots.html)
 
 ## What is computed
 
@@ -93,7 +93,7 @@ overwriting or launching a duplicate. Archive any existing notebook milestone
 before replacing its executed copy or presentation assets. All original
 September 6 solver outputs remain unchanged.
 
-Fresh solver outputs are in `artifacts/formation-notebook-2026-09-23/`.
+Fresh solver outputs are in `artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/`.
 The presentation directory contains SI analysis arrays, input hashes, source
 provenance, static snapshots, browser checks and a validation report.
 The older solver's dimensionless surface coefficients are explicitly converted

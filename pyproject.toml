@@ -18,7 +18,8 @@ dependencies = [
 ]
 
 [project.scripts]
-lenslab = "acoustic_freeform.cli:main"
+afl = "acoustic_freeform.cli:main"
+lenslab = "acoustic_freeform.single_interface.cli:main"
 
 [project.optional-dependencies]
 optimization = ["cvxpy>=1.6,<2"]

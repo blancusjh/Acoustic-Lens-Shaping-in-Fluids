@@ -11,8 +11,8 @@
     "gravity_m_s2": 9.81,
     "normal_velocity_trace": "weak_flux"
   },
-  "state_file": "artifacts/dual-stigmatic-2026-09-23/kernel-audit-direct-448/force-comparison.npz",
-  "reference_force_file": "artifacts/dual-stigmatic-2026-09-23/fixed-wave-direct-448/wave128-quadrature11.npz",
+  "state_file": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-direct-448/force-comparison.npz",
+  "reference_force_file": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave-direct-448/wave128-quadrature11.npz",
   "trials": [
     {
       "name": "wave256-quadrature17",

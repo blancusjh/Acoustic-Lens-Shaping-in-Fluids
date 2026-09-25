@@ -53,7 +53,7 @@ viscosity and supplies no new settling time.
 
 ## Fixed modeling choices for the next source calculation
 
-The separate [pressure audit](../artifacts/ideal-load-2026-09-23/noa61-water-reference/report.md)
+The separate [pressure audit](../artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/noa61-water-reference/report.md)
 was executed at five surface resolutions and two load-quadrature orders.
 For the assumed 0.025 N/m interfacial tensions, the gauge-fixed complete-face
 traction ranges are approximately -6.75 to 27.59 Pa (lower) and -10.46 to

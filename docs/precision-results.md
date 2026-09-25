@@ -115,13 +115,13 @@ on both end planes and full-azimuth bands on the cylinder sidewall. They do not
 claim a tested array of that many point transducers. Every region uses
 `V.n = Y P + g`; the command is the source component `g`, not total wall velocity.
 Region geometry and SI command exports are implemented in
-`acoustic_freeform.dual.sources`. Calibrated hardware remains a separate problem.
+`acoustic_freeform.apparatus.sources`. Calibrated hardware remains a separate problem.
 
 ## Reproduce and inspect
 
 - Inputs: `configs/dual/precision/`.
-- September 22 screening: `artifacts/dual-precision-2026-09-22/`.
-- Current runs: `artifacts/dual-precision-2026-09-23/`.
+- September 22 screening: `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/`.
+- Current runs: `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/`.
 - Protocol: [precision program](precision-program.md).
 - Earlier independently refined results: [initial findings](dual-cartesian-results.md).
 

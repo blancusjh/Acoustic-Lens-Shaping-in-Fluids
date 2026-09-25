@@ -1,6 +1,6 @@
 # Numerical evidence
 
-The reference result is `artifacts/asphere/`. Numerical verification establishes
+The reference result is `artifacts/studies/S01-single-interface/asphere/`. Numerical verification establishes
 consistency of the implemented model; it does not validate the unmeasured resin
 acoustics or omitted physical mechanisms.
 

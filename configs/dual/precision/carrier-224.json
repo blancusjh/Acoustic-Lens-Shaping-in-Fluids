@@ -11,7 +11,7 @@
     "max_source_speed_m_s": 1,
     "normal_velocity_trace": "weak_flux"
   },
-  "initial_drive_file": "artifacts/dual-cartesian-2026-09-22/sources-112/asymmetric-pair-A/design.npz",
+  "initial_drive_file": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/asymmetric-pair-A/design.npz",
   "carrier_weights": [
     1,
     10

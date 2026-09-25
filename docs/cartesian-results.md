@@ -70,7 +70,7 @@ substitute for optical convergence and stability.
 ## Excitation that can be inspected and reproduced
 
 The current candidate's sixteen complex row drives are in
-[`hold-drive.csv`](../artifacts/cartesian-50-20-stationary-p4/hold-drive.csv).
+[`hold-drive.csv`](../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/hold-drive.csv).
 All sixteen azimuthal sectors of each row share its drive. Its frequency is
 **1.8 MHz**, maximum peak wall speed **1.02962 m/s**, and maximum peak displacement
 **91.038 nm**. The nominal model predicts approximately **4.03 MPa** peak cavity
@@ -130,15 +130,15 @@ transducer model remain separate experimental-model questions.
 ## Evidence and organization
 
 - [Canonical notebook](../notebooks/02_cartesian_diopters.ipynb) and
-  [executed HTML](../artifacts/notebooks/02_cartesian_diopters.html): equations,
+  [executed HTML](../artifacts/studies/S01-single-interface/notebooks/02_cartesian_diopters.html): equations,
   optical family, required perturbations, drives, actual rays and refinement.
-- [Restricted transient viewer](../artifacts/cartesian-50-20/viewer/index.html):
+- [Restricted transient viewer](../artifacts/studies/S01-single-interface/cartesian-50-20/viewer/index.html):
   actual time evolution of the full apparatus and computed fields.
-- [Stationary PyVista scene](../artifacts/cartesian-50-20-stationary-p4/stationary-viewer.html)
-  and [optical scene](../artifacts/cartesian-50-20-stationary-p4/optics-viewer.html):
+- [Stationary PyVista scene](../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/stationary-viewer.html)
+  and [optical scene](../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/optics-viewer.html):
   nominal candidate, explicitly labeled with stability and refinement limitations.
-- [Report](../artifacts/cartesian-50-20-stationary-p4/report.json) and
-  [fixed-drive refinement](../artifacts/cartesian-50-20-stationary-p4/spatial-convergence.json):
+- [Report](../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/report.json) and
+  [fixed-drive refinement](../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/spatial-convergence.json):
   raw numerical evidence, coefficients and source hashes.
 
 Superseded P3 candidates and design-screening records are retained with a

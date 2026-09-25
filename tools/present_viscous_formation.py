@@ -36,13 +36,13 @@ from html import escape
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from IPython.display import HTML, display, Image
-from acoustic_freeform.dual.config import DualConfig
-from acoustic_freeform.dual.surface import DualSurface
-from acoustic_freeform.dual.stigmatic import stigmatic_pair
-from acoustic_freeform.dual.optics import trace_pair
+from acoustic_freeform.apparatus.config import DualConfig
+from acoustic_freeform.mechanics.surface import DualSurface
+from acoustic_freeform.optics.stigmatic import stigmatic_pair
+from acoustic_freeform.optics.raytrace import trace_pair
 
 ROOT = Path.cwd()
-RUN = ROOT / 'artifacts/ideal-load-2026-09-23/viscous-fluid-refined'
+RUN = ROOT / 'artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined'
 inputs = json.loads((RUN / 'config.json').read_text())
 cfg = DualConfig(**inputs['apparatus'])
 space = DualSurface(cfg)
@@ -58,7 +58,7 @@ def table(rows):
 display(table([{'quantity': k, 'value': report[k]} for k in (
     'maximum_reynolds_radius_estimate', 'viscous_diffusion_radius_time_s',
     'final_max_geometric_spot_radius_m', 'final_all_rays_transmitted')]))
-display(Image(filename=str(ROOT / 'artifacts/ideal-load-2026-09-23/stigmatic-c2/required-load.png')))
+display(Image(filename=str(ROOT / 'artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/stigmatic-c2/required-load.png')))
 """),
     nbf.v4.new_markdown_cell("""## Fixed-load convergence
 

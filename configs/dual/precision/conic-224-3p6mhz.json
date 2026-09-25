@@ -1,6 +1,6 @@
 {
-  "cache_directory": "artifacts/dual-precision-2026-09-22/carrier-224-3p6mhz",
-  "initial_drive_file": "artifacts/dual-precision-2026-09-22/carrier-224-3p6mhz/weight-1.npz",
+  "cache_directory": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz",
+  "initial_drive_file": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/weight-1.npz",
   "steps": 120,
   "cutoff": 1e-12,
   "annulus_weight": 0.05

@@ -43,7 +43,7 @@
           "vertex_displacement_m": 0.00012
         }
       ],
-      "fixed_drive_file": "artifacts/dual-precision-2026-09-22/carrier-224-3p6mhz/weight-1.npz"
+      "fixed_drive_file": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/weight-1.npz"
     }
   ]
 }

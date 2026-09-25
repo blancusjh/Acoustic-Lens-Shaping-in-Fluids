@@ -8,8 +8,8 @@ The earlier numerical milestone is a **Cartesian liquid diopter that forms and r
 fixed 1 MHz excitation in the declared axisymmetric, isothermal numerical model**.
 Research, literature and results remain separate from benchmark task packages.
 
-Open the [interactive formation viewer](../artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html),
-[verification figure](../artifacts/cartesian-maintenance-2026-09-06/verification/maintenance.png),
+Open the [interactive formation viewer](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html),
+[verification figure](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.png),
 or [research notebook](../notebooks/03_stable_cartesian.ipynb).
 The viewer initially shows the last computed state at **0.2 s**. Restart/play
 shows the actual fluid trajectory with cylinder, base, liquid, rim, array,
@@ -31,9 +31,9 @@ calibration. The 256 depicted sectors are tied into **16 coherent array rows**.
 
 - [Numerical findings, equations and limitations](numerical-stability.md)
 - [Reproduction commands and artifact guide](stable-cartesian-reproduction.md)
-- [Holding amplitudes and phases](../artifacts/cartesian-maintenance-2026-09-06/operating-state/hold-drive.csv)
-- [Excitation conventions](../artifacts/cartesian-maintenance-2026-09-06/operating-state/excitation-definition.json)
-- [Machine-readable verification](../artifacts/cartesian-maintenance-2026-09-06/verification/maintenance.json)
+- [Holding amplitudes and phases](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/hold-drive.csv)
+- [Excitation conventions](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/excitation-definition.json)
+- [Machine-readable verification](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json)
 - [Apparatus, boundary conditions and model scope](model.md)
 
 ## Open or reproduce the current result
@@ -42,7 +42,7 @@ calibration. The 256 depicted sectors are tied into **16 coherent array rows**.
 uv sync --dev
 npm --prefix web ci
 npm --prefix web run build
-uv run lenslab view artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125
+uv run lenslab view artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125
 ```
 
 This serves the viewer at `http://127.0.0.1:8765` and opens a browser tab. It can
@@ -53,8 +53,8 @@ optical surface, rays and acoustic cross-section. Geometry is not exaggerated.
 Re-run fixed-drive formation from the saved operating state:
 
 ```bash
-uv run lenslab evolve artifacts/cartesian-maintenance-2026-09-06/operating-state \
-  --controller artifacts/cartesian-maintenance-2026-09-06/operating-state/hold-model \
+uv run lenslab evolve artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state \
+  --controller artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/hold-model \
   --initial rest_fixed --step 0.00125 --duration 0.2 --out artifacts/my_formation
 uv run lenslab excitation artifacts/my_formation
 uv run lenslab render artifacts/my_formation
@@ -81,7 +81,7 @@ Earlier results remain inspectable under their original model assumptions:
 
 | Milestone | Evidence |
 |---|---|
-| Original collimated asphere, earlier Stokes/radiation model | [Time viewer](../artifacts/asphere/viewer/index.html), [notebook](../notebooks/01_finite_asphere.ipynb) |
+| Original collimated asphere, earlier Stokes/radiation model | [Time viewer](../artifacts/studies/S01-single-interface/asphere/viewer/index.html), [notebook](../notebooks/01_finite_asphere.ipynb) |
 | First Cartesian construction and restricted-drive trajectory | [Notebook](../notebooks/02_cartesian_diopters.ipynb), [results](cartesian-results.md) |
 | Original stationary candidate and failed refinement | [Historical analysis](cartesian-results.md) |
 | Corrected geometry, inertia, feedback and wall-loss investigation | [Campaign history](numerical-stability.md) |
@@ -96,13 +96,13 @@ Earlier artifacts are preserved, not silently regenerated with a new model.
 uv run pytest -q
 uv run ruff check src tests tools
 uv run python tools/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
-uv run python tools/verify_viewer.py artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125
+uv run python tools/verify_viewer.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125
 ```
 
 | Directory | Responsibility |
 |---|---|
-| `src/acoustic_freeform/lens/` | Curved chamber, acoustics, flow, capillarity, inverse design, dynamics, optics and rendering |
-| `src/acoustic_freeform/verification/` | Analytic limits, geometry checks, coupled refinement and energy diagnostics |
+| `src/acoustic_freeform/single_interface/` | Curved chamber, acoustics, flow, capillarity, inverse design, dynamics, optics and rendering |
+| `src/acoustic_freeform/verify/` | Independent analytic and coupled checks for the two-face model; single-interface checks remain in its own package |
 | `configs/` | Versioned physical apparatus, numerical inputs and optimizer seeds |
 | `tests/` | Independent limits, conservation and dissipation checks |
 | `web/` | Time viewer source and locked frontend dependencies |
@@ -113,8 +113,8 @@ uv run python tools/verify_viewer.py artifacts/cartesian-maintenance-2026-09-06/
 | `tools/` | Notebook, campaign reporting and browser verification utilities |
 | `artifacts/<experiment>/` | Configuration, numerical states, report, provenance, visualization and checks |
 
-The current two-face campaign is `artifacts/dual-cartesian-2026-09-22/`.
-The earlier single-interface campaign is `artifacts/cartesian-maintenance-2026-09-06/`.
+The current two-face campaign is `artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/`.
+The earlier single-interface campaign is `artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/`.
 Downloaded papers, outputs, environments and dependency bundles are excluded
 from Git. This local private repository has no configured remote.
 Benchmark material remains exclusively in `/Users/blancus/Private/benchmark-archives/`.

@@ -7,7 +7,7 @@ from pathlib import Path
 import nbformat
 from playwright.sync_api import sync_playwright
 
-from acoustic_freeform.provenance import capture_execution
+from acoustic_freeform.core.provenance import capture_execution
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     stem = "09_emitter_driven_equilibrium"
     html = root / f"artifacts/notebooks/{stem}.html"
     notebook_path = root / f"artifacts/notebooks/{stem}.executed.ipynb"
-    output = root / "artifacts/noa61-emitter-2026-09-23/notebook-check-inline-v2"
+    output = root / "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/notebook-check-inline-v2"
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
     notebook = nbformat.read(notebook_path, as_version=4)
@@ -34,7 +34,7 @@ def main():
         root / f"notebooks/{stem}.ipynb",
         notebook_path,
         html,
-        root / "artifacts/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/state.npz",
+        root / "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/state.npz",
         Path(__file__),
     ]
     hashes = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}

@@ -7,9 +7,9 @@ from pathlib import Path
 
 import numpy as np
 
-from acoustic_freeform.dual.config import DualConfig
-from acoustic_freeform.dual.surface import DualSurface
-from acoustic_freeform.provenance import capture_execution
+from acoustic_freeform.apparatus.config import DualConfig
+from acoustic_freeform.core.provenance import capture_execution
+from acoustic_freeform.mechanics.surface import DualSurface
 
 
 def run(directories, output):
