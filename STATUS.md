@@ -5,11 +5,11 @@ Each status applies only to its declared numerical model and evidence file. No e
 
 | Record | Source | Stationary root | Optical gates | Fixed-command convergence | Formation |
 |---|---|---|---|---|---|
-| [S01-fixed-drive](artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json) | passed | passed | not_applicable | model_limited | model_limited |
-| [S02-independent-pair-refinement](artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/report.md) | passed | not_assessed | failed | failed | not_assessed |
-| [S03-ideal-load-formation](artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined/report.md) | not_applicable | passed | model_limited | not_applicable | model_limited |
-| [S04-emitter-design104](artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/validation.json) | passed | passed | failed | not_assessed | not_assessed |
-| [S05-emitter-formation](artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/viscous-formation/report.md) | passed | not_assessed | not_assessed | not_assessed | failed |
+| [S01-fixed-drive](studies/S01-single-interface/study.md) | passed | passed | not_applicable | model_limited | model_limited |
+| [S02-independent-pair-refinement](studies/S02-independent-two-face/study.md) | passed | not_assessed | failed | failed | not_assessed |
+| [S03-ideal-load-formation](studies/S03-stigmatic-target-ideal-load/study.md) | not_applicable | passed | model_limited | not_applicable | model_limited |
+| [S04-emitter-design104](studies/S04-emitter-synthesis/study.md) | passed | passed | failed | not_assessed | not_assessed |
+| [S05-emitter-formation](studies/S05-emitter-formation/study.md) | passed | not_assessed | not_assessed | not_assessed | failed |
 
 `model_limited` means the reported check exists only within the stated approximation. `not_assessed` is not a failure or a pass. The ideal-load study uses a prescribed traction, so acoustic source and fixed-command fields are `not_applicable`.
 

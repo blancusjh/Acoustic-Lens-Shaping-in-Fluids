@@ -18,7 +18,8 @@ references, missing characters and overfull boxes, and records source/PDF hashes
 Before rebuilding a released report, preserve the source and PDF milestone
 in the separate research archive. The builder refuses to overwrite its final PDF.
 
-Output: `artifacts/theory/ssl-generator/ssl-generator-vision.pdf`.
+Output: `ssl-generator-vision.pdf` at the repository root; auxiliary build files
+remain under `artifacts/theory/ssl-generator/`.
 
 The LaTeX bodies were migrated from the Markdown design notes and then
 typeset/edited in LaTeX. The conversion helper is not part of normal builds;

@@ -14,7 +14,7 @@ def main():
     output = root / "artifacts/theory/ssl-generator"
     output.mkdir(parents=True, exist_ok=True)
     name = "ssl-generator-vision"
-    final = output / f"{name}.pdf"
+    final = root / f"{name}.pdf"
     if final.exists():
         raise FileExistsError(
             "Archive the previous report and source milestone before replacing the PDF"
@@ -56,10 +56,11 @@ def main():
             str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in files
         },
         "pdf_sha256": hashlib.sha256(final.read_bytes()).hexdigest(),
+        "pdf": str(final.relative_to(root)),
         "physics_simulations_executed": False,
         "scope": "Standalone SSL design vision and theory sketch; main theory PDF unchanged.",
     }
-    (output / "build-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    (root / f"{name}.build.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(final)
 
 

@@ -63,7 +63,7 @@ def render_status(ledger):
         evidence = record["evidence"]
         if set(evidence) != set(fields) or set(evidence.values()) - STATES:
             raise ValueError(f"Invalid evidence states for {record['id']}")
-        label = f"[{record['id']}]({record['evidence_path']})"
+        label = f"[{record['id']}](studies/{record['study']}/study.md)"
         rows.append(
             "| " + " | ".join(
                 [

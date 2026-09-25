@@ -13,8 +13,9 @@ numerical experiments. Finite arrays are restrictions of the continuous source
 space. Cartesian targets (n_o, z_o, n_i, z_i) are a later specialization.
 Continuation is an optional exploration tool, not the proposed inverse method.
 The canonical LaTeX source is docs/theory/; the active compiled manuscript is
-artifacts/theory/acoustic-fluid-shaping-theory.pdf. Preserve source and artifact
-milestones in the separate research archive before replacing them.
+acoustic-fluid-shaping-theory.pdf at the repository root until its final home
+is chosen. Preserve source and artifact milestones in the separate research
+archive before replacing them.
 
 Earlier numerical experiments remain evidence for their declared models only.
 Preserve their outputs. Future experiments must test predictions of the general

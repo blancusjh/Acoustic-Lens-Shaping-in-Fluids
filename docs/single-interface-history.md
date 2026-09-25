@@ -69,7 +69,7 @@ Electrical voltages cannot be exported without transducer calibration.
 ## General formulation and earlier milestones
 
 The [LaTeX manuscript and source guide](theory/README.md) and
-[compiled theoretical document](../artifacts/theory/acoustic-fluid-shaping-theory.pdf)
+[compiled theoretical document](../acoustic-fluid-shaping-theory.pdf)
 derive distributed source equations, required traction, attainable loads,
 explicit acoustic source adjoints, stability and formation objectives. Cartesian
 optics is a later specialization. Build with `python3 tools/build_theory.py`.
