@@ -1,6 +1,6 @@
 # Acoustic Freeform Lab
 
-Private research on shaping fluid interfaces inside a cylinder with admissible
+Research on shaping fluid interfaces inside a cylinder with admissible
 acoustic sources. The primary question is which full-interface mean loads a
 bounded continuous source space can produce, and whether the resulting driven
 state is reachable and stable. Finite arrays are restricted source spaces.
@@ -78,7 +78,7 @@ single-interface CLI remains `lenslab`.
 | `references/` | Primary-source reading map and private source library |
 
 Source and artifact milestones, plus superseded exploratory outputs, are
-preserved separately in `/Users/blancus/Private/research-archives/`. The private
+preserved separately in the local research archive. The public
 GitHub repository contains the source, two compiled theory PDFs, reviewed study
 summaries and README figures. Detailed numerical runs and private papers remain
 in the local research data tree.
