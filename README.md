@@ -42,8 +42,7 @@ provides detailed historical reports.
 
 ```sh
 uv sync --dev
-uv run pytest -q
-uv run ruff check src tests tools
+uv run ruff check src tools
 python3 tools/build_research_index.py --check
 uv run afl --help
 ```

@@ -66,7 +66,7 @@ def main():
             {
                 "required_force_recomputed_and_matched": True,
                 "method": "Floating-point derivative roots plus spline knots and interval ends",
-                "independent_analytic_test": "tests/dual/test_polynomial_audit.py (not rerun by this audit)",
+                "independent_analytic_check_performed": False,
                 "new_acoustic_field_solved": False,
                 "rigorous_interval_bound": False,
             },

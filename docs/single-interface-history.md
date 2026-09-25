@@ -93,8 +93,7 @@ Earlier artifacts are preserved, not silently regenerated with a new model.
 ## Development and project map
 
 ```bash
-uv run pytest -q
-uv run ruff check src tests tools
+uv run ruff check src tools
 uv run python tools/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
 uv run python tools/verify_viewer.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125
 ```
@@ -104,12 +103,11 @@ uv run python tools/verify_viewer.py artifacts/studies/S01-single-interface/cart
 | `src/acoustic_freeform/single_interface/` | Curved chamber, acoustics, flow, capillarity, inverse design, dynamics, optics and rendering |
 | `src/acoustic_freeform/verify/` | Independent analytic and coupled checks for the two-face model; single-interface checks remain in its own package |
 | `configs/` | Versioned physical apparatus, numerical inputs and optimizer seeds |
-| `tests/` | Independent limits, conservation and dissipation checks |
 | `web/` | Time viewer source and locked frontend dependencies |
 | `references/` | Primary-source reading map, manifest and private PDF library |
 | `docs/` | Model contract, evidence, architecture and research decisions |
 | `docs/theory/` | General LaTeX formulation and bibliography |
-| `notebooks/` | Clean source Jupyter notebooks; execution/HTML copies go to `artifacts/notebooks/` |
+| `notebooks/` | Clean source Jupyter notebooks; execution/HTML copies stay with study artifacts |
 | `tools/` | Notebook, campaign reporting and browser verification utilities |
 | `artifacts/<experiment>/` | Configuration, numerical states, report, provenance, visualization and checks |
 
