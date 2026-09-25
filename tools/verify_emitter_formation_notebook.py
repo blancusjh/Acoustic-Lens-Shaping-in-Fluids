@@ -8,14 +8,14 @@ import nbformat
 import numpy as np
 from playwright.sync_api import sync_playwright
 
-from acoustic_freeform.provenance import capture_execution
+from acoustic_freeform.core.provenance import capture_execution
 
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    base = root / "artifacts/noa61-emitter-2026-09-23"
-    html = root / "artifacts/notebooks/10_emitter_formation.html"
-    notebook = root / "artifacts/notebooks/10_emitter_formation.executed.ipynb"
+    base = root / "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23"
+    html = root / "artifacts/studies/S05-emitter-formation/notebooks/10_emitter_formation.html"
+    notebook = root / "artifacts/studies/S05-emitter-formation/notebooks/10_emitter_formation.executed.ipynb"
     trajectory = base / "viscous-formation/trajectory.npz"
     output = base / "formation-notebook-check"
     output.mkdir(parents=True, exist_ok=False)

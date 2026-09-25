@@ -71,8 +71,9 @@ hypotheses unless accompanied by measurements.
 ## Evidence and organization
 
 `docs/theory/` is the canonical manuscript; `artifacts/theory/` contains its build.
-`src/acoustic_freeform/dual/` contains the new two-face implementation; the
-existing `lens/` and `verification/` implementations and outputs retain their
+`src/acoustic_freeform/` contains the two-face implementation in the apparatus,
+acoustics, mechanics, inverse, forward and verify packages; the
+earlier `single_interface/` and `planar/` implementations and outputs retain their
 declared models. Each new campaign stores its input configuration, source
 snapshot/checksums, commands, states, validation and a readable report together.
 Promote results only after their independent checks; failed tests remain useful

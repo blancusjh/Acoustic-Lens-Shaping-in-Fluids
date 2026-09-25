@@ -36,7 +36,7 @@
     "surface_elements": 36,
     "surface_degree": 5
   },
-  "source_state": "artifacts/dual-cartesian-2026-09-22/sources-112/asymmetric-pair-A/design-state.npz",
+  "source_state": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/asymmetric-pair-A/design-state.npz",
   "inertia_radial_modes": 160,
   "dynamic_modes": 16,
   "step_s": 0.001,

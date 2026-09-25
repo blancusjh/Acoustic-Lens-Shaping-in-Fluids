@@ -7,14 +7,14 @@ from pathlib import Path
 import numpy as np
 from playwright.sync_api import sync_playwright
 
-from acoustic_freeform.provenance import capture_execution
+from acoustic_freeform.core.provenance import capture_execution
 
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    html = root / "artifacts/notebooks/08_prescribed_load_formation.html"
-    run = root / "artifacts/ideal-load-2026-09-23/viscous-fluid-refined"
-    output = root / "artifacts/ideal-load-2026-09-23/notebook-browser-check"
+    html = root / "artifacts/studies/S03-stigmatic-target-ideal-load/notebooks/08_prescribed_load_formation.html"
+    run = root / "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined"
+    output = root / "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/notebook-browser-check"
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
     (output / "config.json").write_text(

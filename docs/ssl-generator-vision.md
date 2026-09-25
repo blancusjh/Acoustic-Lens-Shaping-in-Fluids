@@ -248,10 +248,10 @@ proposed. In particular, the current two-face surface basis uses fixed rim
 levels and fixed volume relative to reference planes. It must not be treated
 as a general full-frame Cartesian-volume implementation without extension.
 
-The [current stationary notebook](../artifacts/notebooks/09_emitter_driven_equilibrium.executed.ipynb)
+The [current stationary notebook](../artifacts/studies/S04-emitter-synthesis/notebooks/09_emitter_driven_equilibrium.executed.ipynb)
 records a 0.513 µm surviving-ray spot, 20.2/24.4 nm height errors, and one
 failed ray out of 4001; fixed-command refinement is unfinished. The
-[formation notebook](../artifacts/notebooks/10_emitter_formation.executed.ipynb)
+[formation notebook](../artifacts/studies/S05-emitter-formation/notebooks/10_emitter_formation.executed.ipynb)
 is a separate unsuccessful, partial Stokes diagnostic. Neither demonstrates
 the proposed adaptive family.
 

@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from acoustic_freeform.provenance import capture_execution
+from acoustic_freeform.core.provenance import capture_execution
 
 
 def main():

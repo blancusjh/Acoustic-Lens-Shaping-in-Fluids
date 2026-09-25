@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "evidence_fields": [
+    "optically_constructed",
+    "apparatus_compatible",
+    "source_candidate_found",
+    "stationary_root_converged",
+    "stationary_optical_gates_met",
+    "fixed_command_convergence_verified",
+    "stability_assessed",
+    "formation_verified",
+    "transition_verified"
+  ],
+  "records": [
+    {
+      "id": "S01-fixed-drive",
+      "study": "S01-single-interface",
+      "title": "Single-interface fixed-drive formation and recovery",
+      "evidence_path": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json",
+      "scope": "Axisymmetric, isothermal single-interface model with bulk absorption and leading viscous wall loss; numerical evidence only.",
+      "verdict": "Finite-horizon formation and recovery demonstrated in the declared single-interface model.",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "passed",
+        "stationary_optical_gates_met": "not_applicable",
+        "fixed_command_convergence_verified": "model_limited",
+        "stability_assessed": "model_limited",
+        "formation_verified": "model_limited",
+        "transition_verified": "not_assessed"
+      }
+    },
+    {
+      "id": "S02-independent-pair-refinement",
+      "study": "S02-independent-two-face",
+      "title": "Independent two-face target under fixed-command refinement",
+      "evidence_path": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/report.md",
+      "scope": "Hypothetical three-fluid cylinder and independently chosen Cartesian patches; the pair is not a shared-conjugate stigmatic singlet.",
+      "verdict": "Fixed-command refinement fails the height criterion; this prescription is historical evidence.",
+      "evidence": {
+        "optically_constructed": "failed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "not_assessed",
+        "stationary_optical_gates_met": "failed",
+        "fixed_command_convergence_verified": "failed",
+        "stability_assessed": "not_assessed",
+        "formation_verified": "not_assessed",
+        "transition_verified": "not_assessed"
+      }
+    },
+    {
+      "id": "S03-ideal-load-formation",
+      "study": "S03-stigmatic-target-ideal-load",
+      "title": "Shared-conjugate pair under prescribed mean load",
+      "evidence_path": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined/report.md",
+      "scope": "Numerical three-fluid axisymmetric Stokes trajectory with prescribed spatial traction and hypothetical viscosities; no acoustic source synthesis.",
+      "verdict": "The declared mechanical trajectory reaches the numerical optical target; acoustic reachability remains open.",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "not_applicable",
+        "stationary_root_converged": "passed",
+        "stationary_optical_gates_met": "model_limited",
+        "fixed_command_convergence_verified": "not_applicable",
+        "stability_assessed": "model_limited",
+        "formation_verified": "model_limited",
+        "transition_verified": "not_assessed"
+      }
+    },
+    {
+      "id": "S04-emitter-design104",
+      "study": "S04-emitter-synthesis",
+      "title": "NOA 61 / water emitter-driven design-grid equilibrium",
+      "evidence_path": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/validation.json",
+      "scope": "Idealized lossless longitudinal acoustics with passive Robin port loss; hypothetical source boundaries, no thermal or wall-layer mean streaming model.",
+      "verdict": "Coupled design-grid root converged but height and ray-coverage gates fail; fixed-command refinement is unfinished.",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "passed",
+        "stationary_optical_gates_met": "failed",
+        "fixed_command_convergence_verified": "not_assessed",
+        "stability_assessed": "not_assessed",
+        "formation_verified": "not_assessed",
+        "transition_verified": "not_assessed"
+      }
+    },
+    {
+      "id": "S05-emitter-formation",
+      "study": "S05-emitter-formation",
+      "title": "Partial emitter-driven Stokes startup diagnostic",
+      "evidence_path": "artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/viscous-formation/report.md",
+      "scope": "Partial unrefined creeping-flow numerical trajectory; the conservative Reynolds estimate motivates a review stop.",
+      "verdict": "Saved trajectory does not form the target; no settling-time or impossibility inference follows.",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "not_assessed",
+        "stationary_optical_gates_met": "not_assessed",
+        "fixed_command_convergence_verified": "not_assessed",
+        "stability_assessed": "not_assessed",
+        "formation_verified": "failed",
+        "transition_verified": "not_assessed"
+      }
+    }
+  ]
+}

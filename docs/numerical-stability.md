@@ -22,7 +22,7 @@ insert the target as a physical state or change the drive to repair an error.
 This is finite-horizon numerical evidence in an axisymmetric, isothermal model,
 not experimental validation or a proof for every possible disturbance.
 
-Open the [formation viewer](../artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html).
+Open the [formation viewer](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html).
 It starts at the **last computed state, t = 0.2 s**. Restart/play shows the actual
 formation trajectory, beginning with the unforced shape and the final acoustic
 drive switched on. The housing, base window, liquid cap, rim and row array are
@@ -84,7 +84,7 @@ full-aperture RMS disturbance in volume-null mode 0 and a −5 µm disturbance i
 mode 6 both return to approximately 0.05411 µm geometric ray RMS without any
 drive update. Their remaining pupil height offset from the saved stationary
 state is about 0.071 nm, below its 0.1 nm equilibrium correction tolerance. The
-[machine-readable audit and comparison figure](../artifacts/cartesian-maintenance-2026-09-06/verification/maintenance.json)
+[machine-readable audit and comparison figure](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json)
 record each disturbance, time step, conserved volume, unchanged drive, final
 optics and the complete time-refinement differences.
 
@@ -235,8 +235,8 @@ The old 0.389 µm nominal result does not survive these corrections.
 This is a substantial improvement in the disclosed numerical model, but the
 remaining trend is not an optical convergence plateau. The fixed-drive state
 also remains unstable. The raw studies are in
-`artifacts/cartesian-coupled-resolution-2026-09-06/` and
-`artifacts/cartesian-consistent-2026-09-06/convergence/`.
+`artifacts/studies/S01-single-interface/cartesian-coupled-resolution-2026-09-06/` and
+`artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/convergence/`.
 
 ## Fluid inertia and acoustic shape response
 
@@ -356,7 +356,7 @@ while recomputing the actual force at every physical state. Its source matrices
 and source-code snapshot are saved with each execution. The reference Jacobian
 is a numerical preconditioner; the target is never inserted as an evolving state.
 The corresponding 1.8 MHz recovery and refinement results remain in
-`artifacts/cartesian-maintenance-2026-09-06/recovery-dt005/` and
+`artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-dt005/` and
 `recovery-dt0025/` as method-development evidence. The cancelled earlier
 split-step refinement is explicitly marked incomplete. These experiments
 precede the load-bearing wall-loss correction and are superseded by the 1 MHz

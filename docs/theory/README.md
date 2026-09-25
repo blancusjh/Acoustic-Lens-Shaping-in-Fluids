@@ -89,7 +89,7 @@ need their detailed boundary and constitutive terms before implementation.
 
 The new `dual` implementation tests simultaneous stationary shaping in a
 declared inviscid three-layer model. Its numerical results are recorded in
-`artifacts/dual-cartesian-2026-09-22/`; those experiments do not establish physical
+`artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/`; those experiments do not establish physical
 10 nm accuracy, three-dimensional stability or formation. Existing single-face
 artifacts retain their original model assumptions and remain preserved.
 

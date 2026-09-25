@@ -76,7 +76,7 @@ refinement also fails: at 104 elements, mean errors are approximately 10.44 µm
 front and 4.81 µm back. See [numerical evidence](precision-results.md).
 
 The newer shared-conjugate 7.2 MHz candidate in
-`artifacts/dual-stigmatic-2026-09-23/kernel-audit-direct-448` reaches approximately
+`artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-direct-448` reaches approximately
 53.3 MPa sampled pressure and 47.66 W modeled source work. Its independently
 solved refined equilibrium still misses the target by 370/741 nm. This is not
 a qualified physical operating point; see the [current correction study](joint-stigmatic-correction.md).

@@ -11,7 +11,7 @@ evaluations or publish anything.
 uv sync --dev
 npm --prefix web ci
 npm --prefix web run build
-uv run lenslab view artifacts/cartesian-maintenance-2026-09-06/step-formation-dt00125
+uv run lenslab view artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125
 uv run python tools/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
 ```
 
@@ -110,7 +110,7 @@ remove early-trajectory time-discretization error; consult the complete curves.
 ## Campaign artifact index
 
 All paths in this table are relative to
-`artifacts/cartesian-maintenance-2026-09-06/`.
+`artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/`.
 
 | Path | Meaning |
 |---|---|
@@ -133,7 +133,7 @@ and volume, compares matching physical times, and creates the campaign audit.
 It does not simulate, optimize or alter state arrays:
 
 ```bash
-uv run python tools/summarize_maintenance.py artifacts/cartesian-maintenance-2026-09-06
+uv run python tools/summarize_maintenance.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06
 uv run pytest -q
 uv run ruff check src tests tools
 npm --prefix web run check

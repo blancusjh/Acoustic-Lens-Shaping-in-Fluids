@@ -1,0 +1,1626 @@
+{
+  "schema_version": 1,
+  "meaning": "File inventory only; no acceptance inference",
+  "records": [
+    {
+      "id": "R-5401ba50d976",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/asphere/report.json",
+      "report_sha256": "77332218ab533c981c16c94b9ffb593200b85b78052d5a2721f6fb79fd8128f4",
+      "config": "artifacts/studies/S01-single-interface/asphere/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-657d32c8ac0e",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/asphere/verification/time-refined-replay/report.json",
+      "report_sha256": "4607d9e9c49752daf366853343aa60923be214b7fd359c854d144186129e3dde",
+      "config": "artifacts/studies/S01-single-interface/asphere/verification/time-refined-replay/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-c5e234460a0e",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/asphere/viewer/report.json",
+      "report_sha256": "77332218ab533c981c16c94b9ffb593200b85b78052d5a2721f6fb79fd8128f4",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-1f43d8cac1a4",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-50-20/report.json",
+      "report_sha256": "369c3b5d855267b8ec726a91324393be38f4ee43f6c0bdf16bf518ded7f9cd13",
+      "config": "artifacts/studies/S01-single-interface/cartesian-50-20/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-c5d9a7900844",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-50-20/viewer/report.json",
+      "report_sha256": "369c3b5d855267b8ec726a91324393be38f4ee43f6c0bdf16bf518ded7f9cd13",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-c92aa2f3c2c3",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/report.json",
+      "report_sha256": "1904b89c412917fa8b2ef76543b15cb3ac6dcce0762facbadbf99a936ff0867e",
+      "config": "artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-da00870e5cac",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-absorption-2026-09-06/report.json",
+      "report_sha256": "c7ab60cbf9092c0e867140c850fd69f55df42eaebd4eeecb804659299034b16a",
+      "config": "artifacts/studies/S01-single-interface/cartesian-absorption-2026-09-06/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-7c9dd51f1a5b",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/acoustic-budget/report.json",
+      "report_sha256": "dd0c0581280ecd9c55b1224bca470e01133a91ff4b3c731cc82589566067e1b8",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-064f9d4205cc",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/convergence/report.json",
+      "report_sha256": "616180738d20974685ba1306a48c8ec70b81a7026fd278b3e94f7599467fd053",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-f7791fe3678f",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/feedback/report.json",
+      "report_sha256": "2ad413432f0276fadb74434860014cb04436a2ca3017d7aa295f04b65c1ffbfc",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-da81f896ad7c",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/feedback-100hz/report.json",
+      "report_sha256": "f75f8c30af3a235ebf6f678c33cd91ff5155be46da21b13a1e6d4c218c6e783f",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-d9be23ac4867",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/report.json",
+      "report_sha256": "e62de6174bbc303debf49da462b0eb4e65221947d91edfa280b3868d38a8fcbc",
+      "config": "artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-28f9b81db39d",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-consistent-2026-09-06/stability/report.json",
+      "report_sha256": "483e0614c8171e42e0f8d479a9b78bcbeea4cd7a62003aec367775f85eb774c8",
+      "config": null,
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-d3e37efcaa03",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-coupled-resolution-2026-09-06/report.json",
+      "report_sha256": "2e1588bb5c9fead1c686969fc53e424a7d30c346ee0ea4380e56e98c293bf27f",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-dbc37e60ddcb",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/fixed-drive-recovery/report.json",
+      "report_sha256": "6caaf517190ef982d0e7405362fd6717e4c2672eb711675e42e9a083b25b6370",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/fixed-drive-recovery/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-060698af207e",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/formation/report.json",
+      "report_sha256": "56d2a399c367668522a89781f4347c81073bb95f708fba93d5fd4bf4af17fdb6",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/formation/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-4ac42eba3b99",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/acoustic-budget/report.json",
+      "report_sha256": "e2808dbbf4327f5e58c9c0d66f329e847f719f74076a1729c4a1ef58295fe582",
+      "config": null,
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-472a0bccc6a9",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/control-model/report.json",
+      "report_sha256": "ef8fea45046cff3db8bb6e748b0b04671f01992238b0416170c83260f6ebccee",
+      "config": null,
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-5bc9411b7857",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/hold-model/report.json",
+      "report_sha256": "24f3b414700596a4b6dd58e9496550e69802aa4350f66231c7bea92ef3e33fd0",
+      "config": null,
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-02e4fc706b65",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/report.json",
+      "report_sha256": "43a1dbc9575e86a51a4028e445e8b877adad0ebab8cf0703410b3dad90624381",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-80283e2c1270",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-dt0025/report.json",
+      "report_sha256": "6376dcd4125560521e7aa41d29f3fda16d0cb269a6329b9bc52154d535dadcbd",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-dt0025/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-cf3dbcad31ae",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-dt005/report.json",
+      "report_sha256": "ebc8ea09bfa039b003bdb71e73e01be8b7ed133134822f6434e381cc4598d4ef",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-dt005/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-adb3addaf1c1",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-dt005/viewer/report.json",
+      "report_sha256": "40fd7ce7e8f6a26d9659d16051ebfb59c4b4c3e313cd11584a83c624cbed86f4",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-f79ed9838ba6",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-negative-mode6/report.json",
+      "report_sha256": "b44f2d09c8ad5ae7408e96386444e1a98d2e0853e31c2308b4b54e6e70bf8385",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-negative-mode6/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-1fd9c9e436d9",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/recovery-negative-mode6/viewer/report.json",
+      "report_sha256": "b44f2d09c8ad5ae7408e96386444e1a98d2e0853e31c2308b4b54e6e70bf8385",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-c595ae9bce0c",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation/report.json",
+      "report_sha256": "725d4c45574461f7c6d26a686e564120e8849154c3e7789c48fc5ace6b5194c0",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-a53e0ba959a2",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt000625/report.json",
+      "report_sha256": "4bfd7f3c8629eaa0a6bb07998d2a34cedbb8d943e61f1321a339447be25926ef",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt000625/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-640c1e91a766",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/report.json",
+      "report_sha256": "e0832950ef77c04bac9294c88d8632d9a45faac814df01b859472e26e3cfc72c",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-a7ec1be27bbc",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/report.json",
+      "report_sha256": "e0832950ef77c04bac9294c88d8632d9a45faac814df01b859472e26e3cfc72c",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-e9edf80f7b54",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt0025/report.json",
+      "report_sha256": "74a965f4348389b220c42aa0afd76a271a6d1643a91dc4678eaab882e324bcd6",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt0025/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-77450c4f8fe0",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-spatial/report.json",
+      "report_sha256": "8f568dc279d2391f66499edc1604ed3f632a5be9a6f178be231a11aa3eb839db",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-spatial/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-5899b4a35fa3",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/regrid-cli/report.json",
+      "report_sha256": "adcb7ebe71d109862b05a4fbcf9b041e6ccb2c318f53d21091aaba534576772c",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/regrid-cli/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-03ca9ab76b2c",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/viscous-1mhz/convergence/report.json",
+      "report_sha256": "9216e02bbcc7703f8bc4bcd2438e45e336622ef6cdad3f60552a32080bef2512",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-d55c219fdc8d",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/viscous-1mhz/report.json",
+      "report_sha256": "c3d5af020c730568be978656a02c9368dbfa66c24e90cb6fec9be321b89e3267",
+      "config": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/viscous-1mhz/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-1287bf0e7376",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/wall-frequency-screen/report.json",
+      "report_sha256": "2314efba714ab4bade9e125affe08dc8c938c105d069bda4912663a63da72812",
+      "config": null,
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-d87f37aa8bac",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-recovery-2026-09-06/report.json",
+      "report_sha256": "64e141382883aca7bea81e7109e5934c00dd38623fbc73458fefa6a572d241f9",
+      "config": "artifacts/studies/S01-single-interface/cartesian-recovery-2026-09-06/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-95fa086b0da7",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-resolution-2026-09-06/report.json",
+      "report_sha256": "a37392f525389b3e5e71b06dab1b6883a2c1c3c603a9692b83d578253a1ca9b1",
+      "config": null,
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-d36078934ec9",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-stability-constrained-2026-09-06/report.json",
+      "report_sha256": "8637540cf4a529b634f723f91a5cf50c75a0a40bf63b825edfd67636530dfd37",
+      "config": "artifacts/studies/S01-single-interface/cartesian-stability-constrained-2026-09-06/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-427df8279c93",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-stability-constrained-2026-09-06/stability/report.json",
+      "report_sha256": "6fea04e3c857f3f6ed29daf9215e83eb0b5ccfc9f1552e665b974dc288fdd5cc",
+      "config": null,
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-00318b2c7991",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/cartesian-stability-design-2026-09-06/report.json",
+      "report_sha256": "c52c37134bff2ed3d4d59edcce6e5173790deea0a188133799363413a9b5490b",
+      "config": "artifacts/studies/S01-single-interface/cartesian-stability-design-2026-09-06/configuration.json",
+      "validation": null,
+      "provenance_present": false
+    },
+    {
+      "id": "R-50bd901f4b71",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/dt000625/report.json",
+      "report_sha256": "553a04e8c189287fb364586762e61d518984866717279c6ba27fe8a661da0b11",
+      "config": "artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/dt000625/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-16f7be1ae7ff",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/dt00125/report.json",
+      "report_sha256": "d776eba37efd3ae685f03e598492272435fd528d932a41ddb87fcdd7cafb776e",
+      "config": "artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/dt00125/configuration.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-82ece2d3b2cc",
+      "study": "S01-single-interface",
+      "report": "artifacts/studies/S01-single-interface/imported-discussion-audit-2026-09-22-v2/report.md",
+      "report_sha256": "3a114cf6dfa468477d80331058bc11895ce6b8dc375aeb0f4c4dd0aa9fcafc4e",
+      "config": "artifacts/studies/S01-single-interface/imported-discussion-audit-2026-09-22-v2/config.json",
+      "validation": "artifacts/studies/S01-single-interface/imported-discussion-audit-2026-09-22-v2/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-ba54f0260621",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/close-ports/report.md",
+      "report_sha256": "d44e679b0df3b999c41a6898ac5b1bdd687df53081d0acbeda0490cd2b1b3a3d",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/close-ports/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/close-ports/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-ba4ec75131c6",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/close-ports/results.json",
+      "report_sha256": "a1ce0a19c90f23cb3eae502160344e843420b8790dfa4fd1d150ec3476174741",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/close-ports/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/close-ports/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-413621738166",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/frequency-1p8mhz/report.md",
+      "report_sha256": "23157ea761a988f842bf895efb20b796304db52ab5ce5311a07ad2eed9303fe7",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/frequency-1p8mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/frequency-1p8mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-f4d10951241f",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/frequency-1p8mhz/results.json",
+      "report_sha256": "7879241593c36725831d2a94ba8d3f8eb33750c700b51e65c83a18227346baea",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/frequency-1p8mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/frequency-1p8mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-94d1476f66cc",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/joint-annulus-56/report.md",
+      "report_sha256": "507e3b9875100169e88e8648514d3d414ad475fad4cc12d3abdb1d56bfc174cb",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/joint-annulus-56/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/joint-annulus-56/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-3a73705f502d",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/joint-annulus-56/results.json",
+      "report_sha256": "c3d40b093c375439078ba4535c8558e80755a78fa9eec77e5933fe7ead492a1e",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/joint-annulus-56/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/joint-annulus-56/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-6f2d98b6e509",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/screening-56/report.md",
+      "report_sha256": "4d3e2fa4872155c80e96593864585fef757344257692054882450207c766941d",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/screening-56/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/screening-56/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-312a2be4f446",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/screening-56/results.json",
+      "report_sha256": "b264341d34c7fccfa2efba8a949a5544b6bb069a214b39e9439466ffe920b79f",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/screening-56/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/screening-56/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-f91ba219f1a0",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/report.md",
+      "report_sha256": "2351580bc0109bed56c0cc8bef7890aa80ce3ae48bc74c23bdebd1cf40d6a029",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-9050f9aabf63",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/results.json",
+      "report_sha256": "0cc122b162e3d11aaffe0a1a3db6b3ea33ec0314831b7819a4287e3ea5516904",
+      "config": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-72cc9f1cab7e",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt000125/report.md",
+      "report_sha256": "59f37bcafaa9939e8e6267418c96aced8b422540264dc8e9b86ae2a148a729a3",
+      "config": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt000125/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt000125/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-1bd7070a0f49",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt00025/report.md",
+      "report_sha256": "9664788544b896e9e4c9995cc63138c5438a7390c1ba6b698c4bd57d8d7b97a0",
+      "config": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt00025/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt00025/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-b1f80838cd51",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt0005/report.md",
+      "report_sha256": "0a179e1eb3a1bb6cc2cce795c76bdf68ce2073927aa15b9118ccdd8173762477",
+      "config": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt0005/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt0005/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-8901f2f799a7",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt001/report.md",
+      "report_sha256": "0a179e1eb3a1bb6cc2cce795c76bdf68ce2073927aa15b9118ccdd8173762477",
+      "config": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt001/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-formation-2026-09-23/dt001/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-b52f6ba7788c",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-112/report.md",
+      "report_sha256": "bec7191a35d3cc0683942fd0532ee8ab8eb797f3551d7e31a8949f93ef3f33df",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-112/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-112/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-94fdee3d46ee",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-112/results.json",
+      "report_sha256": "3793136832c9947121f65e2215f4b2a5879a5c35fba0543afb7ed60862ffd46a",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-112/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-112/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-f3fdd6f7785e",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224/report.md",
+      "report_sha256": "718ec60314a0fb9e0b21946718ebbb779b4af857edf795be7fc7ded572cde210",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-4591cf25ee6d",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224/results.json",
+      "report_sha256": "909f87c0b2aa8aefaad0c9f575df62c87374ee2bb6c10074da81c9c31d2e8045",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-ed1cfa283706",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/report.md",
+      "report_sha256": "3cdbc2aa8201bebbdb61d0a482f7c5e813f598a4e272cc8d0b09b37617fc4ef7",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-50a8dfc74370",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/results.json",
+      "report_sha256": "c806522d29427ae6a7b69bc2efcb7c66c16bd95ba72093bc73a86693e8b129d1",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/carrier-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-3097c97968fa",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/whitened-112/report.md",
+      "report_sha256": "72aa99f9e6258bef47589b00de758f202bb60463a760e7ae9ba5e96f19d7c918",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/whitened-112/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/whitened-112/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-fcbf4de55c4e",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/whitened-112/results.json",
+      "report_sha256": "0c0c4aaa374bc4ba79d290fa9001b689c938d62d106aed3dfadbba6b5acb415c",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/whitened-112/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/whitened-112/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-d5a7d6dd0f6b",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz/report.md",
+      "report_sha256": "307277bf15985e72ab81877c91f62806bdfa6c508083af9d0e3a3a14d801ce7e",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-cf4ce15640af",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz-p5/report.md",
+      "report_sha256": "aee6be52321e09be1471b80aa31d79bbb944ebd44f27c71ec729c5f0c2627d86",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz-p5/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz-p5/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-95ea49e7da55",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz-p6/report.md",
+      "report_sha256": "57500dfb364c78ce1242341f77b7d1c6700e363540b151673525a2e281cb2328",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz-p6/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-7p2mhz-p6/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-543abf631b3c",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-condensed-7p2mhz/report.md",
+      "report_sha256": "3952e74bbff9ef635e8c50c0164518516b46e7c79c496a2b693ddc7cae5084ce",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-condensed-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/analytic-condensed-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-b01d992d6baf",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/audit-polynomial-448-7p2mhz/report.md",
+      "report_sha256": "0a5671f460212cafae0a82709f0296d3173112db895688d3eea90b8e7cdaee5e",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/audit-polynomial-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/audit-polynomial-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-7640dc56c262",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/audit-polynomial-448-7p2mhz/results.json",
+      "report_sha256": "9de161264ef3ac2b11e049534f593d99fdd273566b4d4beb924b55881fa100f2",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/audit-polynomial-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/audit-polynomial-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-7649c0c0ab9d",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/carrier-448-7p2mhz/report.md",
+      "report_sha256": "872cf04c94c8dc513c0e618ecbd32bb1435de414026b54066e1d1c99b9fe4ddc",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/carrier-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/carrier-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-af7033ea8246",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-224-3p6mhz/report.md",
+      "report_sha256": "0c4f819b4e7643cdfab2ec0c657d93f45fee9caa862e8a07fcc30b9212907059",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-e2bd6d23d0ab",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-448-7p2mhz/report.md",
+      "report_sha256": "a458931f90bd4a3eb79ea6757671903141376c68c8df2b3e52ea72dfb092b7a1",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-fe9d14018fe6",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-conditioned-224-3p6mhz/report.md",
+      "report_sha256": "162bf8248f788c25b78f23478e353ad7fb45b22a0a455cecbf4c583a294e365f",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-conditioned-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/conic-conditioned-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-b8ce012f4a36",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/constrained-224-3p6mhz/report.md",
+      "report_sha256": "1d02aa20b1254177b89aeb3a91904ae1184c3141a9e949ab26fdd7c3eaf3c6c2",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/constrained-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/constrained-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-1e495ab3bcdb",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/constrained-224-3p6mhz/results.json",
+      "report_sha256": "0c4e46900f6e9b058396be1344fc5fe201d47af142dc34aabdd64d684850d6ca",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/constrained-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/constrained-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-05dcfd110b64",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-224-3p6mhz/report.md",
+      "report_sha256": "28924fe5610caa5d91689dfaad72c770121a171aa8fc7afb92d7dec3c156a332",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-c214bcc3a41e",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-224-3p6mhz/results.json",
+      "report_sha256": "878182467e3f397478f5def8a5e932721dd26e8b8f6d5d4c0f7e29697c46fb84",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-5b845696a166",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-448-7p2mhz/report.md",
+      "report_sha256": "c5e453126a6d6f96a2c37038e4127ac99eeb3757b0c86585e9a77d6a86190468",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-40ffbd15df6f",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-448-7p2mhz/results.json",
+      "report_sha256": "1a8e90c3fc5ae7ed47ae2a77c9e154d568a16fff9fb92b4149f26da378cd90b0",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/low-carrier-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-4c38a4d977b8",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-448-7p2mhz/report.md",
+      "report_sha256": "f5bd39a32360af8264ecf01402632d7b46f660ad5d24a6a83906923fc1f18953",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-90f735f059c2",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-448-7p2mhz/results.json",
+      "report_sha256": "1fce18cdd5eb9868021703741eb98184ef3bbf6a097a9ac40af92d2e9e246930",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-79602d3ba085",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-dense-448-7p2mhz/report.md",
+      "report_sha256": "43f06dd2442f614a5338aa20eea2def313eb932b44c97fc69d4a5473a68d63c5",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-dense-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-dense-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-3763a692cf0c",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-dense-448-7p2mhz/results.json",
+      "report_sha256": "763194f72371081531982ee0553e639f4975d1b37334ac864a65d9a36c6ef152",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-dense-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/mean-dense-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-0cfc0d5e98a1",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/optimized-448-7p2mhz/report.md",
+      "report_sha256": "9ea8135841f5dc424d490f40c8c8ec4d3165c3b791b564acf6f4613ec1c3a0d8",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/optimized-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/optimized-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-a7d427ebda79",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/optimized-448-7p2mhz/results.json",
+      "report_sha256": "eed4794f6efcdfabff3f94f198886a19057972c31f54818ccb117fa2ac606cc6",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/optimized-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/optimized-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-4cfcf3b26b21",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/peak-448-7p2mhz/report.md",
+      "report_sha256": "b8a33b1bd1f240cdee1dfb07bbc7b7ebe7439d240d6d6f2a4b9c9a9546a8d7d8",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/peak-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/peak-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-471a54bba281",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/peak-448-7p2mhz/results.json",
+      "report_sha256": "58358fdf3e649902b164053ad46b46bd3c57d79604fbe58c8d166b69de18c473",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/peak-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/peak-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-adbc4c45a694",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/relaxation-112/report.md",
+      "report_sha256": "3345eb55f4446a1d1dc6141a8947d8b7917dad37fe07d66d47a5f4aae0dae388",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/relaxation-112/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/relaxation-112/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-bae333563846",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-224-3p6mhz/report.md",
+      "report_sha256": "fc945699ed9fb951bf52a9e97143f9aeebfa56be2c2503bfc944e7f901a58a7e",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-d0681ba3fa96",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-224-3p6mhz/results.json",
+      "report_sha256": "6170cefabc2564aab9bb2c22e00489f0fd60063f69387f0a57a46f01b4110d13",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-7e7a32c49293",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-448-7p2mhz/report.md",
+      "report_sha256": "3dab1caa2f0d7c14fa761a8b162ec6957ee339005e18ff4eb0f938af0ae7bec9",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-9f4c3631a26a",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-condensed-448-7p2mhz-retry1/report.md",
+      "report_sha256": "0ae7d9ab62684955916a7335ea03dbc892c249ce9303e4bf52fabf275d8fb4b8",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-condensed-448-7p2mhz-retry1/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-condensed-448-7p2mhz-retry1/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-bf56ec2826c6",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-7p2mhz-retry1/report.md",
+      "report_sha256": "c09141d8fec35116aba5d7cac3318751b47a7a2f3e993bb992fa1f40955e43d0",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-7p2mhz-retry1/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-7p2mhz-retry1/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-0eee0ca33859",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-7p2mhz-retry1/results.json",
+      "report_sha256": "8b7d12ea788e6561136162614a17dea1564b7185ba423efd3ef9aaadf57ee057",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-7p2mhz-retry1/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-7p2mhz-retry1/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-a75dd500a57b",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/report.md",
+      "report_sha256": "c865d1fcee05fc60b4509fcae8b55a67dc10ead170287e53dea8a97195f995d5",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-1dabfa630967",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/results.json",
+      "report_sha256": "ea87225702aee9af34c46e4da808a292a9fbf9e05fa166009a4d7605c3d5bf07",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-dc22b5514cc1",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-reused-448-7p2mhz/report.md",
+      "report_sha256": "4484c4a0badc01b86677752f51876ded8ec29af6ff0f8da4ab00b509d326788b",
+      "config": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-reused-448-7p2mhz/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-reused-448-7p2mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-d2db34d5a007",
+      "study": "S02-independent-two-face",
+      "report": "artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation/report.md",
+      "report_sha256": "02682948f9b9f8e5a24f1072e4d81deb4cc0bd014e7802b92fb7b13a5efd66d7",
+      "config": "artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation/config.json",
+      "validation": "artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-609833075f9d",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/dual-stigmatic-2026-09-23/optical-audit/report.md",
+      "report_sha256": "3946d3dfcad3070b32a270b18f70c3c8dfa8417153c11e6a5392d249b46ce89e",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/dual-stigmatic-2026-09-23/optical-audit/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/dual-stigmatic-2026-09-23/optical-audit/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-d114332d833b",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/noa61-water-reference/report.md",
+      "report_sha256": "c8d32b1c3833eb506e05261e128353be15824547e38c2c5c94b8dab22cb0bb29",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/noa61-water-reference/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/noa61-water-reference/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-7d915ec4c32a",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/notebook-browser-check/report.md",
+      "report_sha256": "3c17307addc6665a5c1e4e47dd0fd4c6120f855c4d8b61ea55fa391c3e2cbf5f",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/notebook-browser-check/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/notebook-browser-check/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-725c7b6d187c",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/stigmatic-c2/report.md",
+      "report_sha256": "d1ec22c8198d849e97d573606fe284f5ad444634fc5e9f4c2ff82a95c477fffe",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/stigmatic-c2/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/stigmatic-c2/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-2ca899bfb28e",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-base/report.md",
+      "report_sha256": "b8170dc1c2a41955edf358454c9eaf926e29ca282383546d5b24088d9fc7db5b",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-base/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-base/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-fb6aae8d615c",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined/report.md",
+      "report_sha256": "67580929cb7bc420bbfa933b73c1ffd3332f13e0f4f4e4dba285ad2cbeacad6d",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-a46c5ea74ec7",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-four-run-audit/report.md",
+      "report_sha256": "62a77097dcd022af58bf3a22be610d661e906cd530b4c29b637cb12399fdb3dc",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-four-run-audit/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-four-run-audit/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-c5263b935c3f",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-three-run-audit/report.md",
+      "report_sha256": "67cdc464e7c55831aec460a63ef4ba6baf5b5d4fbd9cc517b4e21a0f67a3d10a",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-three-run-audit/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-three-run-audit/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-69725fe7c3e0",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-time-finest/report.md",
+      "report_sha256": "bd9b79d509118a393f4894500dd0496862d48a396ceb980ac2b15d1c528dce87",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-time-finest/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-time-finest/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-2db4fc837192",
+      "study": "S03-stigmatic-target-ideal-load",
+      "report": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-time-refined/report.md",
+      "report_sha256": "04f136d78ab042336caf54731024539663e1471018f76a584c39fbcf94bab018",
+      "config": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-time-refined/config.json",
+      "validation": "artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-time-refined/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-e8e776f74194",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/analytic-response-direct-448/report.md",
+      "report_sha256": "9bff5db12a414dcd49cc26c32a933bff6d59d61f6524df37b0d2dc256941d944",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/analytic-response-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/analytic-response-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-d2324681eb95",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/c4-direct-observations-448-3p6mhz/report.md",
+      "report_sha256": "63afabe931a34e4e21730859f0cc22b0d2ebb33b925067ab64266fdda3e472f3",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/c4-direct-observations-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/c4-direct-observations-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-b976728e7822",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-448-7p2mhz-s104/report.md",
+      "report_sha256": "ff1bad64bac5d188da7b0dcf13bd32e9557aa771418f27064f72d371dedf84db",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-448-7p2mhz-s104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-448-7p2mhz-s104/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-cd14fb064a5f",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-c4-direct-448-3p6mhz/report.md",
+      "report_sha256": "97cc552fcfb4196d4796d60b47b165ebc1f4ab48cfa226e90aa5d832df703c9f",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-c4-direct-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-c4-direct-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-99038b02a909",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-direct-448-3p6mhz/report.md",
+      "report_sha256": "ef473670ee3bf251f3996ceb2939dcfa5b4ffb5bd3980cb85a5553e883269379",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-direct-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-direct-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-c09f388a7e02",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-direct-448-7p2mhz-s104/report.md",
+      "report_sha256": "c75a2a82a433f454efceaa8bd802023927cca06418cd2f5b4e326501c42f78a8",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-direct-448-7p2mhz-s104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/conic-direct-448-7p2mhz-s104/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-9695954a8ee9",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/coupled-response-direct-448/report.md",
+      "report_sha256": "96aa552b45ce9cafc4d4d9abe9f0c97f9d43cc48dfeb7845ce049fb860a90d86",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/coupled-response-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/coupled-response-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-8181c9431d55",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-candidate-01/frozen-audit/report.md",
+      "report_sha256": "bdebba3888ecec5e48d646c8c556f27f5592767684b2f915a475e6146afa5f52",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-candidate-01/frozen-audit/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-candidate-01/frozen-audit/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-ad9681a00874",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-candidate-01/frozen-audit/results.json",
+      "report_sha256": "55ff240c60a6083a119dc364bcab0e85b974c0c99819fcc2ce68fee6d139e8b4",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-candidate-01/frozen-audit/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-candidate-01/frozen-audit/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-11ca27fc2e9d",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-observations-448-3p6mhz/report.md",
+      "report_sha256": "63afabe931a34e4e21730859f0cc22b0d2ebb33b925067ab64266fdda3e472f3",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-observations-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-observations-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-b09c65f77728",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-spot-observations/report.md",
+      "report_sha256": "63afabe931a34e4e21730859f0cc22b0d2ebb33b925067ab64266fdda3e472f3",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-spot-observations/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/direct-spot-observations/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-40b549a5da6e",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-quadrature-224/report.md",
+      "report_sha256": "bb414f2d3cb421a663390e4c4a8ae06ac5a8357ecaf19486c3feb62a572751d7",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-quadrature-224/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-quadrature-224/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-0f457babee9c",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave-224/report.md",
+      "report_sha256": "6e52dbf523872d54ad68bffb8c4c8fa60adcc79aec5bd38c187ce58e07e3b9cf",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave-224/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave-224/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-e70804a55f28",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave-direct-448/report.md",
+      "report_sha256": "b482137a5f41aab869cee06d470be78a5bd1cf67e541ba20411c3d499ecc0018",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-3921a698e3a0",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave256-direct-448/report.md",
+      "report_sha256": "b563cce2ebd247f7e11b7073a123afa4fb4f8c45f0cada9adc597f91ecbe5a5d",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave256-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/fixed-wave256-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-00e253ba3f56",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-112-1p8mhz/report.md",
+      "report_sha256": "130d70f90ea822f0b83e4bdc5316ea5618feb40dfa7ccecd79f1a55d71046f69",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-112-1p8mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-112-1p8mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-3a6a57285ad9",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-112-1p8mhz/results.json",
+      "report_sha256": "9898524ce2415ea5f3f57676b97a403d0c55815d9f4f9fa1f410de4bfc27217e",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-112-1p8mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-112-1p8mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-227cf8912423",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-224-3p6mhz/report.md",
+      "report_sha256": "9f1194217b36b244e84befe5c942731c30f04f469b9916603a047b74fe84f8b7",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-5da2e017cfc2",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-224-3p6mhz/results.json",
+      "report_sha256": "729ba0d6a9320eb3a70c3d3000a9789c8d01c5c9b869209c3c83de2dc1a6d83e",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-4845e3d1965a",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-peak-slope-448-3p6mhz/report.md",
+      "report_sha256": "83e7b5a75ac0423a31824c13dbb90a0f1990559a56c768cb7a05d5e67e149bb4",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-peak-slope-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-peak-slope-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-29ffe7e0801f",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-peak-slope-448-3p6mhz/results.json",
+      "report_sha256": "2efd6549da43378657b75b58ecb030f7f5f031d2c97ef53b81ad941c9dd364c5",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-peak-slope-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-peak-slope-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-cdb10769d143",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-224-3p6mhz/report.md",
+      "report_sha256": "68ea8477d1f2d9b827df5d63ceccf7895929ad522dc0ed14a3dc3c13668af1cf",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-58d30b7d46a9",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-224-3p6mhz/results.json",
+      "report_sha256": "7b6fb211b54fde9f2f76714e85c93eac0f1755d9ceccc6d408863498eb9ad0b1",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-f27844ad847a",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-slope-448-7p2mhz-s104/report.md",
+      "report_sha256": "476943f66713dd6e7050fe3c0439a7254d89eac54b8ddc735c6cd072c1ebc93e",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-slope-448-7p2mhz-s104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-slope-448-7p2mhz-s104/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-db73d96c066a",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-slope-448-7p2mhz-s104/results.json",
+      "report_sha256": "13eb70025ab49e5e8e69abfef6ad36b65abe901eac6afada1e2a312055558c78",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-slope-448-7p2mhz-s104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-polish-slope-448-7p2mhz-s104/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-42cb465e39d2",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-scaled-112-1p8mhz/report.md",
+      "report_sha256": "52426837a7e20388b8c6f15755e812edde95e21cf2aa6e89c0ebafb49900ba5d",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-scaled-112-1p8mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-scaled-112-1p8mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-54d9a43148c0",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-scaled-112-1p8mhz/results.json",
+      "report_sha256": "6b9ca629d957783d61f1afac728b62258adbe52cbba90923a662b48787b0af5d",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-scaled-112-1p8mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-scaled-112-1p8mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-5a946e088577",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-3p6mhz/report.md",
+      "report_sha256": "de7d34321086400dc4f02ad738eb85fb29e7766ee1e217906e2dfac3738c29ed",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-d609956d5718",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-3p6mhz/results.json",
+      "report_sha256": "2abddeb99df4dde872153b3b67c96fdbd83f94d7c46f0c15cfabd82a3fd765f8",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-7c2a7127ae94",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-7p2mhz-s104/report.md",
+      "report_sha256": "48e046d7ebb133feb9c31dc8922ea33571fc8a35c16f16e5039f82891943323e",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-7p2mhz-s104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-7p2mhz-s104/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-dbf29237dd59",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-7p2mhz-s104/results.json",
+      "report_sha256": "c567b51810f5b68c84df362ac930b0baa1df0c30f1e976ef7aa04c8f4d830747",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-7p2mhz-s104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-slope-448-7p2mhz-s104/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-db8431b206ef",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-tight-224-3p6mhz/report.md",
+      "report_sha256": "7d31a0cea804583d55774b007ba8a2c5046b1cd4de478bb80e1b46c35c255879",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-tight-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-tight-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-80ce72184f9a",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-tight-224-3p6mhz/results.json",
+      "report_sha256": "617c97c80a413e9acc71092fcf00e29cb9a1661fd1f71ad296701a36e235ce49",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-tight-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/inverse-tight-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-a56f4bf956d7",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-batched-direct-448/report.md",
+      "report_sha256": "514f59fd631628b0d9cf8a66dd259dc9cecc417ab356798c6ec7644850a41f58",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-batched-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-batched-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-eb65f0a7e615",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-direct-448/report.md",
+      "report_sha256": "6ee283d2af12e38073d0a7ce1cf11a5ff40e44ef72da614c650aad3a691eb393",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-ec1da6729ef1",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/krylov-response-batched-direct-448/report.md",
+      "report_sha256": "da0825a1d1b4647d8793d01149c82de9b4bd6a5c12d50bfc59a596dcadeaa938",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/krylov-response-batched-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/krylov-response-batched-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-5895ae213e72",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-224/report.md",
+      "report_sha256": "af82466f18d529f09abdff7535af6996bc59a7377442553c6f41477958a108a1",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-224/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-224/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-d9e25e129796",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-direct-448-both-grids/report.md",
+      "report_sha256": "a6a13947d9d80104f6f8d3033b918ea95c48342bcc34b5da8faa1f1e2ffdf110",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-direct-448-both-grids/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-direct-448-both-grids/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-bf679eb2d253",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-direct-448-design/report.md",
+      "report_sha256": "adc59e129163e10008c638ace53d3274cf69a6b21c2f35f984708b32d85217b7",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-direct-448-design/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/optics-verify-direct-448-design/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-ad083e4be604",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-224/report.md",
+      "report_sha256": "99149f856bf03860b5ee7188d036f72242558c4192b14c280cf27e4f31ae14c1",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-224/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-224/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-8f5cbb7a0aee",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-224/results.json",
+      "report_sha256": "8b6581283a248ae4ffc22083c7869996f513575cc921bf9eab0365ee800a2e70",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-224/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-224/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-63693c7cc1d3",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-direct-448/report.md",
+      "report_sha256": "5e0275603403097116b1971ca7609c45bded6338e83c705c588530851a0c5160",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-7f5ed95fdb7d",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-direct-448/results.json",
+      "report_sha256": "cb0b52d9f3b423bc1957ec40a4672e82fd0944a3117e2fbeda4f259d4c8e7ab3",
+      "config": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-direct-448/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/verify-direct-448/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-e951d9490998",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-224-3p6mhz/report.md",
+      "report_sha256": "7f1e8a4c5a3f7523c5f17f0ecd47f517bd577dc2faa1e12a0fadb82ed9fc94ba",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-734f4e87fc26",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-224-3p6mhz-s104/report.md",
+      "report_sha256": "ee56928b4ef41cbf4223531ed85b6fc379a1139707a156114070dc6321db055e",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-224-3p6mhz-s104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-224-3p6mhz-s104/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-25681cfe1dcd",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear/report.md",
+      "report_sha256": "62c185c4aaaa2aa1147416eda8703c7ec22cc0d373f6b6208ac2964367b3a0cd",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-070e8de7888b",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-1p8mhz/report.md",
+      "report_sha256": "986761d6a6c8f39bcedf0d1053b02afd062bb4d0752fb113c167020b7c14ee2b",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-1p8mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-1p8mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-103f3c65995d",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-bound2-r2/report.md",
+      "report_sha256": "cd73528d528c4c9caa6cfb22cbbb2f941b7371b1da96cd5dc3178379da5dc397",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-bound2-r2/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-a388948f133c",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-conic/report.md",
+      "report_sha256": "596f0547d02b0b72c721a58ccfbca6e7653d49c9a8ecdf26937fa7a6cbdf604b",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-conic/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-cc73e0dade97",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-independent/report.md",
+      "report_sha256": "efc778e6229a6c7768ee1f109c990e72280dff41b80d97fa363c87c7253002f3",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-independent/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-87c80133a7d6",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-spot/report.md",
+      "report_sha256": "f16da12c6eb8518a9ae4c61b88adb7267e3d2cbf9a6c7f46059efd6758aaeeda",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-spot/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-3a9c125f2d88",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-spot-conic/report.md",
+      "report_sha256": "8a030756b47a72a0710f6ffe74b8fe8c19dd0cce2ec101461745ff48c8c424c6",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-spot-conic/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-5949977a912e",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-sqp/report.md",
+      "report_sha256": "f2c4cd485781ff6b14d83c7a723b59b7db0e8baa79402fa031313f49acb12736",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-sqp/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-c5275461fe90",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-sqp-strict/report.md",
+      "report_sha256": "5bfd07ce2934c4882cce0319f3917264a77a07a53c72f763230d4e4562f30cd4",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-sqp-strict/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-aca6e0e966fd",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-near-caps/report.md",
+      "report_sha256": "3adc1fd6740ab9277b25e71083672830c18f41c63e7b86fb6d50ef8ff712891c",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-near-caps/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-near-caps/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-fa5eb1447c80",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-coupled-spot-bound2/report.md",
+      "report_sha256": "b5b7b29a7a2209aa022e678e13973f6bdc2649367034c5a348cb9d12c6c37862",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-coupled-spot-bound2/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-de57af27370e",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-spot-bound2/report.md",
+      "report_sha256": "10991d7cc31b13e044b57fe7b3a790f5999aa293d043c92fce0d796dd7b12072",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-spot-bound2/config.json",
+      "validation": null,
+      "provenance_present": true
+    },
+    {
+      "id": "R-51cce2fad715",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/notebook-check-inline-v2/report.md",
+      "report_sha256": "bb4576412d997e03a1f5209cfcfa6f0b5191b76e7fc7f3189b1ec892cadbebf1",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/notebook-check-inline-v2/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/notebook-check-inline-v2/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-3216cdf61205",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/response-spot-analytic/report.md",
+      "report_sha256": "91da0b36c40e37039d606dc86d994b559b410981db2780d333d54dfb4cf772fa",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/response-spot-analytic/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/response-spot-analytic/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-a18c6cc65cfc",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/response-spot-fd/report.md",
+      "report_sha256": "ca25ebbb141ece90373b2e55a3603c08f25fd24258179cabc51009902c76adf7",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/response-spot-fd/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/response-spot-fd/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-5c1bebec31ca",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/design/report.md",
+      "report_sha256": "47f96d3e513328debbf8e7ddaff865601fc4edd2bef22acaf986fd5364871c5e",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/design/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/design/validation.json",
+      "provenance_present": false
+    },
+    {
+      "id": "R-ef748f3aa160",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/report.md",
+      "report_sha256": "1a213d7f7a78746d44c68b67fca87127ef4667ebf49a33829f4430ba530a47e6",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-1d34ca5840c9",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/surface52/report.md",
+      "report_sha256": "37072cd9e63969ea22ff38ee6bda64d4331914e621377e8e85972a62741ccca4",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/surface52/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-224-3p6mhz/surface52/validation.json",
+      "provenance_present": false
+    },
+    {
+      "id": "R-192aed99b3e5",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear/design104/report.md",
+      "report_sha256": "6ab541beda510a938410dadadf68d3bc396bf2803a0073a7906a3e0bb516140c",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear/design104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear/design104/validation.json",
+      "provenance_present": false
+    },
+    {
+      "id": "R-01fcc6fb7651",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/design104/report.md",
+      "report_sha256": "6ab541beda510a938410dadadf68d3bc396bf2803a0073a7906a3e0bb516140c",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/design104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/design104/validation.json",
+      "provenance_present": false
+    },
+    {
+      "id": "R-4596604bfc7d",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/report.md",
+      "report_sha256": "3785a579b8d2661c68cf3bc67bc3841ebe92dfc910137e8210f09df41a5048fb",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-e2d973e186fc",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/surface128/report.md",
+      "report_sha256": "c4f28cb1cfa4568fe19595da62458b720a9b4a2e0072106281025b0633c618c6",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/surface128/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-broyden/surface128/validation.json",
+      "provenance_present": false
+    },
+    {
+      "id": "R-9929467b9c14",
+      "study": "S04-emitter-synthesis",
+      "report": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/report.md",
+      "report_sha256": "5e718cf66d44c1ebe45fb057143d181168316833eadf8e4fed0d714a79d5a2d1",
+      "config": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/config.json",
+      "validation": "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/validation.json",
+      "provenance_present": false
+    },
+    {
+      "id": "R-7f2e545d76fe",
+      "study": "S05-emitter-formation",
+      "report": "artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/formation-notebook-check/report.md",
+      "report_sha256": "310439c5d8635852eae44354d637d274272cc0bca789774f21ccf024bf50d695",
+      "config": "artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/formation-notebook-check/config.json",
+      "validation": "artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/formation-notebook-check/validation.json",
+      "provenance_present": true
+    },
+    {
+      "id": "R-f43274837251",
+      "study": "S05-emitter-formation",
+      "report": "artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/viscous-formation/report.md",
+      "report_sha256": "74ef2e47bc16cb0dd6ee0e5319ef25320fab77acc4a95eee219dd9d3b7032a2f",
+      "config": "artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/viscous-formation/config.json",
+      "validation": "artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/viscous-formation/validation.json",
+      "provenance_present": true
+    }
+  ]
+}

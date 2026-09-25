@@ -9,8 +9,8 @@ from pathlib import Path
 import matplotlib
 import numpy as np
 
-from acoustic_freeform.lens.config import LensConfig
-from acoustic_freeform.lens.surface import SurfaceSpace
+from acoustic_freeform.single_interface.config import LensConfig
+from acoustic_freeform.single_interface.surface import SurfaceSpace
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

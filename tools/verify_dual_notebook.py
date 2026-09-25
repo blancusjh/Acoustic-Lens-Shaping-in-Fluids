@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    out = root / "artifacts/notebooks/04_dual_cartesian"
+    out = root / "artifacts/studies/S02-independent-two-face/notebooks/04_dual_cartesian"
     records = []
     with sync_playwright() as p:
         browser = p.chromium.launch(

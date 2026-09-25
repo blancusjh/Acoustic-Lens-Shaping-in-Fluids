@@ -8,6 +8,7 @@ __pycache__/
 references/papers/
 references/discussions/
 artifacts/
+runs/
 .local/
 *.egg-info/
 web/node_modules/

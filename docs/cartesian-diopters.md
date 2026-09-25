@@ -220,7 +220,7 @@ The separate stationary experiment uses 1.8 MHz and a provisional 1.28 m/s wall-
 envelope. This is a changed design assumption, not a measured transducer capability.
 It retains the same sixteen coherent rows, chamber, liquid and conjugates.
 Its holding amplitudes/phases are in
-[`hold-drive.csv`](../artifacts/cartesian-50-20-stationary-p4/hold-drive.csv), with exact
+[`hold-drive.csv`](../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/hold-drive.csv), with exact
 conventions in the adjacent `excitation-definition.json`. The report contains
 optical performance, pressure, power and the stability result; the first transient
 and the stationary result must not be confused.

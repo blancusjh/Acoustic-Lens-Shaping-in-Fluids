@@ -17,9 +17,9 @@ from pathlib import Path
 import numpy as np
 from numpy.polynomial.legendre import leggauss
 
-from acoustic_freeform.dual.surface import cartesian_derivatives
-from acoustic_freeform.lens.cartesian import CartesianDiopter
-from acoustic_freeform.provenance import capture_execution
+from acoustic_freeform.core.provenance import capture_execution
+from acoustic_freeform.mechanics.surface import cartesian_derivatives
+from acoustic_freeform.optics.cartesian import CartesianDiopter
 
 
 def main():

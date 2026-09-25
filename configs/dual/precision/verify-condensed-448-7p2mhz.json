@@ -17,7 +17,7 @@
   "refinements": [],
   "cases": [{
     "name": "asymmetric-pair-A",
-    "fixed_drive_file": "artifacts/dual-precision-2026-09-23/optimized-448-7p2mhz/weight-1.npz",
+    "fixed_drive_file": "artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/optimized-448-7p2mhz/weight-1.npz",
     "faces": [
       {"optical": {"n_o": 1.33, "z_o_m": -0.1, "n_i": 1.5, "z_i_m": 0.2}, "vertex_displacement_m": -0.00015},
       {"optical": {"n_o": 1.5, "z_o_m": -0.15, "n_i": 1.33, "z_i_m": 0.15}, "vertex_displacement_m": 0.00012}

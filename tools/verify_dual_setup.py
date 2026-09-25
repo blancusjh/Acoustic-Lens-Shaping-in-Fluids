@@ -9,7 +9,7 @@ from playwright.sync_api import sync_playwright
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    out = root / "artifacts/notebooks/05_formation_and_spots/two-face-setup"
+    out = root / "artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/two-face-setup"
     results = []
     with sync_playwright() as p:
         browser = p.chromium.launch(

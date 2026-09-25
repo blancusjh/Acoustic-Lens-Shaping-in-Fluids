@@ -28,7 +28,7 @@ it is not a rigorous interval certificate.
 Values below are maximum mean-height errors in nm on each clear aperture.
 Each refined row uses exactly the design-grid physical commands, without
 re-optimization. The configuration and executed-source snapshot accompany each
-[campaign](../artifacts/dual-cartesian-2026-09-22/).
+[campaign](../artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/).
 
 | Experiment, pair A | Design front / back | Refined front / back | Refined carrier front / back (nm) |
 |---|---:|---:|---:|
@@ -119,7 +119,7 @@ strictly after the switch; its final error is 5.58 nm. The imported report's
 6.14 nm holding maximum is not reproduced by this saved-frame audit; the
 unavailable driver prevents resolving its precise holding-window convention.
 A fresh final acoustic solve gives about 40.38 nm carrier displacement. This
-[audit](../artifacts/imported-discussion-audit-2026-09-22-v2/report.md) neither
+[audit](../artifacts/studies/S01-single-interface/imported-discussion-audit-2026-09-22-v2/report.md) neither
 reproduces the missing time-integration driver nor validates two-face operation.
 
 ## Next scientific gates

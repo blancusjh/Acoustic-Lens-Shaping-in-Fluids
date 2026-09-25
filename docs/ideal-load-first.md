@@ -7,12 +7,12 @@ fixed acoustic command and treats the entire two-interface domain.
 
 ## Executed static check
 
-[Report and load plots](../artifacts/ideal-load-2026-09-23/stigmatic-c2/report.md)
-and [SI data](../artifacts/ideal-load-2026-09-23/stigmatic-c2/required-load.npz).
+[Report and load plots](../artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/stigmatic-c2/report.md)
+and [SI data](../artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/stigmatic-c2/required-load.npz).
 Reproduce with:
 
 ```sh
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python -m acoustic_freeform.dual.ideal_load_audit configs/dual/ideal-load-stigmatic.json --out <new-directory>
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python -m acoustic_freeform.mechanics.required_load configs/dual/ideal-load-stigmatic.json --out <new-directory>
 ```
 
 The existing shared-conjugate Cartesian pupils and C2 sealed-volume annuli are
@@ -79,7 +79,7 @@ interpolation prescribes intermediate shapes. The trajectory force file uses
 the reference-plane pressure gauge; the static load plot removes disk means.
 The difference is constant on each sealed interface and does no shape work.
 
-[Three-run independent audit](../artifacts/ideal-load-2026-09-23/viscous-three-run-audit/report.md)
+[Three-run independent audit](../artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-three-run-audit/report.md)
 compares 0.25/0.125 s steps and 32-by-12/48-by-18 per-layer fluid grids at fixed
 20-element surface space and fixed physical loads. At 20 s, the refined fluid
 run has sampled pupil errors approximately **0.175/0.108 nm**, maximum geometric
@@ -103,9 +103,9 @@ grid) finished with all diagnostics exported. Its final pupil errors are
 all rays transmitted. The 0.125-to-0.0625 s common-time height difference is
 3.78/2.73 micrometres at its maximum, falling to about 0.003 nm at the endpoint.
 This supports the endpoint conclusion, not a time-history convergence claim
-at 10 nm. See the [four-run audit](../artifacts/ideal-load-2026-09-23/viscous-four-run-audit/report.md).
+at 10 nm. See the [four-run audit](../artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-four-run-audit/report.md).
 
-[Executed notebook 08](../artifacts/notebooks/08_prescribed_load_formation.executed.ipynb)
+[Executed notebook 08](../artifacts/studies/S03-stigmatic-target-ideal-load/notebooks/08_prescribed_load_formation.executed.ipynb)
 embeds a physical-time animation of the saved refined-fluid trajectory: both
 surfaces, a 3D cylinder, pressure maps, sampled error curves and evolving spots.
 The setup has no emitters because this is the prescribed-load subproblem.

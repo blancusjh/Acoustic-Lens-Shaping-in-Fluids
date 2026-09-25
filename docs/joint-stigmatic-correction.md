@@ -58,10 +58,10 @@ windows and their refraction are not included in this two-interface model.
 
 ## Reproduction and present result
 
-Run `.venv/bin/python -m acoustic_freeform.dual.stigmatic_audit
+Run `.venv/bin/python -m acoustic_freeform.verify.stigmatic_target
 configs/dual/stigmatic-optical-audit.json --out <new-artifact-directory>`.
 
-Results: `artifacts/dual-stigmatic-2026-09-23/optical-audit/`, with configuration,
+Results: `artifacts/studies/S03-stigmatic-target-ideal-load/dual-stigmatic-2026-09-23/optical-audit/`, with configuration,
 source provenance and validation. All 4001 exact-target rays transmit and the
 maximum geometric radius is at floating-point roundoff. At 52 surface elements,
 the *projected target* errors are approximately 0.00137/0.000913 nm and its
