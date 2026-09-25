@@ -1,0 +1,56 @@
+{
+  "apparatus": {
+    "radius_m": 0.004,
+    "clear_radius_m": 0.002,
+    "levels_m": [
+      -0.003,
+      -0.001,
+      0.001,
+      0.003
+    ],
+    "density_kg_m3": [
+      1200,
+      1100,
+      1000
+    ],
+    "sound_speed_m_s": [
+      1500,
+      1200,
+      1500
+    ],
+    "surface_tension_n_m": [
+      0.025,
+      0.025
+    ],
+    "gravity_m_s2": 9.81,
+    "frequency_hz": 1800000,
+    "port_admittance_factor": 1,
+    "side_admittance_factor": 0.5,
+    "max_source_speed_m_s": 1,
+    "radial_ports": 32,
+    "side_ports_per_layer": 16,
+    "radial_cells": 64,
+    "cells_per_layer": 32,
+    "acoustic_order": 4,
+    "normal_velocity_trace": "weak_flux",
+    "surface_elements": 36,
+    "surface_degree": 5
+  },
+  "source_state": "artifacts/dual-cartesian-2026-09-22/sources-112/asymmetric-pair-A/design-state.npz",
+  "inertia_radial_modes": 160,
+  "dynamic_modes": 16,
+  "step_s": 0.00025,
+  "duration_s": 0.008,
+  "ramp_s": 0.01,
+  "maximum_displacement_m": 0.0003,
+  "optical": {
+    "indices": [
+      1.33,
+      1.5,
+      1.33
+    ],
+    "object_z_m": -0.101,
+    "detector_z_m": 0.151
+  },
+  "scope": "Inviscid low-mode demonstration; hypothetical materials, no settling or 10 nm claim"
+}

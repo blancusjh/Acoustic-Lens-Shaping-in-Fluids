@@ -1,0 +1,14 @@
+{
+  "source_file": "artifacts/noa61-emitter-2026-09-23/force-448-c4-clear-spot/best-source.npz",
+  "root_method": "newton",
+  "acoustic_feedback_modes": 32,
+  "maximum_newton_steps": 12,
+  "force_compliance_tolerance_m": 1e-13,
+  "maximum_step_m": 1e-5,
+  "ray_count": 4001,
+  "grids": [
+    {"name": "design104", "overrides": {}},
+    {"name": "surface128", "overrides": {"surface_elements": 128}}
+  ],
+  "numerical_note": "32 analytic acoustic-feedback directions in the Newton preconditioner; full nonlinear wave/force solves at every trial and full-force acceptance. Not a 32-mode physical model or stability assessment."
+}

@@ -1,0 +1,38 @@
+{
+  "name": "cartesian-pair-source-refinement",
+  "model": "Nested 112-port restriction of the same emitting surfaces; 1.8 MHz and unchanged 1 m/s pointwise source limit. The 56-port pattern is exactly representable by repeating each parent value.",
+  "apparatus": {
+    "radial_ports": 32,
+    "side_ports_per_layer": 16,
+    "radial_cells": 64,
+    "cells_per_layer": 32,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "frequency_hz": 1800000.0,
+    "max_source_speed_m_s": 1.0,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "max_evaluations": 3000,
+  "starts": 1,
+  "max_power_w": 50.0,
+  "refinements": [
+    {"radial_cells": 80, "cells_per_layer": 40, "acoustic_order": 4, "surface_elements": 44}
+  ],
+  "cases": [
+    {
+      "name": "asymmetric-pair-A",
+      "initial_drive_file": "artifacts/dual-cartesian-2026-09-22/frequency-1p8mhz/asymmetric-pair-A/design.npz",
+      "initial_source_refinement_factor": 2,
+      "faces": [
+        {
+          "optical": {"n_o": 1.33, "z_o_m": -0.1, "n_i": 1.5, "z_i_m": 0.2},
+          "vertex_displacement_m": -0.00015
+        },
+        {
+          "optical": {"n_o": 1.5, "z_o_m": -0.15, "n_i": 1.33, "z_i_m": 0.15},
+          "vertex_displacement_m": 0.00012
+        }
+      ]
+    }
+  ]
+}

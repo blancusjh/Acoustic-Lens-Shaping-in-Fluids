@@ -1,0 +1,34 @@
+{
+  "name": "cartesian-pair-authority",
+  "model": "Source authority experiment; same 56 ideal ports, explicitly doubled velocity budget. No hardware calibration.",
+  "apparatus": {
+    "radial_ports": 16,
+    "side_ports_per_layer": 8,
+    "radial_cells": 32,
+    "cells_per_layer": 24,
+    "acoustic_order": 4,
+    "surface_elements": 28,
+    "frequency_hz": 1000000.0,
+    "max_source_speed_m_s": 2.0
+  },
+  "max_evaluations": 1600,
+  "refinements": [
+    {"radial_cells": 48, "cells_per_layer": 32, "acoustic_order": 4, "surface_elements": 36}
+  ],
+  "cases": [
+    {
+      "name": "asymmetric-pair-A",
+      "initial_drive_file": "artifacts/dual-cartesian-2026-09-22/screening-56/asymmetric-pair-A/design.npz",
+      "faces": [
+        {
+          "optical": {"n_o": 1.33, "z_o_m": -0.1, "n_i": 1.5, "z_i_m": 0.2},
+          "vertex_displacement_m": -0.00015
+        },
+        {
+          "optical": {"n_o": 1.5, "z_o_m": -0.15, "n_i": 1.33, "z_i_m": 0.15},
+          "vertex_displacement_m": 0.00012
+        }
+      ]
+    }
+  ]
+}

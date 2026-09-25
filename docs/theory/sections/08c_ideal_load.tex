@@ -1,0 +1,124 @@
+\section{Determine the load before synthesizing emitters}
+\label{sec:ideal-load}
+
+An emitter-independent test isolates the mechanical question: if the required
+mean traction could be supplied exactly, would the proposed pair be an
+equilibrium, and what would make it form and remain there? This is an ideal
+distributed-load problem, not evidence that an acoustic field realizes it.
+The following deductions specialize the variational mechanics of
+\cref{sec:mechanics,sec:geometric-inverse}; they introduce no empirical
+settling law or additional material data.
+
+\subsection{Two full-domain loads with an explicit sign convention}
+Let $D$ be the entire horizontal disk, including both non-optical annuli.
+Number the three layers from bottom to top by $0,1,2$, and write their two
+interfaces as $z=h_j(x,y)$, $j=0,1$. Use upward normals on \emph{both}
+interfaces, not the outward normals of the middle lens. Define
+$b_j=(\rho_j-\rho_{j+1})g_{\rm grav}$ and let $f_j$ be upward normal mean
+traction, in Pa. Its virtual work is $\int_D f_j\delta h_j\dd x\dd y$:
+the graph area factor cancels the normal projection of vertical displacement.
+For sealed outer layers, each $\int_D h_j\dd x\dd y$ is fixed; the middle
+volume follows from their difference. For compatible full targets $h_j^*$,
+\begin{equation}
+ f_j^*(x,y)=-\sigma_j\nabla\cdot
+       \frac{\nabla h_j^*}{\sqrt{1+|\nabla h_j^*|^2}}
+       +b_j h_j^*-\lambda_j,\qquad (x,y)\in D.
+ \label{eq:ideal-two-loads}
+\end{equation}
+The two constants are hydrostatic pressure-difference multipliers, not
+independently prescribed absolute pressures. Subtracting each disk average
+is one reporting gauge; absolute pressure safety remains a separate issue.
+Changing the reference height only changes that gauge. For outward lens
+tractions the front sign reverses. Neither load may be silently set to zero
+outside the optical pupil. Different admissible annuli give different loads,
+even with identical optical conjugates. No unique numerical pressure map
+exists until the complete geometry, fluids, fill and support are specified.
+
+\subsection{A conditional three-dimensional stability result for ideal loads}
+Hold $f_j^*(x,y)$ fixed as a function of horizontal position while the
+interfaces move. Define the loaded potential
+\begin{equation}
+ \mathcal U[h]=\sum_{j=0}^1\int_D\left[
+  \sigma_j\sqrt{1+|\nabla h_j|^2}+\tfrac12 b_jh_j^2-f_j^*h_j
+ \right]\dd x\dd y.
+ \label{eq:ideal-loaded-potential}
+\end{equation}
+Suppose $\sigma_j>0$, $b_j\geq0$, the boundary heights are pinned, and
+admissible graphs satisfy the fixed volumes and positive layer gaps.
+The second variation in \cref{eq:graph-second-variation}, summed over both
+interfaces, is strictly positive for any nonzero admissible perturbation.
+Indeed, its capillary integrand is bounded below by
+$\sigma_j|\nabla\eta_j|^2/(1+|\nabla h_j|^2)^{3/2}$.
+The pinned boundary excludes constant perturbations. The admissible graph
+set is convex, so $h^*$ is its unique stationary point and strict global
+minimizer of $\mathcal U$. This statement allows arbitrary $\eta_j(x,y)$,
+including every angular order, not just axisymmetric disturbances. Uniform
+coercivity in a neighborhood additionally uses a bound on target slopes.
+It is not a result for overturning interfaces or a density-inverted stack.
+
+For smooth incompressible Newtonian mean flow with passive stationary walls,
+constant surface tensions, no streaming or other bulk forcing, and exactly
+these imposed normal tractions, the mechanical balances give
+\begin{equation}
+ \frac{\dd}{\dd t}\left[
+  \sum_{\ell=0}^2\frac12\int_{\Omega_\ell(t)}\rho_\ell|\bm U_\ell|^2\dd V
+  +\mathcal U[h]-\mathcal U[h^*]\right]
+ =-\sum_{\ell=0}^2\int_{\Omega_\ell(t)}2\mu_\ell
+       \bm D(\bm U_\ell):\bm D(\bm U_\ell)\dd V\leq0.
+ \label{eq:ideal-load-energy}
+\end{equation}
+There is no invented diagonal damping matrix in this identity. Pressure
+constraint work vanishes by volume conservation; the two interfaces remain
+coupled through the fluid velocity and pressure fields. With sufficient
+regularity and coercivity it supplies energy stability about the target.
+Asymptotic convergence additionally needs dissipation that excludes persistent
+motions, global admissible solutions and compactness or decay estimates.
+An energy norm does not alone certify maximum height or optical slope errors.
+With zero viscosity, the right side vanishes: oscillation is allowed and
+settling cannot be claimed. Thus an inviscid animation cannot answer the
+user's maintained-formation question even with perfect loading.
+
+The current hypothetical densities $1200,1100,1000\ \mathrm{kg\,m^{-3}}$
+give $b_0=b_1=981\ \mathrm{Pa\,m^{-1}}$ at
+$g_{\rm grav}=9.81\ \mathrm{m\,s^{-2}}$, satisfying the sign hypothesis.
+These are not characterized laboratory liquids. The result does not transfer
+automatically to a lens surrounded by one common liquid: then the two density
+jumps have opposite signs unless densities match.
+
+\subsection{Formation requires a load history, not just its endpoint}
+Applying $f^*$ from a flat initial state defines a genuine forward initial
+value problem. It does not prescribe intermediate shapes. For a time-varying
+load, the energy balance includes its time-dependent external work; no
+monotonic target-error curve follows from a ramp. A full prescribed trajectory
+would instead require solving its compatible velocity and pressure fields
+and recovering the interfacial traction from their stress jump, including
+inertia and viscosity. It cannot generally be obtained by evaluating only
+the static curvature formula along an interpolated shape.
+
+In the specifically declared constant-mass reduction of
+\cref{sec:reduced-formation}, the analogous inverse dynamic force is
+$F_{\rm req}(t)=M\ddot q_d+\nabla E(q_d)$; a viscous resistance may be added
+only after it is derived or independently validated. Endpoint balance removes
+the acceleration term but says nothing about transient overshoot. This
+identity defines a diagnostic load, not an acoustic realization or a
+forward-verified trajectory.
+
+\subsection{Verification gates before returning to source design}
+First export capillary, gravitational and gauge-fixed total loads on both
+full targets, with geometry, volume and pinning checks. Independently solve
+the nonlinear prescribed-load equilibrium from a non-target initial guess;
+refine both the load representation and the mechanical grid. Next solve
+viscous two-interface formation with independently specified material data
+and initial conditions, refine spatial and temporal resolution, and test
+three-dimensional disturbances. Report both maximum height errors, slopes,
+fixed-detector maximum spot radius and lost rays throughout physical time.
+Distinguish a conditional ideal-load pass from any acoustic pass.
+
+Only then ask the acoustic inverse to realize the loads and the required
+response to perturbations. At fixed emitter commands the traction is
+$f[h,a]$, not the fixed $f^*(x,y)$ above; its shape derivative changes the
+restoring operator and invalidates the ideal-load Lyapunov proof unless
+controlled. Mean tangential forcing, bulk streaming, wall layers and thermal
+feedback also require their own balances. The required acoustic specification
+is therefore a full-domain equilibrium load \emph{plus} an admissible dynamic
+response, not a single pressure-amplitude image on the pupils.

@@ -1,0 +1,29 @@
+{
+  "apparatus": {
+    "gravity_m_s2": 9.81,
+    "density_kg_m3": [997.0, 1231.0, 997.0],
+    "sound_speed_m_s": [1497.0, 1500.0, 1497.0],
+    "surface_tension_n_m": [0.025, 0.025]
+  },
+  "indices": [1.3325, 1.52, 1.3325],
+  "stigmatic_z_m": [-0.101, 0.201, 0.151],
+  "vertex_displacement_m": [-0.00015, 0.00012],
+  "surface_elements": [20, 36, 52, 80, 104],
+  "load_quadrature_orders": [16, 24],
+  "ray_count": 4001,
+  "temperature_k": 298.15,
+  "material_identity": ["water", "Norland NOA 61, uncured", "water"],
+  "viscosities_pa_s": [0.00089, 0.30, 0.00089],
+  "parameter_status": {
+    "resin_density_and_viscosity_and_liquid_index": "Manufacturer typical values, not lot measurements",
+    "water_properties": "Rounded room-temperature engineering reference values",
+    "resin_water_interfacial_tension": "Explicit engineering assumption; NOT the manufacturer's resin-air surface tension",
+    "resin_sound_speed": "Explicit engineering placeholder; unused in this static pressure audit, not measured",
+    "viscosities": "Recorded for subsequent fluid dynamics; unused in this static audit",
+    "immiscible_clean_interface_and_pinned_rims": "Model assumptions; compatibility of this exact formulation requires qualification"
+  },
+  "sources": {
+    "resin": "https://norlandproducts.com/wp-content/uploads/2025/02/Norland-Products-NOA-61-TDS.pdf"
+  },
+  "scope": "Separate material-referenced pressure case; axisymmetric nominal design, full gravity, two complete interfaces. Static audit only. No reuse of old optical targets, acoustic command or 5 Pa s trajectory."
+}

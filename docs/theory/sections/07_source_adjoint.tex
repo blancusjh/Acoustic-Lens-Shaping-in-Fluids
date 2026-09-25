@@ -1,0 +1,182 @@
+\section{An explicit source adjoint with interface conditions}\label{sec:source-adjoint}
+
+\subsection{A traction objective on a fixed interface}
+We now derive spatial optimality equations, rather than leaving the inverse
+as an abstract residual. This section uses exactly the canonical transmission
+model of \cref{sec:sources}. Its geometry is fixed during a source variation;
+the coupled shape derivative is a separate operation. The pressure trace $P$
+and normal-velocity trace $v$ are continuous across the interface. Tangential
+velocity obeys $\bm V_{t\ell}=\Gs P/(\mathrm i\omega\rho_\ell)$.
+Define three real material coefficients
+\begin{equation}
+ c_P=\frac14\left(\frac{1}{\rho_-c_-^2}-\frac{1}{\rho_+c_+^2}\right),
+ \qquad c_v=\frac{\Delta\rho}{4},\qquad
+ c_\tau=-\frac{1}{4\omega^2}\left(\frac{1}{\rho_-}-\frac{1}{\rho_+}\right).
+ \label{eq:traction-trace-coefficients}
+\end{equation}
+Substitution into \cref{eq:radiation-flux,eq:acoustic-traction} gives
+\begin{equation}
+ \boxed{\Pi=c_P|P|^2+c_v|v|^2+c_\tau|\Gs P|^2.}
+ \label{eq:traction-trace}
+\end{equation}
+All three terms have pressure units. The tangential radiation-traction jump
+vanishes in this inviscid transmission limit, since $\rho_\ell\bm V_{t\ell}$
+and $v$ are common on both sides. This is not a claim about thermoviscous
+boundary layers or variable surface tension.
+
+Let $\Pi_{\rm tar}$ be a required load in pascals, $A_0>0$ a reference area,
+$\Pi_0>0$ a reference stress, and $\varpi\geq0$ a smooth dimensionless
+weight supported away from the contact line. For a closed interface the last
+restriction is unnecessary. Choose positive source-penalty weights
+$\gamma_g,\gamma_F,\gamma_q$ for available components, using the scales of
+\cref{eq:source-norm}, and define
+\begin{align}
+ J_{\rm load}&=\frac{1}{2A_0\Pi_0^2}
+             \int_\Gamma\varpi(\Pi-\Pi_{\rm tar})^2\dd A,
+             \label{eq:adjoint-load-cost}\\
+ J_{\rm reg}&=\frac{\gamma_g}{2S_ag_0^2}\int_{\Gamma_a}|g|^2\dd A
+       +\frac{\gamma_F}{2V_sF_0^2}\int_{D_s}|\bm F|^2\dd V
+       +\frac{\gamma_q}{2V_sq_0^2}\int_{D_s}|q|^2\dd V.
+       \label{eq:adjoint-source-penalty}
+\end{align}
+These costs are dimensionless. For a volume-constrained quiescent target use
+$\Pi_{\rm tar}=\sigma\kappa+\Delta\rho\Phi-\lambda_V$ and optimize over
+$\lambda_V$ as well. Its stationarity equation is the weighted removal of
+the otherwise arbitrary constant load. A weighted patch objective does not
+certify the unobserved part of the interface.
+
+Define the real residual weight $r=\varpi(\Pi-\Pi_{\rm tar})/(A_0\Pi_0^2)$
+and the complex interface covectors
+\begin{equation}
+ A_{\rm obs}=2c_PrP-2\Gs\cdot(c_\tau r\Gs P),
+ \qquad B_{\rm obs}=2c_vrv.
+ \label{eq:interface-covectors}
+\end{equation}
+Their units are $\mathrm{Pa^{-1}\,m^{-2}}$ and $\mathrm{s\,m^{-3}}$,
+respectively. At fixed target and geometry, differentiating the three squared
+moduli and integrating the tangential term by parts gives
+\begin{equation}
+ DJ_{\rm load}[\delta P,\delta v]
+       =\Rea\int_\Gamma
+          (\bar A_{\rm obs}\delta P+\bar B_{\rm obs}\delta v)\dd A.
+ \label{eq:load-state-variation}
+\end{equation}
+For nonzero edge weights an additional term is
+$2\Rea\int_{\mathcal C}c_\tau r(\bm m\cdot\Gs\bar P)\delta P\dd s$,
+where $\bm m$ is the outward unit co-normal tangent to $\Gamma$. It vanishes
+under the stated support restriction. Omitting it for a full-edge objective
+would require a justified edge condition, not a change of notation.
+
+\subsection{The adjoint has jumps even when pressure does not}
+Let $Z_\ell$ be a piecewise adjoint field; for the normalization above its units
+are $\mathrm{s^2\,m^{-3}}$, so it is not a physical pressure. Assume sufficient
+piecewise regularity for the following Green identity and traces. With
+$\partial_n$ retaining the same orientation on both sides of $\Gamma$, solve
+\begin{align}
+ L_\ell^*Z_\ell&=-\nabla\cdot(\alpha_\ell\nabla Z_\ell)
+                           -\bar\beta_\ell Z_\ell=0
+                  &&\text{in }\Omega^\ell,\label{eq:source-adjoint-bulk}\\
+ \alpha\partial_{n_a}Z+\mathrm i\omega\bar Y Z&=0
+                  &&\text{on }\partial\mathcal D_c,\label{eq:source-adjoint-wall}\\
+ \boxed{\jump{Z}=\frac{\mathrm i}{\omega}B_{\rm obs},\qquad
+ \jump{\alpha\partial_nZ}=-A_{\rm obs}}
+                  &&\text{on }\Gamma.\label{eq:source-adjoint-jumps}
+\end{align}
+The bulk coefficient $\beta_\ell$ is real in the present canonical model;
+the conjugation records the formal-adjoint convention. A model with complex
+bulk coefficients also needs its consistently changed radiation and power
+expressions. The plus sign in the adjoint wall impedance follows from the
+chosen $e^{-\mathrm i\omega t}$ convention.
+
+To verify the interface signs, write $\delta S=-\nabla\cdot
+(\alpha\delta\bm F)-\mathrm i\omega\delta q$, the volume right-hand side
+of the differentiated wave equation. Green's second identity, summed over
+the phases, gives
+\begin{align}
+ \int_{D_s}\delta S\bar Z\dd V
+   &=\int_\Gamma\left[-\delta P\jump{\alpha\partial_n\bar Z}
+                      +\mathrm i\omega\delta v\jump{\bar Z}\right]\dd A
+         -\mathrm i\omega\int_{\Gamma_a}\delta g\bar Z\dd A.
+ \label{eq:source-green-identity}
+\end{align}
+The pressure variation is continuous and its common flux is
+$\alpha\partial_n\delta P=\mathrm i\omega\delta v$.
+The two boxed jumps turn the interface integral into the complex expression
+whose real part is \cref{eq:load-state-variation}. Integrating the body-force
+source by parts, using its interior support, therefore yields
+\begin{equation}
+ DJ_{\rm load}[\delta u]=\Rea\left[
+  \mathrm i\omega\int_{\Gamma_a}\delta g\bar Z\dd A
+  +\int_{D_s}\alpha\delta\bm F\cdot\nabla\bar Z\dd V
+  -\mathrm i\omega\int_{D_s}\delta q\bar Z\dd V\right].
+ \label{eq:explicit-source-variation}
+\end{equation}
+This derivation explains why an adjoint constrained to globally continuous
+$Z$ would generally be wrong for an objective depending on normal velocity.
+An equivalent mixed or transposition formulation must encode these same
+interface functionals. Boundary terms are part of the derivative, as in
+continuous-adjoint methodology \cite{giles2000}.
+
+\subsection{Spatial source gradients and necessary optimality}
+Define gradients using the unweighted real physical $L^2$ pairing:
+\begin{equation}
+ D(J_{\rm load}+J_{\rm reg})[\delta u]
+  =\Rea\left[\int_{\Gamma_a}\bar G_g\delta g\dd A
+        +\int_{D_s}\bar{\bm G}_F\cdot\delta\bm F\dd V
+        +\int_{D_s}\bar G_q\delta q\dd V\right].
+ \label{eq:physical-gradient-pairing}
+\end{equation}
+Combining \cref{eq:adjoint-source-penalty,eq:explicit-source-variation} gives
+\begin{equation}
+ \boxed{G_g=\frac{\gamma_g g}{S_ag_0^2}-\mathrm i\omega Z,\qquad
+ \bm G_F=\frac{\gamma_F\bm F}{V_sF_0^2}+\alpha\nabla Z,\qquad
+ G_q=\frac{\gamma_q q}{V_sq_0^2}+\mathrm i\omega Z.}
+ \label{eq:distributed-gradients}
+\end{equation}
+Each field is restricted to its own support. The gradient in the scaled
+Hilbert metric of \cref{eq:source-norm} has the corresponding metric factors;
+the physical first variation is the same. If $\lambda_V$ is free, also impose
+$\int_\Gamma r\dd A=0$.
+
+For unconstrained boundary actuation, the first-order condition is the
+implicit field equation
+\begin{equation}
+ g=\frac{\mathrm i\omega S_ag_0^2}{\gamma_g}Z|_{\Gamma_a}.
+ \label{eq:boundary-source-optimality}
+\end{equation}
+For the sole additional restriction $|g(\bm x)|\leq g_{\max}(\bm x)$,
+where $g_{\max}\geq0$ is prescribed, this becomes pointwise projection of
+the right-hand side onto the complex disk of that radius. Phase-only control,
+source coupling or a spatial-derivative penalty does not have this simple
+projection rule. In a general convex admissible set the condition is that
+\cref{eq:physical-gradient-pairing}, with $\delta u=\tilde u-u$, is
+nonnegative for every $\tilde u\in\mathcal U_{\rm ad}$.
+
+These equations form a common state--adjoint--optimality system for every
+admissible target. They are not a closed-form answer: $Z$ depends on the
+current pressure, load residual and geometry. The quadratic loading makes
+the objective nonconvex, so the system describes necessary local conditions.
+A vanishing source is always a stationary point for a pure quadratic-load
+tracking objective with quadratic regularization; a gradient-only iteration
+started exactly there can stop even when a useful nonzero source exists.
+That analytic degeneracy must be addressed by the eventual solution method,
+not concealed by a target-specific fit.
+
+\subsection{A limiting boundary check and extension to the full model}
+For a one-sided, fixed pressure-release surface, $P=0$ and
+$\Pi=\rho_-|v|^2/4$. Let $B_{\rm obs}$ now be the corresponding velocity
+covector in \cref{eq:load-state-variation}. The exterior Green boundary term
+is $-\mathrm i\omega\delta v\bar Z$, so the adjoint Dirichlet condition is
+\begin{equation}
+ Z=-\frac{\mathrm i}{\omega}B_{\rm obs}\quad\text{on }\Gamma.
+ \label{eq:pressure-release-adjoint}
+\end{equation}
+Setting $Z=0$ there would lose the entire velocity-based objective derivative.
+This limit is a sign and boundary-condition check, not the assumed apparatus.
+
+For the full coupled problem, the same integration-by-parts construction must
+include viscous and thermal fields, fast interface compliance, the mean flow,
+actuator loading and geometric transport. \Cref{eq:distributed-gradients}
+is complete for the explicitly stated frozen-geometry acoustic subproblem;
+it is not the full shape or thermoviscous adjoint. The general coupled and
+time-dependent adjoint equations are specified in \cref{sec:control}.

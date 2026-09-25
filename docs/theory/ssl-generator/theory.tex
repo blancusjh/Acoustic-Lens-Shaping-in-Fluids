@@ -1,0 +1,579 @@
+\input{multifluid-variational.tex}
+\clearpage
+
+\section{Layered-graph specialization of the variational load}
+\label{sec:layered-specialization}
+Now specialize the preceding three-dimensional formulation to three sealed
+layers in a cylinder. Write their two complete interfaces as absolute graphs
+$z=h_0(x,y)$ and $z=h_1(x,y)$ over the horizontal disk $D_R$ of radius $R$.
+Here $j=0,1$ labels interfaces and $\ell=0,1,2$ labels fluids; $\dd A=\dd x\dd y$.
+The two graph integrals are fixed by the two independent compartment volumes.
+All horizontal variations are allowed; radial formulas are introduced only
+where explicitly stated. No optical shape has yet been prescribed.
+
+\subsection{Energy and hydrostatic pressure multipliers}
+With upward graph normals, let $\Delta\rho_j=\rho_j-\rho_{j+1}$ and
+take gravity to be $-g\mathbf e_z$. Direct integration of $\rho gz$ in the
+three phases yields, up to fixed end-cap terms,
+\begin{equation}\label{eq:energy}
+ E[h]=\sum_{j=0}^1\int_{D_R}
+ \left[\sigma_j\sqrt{1+|\nabla h_j|^2}
+ +\tfrac12\Delta\rho_jg h_j^2\right]\dd A.
+\end{equation}
+Here $h_j$ are absolute heights. Shifting the reference planes changes
+constant load terms that must be absorbed consistently into the volume
+multipliers. It does not remove gravity.
+
+Varying the area term and integrating by parts with $\eta_j=0$ at the rim,
+\begin{align}
+ DE[h](\eta)&=\sum_j\int_{D_R}
+ \left(\sigma_j\frac{\nabla h_j\cdot\nabla\eta_j}
+ {\sqrt{1+|\nabla h_j|^2}}+\Delta\rho_jg h_j\eta_j\right)\dd A\label{eq:first-var}\\
+ &=\sum_j\int_{D_R}(\sigma_j\kappa_j+\Delta\rho_jg h_j)\eta_j\dd A,\\
+ \kappa_j&=-\nabla\cdot\frac{\nabla h_j}{\sqrt{1+|\nabla h_j|^2}}.
+\end{align}
+For a scalar upward normal traction $f_j$, its virtual work under the graph
+displacement $\eta_j\mathbf e_z$ is $\int_{\Gamma_j}f_jn_z\eta_j\dd S$
+$=\int_{D_R}f_j\eta_j\dd A$, since $n_z\dd S=\dd A$.
+Thus no extra area factor belongs in the graph load.
+
+Stationarity under all constrained variations is equivalent to
+\begin{equation}\label{eq:required-load}
+ \boxed{f_j^\star(r)=\sigma_j\kappa_j[h^\star](r)
+ +\Delta\rho_jg h_j^\star(r)-\lambda_j,\qquad j=0,1.}
+\end{equation}
+The constants $\lambda_j$ have units Pa and are fixed-volume pressure
+multipliers; there are two independent constants, not freely adjustable
+spatial functions. The load is defined modulo these constants in the
+volume-constrained inverse. For axisymmetric graphs,
+\begin{equation}\label{eq:axis-curvature}
+ \kappa_j=-\frac{h_j''}{(1+h_j'^2)^{3/2}}
+ -\frac{h'_j}{r\sqrt{1+h_j'^2}},\qquad \kappa_j(0)=-2h_j''(0).
+\end{equation}
+An upper spherical cap of radius $a_s$ has $\kappa=2/a_s$, recovering the
+Laplace-pressure sign. A horizontal unforced graph has zero curvature and
+is balanced by a constant hydrostatic multiplier.
+
+\subsection{Second variation and the importance of the gravity sign}
+For admissible variations $\eta,\xi$,
+\begin{equation}\label{eq:hessian}
+ D^2E[h](\eta,\xi)=\sum_j\int_{D_R}
+ \left[\sigma_j\nabla\eta_j^T\left(
+ \frac{I}{s_j}-\frac{\nabla h_j\nabla h_j^T}{s_j^3}\right)\nabla\xi_j
+ +\Delta\rho_jg\eta_j\xi_j\right]\dd A,
+ \quad s_j=\sqrt{1+|\nabla h_j|^2}.
+\end{equation}
+The axisymmetric capillary integrand reduces to
+$\sigma_j\eta'_j\xi'_j/(1+h_j'^2)^{3/2}$. At a flat interface, let
+$\lambda_1$ be the infimum of $\int|\nabla\eta|^2/\int|\eta|^2$ over its
+nonzero pinned zero-volume variations. A sufficient mechanical coercivity
+condition is
+\begin{equation}\label{eq:coercivity}
+ \sigma_j\lambda_1+\Delta\rho_jg>0\quad(j=0,1).
+\end{equation}
+Negative $\Delta\rho_j$ is destabilizing, but capillarity and confinement
+may offset it. This condition concerns the unforced energy, not stability
+under geometry-dependent acoustic loading.
+
+\section{Forward acoustics: equations, weak form and power}
+\subsection{Declared linear harmonic reduction}
+For peak phasors proportional to $e^{-i\omega t}$, set
+$\alpha_\ell=1/\rho_\ell$ and $\beta_\ell=\omega^2/(\rho_\ell c_\ell^2)$.
+In each homogeneous inviscid phase,
+\begin{equation}\label{eq:helmholtz}
+ -\nabla\cdot(\alpha_\ell\nabla P_\ell)-\beta_\ell P_\ell=0,
+ \qquad \mathbf V_\ell=\frac{\alpha_\ell\nabla P_\ell}{i\omega}.
+\end{equation}
+In the high-frequency interface reduction used here,
+\begin{equation}\label{eq:transmission}
+ P_j=P_{j+1},\qquad
+ \alpha_j\partial_nP_j=\alpha_{j+1}\partial_nP_{j+1},
+\end{equation}
+with the same upward normal on both sides. At the domain-outward wall,
+\begin{equation}\label{eq:robin}
+ \mathbf V\cdot\mathbf n_a=YP+u,\qquad
+ \alpha\partial_{n_a}P=i\omega(YP+u),\qquad \Rea Y\ge0.
+\end{equation}
+The command $u$ is in m/s, $Y$ in m/(Pa s), and $P$ in Pa.
+If $Y\ne0$, $u$ is not total wall velocity. No electrical calibration is
+needed to define this idealized mathematical source.
+
+Multiply the Helmholtz equation by a conjugate test pressure $\bar\psi$,
+integrate by parts and cancel the two-sided interface fluxes. Then
+\begin{align}
+ a_h(P,\psi)&=\sum_\ell\int_{\Omega_\ell(h)}
+ (\alpha_\ell\nabla P_\ell\cdot\nabla\bar\psi-\beta_\ell P_\ell\bar\psi)\dd V
+ -i\omega\int_{\partial\Omega}YP\bar\psi\dd S,\label{eq:weak-a}\\
+ b(u,\psi)&=i\omega\int_{\Gamma_a}u\bar\psi\dd S,\qquad
+ a_h(P,\psi)=b(u,\psi).\label{eq:weak-b}
+\end{align}
+The inverse $\mathcal A_h^{-1}$ is used only where this wave problem is
+well posed. An undamped cavity resonance cannot simply be assigned a finite
+inverse response. Boundary conditions, resonance and regularization matter
+in active Helmholtz control~\cite{hubenthal2016}.
+
+\subsection{Independent energy identity}
+Taking the imaginary part with $\psi=P$ in the weak equation gives
+\begin{equation}\label{eq:power}
+ \boxed{P_{\rm src}=-\tfrac12\Rea\int_{\Gamma_a}P\bar u\dd S
+ =\tfrac12\int_{\partial\Omega}\Rea Y\,|P|^2\dd S.}
+\end{equation}
+The minus sign is from the outward velocity convention. This power is in W;
+it is not electrical power or the squared Euclidean command norm. Bulk
+dissipation and mean-flow energy transfer require additional terms if those
+mechanisms are included. The present identity is for the declared frozen,
+lossless-bulk harmonic problem.
+
+\section{From the acoustic field to the two mean tractions}
+In a homogeneous inviscid phase the normal component of the averaged
+acoustic momentum-flux tensor is
+\begin{equation}\label{eq:momentum-flux}
+ \mathcal M_{nn}=\frac{|P|^2}{4\rho c^2}
+ -\frac{\rho}{4}|\mathbf V|^2+\frac{\rho}{2}|V_n|^2
+ =\frac{|P|^2}{4\rho c^2}+\frac{\rho}{4}(|V_n|^2-|\mathbf V_t|^2).
+\end{equation}
+The graph-compatible upward traction is the lower-minus-upper jump,
+\begin{equation}\label{eq:traction-jump}
+ f_{{\rm ac},j}=\mathcal M_{nn,j}-\mathcal M_{nn,j+1}.
+\end{equation}
+Write $v_n$ for the common normal velocity, and $G_t=\nabla_\Gamma P$ for
+the tangential pressure gradient. Using the transmission conditions gives
+\begin{equation}\label{eq:traction-reduced}
+ f_{{\rm ac},j}=\frac14\left(\frac1{\rho_jc_j^2}-\frac1{\rho_{j+1}c_{j+1}^2}\right)|P|^2
+ +\frac{\rho_j-\rho_{j+1}}4|v_n|^2
+ +\frac{\rho_j-\rho_{j+1}}{4\omega^2\rho_j\rho_{j+1}}|G_t|^2.
+\end{equation}
+All three terms are in Pa. In particular, there is not one universal
+positive intensity-to-load factor at a two-fluid interface. In the
+pressure-release, negligible-upper-fluid limit, $P=G_t=0$ and the remaining
+traction is $\rho|v_n|^2/4$. Wave-driven interface deformation and feedback
+of geometry on the field are studied in~\cite{chesneau2022}.
+
+Under these ideal transmission conditions the tangential momentum-flux
+jump cancels because $\rho\mathbf V_t=G_t/(i\omega)$ and $v_n$ are common.
+This does not eliminate boundary-layer streaming or thermal stresses in a
+more complete physical model. Their closures change the mean state and
+must be added consistently, not inferred from a passive scalar admittance;
+see~\cite{bach2018,jorgensen2021}.
+
+\section{Continuous inverse, finite sources and optimality}
+\subsection{The source space precedes the emitter array}
+Let $\mathcal U$ be a complex Hilbert space of admissible boundary commands
+on $\Gamma_a$, with explicit physical scales in its norm. Let $S_h$ map
+commands to the pressure/velocity traces. Assume sufficient regularity for
+the quadratic traction pairing to be bounded. For a dimensionless admissible
+test function $\phi_i$ on the two graphs, define
+\begin{align}
+ F_i(u;h)&=\sum_j\int_{D_R}\phi_{ij}f_{{\rm ac},j}(u;h)\dd A
+ =\langle u,\mathcal K_i(h)u\rangle,\label{eq:continuous-quadratic}\\
+ b_i(h^\star)&=DE[h^\star](\phi_i),\qquad
+ \mathcal K_i=S_h^*C_iS_h.\label{eq:continuous-target}
+\end{align}
+The operators are Hermitian but not necessarily positive. Exact quiescent
+normal balance requires $F_i=b_i$ for a dense set of pinned, zero-volume
+tests, plus the remaining model conditions. Matching only pupil tests does
+not enforce full-interface equilibrium.
+
+Choose dimensionless source patterns $e_k$ and restrict
+\begin{equation}\label{eq:source-expansion}
+ u(x)=\sum_{k=1}^Ne_k(x)w_k,\qquad
+ w_k=A_ke^{i\varphi_k},\quad [A_k]={\rm m/s}.
+\end{equation}
+If $H$ is the wave-trace response matrix, the finite force matrices are
+$K_i=H^\dagger C_iH$ and
+\begin{equation}\label{eq:finite-force}
+ F_i(w)=w^\dagger K_iw
+ =\sum_{k,l}\bar w_k(K_i)_{kl}w_l,\qquad [K_i]={\rm kg/m}.
+\end{equation}
+The cross terms are the interference responsible for phase control. A sum
+of independent intensities is a different source model.
+
+\subsection{Differential and constrained source equations}
+At fixed target geometry,
+\begin{equation}\label{eq:force-jacobian}
+ DF_i(w)[\delta w]=2\Rea[(K_iw)^\dagger\delta w],\qquad
+ J_i=2\big((\Rea K_iw)^T,(\Ima K_iw)^T\big),
+\end{equation}
+where $x=(\Rea w,\Ima w)\in\R^{2N}$. In amplitude/phase coordinates,
+\begin{equation}\label{eq:amplitude-phase-grad}
+ \frac{\partial F_i}{\partial A_k}=2\Rea[\overline{(K_iw)_k}e^{i\varphi_k}],
+ \qquad
+ \frac{\partial F_i}{\partial\varphi_k}=-2\Ima[\overline{(K_iw)_k}w_k].
+\end{equation}
+Real/imaginary coordinates avoid the singular phase parameterization at
+$A_k=0$. A common phase change leaves every force unchanged, giving
+$J(-\Ima w,\Rea w)^T=0$.
+
+Let $s_i>0$ be force scales, $D_s=\operatorname{diag}(s_i)$,
+$r_i=(F_i-b_i)/s_i$, and $L$ a scaled real source regularizer. A version-1
+objective and disk constraints are
+\begin{equation}\label{eq:source-objective}
+ \min_x\;\Phi(x)=\tfrac12\|r(x)\|_2^2+\tfrac\beta2\|Lx\|_2^2,
+ \qquad c_k(x)=x_k^2+x_{N+k}^2-w_{k,\max}^2\le0.
+\end{equation}
+For a differentiable local minimizer satisfying a constraint qualification,
+the necessary Karush--Kuhn--Tucker equations are
+\begin{align}
+ J^TD_s^{-1}r+\beta L^TLx+\sum_k\mu_k\nabla c_k&=0,\label{eq:kkt}\\
+ c_k\le0,\qquad\mu_k\ge0,\qquad\mu_kc_k&=0.
+\end{align}
+They are not a global optimality certificate for this nonconvex problem.
+At zero command the quadratic-load derivative vanishes, so initialization
+and nonzero finite-amplitude search are material algorithmic choices.
+
+For $W=ww^\dagger$, exact coherent synthesis is equivalently constrained by
+\begin{equation}\label{eq:rank-one}
+ \operatorname{tr}(K_iW)=b_i,\quad W\succeq0,\quad
+ \operatorname{rank}W\le1,\quad W_{kk}\le w_{k,\max}^2.
+\end{equation}
+Dropping rank yields a semidefinite relaxation, not a realizable deterministic
+drive unless a rank-one command is recovered and rechecked. For any real
+$a_i$ and $\|w\|_2\le C_w$, necessary reachability conditions include
+\begin{equation}\label{eq:obstruction}
+ \left|\sum_i a_ib_i\right|\le C_w^2\left\|\sum_i a_iK_i\right\|_2,
+ \qquad \sum_i a_iK_i\succeq0\ \Longrightarrow\ \sum_i a_ib_i\ge0.
+\end{equation}
+A violation proves infeasibility for that model and bound; optimizer failure
+alone does not. Adding source patterns enlarges the feasible set only when
+the old patterns and their bounds remain available.
+
+\section{Coupled equilibrium, sensitivities and accuracy}
+\subsection{The physical residual versus a numerical root iteration}
+Expand graphs about a compatible reference using dimensionless pinned,
+volume-preserving basis functions, $h=h_{\rm ref}+\sum q_i\phi_i$.
+Coordinates $q_i$ are in m, and the residual components are in N:
+\begin{equation}\label{eq:residual}
+ R(q,x)=\nabla_qE(q)-F_{\rm ac}(q,x)=0.
+\end{equation}
+Each residual evaluation requires acoustics on the \emph{current} geometry.
+A Newton step solves
+\begin{equation}\label{eq:newton}
+ K_{\rm eff}\Delta q=-R,\qquad
+ K_{\rm eff}=K_{\rm mech}-A_{\rm ac},\quad
+ K_{\rm mech}=\nabla_q^2E,\quad A_{\rm ac}=\partial_qF_{\rm ac}.
+\end{equation}
+Line search or trust regions enforce geometry and residual safeguards. The
+iteration number is not physical time. A target-based initial guess is
+legitimate, but a converged root does not select a physical basin of attraction.
+
+The acoustic shape derivative includes the changed wave, not only the
+evaluation location. Differentiating $A(q)P(q,x)=B(q)w(x)$ gives
+\begin{equation}\label{eq:wave-shape}
+ A\,\delta P=B\,\delta w+(\delta B)w-(\delta A)P.
+\end{equation}
+Substitute this into the differentiated quadratic traction and include
+normal, area and basis changes where applicable. Frozen wave sensitivities
+are not this full derivative. Check the assembled derivative independently
+with finite differences at several step sizes.
+
+\subsection{Static command sensitivity and coupled adjoint}
+On a regular equilibrium branch define $B_{\rm ac}=\partial_xF_{\rm ac}$.
+Then
+\begin{equation}\label{eq:implicit-sensitivity}
+ K_{\rm eff}\delta q=B_{\rm ac}\delta x,\qquad
+ \frac{\partial q}{\partial x}=K_{\rm eff}^{-1}B_{\rm ac}.
+\end{equation}
+For a smooth real objective $\mathcal J(q,x)$, the adjoint and reduced gradient are
+\begin{equation}\label{eq:adjoint}
+ K_{\rm eff}^T\lambda=\partial_q\mathcal J,\qquad
+ \frac{d\mathcal J}{dx}=\partial_x\mathcal J+B_{\rm ac}^T\lambda.
+\end{equation}
+This follows directly by eliminating $\delta q$ in the total differential;
+see the general adjoint framework~\cite{giles2000}. Clipping, branch changes
+and maxima attained by changing rays are nonsmooth events and need separate
+constraint treatment, not blind use of this formula.
+
+\subsection{From force mismatch to shape and spot error}
+At the target $q^\star$, let $r_\star=R(q^\star,x)$ and let a nearby actual
+root be $q^\star+\delta q$. Locally,
+\begin{equation}\label{eq:residual-error}
+ \delta q=-K_{\rm eff}^{-1}r_\star+O(\|\delta q\|^2).
+\end{equation}
+This expansion requires regularity and proximity; an ill-conditioned inverse
+can amplify small pressure mismatch. With scaled physical norms and a
+height-evaluation operator $H_j$,
+\begin{equation}\label{eq:height-bound}
+ e_{h,j}\lesssim\|H_jK_{\rm eff}^{-1}\|\,\|r_\star\|,
+ \qquad e_{h,j}=\sup_{0\le r\le a_j}|h_j(r)-h_j^\star(r)|.
+\end{equation}
+The symbol $\lesssim$ denotes a leading-order diagnostic here, not a rigorous
+global error bound. A purely mechanical inverse $K_{\rm mech}^{-1}$ cannot
+replace $K_{\rm eff}^{-1}$ without justifying neglected acoustic feedback.
+
+Fix the launch cone $\mathcal L$ and detector $z=z_2$. If a ray exits at
+$\mathbf x$ in direction $\mathbf d$ with $d_z>0$, its detector coordinate is
+\begin{equation}\label{eq:detector}
+ \mathbf s=\mathbf x_\perp+\frac{z_2-x_z}{d_z}\mathbf d_\perp,
+ \qquad e_{\rm spot}=\sup_{\ell\in\mathcal L}\|\mathbf s(\ell)\|_2.
+\end{equation}
+Each interface intersection solves
+\begin{equation}
+ x_z+\tau d_z-h_j(|\mathbf x_\perp+\tau\mathbf d_\perp|)=0,
+ \qquad \tau>0,
+\end{equation}
+followed by the Snell map in Eq.~\eqref{eq:snell-full}. Reject rays that fail
+interception, transmission, pupil or physical-apparatus clearance; do not
+remove them from the denominator of an acceptance statement. For a smooth
+fully transmitted ray family, $\delta\mathbf s=S_q\delta q$ to first order.
+Thus local optical sensitivity involves $S_qK_{\rm eff}^{-1}$, not pressure
+error alone and not height error alone without slope information.
+
+The joint stationary accuracy test is
+\begin{equation}\label{eq:acceptance}
+ e_{h,0},e_{h,1}\le\varepsilon_h,\qquad
+ e_{\rm spot}\le\varepsilon_s,\qquad
+ \text{all prescribed rays transmitted},
+\end{equation}
+with fixed coordinates, no piston removal and no best-focus shift.
+For this project $\varepsilon_h=10^{-8}$ m. A strict
+$\varepsilon_s=5\times10^{-7}$ m must not be confused with approximate
+acceptance of a $5.13\times10^{-7}$ m result. Sampled maxima require their
+sampling and refinement evidence; they are not automatic continuum certificates.
+
+\section{Stability, formation and adaptable SSL families}
+\subsection{Variational Stokes evolution and its limits}
+For incompressible three-phase mean velocities $\mathbf U$, define
+\begin{equation}\label{eq:dissipation}
+ a_h(\mathbf U,\mathbf W)=\sum_\ell\int_{\Omega_\ell(h)}
+ 2\mu_\ell D(\mathbf U):D(\mathbf W)\dd V,\qquad
+ (G_h\mathbf U)_j=U_z-\nabla h_j\cdot\mathbf U_\perp.
+\end{equation}
+Velocities are continuous across interfaces and zero on no-slip walls.
+Minimizing $a_h(\mathbf U,\mathbf U)/2$ subject to incompressibility and
+$G_h\mathbf U=\dot h$ defines a symmetric resistance $Z_h$ where the
+constrained problem is well posed. Its inverse is the Stokes mobility $M_h$.
+The reduced graph balance and evolution are
+\begin{equation}\label{eq:stokes-flow}
+ Z_h\dot h=f_{\rm ac}(h,u)-E'_h,\qquad
+ \dot q=M(q)[F_{\rm ac}(q,x(t))-\nabla_qE(q)].
+\end{equation}
+For a fixed imposed load $f^\star$ independent of geometry,
+\begin{equation}
+ \frac{d}{dt}\big(E[h]-\langle f^\star,h\rangle\big)
+ =-\langle\dot h,Z_h\dot h\rangle\le0.\label{eq:fixed-load-energy}
+\end{equation}
+This identity does not apply unchanged to a geometry-dependent acoustic load;
+fixed emitter commands are not fixed traction. The distinction is essential
+when interpreting a prescribed-pressure formation test.
+
+At a quiescent equilibrium with fixed commands, $R=0$ removes the derivative
+of the mobility from the linearization:
+\begin{equation}\label{eq:stokes-stability}
+ \delta\dot q=-M_\star K_{\rm eff}\delta q.
+\end{equation}
+In a finite-dimensional Stokes model, eigenvalues strictly in the left
+half-plane imply local linear asymptotic stability. A positive mechanical
+Hessian alone is insufficient, and nonnormality can permit transient growth.
+
+An inertial model must retain fluid momentum and its coupling consistently:
+\begin{equation}\label{eq:mean-momentum}
+ \rho_\ell(\partial_t\mathbf U_\ell+\mathbf U_\ell\cdot\nabla\mathbf U_\ell)
+ =-\nabla\bar p_\ell+\mu_\ell\Delta\mathbf U_\ell
+ -\rho_\ell g\mathbf e_z+\mathbf f_{\ell,\rm additional},
+ \qquad\nabla\cdot\mathbf U_\ell=0.
+\end{equation}
+The acoustic interface traction enters the mean stress condition; extra bulk
+forces must be derived without double counting. A justified finite reduction
+may produce $M_{\rm in}\delta\ddot q+D\delta\dot q+K_{\rm eff}\delta q=0$,
+but that equation is not a substitute for deriving its operators.
+
+\subsection{Adaptive commands and fixed-machine constraints}
+Let a parameter vector $p$ describe requested optical states, with user-supplied
+$z_1$. A differentiable admissible path must satisfy
+\begin{equation}\label{eq:family-tangent}
+ c(p;\mathcal M)=0,\qquad D_pc\,\dot p=0.
+\end{equation}
+For exact equilibrium tracking, $R(q^\star(p),x(p))=0$ gives the necessary
+local source-authority equation
+\begin{equation}\label{eq:tracking-authority}
+ B_{\rm ac}\dot x=K_{\rm eff}\frac{\partial q^\star}{\partial p}\dot p.
+\end{equation}
+It must be solvable within the tangent cone of active command limits.
+This relation tests local authority; it does not prescribe continuation as
+the inverse method or prove existence of a global path. At finite speed,
+the Stokes load would additionally require
+\begin{equation}\label{eq:dynamic-load}
+ F_{\rm ac}(q_d,x(t))=\nabla E(q_d)+Z(q_d)\dot q_d,
+\end{equation}
+and an inertial/streaming model adds its corresponding stresses. This explains
+why equilibrium commands alone need not preserve stigmatism during motion.
+
+Axisymmetric design does not exclude perturbations proportional to
+$e^{im\theta}$ with $m\ne0$. Stability of a streaming base flow requires
+linearizing that flow, acoustic coupling and boundary conditions; a quiescent
+spectrum cannot certify it. Thermal feedback, changing indices and curing
+belong to separate declared extensions.
+
+\section{Cartesian singlets as a prescribed target family}
+\label{sec:ssl-specialization}
+The objective is to determine source commands for a \emph{prescribed} lens,
+not to optimize its conjugates. The fixed prescription is
+\begin{equation}\label{eq:ssl-data}
+ \mathcal P=(n_0,n_1,n_2,z_0,z_1,z_2,v_0,t,R,a,\lambda_{\rm opt}),
+ \qquad v_1=v_0+t,\quad 0<a\le R,\quad t>0.
+\end{equation}
+All axial positions are laboratory coordinates. The user supplies $z_1$;
+$t$ is central thickness, $R$ the bounding radius, and $a$ the qualified
+optical radius. The two target graphs $h_j^\star$ satisfy
+\begin{equation}\label{eq:ssl-graphs}
+ \Gamma_j=\{(r\cos\theta,r\sin\theta,h_j(r)):0\le r\le R\},
+ \qquad h_j^\star(0)=v_j,\qquad j=0,1.
+\end{equation}
+The machine data $\mathcal M$ include end caps $Z_b,Z_t$, rim levels $H_j$,
+phase volumes $V_\ell$, densities $\rho_\ell$, sound speeds $c_\ell$,
+surface tensions $\sigma_j$, gravity $g$, acoustic frequency $\omega$,
+source supports and boundary admittance $Y$. These are not silently changed
+to accommodate a target. The optical wavelength and acoustic frequency are
+different physical inputs.
+
+The resulting Cartesian target is now supplied to the general variational
+inverse of Sections~\ref{sec:mf-variational-inverse} and~\ref{sec:mf-source-inverse}.
+The source optimization does not change this optical prescription.
+
+\section{Constructing the two prescribed Cartesian surfaces}
+\subsection{Signed optical path and branch selection}
+For one surface, let $O=z_o$, $I=z_i$ be its laboratory conjugates, $v$ its
+vertex, and $n_o,n_i$ its indices. Define
+\begin{align}
+ D_o(r,z)&=\sqrt{r^2+(z-O)^2},&D_i(r,z)&=\sqrt{r^2+(z-I)^2},\label{eq:distances}\\
+ F(r,z)&=s_on_oD_o+s_in_iD_i-C,&
+ C&=s_on_o|v-O|+s_in_i|v-I|.\label{eq:oval}
+\end{align}
+For finite nonzero conjugates and positive axial propagation at the vertex,
+$s_o=-\operatorname{sgn}(O-v)$ and $s_i=\operatorname{sgn}(I-v)$.
+The graph is the connected regular branch $F(r,h(r))=0$ through $h(0)=v$.
+This is the unsquared Cartesian construction of Silva-Lora and
+Torres~\cite{silva2020}. A polynomial obtained by squaring may have additional
+roots and does not replace the branch test.
+
+Let $\mathbf x$ be a surface point and set
+\begin{equation}
+ \mathbf d_o=s_o\frac{\mathbf x-\mathbf O}{D_o},\qquad
+ \mathbf d_i=s_i\frac{\mathbf I-\mathbf x}{D_i},\qquad
+ \nabla F=n_o\mathbf d_o-n_i\mathbf d_i.\label{eq:snell-gradient}
+\end{equation}
+Since $F$ is constant on the surface, its tangential gradient vanishes.
+For $\mathbf T=\mathbf I-\mathbf m\mathbf m^T$ and the normal $\mathbf m$
+directed into the transmitted medium, this gives
+\begin{equation}
+ n_o\mathbf T\mathbf d_o=n_i\mathbf T\mathbf d_i.\label{eq:snell-tangent}
+\end{equation}
+To select physical transmission rather than reflection or a wrong branch,
+put $\eta_n=n_o/n_i$ and $c_o=\mathbf d_o\cdot\mathbf m$ and evaluate
+\begin{equation}\label{eq:snell-full}
+ \mathbf d_t=\eta_n\mathbf d_o+
+ \left[\sqrt{1-\eta_n^2(1-c_o^2)}-\eta_nc_o\right]\mathbf m.
+\end{equation}
+Require $c_o>0$, a nonnegative radicand, forward interception of the next
+surface, and $\mathbf d_t=\mathbf d_i$. A finite margin from grazing and
+critical refraction is required for well-conditioned sensitivities.
+
+\subsection{Slopes and curvature without fitting a conic}
+Implicit differentiation supplies the exact graph derivatives:
+\begin{align}
+ h'&=-\frac{F_r}{F_z},\label{eq:slope}\\
+ h''&=-\frac{F_{rr}+2F_{rz}h'+F_{zz}(h')^2}{F_z}.\label{eq:second}
+\end{align}
+These require $F_z\ne0$. For each distance $D=\sqrt{r^2+(z-Z)^2}$,
+\begin{equation}\label{eq:distance-derivatives}
+ D_{rr}=\frac{(z-Z)^2}{D^3},\qquad
+ D_{rz}=-\frac{r(z-Z)}{D^3},\qquad D_{zz}=\frac{r^2}{D^3}.
+\end{equation}
+The derivatives of $F$ are the corresponding signed, index-weighted sums.
+At the vertex, $F_r=0$ and $F_z=n_o-n_i$. Thus, for unequal indices,
+\begin{equation}\label{eq:vertex-curvature}
+ h''(0)=\frac{n_i/(I-v)-n_o/(O-v)}{n_i-n_o}.
+\end{equation}
+This is a useful independent paraxial check on the implicit surface, not an
+approximation used in its full-aperture construction. Equal indices, a focus
+at the vertex, collimated limits and graph folds require separate handling.
+
+\subsection{Shared intermediate conjugate and finite thickness}
+Apply the construction to
+\begin{equation}\label{eq:two-local}
+ (n_o,z_o,n_i,z_i)_0=(n_0,z_0-v_0,n_1,z_1-v_0),\quad
+ (n_o,z_o,n_i,z_i)_1=(n_1,z_1-v_1,n_2,z_2-v_1).
+\end{equation}
+The common point is $\mathbf Z_1=(0,0,z_1)$, not equal vertex-relative
+distances. Consider the important branch with a real object before the lens,
+$z_1$ beyond both faces and a real final image after it. Let $\mathbf x_0$
+and $\mathbf x_1$ be the actual successive ray intersections. Then
+\begin{align}
+ n_0|\mathbf x_0-\mathbf Z_0|+n_1|\mathbf Z_1-\mathbf x_0|&=C_0,\\
+ -n_1|\mathbf Z_1-\mathbf x_1|+n_2|\mathbf Z_2-\mathbf x_1|&=C_1.
+\end{align}
+Because the ray meets both faces before its intermediate focus,
+\begin{equation}
+ |\mathbf Z_1-\mathbf x_0|-|\mathbf Z_1-\mathbf x_1|
+ =|\mathbf x_1-\mathbf x_0|.
+\end{equation}
+Adding the two path equations gives the actual constant optical path
+\begin{equation}\label{eq:pair-opl}
+ n_0|\mathbf x_0-\mathbf Z_0|+n_1|\mathbf x_1-\mathbf x_0|
+ +n_2|\mathbf Z_2-\mathbf x_1|=C_0+C_1.
+\end{equation}
+Together with the transmission checks, this proves axial geometrical
+stigmatism for this branch. Other real/virtual placements require the
+appropriate signed propagation segments. No aplanatic, achromatic or
+diffraction-limited conclusion follows from this identity alone.
+
+\section{Admissible geometry and compatibility with one machine}
+For full-frame graphs, define
+\begin{align}
+ V_0[h]&=\int_{D_R}(h_0-Z_b)\dd A,&
+ V_1[h]&=\int_{D_R}(h_1-h_0)\dd A,\label{eq:volumes}\\
+ V_2[h]&=\int_{D_R}(Z_t-h_1)\dd A,&
+ V_0+V_1+V_2&=\pi R^2(Z_t-Z_b).
+\end{align}
+The admissible set has prescribed $V_0,V_1$, rim values $h_j(R)=H_j$,
+axis regularity $h'_j(0)=0$ and positive gaps
+\begin{equation}
+ h_0-Z_b\ge d_{\min},\qquad h_1-h_0\ge d_{\min},\qquad
+ Z_t-h_1\ge d_{\min}>0.\label{eq:gaps}
+\end{equation}
+Volume preservation implies $\int\eta_0\dd A=\int\eta_1\dd A=0$;
+the rim variations vanish. For a target, the measured compatibility residual is
+\begin{equation}\label{eq:compatibility}
+ c(\mathcal P;\mathcal M)=
+ (h_0^\star(R)-H_0,\ h_1^\star(R)-H_1,
+ V_0[h^\star]-V_0^{\mathcal M},\ V_1[h^\star]-V_1^{\mathcal M}).
+\end{equation}
+Its components have different units and need their own tolerances.
+An incompatible target is rejected, not altered by the acoustic optimizer.
+If Cartesian geometry is imposed only for $r\le a<R$, full annular graphs
+must be explicitly supplied before these equations can be evaluated.
+
+The family accessible to a sealed apparatus is contained in
+\begin{equation}\label{eq:compatible-family}
+ \mathcal C_{\mathcal M}=\{\mathcal P:c(\mathcal P;\mathcal M)=0,
+ \text{branch, gap and optical-access conditions hold}\}.
+\end{equation}
+Consequently, arbitrary changes in conjugates and thickness need not be
+compatible even before acoustic reachability is considered. Where $c$ is
+smooth and its Jacobian has constant rank $r_c$, the regular level-set
+theorem gives local dimension $\dim\mathcal P-r_c$ for the equality-constrained
+family. This is a conditional geometric statement, not an assumed rank count.
+
+\section{Verification obligations and scope of the result}
+The equations define a reusable inverse procedure, not universal feasibility.
+Before accepting a stationary SSL, verify the independent optical construction,
+volume/rim compatibility, full force residual, fixed-detector ray coverage,
+and fixed-command spatial convergence. Analytical checks should include:
+\begin{enumerate}
+ \item The implicit vertex curvature in Eq.~\eqref{eq:vertex-curvature},
+ and a supported collimated branch against its exact conic limit.
+ \item Planar hydrostatics, spherical Laplace pressure and the signed
+ gravitational Hessian in Eqs.~\eqref{eq:required-load}--\eqref{eq:coercivity}.
+ \item A layered analytic acoustic problem, transmission flux continuity
+ and the independent power identity in Eq.~\eqref{eq:power}.
+ \item Analytic source and shape derivatives against independent finite
+ differences at multiple scales; physical and numerical conditioning reported separately.
+ \item Wave, surface and ray refinement at fixed commands, with the
+ resulting numerical uncertainty compared against Eq.~\eqref{eq:acceptance}.
+\end{enumerate}
+The report's existing 0.513 micrometre stationary candidate and partial
+formation diagnostic remain evidence for their recorded models only.
+No new simulation is performed by these derivations. A legitimate stationary
+claim is: \emph{the specified commands realize the requested SSL within a
+declared, independently verified equilibrium model and tolerance}. Formation,
+stability and dynamic tracking are additional, separately testable claims.

@@ -1,0 +1,164 @@
+\section{Distributed sources and their forward operator}\label{sec:sources}
+
+\subsection{Source distributions precede an array}
+Fix a regular interface, material state and frequency satisfying the harmonic
+assumptions of \cref{sec:acoustics}. Let $\Gamma_a\subseteq\partial\mathcal D_c$
+be the permitted boundary source support, and let $D_s\subset\mathcal D_c$ be
+the permitted volume source support. Either can have several components and
+can be empty. Define the complex peak source fields
+\begin{equation}
+ u=(g,\bm F,q),\qquad
+ [g]=\mathrm{m\,s^{-1}},\quad [\bm F]=\mathrm{N\,m^{-3}},
+ \quad [q]=\mathrm{s^{-1}}.
+ \label{eq:distributed-control}
+\end{equation}
+Here $g$ is imposed outward boundary velocity, $\bm F$ is a first-order
+body-force density, and $q$ is an optional volumetric dilation rate in the
+linear acoustic equations. Volume fields are understood phase by phase and
+vanish outside $D_s$. No restriction to radial, annular, or equal-phase
+sources is made. Their physical time signals are the real parts of their
+phasors multiplied by $e^{-\mathrm i\omega t}$.
+
+The dilation source is a generalized acoustic representation, not an extra
+unexplained mass supply in \cref{eq:mass}. An implementation must derive it
+from its mechanism, such as a moving source volume or heat input, and supply
+the associated mean mass, energy and thermal balances. In a closed,
+mass-conserving mechanical realization one can set $q=0$ and use boundary
+motion and body forcing. An acoustic source description alone does not specify
+its mean mechanical reaction or heat production.
+
+For definiteness choose positive reference area $S_a$, source volume $V_s$,
+and amplitudes $g_0,F_0,q_0$. Define a complex Hilbert source space
+$\mathcal U$ with squared norm
+\begin{equation}
+ \norm{u}_{\mathcal U}^2=
+ \frac{1}{S_ag_0^2}\int_{\Gamma_a}|g|^2\dd A+
+ \frac{1}{V_sF_0^2}\int_{D_s}|\bm F|^2\dd V+
+ \frac{1}{V_sq_0^2}\int_{D_s}|q|^2\dd V.
+ \label{eq:source-norm}
+\end{equation}
+Omit components that are not available. This norm is dimensionless; it is not
+automatically power. The corresponding complex inner product is conjugate
+linear in its first argument. Spatial smoothness can instead be penalized
+with a Sobolev norm. The admissible subset $\mathcal U_{\rm ad}$ specifies
+support, amplitude, smoothness and any hardware restrictions. Temporal
+bandwidth is a condition on a waveform or envelope, not on a single phasor.
+
+The displayed weak and trace equations assume regular enough source fields
+and solutions. In the explicit derivation, $\bm F,q$ are supported away from
+the interface and outer wall. Separated source and observation sets permit
+additional interior regularity; singular point sources need a different
+function-space treatment. Measure-valued Helmholtz source inversion is one
+such treatment \cite{pieper2020}; its existence and sparse-recovery results
+do not automatically apply to a quadratic interface-stress objective.
+
+\subsection{An explicit transmission problem}
+The following is a useful, limited member of the general model: constant
+real $\rho_\ell,c_\ell$ in each phase, negligible first-order capillary
+compliance, negligible mean advection, and inviscid bulk acoustics. Dissipation
+is represented here by a declared boundary admittance. The forced equations are
+\begin{equation}
+ -\mathrm i\omega\rho_\ell\bm V_\ell=-\nabla P_\ell+\bm F_\ell,
+ \qquad
+ -\frac{\mathrm i\omega}{\rho_\ell c_\ell^2}P_\ell
+       =-\nabla\cdot\bm V_\ell+q_\ell.
+ \label{eq:forced-first-order}
+\end{equation}
+Define $\alpha_\ell=1/\rho_\ell$ and
+$\beta_\ell=\omega^2/(\rho_\ell c_\ell^2)$. Eliminating velocity gives
+\begin{equation}
+ L_\ell P_\ell:=-\nabla\cdot(\alpha_\ell\nabla P_\ell)-\beta_\ell P_\ell
+       =-\nabla\cdot(\alpha_\ell\bm F_\ell)-\mathrm i\omega q_\ell.
+ \label{eq:forced-helmholtz}
+\end{equation}
+The colon-equals sign defines the operator $L_\ell$. With $\partial_n$ taken
+along the same minus-to-plus normal on both sides, transmission is
+\begin{equation}
+ \jump{P}=0,\qquad \jump{\alpha\partial_nP}=0,
+ \qquad v=\frac{\alpha_\ell\partial_nP_\ell}{\mathrm i\omega}.
+ \label{eq:transmission-source}
+\end{equation}
+The scalar $v$ is the common acoustic normal-velocity trace; its units are
+velocity. Pressure continuity here is the stated high-frequency reduction,
+not a replacement for the full interface conditions at all frequencies.
+
+Let $\bm n_a$ be the domain-outward normal on the cylinder boundary, and let
+$Y(\bm x,\omega)$ be a prescribed acoustic admittance with units
+$\mathrm{m\,Pa^{-1}\,s^{-1}}$. Set $g=0$ outside $\Gamma_a$ and impose
+\begin{equation}
+ \bm V\cdot\bm n_a=YP+g,
+ \qquad
+ \alpha\partial_{n_a}P=\mathrm i\omega(YP+g).
+ \label{eq:source-robin}
+\end{equation}
+The second equation uses the stated absence of $\bm F$ near the wall.
+The case $Y=0$ is prescribed wall velocity. A passive local admittance has
+$\Rea Y\geq0$; arbitrary elastic wall dynamics need a coupled operator in
+place of this scalar relation. An open exterior also needs its own radiation
+condition. Even with passive boundaries, well-posedness at the chosen frequency
+must be established; an undamped cavity at an eigenfrequency is not covered
+by the inverse operator used below.
+
+For a complex, globally continuous test pressure $\psi\in H^1(\mathcal D_c)$,
+where $H^1$ means a square-integrable function with square-integrable first
+derivatives, integration by parts yields $a_\Gamma(P,\psi)=b(u,\psi)$, with
+\begin{align}
+ a_\Gamma(P,\psi)&=
+  \sum_\ell\int_{\Omega^\ell}
+   (\alpha_\ell\nabla P_\ell\cdot\nabla\bar\psi
+                         -\beta_\ell P_\ell\bar\psi)\dd V
+      -\mathrm i\omega\int_{\partial\mathcal D_c}YP\bar\psi\dd A,
+      \label{eq:acoustic-weak-a}\\
+ b(u,\psi)&=\mathrm i\omega\int_{\Gamma_a}g\bar\psi\dd A
+       +\int_{D_s}\alpha\bm F\cdot\nabla\bar\psi\dd V
+       -\mathrm i\omega\int_{D_s}q\bar\psi\dd V.
+       \label{eq:acoustic-weak-b}
+\end{align}
+A bar denotes complex conjugation. The weak form defines exactly how the
+distributed controls enter the wave operator. It can be replaced systematically
+by a thermoviscous or solid-coupled weak form; those replacements also change
+the load and its adjoint. Established active Helmholtz control illustrates the
+importance of source support, resonance and regularization
+\cite{hubenthal2016}. That literature controls compatible wave fields in stated
+regions; it is not a theorem of arbitrary fluid-shape controllability.
+
+\subsection{Input power is an independent consistency condition}
+Define the net time-averaged acoustic source power entering this canonical
+problem by
+\begin{equation}
+ P_{\rm src}=-\frac12\Rea\int_{\Gamma_a}P\bar g\dd A
+    +\frac12\Rea\int_{D_s}\bm F\cdot\bar{\bm V}\dd V
+    +\frac12\Rea\int_{D_s}P\bar q\dd V.
+ \label{eq:source-power}
+\end{equation}
+The minus sign for $g$ follows from its outward convention: positive work into
+the fluid uses traction $-P\bm n_a$. Every term has units of watts. In a settled
+state with lossless bulk coefficients, the power identity is
+\begin{equation}
+ \boxed{P_{\rm src}=
+       \frac12\int_{\partial\mathcal D_c}\Rea Y\,|P|^2\dd A.}
+ \label{eq:power-identity}
+\end{equation}
+To derive it, put $\psi=P$ in \cref{eq:acoustic-weak-a,eq:acoustic-weak-b},
+take $-\Ima/(2\omega)$, and substitute
+$\bm V=\alpha(\nabla P-\bm F)/(\mathrm i\omega)$.
+The term $\bm F\cdot\bar{\bm F}$ contributes no real source work in that
+substitution. Real bulk loss, mean work, or unresolved wall layers require
+their corresponding terms in a more complete power balance. Net acoustic
+power is distinct from gross electrical consumption and from
+\cref{eq:source-norm}.
+
+\subsection{Cylinder symmetry does not impose source symmetry}
+Let $(r,\theta,z)$ be cylindrical coordinates, with $r^2=x_1^2+x_2^2$.
+Only when geometry, material state and boundary operators are invariant under
+rotation can the linear wave problem be separated into integer azimuthal
+orders $m\in\mathbb Z$, proportional to $e^{\mathrm i m\theta}$. Products
+of an order-$m$ field with the conjugate of an order-$n$ field have order
+$m-n$. Thus quadratic radiation loads contain differences of the excited
+angular orders. One pure angular order produces an axisymmetric mean normal
+load in this invariant configuration; coherent combinations can produce
+non-axisymmetric loads. Axisymmetric source fields alone cannot produce a
+non-axisymmetric load in this fixed, axisymmetric linear wave problem.
+Once the interface or boundary breaks that symmetry, angular orders couple.
+This selection rule follows from the displayed product, and is a testable
+consequence of the source formulation rather than an array-design assumption.

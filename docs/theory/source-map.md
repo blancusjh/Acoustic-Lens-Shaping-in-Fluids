@@ -1,5 +1,27 @@
 # Primary sources and derivation provenance
 
+## September 2026 revision
+
+The user-supplied [research discussion](https://chatgpt.com/share/6ab2119a-197c-83e9-9801-223a8b8ea45e)
+motivates the geometric multiplier field, continuous source integral, source
+placement, annulus design and maximum geometric-error specification. It is a
+research input, not a primary publication or independent validation. The
+two-face constraint bookkeeping and instantaneous-error budget are explicit
+extensions in this manuscript.
+
+The added [Egarguin–Onofrei–Platt manuscript](https://arxiv.org/abs/1810.02407)
+was downloaded and its formulation, source-distance discussion and conclusions
+checked. It treats active linear Helmholtz fields in prescribed regions, not
+the nonlinear acoustic lens problem. Kowalevsky's original 1875 publication is
+cited for the analytic Cauchy theorem; its bibliographic record was checked,
+but no claim is made to have audited the historical proof in full.
+
+The local pressure-node/cutoff construction is conditional on analytic patches
+and nearby two-sided volume-force access. The source-free wall-only inverse
+and simultaneous two-face boundary control do not follow from that result.
+The saved single-interface package from the discussion is recorded separately
+in `docs/research-program.md`; its assertions are not promoted to two-face evidence.
+
 The manuscript's bibliography is `references.bib`. The private acquisition
 manifest records the origin and checksum of available PDFs. This record
 distinguishes published ingredients from deductions made in this formulation;
@@ -22,15 +44,35 @@ acoustic Cartesian-lens problem presented here.
 | [Luo et al. (2010)](https://doi.org/10.1109/MSP.2010.936019) | Full author-hosted manuscript; quadratic lifting, removal of the rank constraint, and recovery interpretation | Semidefinite relaxation method. Its application to acoustic traction and the coherence caveats are derived in this manuscript. |
 | [Boyd et al. (1994)](https://doi.org/10.1137/1.9781611970777) | Author-hosted book; Lyapunov inequalities, decay-rate and state-feedback LMI sections | Conditional finite-dimensional stability certificates. The complete coupled free-boundary problem is not thereby convex. |
 | [Elgarisi et al. (2021)](https://doi.org/10.1364/OPTICA.438763) | Local author manuscript, published metadata; fluidic shaping and solidification | A distinct fabrication and retention route, not evidence of unforced acoustic shape persistence. |
+| [Hubenthal and Onofrei (2016)](https://doi.org/10.1016/j.apnum.2016.03.003) | Author manuscript; abstract, section 2 operator formulation, compactness/range discussion and equations (2.9)–(2.11); journal metadata checked on arXiv | Regularized active Helmholtz field control, support separation and sensitivity. Their exterior-domain field approximation is not a controllability theorem for nonlinear fluid shapes in a cylinder. |
+| [Pieper, Tang, Trautmann and Walter (2020)](https://doi.org/10.1007/s10589-020-00205-y) | Author manuscript; source model (1.1), very weak formulation (2.4), Theorem 2.1, source/observation separation, section 3 adjoint and Proposition 3.4; journal metadata checked on arXiv | Measure-valued source inversion requires singular-source regularity and an appropriate observation pairing. Its pressure-recovery results are not transferred to our quadratic traction inverse. |
 
-The following are explicit deductions within this manuscript: the curvature
-and target traction evaluated from the signed Cartesian path Hessian; the
-normal and tangential radiation-load quadratic forms under stated acoustic
-assumptions; their load-feasibility certificate and phase-invariance rank
-bound; the conditional obstruction to unforced retention; and the combined
-optical, mechanical, dynamic and robust optimization formulation. These use
-standard variational and control identities. No novelty priority is claimed.
+The following are deductions supplied in the manuscript, using standard
+variational, Hilbert-space and control identities; no novelty priority is claimed:
 
-The manuscript does not reproduce figures from these papers. Its only diagram
-is an original vector diagram of the problem dependencies, not a rendering of
-a proposed experimental apparatus.
+- The source weak form and its power identity under the declared phase, source
+  and normal conventions.
+- Continuous quadratic traction operators, necessary sign/effort bounds, the
+  conditional compactness obstruction, regularized existence and admissible
+  source-space approximation proofs.
+- The exact zero-source Hessian and amplitude minimization along a source
+  direction for the projected penalized objective.
+- The explicit interface covectors, adjoint pressure/flux jumps and spatial
+  boundary/body-force/dilation gradients for the frozen transmission problem.
+- Angular-order difference selection, source-phase nonuniqueness, and the
+  finite-channel local rank bound.
+- The conditional unforced-retention obstruction, full-base-flow stability
+  requirements and local Lyapunov remainder estimate.
+- Cartesian path-Hessian curvature and required traction, and the conditional
+  target-to-source selection within the general fluid problem.
+
+The new compactness and existence results state their functional assumptions;
+none proves the regularity or global solvability of the full thermoviscous
+free-boundary system. The explicit acoustic adjoint is derived by Green's
+identity, including its interface terms. Its extension to the full coupled
+problem remains an identified theoretical step.
+
+The manuscript does not reproduce paper figures. Its dependency diagram is an
+original vector diagram, not a proposed experimental apparatus. The algebra
+audit is an exact symbolic check of selected equations, not CFD verification
+or experimental validation.

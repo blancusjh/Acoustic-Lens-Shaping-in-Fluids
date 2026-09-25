@@ -1,0 +1,123 @@
+\section{Variational load inversion with coupled viscous fluids}
+\label{sec:viscous-load-inverse}
+
+\subsection{The load is a multiplier of a physical evolution constraint}
+Retain three incompressible Newtonian phases with positive viscosities,
+piecewise constant densities, constant interfacial tensions, and pinned
+contact lines at stationary no-slip walls. The interfaces may depend on both
+horizontal coordinates. This subsection first excludes acoustic bulk forcing,
+streaming and thermal evolution to define a mechanically realizable ideal-load
+test. Those effects are restored as separate terms below, not claimed absent
+in the eventual apparatus. Let $G_h\bm U$ be the graph kinematic map:
+$(G_h\bm U)_j=U_z-\nabla h_j\cdot\bm U_{xy}$ on interface $j$.
+Use $\langle f,v\rangle_D=\sum_j\int_D f_jv_j\dd x\dd y$.
+The velocity is continuous across both interfaces, divergence-free in each
+phase, and vanishes at the walls. Define the viscous bilinear form
+\[
+ a_h(\bm U,\bm W)=\sum_{\ell=0}^2\int_{\Omega_\ell(h)}
+           2\mu_\ell\bm D(\bm U):\bm D(\bm W)\dd V.
+\]
+It has units of power when both arguments are velocities. The dissipation
+potential is half this quadratic form. A Rayleighian construction of this
+kind underlies viscous variational models \cite{qian2006}; here the contact
+line is fixed and no moving-contact-line law is introduced.
+
+For a supplied graph velocity $v_d$ compatible with all sealed volumes,
+consider the saddle functional
+\begin{equation}
+ \mathscr R=\tfrac12 a_h(\bm U,\bm U)
+       +\langle E'_h,G_h\bm U\rangle_D
+       -\sum_\ell\int_{\Omega_\ell}p_\ell\nabla\cdot\bm U\dd V
+       -\langle f,G_h\bm U-v_d\rangle_D.
+ \label{eq:viscous-rayleighian}
+\end{equation}
+Here $E'_h$ is the full capillary--gravity variation. Variation in $p$ and
+$f$ enforces incompressibility and the desired interface speed. Variation in
+$\bm U$ gives the three-fluid Stokes weak equation. Thus $f$ is the total
+required normal load, not a guessed pressure amplitude. Tangential traction
+continuity is a natural condition of this scalar normal-load problem. If a
+desired evolution requires incompatible tangential or bulk forces, normal
+pressure alone does not realize it.
+
+On the admissible volume-preserving graph-velocity space define
+\begin{equation}
+ \mathcal D_h(v)=\min_{\nabla\cdot\bm U=0,\ G_h\bm U=v}
+                      \tfrac12 a_h(\bm U,\bm U)
+             =\tfrac12\langle v,\mathcal Z_hv\rangle_D.
+ \label{eq:viscous-resistance}
+\end{equation}
+Existence and the operator domain require suitable trace regularity and
+compatible boundary data. Reciprocity and nonnegative dissipation imply a
+symmetric positive resistance $\mathcal Z_h$ on that domain. Its off-diagonal
+blocks couple the two interfaces through the middle fluid. Where its inverse
+exists, $\mathcal M_h=\mathcal Z_h^{-1}$ is the Stokes mobility. The load and
+forward equations are respectively
+\begin{equation}
+ \boxed{f_{\rm req}=E'_h+\mathcal Z_hv_d-\lambda,
+ \qquad \dot h=\mathcal M_h(f-E'_h).}
+ \label{eq:viscous-load-and-forward}
+\end{equation}
+Pressure constants are understood modulo the volume constraints. Neither a
+diagonal relaxation constant nor an independently moving front and back is
+consistent with this construction. At $v_d=0$ the viscous term vanishes,
+recovering exactly the earlier static load. Adding viscosity does not change
+a quiescent equilibrium pressure requirement; it changes the approach to it.
+
+\subsection{What changes when inertia and additional forcing are retained}
+With material acceleration retained, the inverse weak equation for a desired
+admissible fluid motion is
+\begin{align}
+ \langle f-E'_h,G_h\bm W\rangle_D
+ &=\sum_\ell\int_{\Omega_\ell}\rho_\ell
+       (\partial_t\bm U+\bm U\cdot\nabla\bm U)\cdot\bm W\dd V
+       +a_h(\bm U,\bm W) \nonumber\\
+ &\quad-\sum_\ell\int_{\Omega_\ell}p_\ell\nabla\cdot\bm W\dd V
+       -\mathcal W_{\rm additional}(\bm W).
+ \label{eq:inertial-inverse-weak}
+\end{align}
+The last term is the power pairing of any additional mean bulk and tangential
+loads. A scalar $f$ exists only if the right-hand side factors through $G_h$:
+it must vanish for every admissible test velocity with $G_h\bm W=0$ after the
+bulk equations and pressure are solved. This is a necessary compatibility
+condition, not automatic controllability of a prescribed shape history.
+Hydrodynamic memory means that shape and its instantaneous velocity alone
+need not determine the required load. If the endpoint is a streaming state,
+convective and viscous stresses persist there. With heating, density and
+surface tension change and Marangoni stresses appear; the constant-property
+static map is no longer the complete required acoustic load.
+
+\subsection{A forward test that does not prescribe its answer}
+For the ideal-load diagnostic choose the fixed full-domain static map
+$f^*=E'_{h^*}-\lambda$ and start the forward problem at flat compatible
+interfaces. The target appears only in this fixed load, not in a time-varying
+shape prescription. In the Stokes limit its loaded potential obeys
+\[
+ \frac{\dd\mathcal U}{\dd t}
+ =-\langle E'_h-f^*,\mathcal M_h(E'_h-f^*)\rangle_D\leq0.
+\]
+For a finite-dimensional volume-constrained discretization with bounded,
+positive mobility and a strongly convex loaded potential on an invariant
+admissible set, convergence to its unique minimizer follows. A continuum or
+large-deformation assertion needs the corresponding regularity, gap and
+coercivity bounds; a computed time series is not their proof.
+
+The first numerical implementation uses axisymmetric Taylor--Hood velocity
+and pressure elements on a moving, interface-fitted three-layer mesh. Velocity
+is continuous, pressure is continuous within each phase but allowed to jump
+at the interfaces. Only one global pressure gauge is removed. Both interface
+volume fluxes follow from the phasewise divergence constraints. The full
+axisymmetric strain includes hoop strain. The graph kinematics are projected
+into pinned volume-preserving spline coordinates; the transpose of the same
+map transfers generalized loads into the fluid. This reciprocal pairing
+preserves the discrete work identity. The mesh represents curved interfaces
+by line segments and must be refined separately from the spline space.
+
+This first implementation is creeping flow: inertia, non-axisymmetric flow,
+streaming and heat transport are not implemented by it. Viscosities are
+explicit scenario inputs, not measured values inferred from desired settling.
+Report velocity-based Reynolds estimates and a viscous diffusion-time check
+before using it for a physical formation claim. In particular an abrupt load
+switch in the Stokes model has no resolved inertial startup. Time refinement,
+fluid-grid refinement, independent analytic flow limits and energy checks are
+required. A pressure-history or array design cannot be declared sufficient
+merely because this restricted diagnostic reaches its endpoint.

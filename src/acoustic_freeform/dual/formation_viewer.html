@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{font:15px system-ui;background:#f4f7fb;color:#172b42;margin:16px}button,input{margin:6px}canvas{width:100%;max-width:1200px;background:white;border-radius:10px} .note{max-width:1150px;line-height:1.5} #time{font-weight:700;color:#153f65}
+</style></head><body>
+<h2>Two moving interfaces · acoustic formation and joint spot diagram</h2>
+<p class="note">Saved forward simulation, 0–8 ms; inviscid, axisymmetric reduced dynamics (16 modes). Both interfaces start flat and at rest. The prescribed 10 ms source ramp is still in progress. No target interpolation, no settling claim, no verified 10 nm performance. Materials are hypothetical.</p>
+<button id="play">Play</button><button id="reset">Reset</button><input id="frame" type="range" min="0" value="0" step="1" style="width:45%"><span id="time"></span>
+<p>Blue: bottom/front interface. Orange: top/back interface. Drag the 3D panel to orbit. Playback is slowed; the displayed time is physical.</p>
+<canvas id="formation" width="1200" height="820"></canvas>
+<p class="note">3D geometry has equal length scales; only declared cylinder boundaries, 64 end annuli and 48 sidewall bands are shown. These are ideal boundary-source regions, not calibrated speaker housings. Source shading follows command amplitude. The 2D profile uses exaggerated vertical scale, explicitly separate axes. Rays refract through <em>both</em> interfaces; the detector stays at z = 151 mm. Missed clear-aperture rays are counted, not silently refocused. No chamber-window optics, diffraction, streaming, viscosity, heat or 3D disturbances are included.</p>
+<p id="validation" class="note"></p>
+<script>
+const D=__DATA__;
+const canvas=document.getElementById('formation'),c=canvas.getContext('2d'),slider=document.getElementById('frame');slider.max=D.t.length-1;
+const colors=['#1276bf','#db6b16'];let f=0,playing=false,last=0,angle=.65,tilt=.35;
+const max=(a)=>Math.max(...a),absmax=(a)=>Math.max(...a.map(Math.abs));
+const spotLimit=1.05*max(D.spots.flat().filter(x=>x).map(p=>absmax(p)))*1e3;
+const errLimit=1.1*max(D.error.flat(2).map(Math.abs))*1e6;
+const peakLimit=1.1*max(D.peak.flat())*1e6,rmsLimit=1.1*max(D.rms)*1e3;
+const zMin=(D.levels[1]+Math.min(...D.profile.flat(2),...D.target.flat()))*1e3-.1;
+const zMax=(D.levels[2]+Math.max(...D.profile.flat(2),...D.target.flat()))*1e3+.1;
+function txt(s,x,y,color='#172b42',size=13){c.fillStyle=color;c.font=size+'px system-ui';c.fillText(s,x,y)}
+function panel(col,row,title,xmin,xmax,ymin,ymax,xlabel,ylabel){const square=col===2&&row===0,x=col*400+58+(square?20:0),y=row*400+52,w=square?278:318,h=278;
+ c.strokeStyle='#d0dbe6';c.lineWidth=1;c.strokeRect(x,y,w,h);txt(title,col*400+18,row*400+26,'#172b42',15);
+ txt(xlabel,x+65,y+h+44);txt(ylabel,x,y-8,'#53677b',11);
+ for(let i=0;i<5;i++){let v=xmin+(xmax-xmin)*i/4;txt(v.toPrecision(3),x+w*i/4-12,y+h+18,'#53677b',10);let u=ymin+(ymax-ymin)*i/4;txt(u.toPrecision(3),x-49,y+h-h*i/4+4,'#53677b',10)}
+ return {x,y,w,h,X:v=>x+(v-xmin)/(xmax-xmin)*w,Y:v=>y+h-(v-ymin)/(ymax-ymin)*h};}
+function line(p,x,y,color,dash=[]){c.save();c.beginPath();c.rect(p.x,p.y,p.w,p.h);c.clip();c.strokeStyle=color;c.lineWidth=1.8;c.setLineDash(dash);c.beginPath();x.forEach((v,i)=>{i?c.lineTo(p.X(v),p.Y(y[i])):c.moveTo(p.X(v),p.Y(y[i]))});c.stroke();c.restore()}
+function scene(){txt('Cylinder + 112 source regions · equal scale',18,26,'#172b42',15);
+ function P(x,y,z){let u=x*Math.cos(angle)-y*Math.sin(angle),v=x*Math.sin(angle)+y*Math.cos(angle);return[202+u*34000,200+(v*Math.sin(tilt)-z*Math.cos(tilt))*34000]}
+ function ring(r,z,color,width=1){c.strokeStyle=color;c.lineWidth=width;c.beginPath();for(let i=0;i<=72;i++){let a=i*2*Math.PI/72,p=P(r*Math.cos(a),r*Math.sin(a),z);i?c.lineTo(...p):c.moveTo(...p)}c.stroke()}
+ D.regions.forEach((s,i)=>{let alpha=.10+.45*D.envelope[f]*D.drive[i];let color=`rgba(105,80,160,${alpha})`;ring(s.r_min_m,s.z_min_m,color);ring(s.r_max_m,s.z_max_m,color)});
+ for(let j=0;j<8;j++){let a=j*Math.PI/4,p=P(D.R*Math.cos(a),D.R*Math.sin(a),D.levels[0]),q=P(D.R*Math.cos(a),D.R*Math.sin(a),D.levels[3]);c.strokeStyle='#a8b7c799';c.beginPath();c.moveTo(...p);c.lineTo(...q);c.stroke()}
+ for(let face=0;face<2;face++){for(let k=0;k<D.r.length;k+=25)ring(D.r[k],D.levels[face+1]+D.profile[f][face][k],colors[face]+'aa',1.2);
+ for(let a=0;a<2*Math.PI;a+=Math.PI/4){c.strokeStyle=colors[face];c.beginPath();D.r.forEach((r,k)=>{let p=P(r*Math.cos(a),r*Math.sin(a),D.levels[face+1]+D.profile[f][face][k]);k?c.lineTo(...p):c.moveTo(...p)});c.stroke()}}
+ txt('Radius 4 mm · cell height 6 mm',30,350);txt('Source amplitude envelope: '+D.envelope[f].toFixed(3),30,372);
+}
+function draw(){c.clearRect(0,0,1200,820);scene();let p=panel(1,0,'Both physical interface profiles',-4,4,zMin,zMax,'signed radius [mm]','z [mm]; unequal axis scales');
+ let rr=D.r.slice(1).reverse().map(r=>-r*1e3).concat(D.r.map(r=>r*1e3));
+ for(let j=0;j<2;j++){let z=D.profile[f][j].map(h=>(h+D.levels[j+1])*1e3),target=D.target[j].map(h=>(h+D.levels[j+1])*1e3);line(p,rr,target.slice(1).reverse().concat(target),colors[j],[4,4]);line(p,rr,z.slice(1).reverse().concat(z),colors[j]);}txt('Dashed = targets; solid = forward state',460,394,'#53677b',11);
+ p=panel(2,0,'Spot after BOTH interfaces',-spotLimit,spotLimit,-spotLimit,spotLimit,'detector x [mm]','detector y [mm]; fixed extent');let count=0;c.fillStyle='#305cb5aa';for(const point of D.spots[f])if(point){count++;c.beginPath();c.arc(p.X(point[0]*1e3),p.Y(point[1]*1e3),1.7,0,2*Math.PI);c.fill()};txt(`${count}/${D.spots[f].length} rays transmitted; RMS ${(D.rms[f]*1e3).toFixed(4)} mm`,853,394,'#53677b',11);
+ p=panel(0,1,'Current pupil error: both faces',0,D.a*1e3,-errLimit,errLimit,'radius [mm]','height minus target [µm]');for(let j=0;j<2;j++)line(p,D.r.slice(0,D.error[f][j].length).map(r=>r*1e3),D.error[f][j].map(x=>x*1e6),colors[j]);line(p,[0,D.a*1e3],[.01,.01],'#27895f',[3,3]);line(p,[0,D.a*1e3],[-.01,-.01],'#27895f',[3,3]);
+ p=panel(1,1,'Sampled maximum pupil error',0,D.t.at(-1)*1e3,0,peakLimit,'physical time [ms]','maximum |error| [µm]');for(let j=0;j<2;j++)line(p,D.t.map(t=>t*1e3),D.peak.map(x=>x[j]*1e6),colors[j]);line(p,[D.t[f]*1e3,D.t[f]*1e3],[0,peakLimit],'#172b42',[3,3]);txt('10 nm = 0.01 µm; not reached',460,794,'#9a362c',12);
+ p=panel(2,1,'Fixed-detector spot evolution',0,D.t.at(-1)*1e3,0,rmsLimit,'physical time [ms]','geometric RMS radius [mm]');line(p,D.t.map(t=>t*1e3),D.rms.map(x=>x*1e3),'#305cb5');line(p,[D.t[f]*1e3,D.t[f]*1e3],[0,rmsLimit],'#172b42',[3,3]);
+ document.getElementById('time').textContent=`t = ${(D.t[f]*1e3).toFixed(3)} ms · frame ${f+1}/${D.t.length}`;slider.value=f;
+ window.dualFormationState={frame:f,physical_time_s:D.t[f],bottom_vertex_m:D.levels[1]+D.profile[f][0][0],top_vertex_m:D.levels[2]+D.profile[f][1][0],spot_rms_m:D.rms[f],source_regions:D.regions.length,playing};}
+ document.getElementById('validation').textContent='Fixed-command time-step discrepancy (0.25 vs 0.125 ms), bottom/top: '+D.checks.fixed_command_time_step_discrepancy_max_m.map(x=>(x*1e6).toFixed(3)+' µm').join(' / ')+'. Dynamic-mode and acoustic-grid convergence are not established. Longer exploratory runs exceeded the displacement guard; this is an initial formation segment, not a successful lens fabrication.';
+ document.getElementById('play').onclick=()=>{playing=!playing;if(playing&&f===D.t.length-1)f=0;document.getElementById('play').textContent=playing?'Pause':'Play';draw()};
+ slider.oninput=()=>{playing=false;f=Number(slider.value);document.getElementById('play').textContent='Play';draw()};document.getElementById('reset').onclick=()=>{playing=false;f=0;document.getElementById('play').textContent='Play';draw()};
+ let drag=null;canvas.onpointerdown=e=>{const box=canvas.getBoundingClientRect();if((e.clientX-box.left)/box.width<1/3){drag=[e.clientX,e.clientY];canvas.setPointerCapture(e.pointerId)}};canvas.onpointermove=e=>{if(drag){angle+=(e.clientX-drag[0])*.01;tilt=Math.max(-1,Math.min(1,tilt+(e.clientY-drag[1])*.01));drag=[e.clientX,e.clientY];draw()}};canvas.onpointerup=()=>drag=null;
+ function tick(t){if(playing&&t-last>110){last=t;f=Math.min(f+1,D.t.length-1);if(f===D.t.length-1){playing=false;document.getElementById('play').textContent='Play'}draw()}requestAnimationFrame(tick)}draw();requestAnimationFrame(tick);
+</script></body></html>

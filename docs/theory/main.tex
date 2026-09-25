@@ -20,6 +20,10 @@
 \fancyfoot[C]{\thepage}
 \setlength{\parskip}{0.35em}
 \setlength{\parindent}{1.2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\AtBeginBibliography{\small}
 \setlist{itemsep=0.2em,topsep=0.3em}
 \numberwithin{equation}{section}
 \newtheorem{proposition}{Proposition}[section]
@@ -40,45 +44,58 @@
 \DeclareMathOperator{\Rea}{Re}
 \DeclareMathOperator{\Ima}{Im}
 \DeclareMathOperator*{\argmin}{arg\,min}
-\hypersetup{pdftitle={Acoustic formation and stabilization of Cartesian optical interfaces},pdfauthor={Acoustic Freeform Lab},pdfsubject={General theoretical formulation of acoustic inverse design for stigmatic liquid diopters}}
-\title{Acoustic formation and stabilization of Cartesian optical interfaces\\[0.5em]
-\large A general formulation of optical targets, wave--fluid coupling, inverse design and control}
+\hypersetup{pdftitle={Acoustic shaping of custom lens surfaces},pdfauthor={Acoustic Freeform Lab},pdfsubject={Variational inverse, two lens faces, distributed sources and Cartesian ovoids}}
+\title{Acoustic shaping of custom lens surfaces\\[0.5em]
+\large Geometric constraints, dual traction, distributed sources and stability\\
+with Cartesian ovoids and simultaneous front--back shaping}
 \author{Acoustic Freeform Lab\\\small Private research manuscript}
-\date{6 September 2026 \quad---\quad Version 1.0}
+\date{23 September 2026 \quad---\quad Version 3.9}
 \begin{document}
 \maketitle
 \begin{abstract}
-This manuscript formulates the creation of optical liquid interfaces by acoustic
-actuation without prescribing a chamber, emitter arrangement, fluid pair or
-operating frequency. The principal targets are Cartesian surfaces that image one
-axial point stigmatically into another; more general aspherical targets enter the
-same mechanical problem. We distinguish transient formation, stable driven
-operation and persistence after actuation ends. A continuum model provides the
-reference description, while a conditional separation of acoustic and interface
-timescales yields explicit radiation-traction and actuator-response equations.
-The required static traction is derived by constrained variation of capillary and
-gravitational energy. The acoustic inverse problem is expressed through Hermitian
-quadratic forms, with feasibility conditions and a semidefinite relaxation whose
-physical interpretation depends on coherence. Implicit sensitivities, adjoint
-equations and constrained optimal-control conditions connect surface accuracy,
-formation trajectories and stability. A conditional obstruction shows why a
-finite acoustic pulse cannot permanently retain a non-equilibrium shape in a
-fully relaxed, unchanged liquid. All statements of feasibility and stability are
-conditional on specified material laws and boundary data. No numerical design,
-simulation result, or universal controllability claim is made.
+We organize acoustic lens shaping as a sequence from prescribed geometry to
+required traction, continuous acoustic synthesis, finite source realization,
+and maintained operation. The multiplier field enforcing the target surface is
+its required normal traction. Extending this variational inverse to both lens
+faces exposes their shared volume, pressure and acoustic coupling. A continuous
+quadratic integral operator maps distributed sources to loads; array placement,
+frequency and amplitudes restrict and optimize that map. A local analytic
+pressure-node construction illustrates conditional realizability and supplies
+a necessary carrier-displacement bound. Cartesian ovoids specialize the general
+geometry without defining the actuator architecture. The accuracy specification
+is a maximum absolute cycle-mean error of ten nanometres on each driven-liquid
+face; instantaneous motion is a separate diagnostic. Reachability, formation from the
+unforced equilibrium, and stability under three-dimensional disturbances remain
+distinct conditions. The results are conditional mathematical deductions and a
+verification framework; they do not establish ten-nanometre performance of a
+physical apparatus.
 \end{abstract}
-\tableofcontents
-\newpage
+\clearpage
+{\small\tableofcontents}
+\clearpage
 \input{sections/01_scope}
-\input{sections/02_optics}
-\input{sections/03_mechanics}
-\input{sections/04_acoustics}
-\input{sections/05_inverse}
-\input{sections/06_stability}
-\input{sections/07_control}
-\input{sections/08_validity}
+\input{sections/02_mechanics}
+\input{sections/02b_geometric_inverse}
+\input{sections/03_acoustics}
+\input{sections/04_sources}
+\input{sections/04b_constructive}
+\input{sections/05_reachability}
+\input{sections/06_arrays}
+\input{sections/06b_placement}
+\input{sections/07_source_adjoint}
+\input{sections/08_stability}
+\input{sections/08b_reduced_formation}
+\input{sections/08c_ideal_load}
+\input{sections/08d_viscous_inverse}
+\input{sections/09_control}
+\input{sections/10_optics}
+\input{sections/10b_accuracy}
+\input{sections/10c_numerical_evidence}
+\input{sections/10d_precision_inverse}
+\input{sections/11_validity}
 \appendix
-\input{sections/09_derivations}
+\input{sections/12_derivations}
+\input{sections/13_optional_optics}
 \clearpage
 \printbibliography[heading=bibintoc,title={References}]
 \end{document}

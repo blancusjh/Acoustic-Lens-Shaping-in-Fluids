@@ -1,0 +1,52 @@
+\section{A two-interface inertial formation diagnostic}
+\label{sec:reduced-formation}
+The following is a deliberately restricted forward model, not a replacement
+for the viscous, streaming, thermal and three-dimensional problem above.
+Assume axisymmetric, incompressible, irrotational mean motion, impermeable
+slip walls, and small interface displacement relative to each layer depth.
+Evaluate the kinetic energy on the flat reference domains. Retain the
+nonlinear graph capillary energy and recompute harmonic radiation loads on
+the instantaneous graphs. No viscous damping or settling law is introduced.
+
+Here is a direct derivation of the inertial coupling. For a radial mode
+$J_0(kr)$, with $J_1(kR)=0$, the potential in each layer satisfies
+$\phi_{zz}-k^2\phi=0$. The zero mode is excluded by the sealed-volume
+constraints. If the bottom and top vertical velocities of a layer of depth
+$h$ are $u$ and $v$, respectively, its potential is
+\[
+ \phi(z)=\frac{v-u\cosh(kh)}{k\sinh(kh)}\cosh(kz)
+             +\frac{u}{k}\sinh(kz),\qquad 0\le z\le h.
+\]
+Integration of $\rho|\nabla\phi|^2/2$, or Green's identity, gives kinetic
+energy per radial modal norm
+\[
+ \frac{\rho}{2k}\bigl[\coth(kh)(u^2+v^2)-2uv\,\operatorname{csch}(kh)\bigr].
+\]
+Consequently, the two-interface modal mass is
+\[
+ M_k=\frac1k\begin{pmatrix}
+ \rho_0 c_0+\rho_1 c_1&-\rho_1 s_1\\
+ -\rho_1 s_1&\rho_1 c_1+\rho_2 c_2
+ \end{pmatrix}.
+\]
+Here $c_j=\coth(kh_j)$ and $s_j=\operatorname{csch}(kh_j)$.
+Projection of the pinned, volume-preserving spline velocities into these
+radial modes yields a symmetric positive mass matrix $M$. This projection
+must be converged independently of the acoustic mesh. An optional Ritz
+restriction retains the lowest eigenvectors of $K_0 e=\omega^2 M e$;
+it is a declared dynamical resolution, not a source optimization.
+
+With spline coordinates $q$, or their Ritz restriction, the forward equation is
+\[
+ M\ddot q+\nabla E(q)=F_{\rm ac}(q,a(t)g),\qquad q(0)=\dot q(0)=0.
+\]
+The target does not occur on the right-hand side. A specified source envelope
+$a(t)$ is a physical command, not interpolation towards a target. With
+zero drive, the continuous reduced model conserves $\dot q^TM\dot q/2+E(q)$.
+For nonzero drive its derivative is $\dot q^T F_{\rm ac}$; no convergence
+to an equilibrium is implied. A midpoint mechanical update with a predicted
+midpoint acoustic solve is second order locally and must be checked at
+fixed commands by time-step refinement. Large deformation, omitted modes,
+unresolved wave fields and resonant sensitivity can invalidate this diagnostic.
+Neither its error curve nor its optical rendering establishes the ten-nanometre
+criterion of the full apparatus.

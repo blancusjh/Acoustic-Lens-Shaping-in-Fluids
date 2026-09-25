@@ -1,8 +1,24 @@
 # Project architecture
 
-The research repository has one executable package, one public command line, one
-viewer application and separately configured optical experiments. Benchmark infrastructure
-and production evaluation data live in a different directory tree.
+The research repository has one Python package with separately declared physical
+models. The active two-face program is `acoustic_freeform.dual`, invoked with
+`python -m acoustic_freeform.dual CONFIG --out artifacts/EXPERIMENT`.
+The established `lenslab` command and viewer serve the earlier single-face model.
+
+The active precision submodules separate frozen carrier-aware screening
+(`dual.precision`), sequential convex steps (`dual.conic_precision`), optional
+semidefinite diagnostics (`dual.relaxation`), and independent fixed-command
+campaigns. `dual.sources` declares physical boundary regions and SI commands.
+For many sources, the acoustic factorization is reused across source blocks;
+interface responses retain all coherent cross terms without storing every
+full-volume source field. Full fields are recomputed for actual fixed commands.
+`dual.linear` optionally eliminates element-interior unknowns exactly before
+factorization and recovers all pressures afterward. The default full solve
+remains the reference. Matrix-free stationary root iterations are an optional
+numerical algorithm, never a physical time evolution.
+The reused-condensed option updates every physical wave operator, using an
+earlier factorization only as a residual-checked preconditioner. Localized weak
+flux assembly retains exactly the elements supporting the interface rows.
 
 The general theoretical formulation is independent of that numerical apparatus.
 `docs/theory/main.tex` includes ordered section sources and a primary-source
@@ -53,6 +69,16 @@ periodic-domain assumptions do not enter the finite lens. It remains callable as
 `lenslab planar ...` and has its own verification tests and configurations.
 
 ## Artifact contract
+
+Two-face campaigns contain the requested `config.json`, an execution-source
+archive in `provenance/`, independent analytic checks in `validation.json`, and
+per-case source commands and surface/pressure coefficients in SI `.npz` files.
+`results.json` and `report.md` distinguish mean error, carrier motion and the
+status of fixed-command refinement. These stationary states have no physical
+timeline. The non-optical annulus can be varied by the inverse, but the
+Cartesian aperture and all phase volumes stay fixed.
+
+The following additional formats belong to the earlier single-face solver:
 
 Each completed experiment contains:
 

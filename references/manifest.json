@@ -1,5 +1,13 @@
 [
   {
+    "file": "papers/egarguin-2018-source-sensitivity.pdf",
+    "source": "https://arxiv.org/pdf/1810.02407",
+    "doi": "10.48550/arXiv.1810.02407",
+    "sha256": "9793732ffe5f232236d86883969cfb0a7481d5598c8117e17d9942af84221d29",
+    "bytes": 2803427,
+    "acquisition": "Author manuscript linked in the user-supplied discussion, downloaded 2026-09-22. Introduction, formulation, source-separation discussion and conclusions checked."
+  },
+  {
     "file": "papers/bertin-2012-morphologies.pdf",
     "source": "/Users/blancus/Downloads/bertin2012.pdf",
     "doi": "10.1103/PhysRevLett.109.244304",
@@ -111,5 +119,21 @@
     "sha256": "673a63c748e85afaa04ea5dfe7eb81d8d893555342eec88f62c4816b82e4ff44",
     "bytes": 533837,
     "acquisition": "Author manuscript downloaded for private theoretical study."
+  },
+  {
+    "file": "papers/hubenthal-onofrei-2016-helmholtz-control.pdf",
+    "source": "https://arxiv.org/pdf/1504.04900",
+    "doi": "10.1016/j.apnum.2016.03.003",
+    "sha256": "d8619e628e07cc08bb0283583ab606af62d42d58ec7a36106c592a9b2aba43c1",
+    "bytes": 7031099,
+    "acquisition": "Public author manuscript downloaded for private distributed-source theoretical study on 2026-09-07."
+  },
+  {
+    "file": "papers/pieper-2020-inverse-point-sources.pdf",
+    "source": "https://arxiv.org/pdf/1805.03310",
+    "doi": "10.1007/s10589-020-00205-y",
+    "sha256": "6e1b38cc1e290fb6f742e6005eb21f34111e3ae8a8893aab6b5eb0891c4ae82f",
+    "bytes": 1529647,
+    "acquisition": "Public author manuscript downloaded for private distributed-source theoretical study on 2026-09-07."
   }
 ]

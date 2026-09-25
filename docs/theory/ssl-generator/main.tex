@@ -1,0 +1,77 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{STIXTwoText-Regular.otf}[BoldFont=STIXTwoText-Bold.otf,ItalicFont=STIXTwoText-Italic.otf,BoldItalicFont=STIXTwoText-BoldItalic.otf]
+\setsansfont{texgyreheros-regular.otf}
+\setmonofont{texgyrecursor-regular.otf}[Scale=0.82]
+\usepackage[margin=24mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs,microtype}
+\newtheorem{proposition}{Proposition}[section]
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\usepackage{booktabs,longtable,array,calc,graphicx,xcolor}
+\usepackage{caption}
+\newcounter{none}
+\usepackage{fancyvrb,framed,upquote}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[backend=biber,style=numeric,sorting=none,doi=true,url=false,isbn=false]{biblatex}
+\addbibresource{../references.bib}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\usepackage{bookmark,fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Acoustic Freeform Lab}
+\fancyhead[R]{\small SSL generator: vision and theory}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+\numberwithin{equation}{section}
+\hypersetup{pdftitle={Programmable stigmatic singlet lenses: vision and theoretical framework},pdfauthor={Acoustic Freeform Lab}}
+\title{Programmable stigmatic singlet lenses\\[0.6em]
+\large A fixed-prescription acoustic compiler\\Vision, theoretical framework, and verification contract}
+\author{Acoustic Freeform Lab\\\small Private research design report}
+\date{24 September 2026 --- Version 1.2: multi-fluid variational foundation}
+\begin{document}
+\maketitle
+\begin{abstract}
+We start from a vessel containing multiple immiscible fluids and a prescribed
+collection of admissible three-dimensional interfaces. A constrained shape
+Lagrangian identifies the required mechanical traction as the multiplier of
+the desired geometry, with pressure gauge freedom determined by compartment
+volumes and connectivity. A viscous Rayleighian extends this inverse to
+compatible interface velocities; an inertial weak formulation states its
+limits. Only after establishing this load problem do we introduce continuous
+acoustic sources, finite-array amplitude and phase optimization, and coupled
+forward verification. Cartesian singlets are a later target specialization
+with user-supplied conjugates, thickness and frame radius. Stationary accuracy,
+stability, formation and adaptive transitions are distinct claims. This is a
+mathematical design specification, not a universal realizability theorem or
+an experimental validation.
+\end{abstract}
+\begin{center}
+\begin{tikzpicture}[node distance=5mm,box/.style={draw=blue!40!black,rounded corners,align=center,text width=105mm,minimum height=9mm,font=\small},>=Latex]
+\node[box] (a) {Multi-fluid vessel and arbitrary admissible target interfaces};
+\node[box,below=of a] (b) {Constrained variational problem $\rightarrow$ required traction};
+\node[box,below=of b] (c) {Continuous acoustic inverse $\rightarrow$ finite source commands};
+\node[box,below=of c] (d) {Coupled equilibrium, stability and forward verification};
+\node[box,below=of d] (e) {Cartesian SSL specialization and adaptive-lens contract};
+\draw[->] (a)--(b); \draw[->] (b)--(c); \draw[->] (c)--(d); \draw[->] (d)--(e);
+\end{tikzpicture}
+\end{center}
+\clearpage
+\tableofcontents
+\clearpage
+\part{Mathematical formulation and derivations}
+\input{theory.tex}
+\clearpage
+\part{Vision and software contract}
+\input{vision.tex}
+\clearpage
+\printbibliography[heading=bibintoc,title={Primary references}]
+\end{document}

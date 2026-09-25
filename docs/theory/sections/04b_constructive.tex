@@ -1,0 +1,81 @@
+\section{Local trace synthesis and its geometric cost}
+\label{sec:constructive}
+
+The geometric multiplier gives a target load, not independent acoustic Cauchy
+data. Nevertheless, a conditional construction clarifies what very rich source
+access would permit. This section is a deduction for the inviscid transmission
+reduction; it is not an experimental fabrication result.
+
+\subsection{Two-fluid traces and a pressure node}
+Pressure and normal velocity are continuous at the ideal interface. Write their
+traces as $P$ and $v$, and $\Delta\rho=\rho_- -\rho_+$. Eliminating tangential
+velocities from \cref{eq:radiation-flux} gives
+\begin{equation}
+ \Pi=\underbrace{\frac14\left(\frac1{\rho_-c_-^2}
+                       -\frac1{\rho_+c_+^2}\right)}_{c_P}|P|^2
+       +\frac{\Delta\rho}{4}|v|^2
+       +\frac{\Delta\rho}{4\omega^2\rho_-\rho_+}|\Gs P|^2.
+ \label{eq:trace-traction-constructive}
+\end{equation}
+The tangential radiation-traction jump vanishes in this ideal model. The
+coefficients and orientation follow from the momentum-flux convention, as in
+the coupled-wave approach of \cite{chesneau2022}.
+
+Set $H=\sigma\kappa+\Delta\rho\Phi$. If $\Delta\rho\ne0$ and an admissible
+pressure offset makes $(H-\lambda_V)/\Delta\rho>0$, then
+\begin{equation}
+ P|_\Gamma=0,\qquad v=2\sqrt{(H-\lambda_V)/\Delta\rho}
+ \label{eq:pressure-node-traces}
+\end{equation}
+realizes the required normal load at the trace level. If $\Delta\rho=0$ but
+$c_P\ne0$, the alternative $v=0$, $P=\sqrt{(H-\lambda_V)/c_P}$ does so.
+Equal density and sound speed give zero ideal radiation-traction contrast,
+irrespective of optical-index contrast. These trace prescriptions have yet to
+be produced by admissible sources.
+
+\subsection{Conditional local fields and volume forces}
+For analytic target patches and analytic positive radicand, let
+$\varphi_\ell$ solve $(\Delta+k_\ell^2)\varphi_\ell=0$ locally with
+$\varphi_\ell=0$, $\partial_n\varphi_\ell=v$ on the patch and
+$k_\ell=\omega/c_\ell$. The analytic Cauchy theorem \cite{kowalevsky1875} applies to this
+noncharacteristic surface. It is a local existence statement; elliptic Cauchy
+continuation to remote walls need not be stable. Let smooth cutoffs $\chi_\ell$
+equal one near the patch and vanish inside the available analytic neighborhood.
+With $\widetilde\varphi_\ell=\chi_\ell\varphi_\ell$, define
+\begin{align}
+ \bm V_\ell&=\nabla\widetilde\varphi_\ell,&
+ P_\ell&=\frac{\rho_\ell c_\ell^2}{\mathrm i\omega}
+                              \Delta\widetilde\varphi_\ell,\\
+ \bm F_\ell&=\frac{\rho_\ell c_\ell^2}{\mathrm i\omega}
+                   \nabla(\Delta+k_\ell^2)\widetilde\varphi_\ell,&q_\ell&=0.
+ \label{eq:cutoff-volume-force}
+\end{align}
+Substitution verifies both forced first-order acoustic balances. The force is
+supported where the cutoff changes, leaving the prescribed interface traces
+unaltered. This requires independently realizable volume forces on both sides,
+with compatible mean reactions and energy budgets. At contact lines and patch
+edges the construction requires additional matching. For two separated faces,
+disjoint source neighborhoods may supply local constructions, but a single
+boundary-only Helmholtz problem imposes additional joint compatibility.
+Neither local construction proves controllability from a cylindrical array.
+
+\subsection{A necessary bound for strict geometric accuracy}
+Let $\epsilon_a$ bound peak normal carrier displacement. Since
+$v=-\mathrm i\omega\Xi$, a pressure-node realization obeys
+$|\Pi|\leq |\Delta\rho|\omega^2\epsilon_a^2/4$.
+Its load has one sign. Consequently a necessary condition, independent of the
+permitted pressure offset, is
+\begin{equation}
+ \operatorname{osc}_{\Gamma}H
+ \leq\frac{|\Delta\rho|\omega^2\epsilon_a^2}{4},\qquad
+ f\geq\frac{1}{\pi\epsilon_a}
+            \sqrt{\frac{\operatorname{osc}_{\Gamma}H}{|\Delta\rho|}}.
+ \label{eq:pressure-node-displacement-bound}
+\end{equation}
+Here $\operatorname{osc}H=\sup H-\inf H$. A strictly positive load margin
+increases this cost. For graph-height error the vertical oscillation at fixed
+horizontal position is $\Xi/n_z$, so the pointwise height bound is stronger
+where $|n_z|<1$. This inequality rejects a particular realization when violated;
+pressure-dominated or tangential-field realizations may avoid it. Raising
+frequency also changes attenuation, thermal loads, acoustic resolution and
+actuator response, so it is not by itself a demonstrated solution.

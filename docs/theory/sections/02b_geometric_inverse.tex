@@ -1,0 +1,129 @@
+\section{Geometric constraints, dual traction, and two lens faces}
+\label{sec:geometric-inverse}
+
+The organizing inverse map is
+\[
+ \text{target geometry}\ \longrightarrow\ \text{required traction}
+ \ \longrightarrow\ \text{continuous sources}
+ \ \longrightarrow\ \text{finite realization}.
+\]
+Formation and stability test the resulting sources in the forward dynamics.
+Every arrow after the geometric calculation is a feasibility problem, not an
+unconditional implication of success. Cartesian geometry will specialize this
+construction in \cref{sec:optics}; the equations apply to arbitrary admissible
+interfaces and three-dimensional perturbations.
+
+\subsection{The geometric multiplier is a traction field}
+For a graph with the lens below it, let $D$ be its horizontal domain and
+$D_o\subset D$ the prescribed optical aperture. With pinned support, constant
+surface tension, and uniform gravity, write
+\begin{align}
+ E_0[h]&=\int_D\left(\sigma\sqrt{1+|\nabla h|^2}
+                       +\tfrac12\Delta\rho g_{\rm grav}h^2\right)\dd x\dd y,\\
+ \mathscr L&=E_0[h]-\lambda_V(V[h]-V_0)
+                -\int_{D_o}\Lambda(\bm x)(h-h_\star)\dd x\dd y.
+ \label{eq:geometric-lagrangian}
+\end{align}
+Here $\Lambda$ has pressure units. Its multiplier term is virtual work because
+normal displacement times surface area equals vertical displacement times
+horizontal area. A scalar cannot enforce the pointwise constraint.
+
+\begin{proposition}[Dual field of prescribed geometry]
+For a regular compatible stationary point of
+\cref{eq:geometric-lagrangian}, the geometric multiplier on $D_o$ is
+\begin{equation}
+ \Lambda= -\sigma\nabla\cdot\frac{\nabla h_\star}
+                  {\sqrt{1+|\nabla h_\star|^2}}
+             +\Delta\rho g_{\rm grav}h_\star-\lambda_V
+           =\Pi_{\rm req}.
+ \label{eq:dual-traction}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Variation with respect to $\Lambda$ enforces the target, variation with respect
+to $\lambda_V$ enforces volume, and integration by parts in the $h$ variation
+gives \cref{eq:dual-traction}. Boundary terms vanish for admissible pinned
+variations or give the specified natural support conditions.
+\end{proof}
+For a fully prescribed compatible graph, its volume constraint is redundant;
+the resulting dependence of the constraints explains the additive gauge in
+$\Lambda$. Once the shape is known, this is an explicit differential operator
+on the shape, not a separate elliptic PDE that determines acoustic pressure.
+The mean traction $\Pi$ and the oscillatory acoustic pressure phasor $P$ have
+the same units but different physical meanings.
+
+With a shape-independent load, the second variation is
+\begin{equation}
+ \delta^2 E_0[\eta]=\int_D\left[
+ \sigma\frac{(1+|\nabla h|^2)|\nabla\eta|^2
+                         -(\nabla h\cdot\nabla\eta)^2}
+                       {(1+|\nabla h|^2)^{3/2}}
+        +\Delta\rho g_{\rm grav}\eta^2\right]\dd x\dd y.
+ \label{eq:graph-second-variation}
+\end{equation}
+For $\Delta\rho\geq0$, positive $\sigma$, and a nonempty pinned boundary,
+this is positive for nonzero admissible variations. Thus a compatible critical
+graph is the unique minimizer within this convex graph domain under an ideal
+prescribed load. Acoustic actuation has a shape-dependent load, whose derivative
+must still be subtracted in \cref{eq:effective-stiffness}.
+
+\subsection{Front and back in one apparatus}
+Let the lens occupy $h_f(x,y)<z<h_b(x,y)$, between front and back surfaces.
+The outward normals point downward on the front and upward on the back. In a
+common external fluid of density $\rho_e$, set $\Delta\rho=\rho_L-\rho_e$.
+Ignoring constants from fixed supports,
+\begin{align}
+ E_0&=\int_D\left[\sigma_f\sqrt{1+|\nabla h_f|^2}
+       +\sigma_b\sqrt{1+|\nabla h_b|^2}
+       +\tfrac12\Delta\rho g_{\rm grav}(h_b^2-h_f^2)\right]\dd x\dd y,\\
+ V_L&=\int_D(h_b-h_f)\dd x\dd y.
+ \label{eq:dual-face-energy}
+\end{align}
+The acoustic work is $\int_D(\Pi_b\delta h_b-\Pi_f\delta h_f)\dd x\dd y$.
+Consequently the outward required loads are
+\begin{align}
+ \Pi_f&=+\sigma_f\nabla\cdot\frac{\nabla h_f}{\sqrt{1+|\nabla h_f|^2}}
+                   +\Delta\rho g_{\rm grav}h_f-\lambda_V,\\
+ \Pi_b&=-\sigma_b\nabla\cdot\frac{\nabla h_b}{\sqrt{1+|\nabla h_b|^2}}
+                   +\Delta\rho g_{\rm grav}h_b-\lambda_V.
+ \label{eq:two-face-loads}
+\end{align}
+There is one shared lens pressure multiplier when the exterior is connected
+and hydrostatically equilibrated. Subtracting a separate mean from each face
+would discard the relative load that sets thickness. The pressure gauge is
+the constant function on the \emph{union} of the faces, not two unrelated
+constants. The off-diagonal derivatives $D_{h_b}\Pi_f$ and $D_{h_f}\Pi_b$
+are generally nonzero because both faces scatter the same wave.
+
+A sealed three-layer cylinder is a different, useful test apparatus. Let
+$\rho_0,\rho_1,\rho_2$ denote the lower, lens, and upper fluid densities.
+For upward graph coordinates, set $d_f=\rho_0-\rho_1$ and
+$d_b=\rho_1-\rho_2$. Its gravitational energy is
+$\int_D g_{\rm grav}(d_f h_f^2+d_b h_b^2)/2\dd x\dd y$.
+It separately conserves lower-fluid volume and lens volume; upper-fluid volume
+then follows from the total cylinder volume. In equivalent coordinates,
+both integrals $\int_Dh_f$ and $\int_Dh_b$ are fixed. The two associated
+pressure differences are legitimate constraint multipliers. Required upward
+loads are
+\begin{equation}
+ q_j=-\sigma_j\nabla\cdot\frac{\nabla h_j}{\sqrt{1+|\nabla h_j|^2}}
+          +d_jg_{\rm grav}h_j-\lambda_j,\qquad j\in\{f,b\}.
+ \label{eq:sealed-three-phase}
+\end{equation}
+Here $q_f=-\Pi_f$ and $q_b=\Pi_b$. Stable stratification $d_f,d_b\geq0$
+makes the passive graph energy convex. A dense lens in one connected lighter
+bath does not have that same two-face convexity; the lower face carries the
+opposite gravitational sign. Reservoirs, bypass channels, and moving supports
+must be specified rather than introduced through fitted pressure constants.
+
+\subsection{The non-optical annulus is a design variable}
+Prescribe $h_j=h_{C,j}$ only on each clear aperture. Outside it minimize a
+declared functional, such as $E_0$ or the area-weighted squared required load,
+subject to all volume constraints, support values, clearance and regularity.
+Energy minimization does not minimize source power; that needs the acoustic
+map. A graph with a slope jump at the aperture edge requires a concentrated
+line force. A classical bounded-traction design therefore needs slope matching;
+continuous traction usually demands curvature matching as well. For a
+load-norm objective, an explicit $C^2$ or Sobolev regularity class and its
+matching constraints prevent hidden line actuators. The optimum annulus is
+coupled to the common wave solution on both faces.

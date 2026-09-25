@@ -1,0 +1,288 @@
+\section{The multi-fluid problem for a prescribed shape}
+\label{sec:multifluid-start}
+The starting point is a desired collection of fluid interfaces, not an
+optical prescription or an emitter array. The two questions are:
+\emph{which mechanical tractions support the prescribed shape, and which
+admissible sources can realize those tractions?} Cartesian lenses are a
+later specialization of the target geometry.
+
+\subsection{Domains, interfaces and admissible data}
+A fixed bounded vessel $\mathcal D\subset\R^3$ contains $L$ connected fluid
+regions $\Omega_\ell(\Gamma)$ separated by $J$ smooth interfaces
+$\Gamma=(\Gamma_1,\ldots,\Gamma_J)$. On each interface choose a normal
+$\mathbf n_j$ from region $\ell_j^-$ to region $\ell_j^+$. Define
+\begin{equation}\label{eq:mf-conventions}
+ [\rho]_j^- =\rho_{\ell_j^-}-\rho_{\ell_j^+},\qquad
+ [T]_j=T_{\ell_j^+}-T_{\ell_j^-},\qquad
+ \kappa_j=\nabla_{\Gamma_j}\cdot\mathbf n_j.
+\end{equation}
+Thus an outward normal on a spherical inner phase has $\kappa=2/R_s$.
+The two jump conventions are written explicitly to avoid mixing density
+differences with stress jumps. Distinct disconnected regions of the same
+material count as distinct compartments for pressure and volume constraints.
+
+For the baseline formulation assume immiscible incompressible Newtonian
+fluids with constant $\rho_\ell>0$, $\mu_\ell>0$, constant
+$\sigma_j>0$, and gravitational potential $\Phi(\mathbf x)=gz$.
+Interfaces may be fully three-dimensional; axisymmetry is not imposed.
+The vessel walls are impermeable and stationary, and contact lines are
+pinned. Topology is fixed, interfaces remain separated, and no triple-line
+or moving-contact-line law is introduced. Such laws, compressibility,
+thermal evolution and mass transfer require additional state equations and
+are not hidden in this baseline.
+
+The prescribed target $\Gamma^\star$ must satisfy support, topology,
+clearance and phase-volume conditions. Let the independent conserved
+quantities be
+\begin{equation}\label{eq:mf-volume-constraints}
+ C_a(\Gamma)=\sum_{\ell=1}^L c_{a\ell}|\Omega_\ell(\Gamma)|
+ =C_a^0,\qquad a=1,\ldots,m.
+\end{equation}
+Usually these select $L-1$ independent compartment volumes, since total
+vessel volume is fixed. Reservoirs or bypass connections change the
+constraint set and must be part of the apparatus specification. A target
+violating Eq.~\eqref{eq:mf-volume-constraints} cannot be corrected by
+adjusting pressure multipliers.
+
+\subsection{Forward multi-fluid equations before a static reduction}
+Let $\mathbf U_\ell,p_\ell$ be mean velocity and physical pressure, and
+$T_\ell=-p_\ell I+2\mu_\ell D(\mathbf U_\ell)$, where
+$D(\mathbf U)=(\nabla\mathbf U+\nabla\mathbf U^T)/2$. The bulk equations are
+\begin{align}
+ \nabla\cdot\mathbf U_\ell&=0,\label{eq:mf-divergence}\\
+ \rho_\ell(\partial_t\mathbf U_\ell+
+ \mathbf U_\ell\cdot\nabla\mathbf U_\ell)
+ &=\nabla\cdot T_\ell-\rho_\ell\nabla\Phi+\mathbf b_\ell.
+ \label{eq:mf-momentum}
+\end{align}
+Here $\mathbf b_\ell$ denotes separately specified mean bulk forcing.
+For clean interfaces with continuous velocity, a supplied normal load $f_j$
+with units Pa is defined by
+\begin{equation}\label{eq:mf-interface-laws}
+ V_{n,j}=\mathbf U^-\cdot\mathbf n_j=\mathbf U^+\cdot\mathbf n_j,
+ \qquad [T]_j\mathbf n_j=(\sigma_j\kappa_j-f_j)\mathbf n_j.
+\end{equation}
+Tangential stresses are continuous in this scalar-load baseline. Tangential
+actuation or variable surface tension changes this condition. The sign of
+$f_j$ is chosen so its power input is $\int_{\Gamma_j} f_jV_{n,j}\dd S$.
+For zero load and a static sphere this convention recovers
+$p^- -p^+=2\sigma/R_s$.
+
+These are slow/mean equations. If fast acoustic motion is resolved directly
+in a compressible parent model, radiation forces must not be added a second
+time. The acoustic sections below instead specify a scale-separated
+harmonic model that supplies $f_j$ and states its omitted mechanisms.
+
+\section{The constrained variational inverse for desired interfaces}
+\label{sec:mf-variational-inverse}
+\subsection{Energy and admissible shape variations}
+For the static load inversion in this section set $\mathbf U=0$ and
+$\mathbf b_\ell=0$: the only bulk body force is gravity. Physical pressure
+then has the hydrostatic form $p_\ell=p_\ell^0-\rho_\ell\Phi$.
+Nonconservative bulk forcing or a streaming equilibrium instead requires
+the full weak balance developed below.
+For constant surface tension, define the energy
+\begin{equation}\label{eq:mf-energy}
+ E(\Gamma)=\sum_{j=1}^J\sigma_j|\Gamma_j|
+ +\sum_{\ell=1}^L\rho_\ell\int_{\Omega_\ell(\Gamma)}\Phi\dd V.
+\end{equation}
+Fixed wall energies do not vary for the stated pinned contact lines. If
+$\eta_j$ is normal interface displacement, then
+\begin{align}
+ DE(\Gamma)[\eta]
+ &=\sum_j\int_{\Gamma_j}
+ (\sigma_j\kappa_j+[\rho]_j^-\Phi)\eta_j\dd S,
+ \label{eq:mf-first-variation}\\
+ DC_a(\Gamma)[\eta]
+ &=\sum_j B_{aj}\int_{\Gamma_j}\eta_j\dd S,
+ \qquad B_{aj}=c_{a\ell_j^-}-c_{a\ell_j^+}.
+ \label{eq:mf-volume-variation}
+\end{align}
+The first identity follows from the area variation
+$\delta|\Gamma_j|=\int\kappa_j\eta_j\dd S$ and the transport theorem:
+moving the interface along $\mathbf n_j$ adds volume to its minus side and
+removes it from its plus side. Boundary terms vanish for pinned admissible
+variations. Equation~\eqref{eq:mf-volume-variation} keeps the actual
+compartment connectivity in the inverse problem.
+
+\subsection{The desired shape is a constraint; its multiplier is traction}
+Use a local normal chart about a smooth target,
+\begin{equation}\label{eq:mf-normal-chart}
+ \Gamma_j(\chi_j)=\{\mathbf X+\chi_j(\mathbf X)\mathbf n_j^\star(\mathbf X):
+ \mathbf X\in\Gamma_j^\star\},\qquad \chi_j=0\text{ at the pinned rim}.
+\end{equation}
+The target is $\chi=0$; the chart is restricted to regular, nonintersecting
+interfaces. The geometric variational problem is to find a stationary
+point in $\chi$ and multipliers $(\lambda,\Lambda)$ of
+\begin{equation}\label{eq:mf-shape-lagrangian}
+ \boxed{\mathscr L(\chi,\lambda,\Lambda)=E(\Gamma(\chi))
+ -\sum_a\lambda_a\big(C_a(\Gamma(\chi))-C_a^0\big)
+ -\sum_j\int_{\Gamma_j^\star}\Lambda_j\chi_j\dd S^\star.}
+\end{equation}
+This is a constrained stationarity problem, not an assumption that the
+energy is convex or that a global minimum exists. The geometric multiplier
+$\Lambda_j$ is a field, in Pa; a scalar could not impose a pointwise shape.
+Its virtual work is evaluated on the target chart, which suffices for the
+first variation at $\chi=0$.
+
+Variations in the three groups of variables yield
+\begin{align}
+ \delta_{\Lambda}\mathscr L=0&\ \Longrightarrow\ \chi_j=0,
+ \label{eq:mf-kkt-shape}\\
+ \partial_{\lambda_a}\mathscr L=0&\ \Longrightarrow\ C_a(\Gamma^\star)=C_a^0,
+ \label{eq:mf-kkt-volume}\\
+ \delta_\chi\mathscr L=0&\ \Longrightarrow\
+ \boxed{\Lambda_j=\sigma_j\kappa_j^\star+[\rho]_j^-\Phi
+ -\sum_aB_{aj}\lambda_a.}\label{eq:mf-dual-traction}
+\end{align}
+Consequently $\Lambda_j=f_{{\rm req},j}$ is the normal traction that would
+support the target in the quiescent model. This is the required mechanical
+load, not a prescribed oscillatory acoustic pressure. No source has yet
+been shown to produce it.
+
+\begin{proposition}[Static load inversion]
+For a regular compatible target, any source-generated normal load equal to
+Eq.~\eqref{eq:mf-dual-traction}, with the stated volume, boundary and
+quiescent bulk conditions, satisfies the constrained mechanical first
+variation at that target. Conversely, any such equilibrium satisfies this
+identity modulo its independent volume multipliers.
+\end{proposition}
+\begin{proof}
+Substitute Eq.~\eqref{eq:mf-dual-traction} into
+$DE[\eta]-\sum_j\int f_j\eta_j\dd S$. The remainder is
+$\sum_a\lambda_a DC_a[\eta]=0$ on admissible variations. Conversely,
+under independence of the volume differentials, a force functional that
+vanishes on their common kernel lies in their finite-dimensional span.
+Applying Eqs.~\eqref{eq:mf-first-variation} and
+\eqref{eq:mf-volume-variation} gives the stated representation.
+\end{proof}
+
+Prescribing the complete target makes its volume constraints redundant in
+the augmented problem. The resulting nonuniqueness is physical pressure
+gauge freedom: if $\lambda\mapsto\lambda+\delta\lambda$, then
+$\Lambda_j\mapsto\Lambda_j-\sum_aB_{aj}\delta\lambda_a$.
+Only the pressure-difference subspace allowed by $B$ may be removed.
+Two isolated exterior compartments permit different constants from a
+single connected bath. Subtracting an independent mean on every interface
+without examining this topology can incorrectly remove a required load.
+
+\subsection{Partial prescriptions and genuine free boundaries}
+If only subsets $\Gamma_{j,o}^\star$ are prescribed, restrict the last
+integral in Eq.~\eqref{eq:mf-shape-lagrangian} to those subsets. On an
+unprescribed part with no applied load, stationarity gives
+\begin{equation}\label{eq:mf-free-completion}
+ \sigma_j\kappa_j+[\rho]_j^-\Phi-\sum_aB_{aj}\lambda_a=0.
+\end{equation}
+That is a particular energy-based completion policy, not a universal choice
+of non-optical annulus. If other tractions act there, they enter its right
+side; if another completion functional is chosen, its Euler equation must
+be stated. Smooth joining conditions exclude hidden concentrated line
+forces. The fixed-prescription SSL version requires complete target
+interfaces or an explicitly specified completion before acoustic inversion.
+
+\section{A viscous variational problem for prescribed motion}
+\label{sec:mf-viscous-inverse}
+The preceding inverse concerns equilibrium. A compatible desired normal
+velocity $v_d$ requires an additional load. At the current geometry define
+\begin{align}
+ a_\Gamma(\mathbf U,\mathbf W)&=\sum_\ell\int_{\Omega_\ell}
+ 2\mu_\ell D(\mathbf U):D(\mathbf W)\dd V,\label{eq:mf-viscous-form}\\
+ (G_\Gamma\mathbf U)_j&=\mathbf U\cdot\mathbf n_j,\qquad
+ \langle f,v\rangle_\Gamma=\sum_j\int_{\Gamma_j}f_jv_j\dd S.
+\end{align}
+The velocity space has continuous interfacial traces and no-slip walls.
+In the Stokes limit, with no additional mean bulk force, consider the
+Rayleighian saddle functional
+\begin{equation}\label{eq:mf-rayleighian}
+ \mathscr R(\mathbf U,\pi,f)=\tfrac12a_\Gamma(\mathbf U,\mathbf U)
+ +DE(\Gamma)[G_\Gamma\mathbf U]
+ -\sum_\ell\int_{\Omega_\ell}\pi_\ell\nabla\cdot\mathbf U_\ell\dd V
+ -\langle f,G_\Gamma\mathbf U-v_d\rangle_\Gamma.
+\end{equation}
+Here $DE[G\mathbf U]$ is energy rate, so every term has units W. The
+multiplier $\pi_\ell=p_\ell+\rho_\ell\Phi$ is reduced pressure;
+using the gravitational shape energy and also adding gravity work again
+would double count it. The variational dissipation construction is related
+to~\cite{qian2006}; our pinned interfaces do not adopt its moving-contact-line
+law.
+
+The saddle equations are
+\begin{align}
+ \nabla\cdot\mathbf U_\ell&=0,\qquad G_\Gamma\mathbf U=v_d,
+ \label{eq:mf-rayleigh-constraints}\\
+ a_\Gamma(\mathbf U,\mathbf W)+DE[G_\Gamma\mathbf W]
+ -\sum_\ell\int\pi_\ell\nabla\cdot\mathbf W_\ell\dd V
+ &=\langle f,G_\Gamma\mathbf W\rangle_\Gamma\quad\forall\mathbf W.
+ \label{eq:mf-rayleigh-weak}
+\end{align}
+The requested velocity must conserve every sealed volume:
+$\sum_jB_{aj}\int_{\Gamma_j}v_{d,j}\dd S=0$. Under appropriate regularity
+and compatibility, define the resistance by the constrained dissipation
+minimum
+\begin{equation}\label{eq:mf-resistance}
+ \tfrac12\langle v,Z_\Gamma v\rangle_\Gamma
+ =\min_{\nabla\cdot\mathbf U=0,\;G_\Gamma\mathbf U=v}
+ \tfrac12a_\Gamma(\mathbf U,\mathbf U).
+\end{equation}
+This definition supplies symmetry and nonnegative dissipation; strict
+positivity/invertibility additionally require exclusion of null motions.
+With pressure constants understood on the volume-constrained space,
+\begin{equation}\label{eq:mf-inverse-motion}
+ \boxed{f_{\rm req}=E'_\Gamma+Z_\Gamma v_d-B^T\lambda,\qquad
+ v=M_\Gamma(f-E'_\Gamma),\quad M_\Gamma=Z_\Gamma^{-1}.}
+\end{equation}
+At $v_d=0$ this reduces to Eq.~\eqref{eq:mf-dual-traction}. Off-diagonal
+resistance blocks couple different interfaces through shared fluid regions;
+independent scalar relaxation laws for each face do not reproduce this
+variational problem.
+
+With inertia or additional mean forcing, use the weak momentum balance
+instead of asserting the Stokes Rayleighian remains complete:
+\begin{align}
+ \langle f-E'_\Gamma,G_\Gamma\mathbf W\rangle_\Gamma
+ &=\sum_\ell\int\rho_\ell D_t\mathbf U_\ell\cdot\mathbf W_\ell\dd V
+ +a_\Gamma(\mathbf U,\mathbf W)\nonumber\\
+ &\quad-\sum_\ell\int\pi_\ell\nabla\cdot\mathbf W_\ell\dd V
+ -\mathcal W_{\rm additional}(\mathbf W).\label{eq:mf-inertial-weak}
+\end{align}
+For normal pressure alone to realize a desired motion, this right-hand
+functional must vanish on divergence-free test fields in $\ker G_\Gamma$
+and must define a bounded functional on the normal trace space. Otherwise
+it cannot factor through normal interface work. This necessary compatibility
+condition makes clear that arbitrary fluid motion is not controllable with
+a scalar normal load. In a streaming base state, stationary interfaces do
+not imply $\mathbf U=0$, so the quiescent formula is insufficient.
+
+\section{From the variational load to realizable sources}
+\label{sec:mf-source-inverse}
+The geometric multipliers determine what is needed, not what is reachable.
+Let $\mathcal U_{\rm ad}$ be the allowed continuous source space and let
+$\mathcal Q_{\Gamma^\star}(u)$ be the cycle-mean normal traction generated
+by a declared wave model on the target. The exact stationary inverse is
+\begin{equation}\label{eq:mf-source-equality}
+ \mathcal Q_{\Gamma^\star}(u)=E'_{\Gamma^\star}-B^T\lambda,
+ \qquad u\in\mathcal U_{\rm ad},
+\end{equation}
+together with tangential/bulk compatibility and any power or field limits.
+A useful regularized formulation is
+\begin{equation}\label{eq:mf-source-minimum}
+ \min_{u\in\mathcal U_{\rm ad},\lambda}\;
+ \tfrac12\|\mathcal Q_{\Gamma^\star}(u)-E'_{\Gamma^\star}
+ +B^T\lambda\|_{\mathcal Y}^2+\beta\mathcal R(u).
+\end{equation}
+The norm $\mathcal Y$ and regularizer use explicit reference scales. Minimizing
+over $\lambda$ projects out only the legitimate volume-pressure subspace.
+A positive residual may reflect lack of authority, discretization or local
+optimization failure; it is not by itself an impossibility certificate.
+
+The logical sequence is therefore
+\begin{equation}\label{eq:mf-sequence}
+ \Gamma^\star\ \longrightarrow\ (E',B,\Lambda)
+ \ \longrightarrow\ \mathcal Q_{\Gamma^\star}^{-1}(\Lambda)
+ \ \longrightarrow\ \text{coupled forward verification}.
+\end{equation}
+The inverse notation denotes a possibly empty, nonunique preimage, not an
+assumed invertible operator. Finite emitters restrict $\mathcal U_{\rm ad}$;
+they do not define the underlying variational problem. The following sections
+specialize its mechanics to layered graphs, derive the acoustic source map
+and its optimality equations, and only then construct Cartesian SSL targets.

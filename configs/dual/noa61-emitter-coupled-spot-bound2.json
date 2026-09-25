@@ -1,0 +1,22 @@
+{
+  "material_reference": "configs/dual/noa61-water-pressure-reference.json",
+  "apparatus": {
+    "radial_ports": 128, "side_ports_per_layer": 64,
+    "radial_cells": 128, "cells_per_layer": 64,
+    "acoustic_order": 4, "surface_elements": 104,
+    "frequency_hz": 3600000, "max_source_speed_m_s": 2,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "annulus_match_order": 4, "clear_endcap_radius_m": 0.002,
+  "cache_from": "artifacts/noa61-emitter-2026-09-23/force-448-c4-clear",
+  "initial_source_file": "artifacts/noa61-emitter-2026-09-23/force-448-c4-clear-spot-conic/best-source.npz",
+  "coupled_linearization_file": "artifacts/noa61-emitter-2026-09-23/response-spot-analytic/linearization.npz",
+  "spot_tolerance_m": 2.5e-7, "front_rim_upper_bound_m": -1e-10,
+  "optimizer": "conic", "effort_weight": 0,
+  "second_order_corrections": 3,
+  "source_spectral_method": "svd", "source_gram_cutoff": 1e-24,
+  "starts": 1, "max_evaluations": 120,
+  "initial_peak_m_s": 0.2, "seed": 2026092311,
+  "full_surface_defect_goal_m": 1e-12,
+  "design_note": "Full independently checked coupled-static response, joint spot and full-interface height objective, aperture guard. Relaxed 2 m/s nominal boundary command ceiling, not calibrated hardware. Finite source changes require fresh coupled verification."
+}

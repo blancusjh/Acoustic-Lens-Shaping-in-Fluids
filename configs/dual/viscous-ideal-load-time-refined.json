@@ -1,0 +1,15 @@
+{
+  "apparatus": {"gravity_m_s2": 9.81, "surface_elements": 20},
+  "indices": [1.33, 1.5, 1.33],
+  "stigmatic_z_m": [-0.101, 0.201, 0.151],
+  "vertex_displacement_m": [-0.00015, 0.00012],
+  "viscosities_pa_s": [5.0, 5.0, 5.0],
+  "fluid_radial_cells": 32,
+  "fluid_cells_per_layer": 12,
+  "step_s": 0.125,
+  "duration_s": 20.0,
+  "observation_stride": 8,
+  "ray_count": 401,
+  "final_ray_count": 4001,
+  "scope": "Fixed physical load/material/geometry; time refinement of viscous-ideal-load-base, not a new inverse"
+}

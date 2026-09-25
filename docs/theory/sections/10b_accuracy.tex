@@ -1,0 +1,73 @@
+\section{The two-face ten-nanometre specification}
+\label{sec:accuracy}
+
+Each Cartesian target is fixed in laboratory coordinates, with a declared
+vertex, clear aperture and compatible non-optical continuation. The two
+targets may be chosen independently as geometries; two arbitrary Cartesian
+diopters do not automatically compose an aplanatic or stigmatic singlet.
+The present objective is geometrical shaping. The optical quantities in
+\cref{sec:optics} provide optional downstream diagnostics.
+
+For mean graph surfaces $\bar h_j$ on apertures $D_{o,j}$, define
+\begin{equation}
+ e_{\rm mean}(t)=\max_{j=f,b}\sup_{D_{o,j}}|\bar h_j-h_{C,j}|,
+ \qquad
+ \epsilon=10^{-8}\ \mathrm m.
+ \label{eq:mean-maximum-spec}
+\end{equation}
+No piston, tilt, best-fit sphere, or refocusing is removed. RMS error cannot
+replace this maximum. The spatial search must include interior extrema between
+nodes. A sampled maximum is a lower bound on the continuum supremum until an
+interpolation or derivative bound encloses the omitted points.
+
+With a single carrier and first-order normal displacement $\Xi_j$, the
+instantaneous graph is
+$h_j=\bar h_j+\Rea[(\Xi_j/n_{z,j})e^{-\mathrm i\omega t}]+O(|\Xi|^2)$.
+At frozen slow time, maximization over the carrier phase and the aperture gives
+\begin{equation}
+ e_{\rm phase}=\max_{j=f,b}\sup_{D_{o,j}}
+          \left(|\bar h_j-h_{C,j}|+\frac{|\Xi_j|}{|n_{z,j}|}\right).
+ \label{eq:instantaneous-maximum-spec}
+\end{equation}
+This is exact for the retained single-harmonic graph model. Multiple carriers,
+beat motion and nonlinear oscillations need their actual time-dependent sum
+or a justified bound. Excluding optical index modulation from the objective
+does not exclude physical motion of the surface.
+
+Acceptance over a declared holding interval $[T_f,T_h]$ requires a justified
+upper bound on the selected physical maximum throughout that interval. An error budget
+must account for mean fit, numerical error, uncertainty, and
+disturbances without treating unknown contributions as zero. Fast motion is
+added only for the stricter instantaneous specification; its indirect effects
+on the mean remain model-validity questions. Fixed-command
+refinement supplies a numerical error estimate, not automatically a rigorous
+upper bound. Model omission bounds require independent physics or measurements.
+Formation starts at the solved unforced equilibrium with sources off; a flat
+surface is a permissible initial condition only when it solves that problem.
+Stored energy, fluid velocity and thermal state must also be initialized.
+
+For both faces, the slow linearized block contains
+\[
+ \mathsf K_{\rm eff}=\mathsf K_{\rm cap+grav}
+  -\begin{pmatrix}
+       D_{h_f}q_f&D_{h_b}q_f\\D_{h_f}q_b&D_{h_b}q_b
+    \end{pmatrix}.
+\]
+It is projected using the \emph{actual} volume constraints, coupled to the fluid
+mass/mobility and linearized about the actual mean flow. The angular sectors
+and memory requirements of \cref{sec:stability} apply to this block system.
+Thus reaching a small static residual, maintaining a cycle-mean shape, and
+maintaining the instantaneous physical tolerance are separately testable
+scientific milestones.
+
+\paragraph{Selected specification, 23 September 2026.}
+The user-selected objective is the \emph{cycle-mean driven-liquid surface},
+not the instantaneous interface and not a cured solid. Thus the active
+geometric gate is $e_{\rm mean}\leq\epsilon$ on both apertures. Carrier
+amplitude is not added to this error and need not itself be below ten
+nanometres. Equation~\eqref{eq:instantaneous-maximum-spec} remains a separate,
+stricter diagnostic, as do the earlier carrier-aware experiments.
+The mean specification still needs a holding-interval error budget, numerical
+convergence and mean-flow stability. Radiation traction, nonlinear averaging,
+streaming and thermal feedback can change the cycle mean; removing the
+instantaneous-motion penalty does not justify neglecting those mechanisms.

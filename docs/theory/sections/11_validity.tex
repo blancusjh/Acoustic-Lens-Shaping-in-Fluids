@@ -1,0 +1,205 @@
+\section{Regimes, unresolved physics and the route to a design}\label{sec:validity}
+
+\subsection{Scales that determine which equations may be reduced}
+Choose a characteristic geometric length $L>0$, slow velocity $U_s$, slow
+variation time $T_s$, acoustic velocity amplitude $V_a$, sound speed $c$, and
+reference density, viscosity and surface tension $\rho,\mu,\sigma$. These are
+representative positive scales, not assigned apparatus values. Let
+$\nu=\mu/\rho$ be kinematic viscosity, $D_T$ thermal diffusivity, and
+$\Pi_a$ a characteristic acoustic traction. Where gravity is relevant,
+$g_{\rm grav}$ is its magnitude, distinct from the boundary source $g$.
+Define the following dimensionless ratios and times:
+\begin{align}
+ \mathrm{Ma}_a&=V_a/c, &
+ \mathrm{Re}_s&=\rho U_sL/\mu, &
+ \mathcal I_s&=\rho L^2/(\mu T_s),\label{eq:scale-ratios-a}\\
+ \mathrm{Oh}&=\mu/\sqrt{\rho\sigma L}, &
+ \mathrm{Bo}&=|\Delta\rho|g_{\rm grav}L^2/\sigma, &
+ \mathrm{Ca}_a&=\Pi_aL/\sigma,\label{eq:scale-ratios-b}\\
+ \tau_\sigma&=\sqrt{\rho L^3/\sigma}, &
+ \tau_\mu&=\mu L/\sigma, &
+ \tau_\nu&=\rho L^2/\mu,\label{eq:scale-times}\\
+ \delta_\nu&=\sqrt{2\nu/\omega}, &
+ \delta_T&=\sqrt{2D_T/\omega}.&&\label{eq:boundary-layer-scales}
+\end{align}
+Here $\mathcal I_s$ measures unsteady inertia relative to viscosity,
+$\mathrm{Oh}$ is the Ohnesorge number, $\mathrm{Bo}$ the Bond number, and
+$\mathrm{Ca}_a$ an acoustic traction/capillary scale ratio. The three $\tau$
+quantities are capillary--inertial, viscous--capillary and momentum-diffusion
+times; $\delta_\nu,\delta_T$ are viscous and thermal penetration depths.
+Both fluids may supply important scales, so a favorable ratio in one phase
+does not justify eliminating the other.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{34mm}p{111mm}@{}}
+\toprule Reduction & Conditions to examine before using it \\\midrule\endhead
+Geometric optics & Optical wavelength small relative to relevant curvature
+and wavefront scales; intended polarization, dispersion and diffraction
+requirements treated separately.\\
+Linear acoustics & $\mathrm{Ma}_a\ll1$, small fractional thermodynamic
+perturbations, and acoustic particle displacement small relative to local
+geometric scales. The eventual mean interface deformation need not be small.\\
+Thin acoustic layers & $\delta_\nu,\delta_T$ small compared with relevant wall
+curvature, tangential variation and cavity scales for the particular
+boundary-layer approximation \cite{bach2018,jorgensen2021}.\\
+Cycle averaging & A window satisfying \cref{eq:averaging-separation}; beats,
+modulation and optical exposure must also be resolved or justified as negligible.\\
+Settled harmonic field & Acoustic ring-down short relative to envelope and
+interface changes, with compatible actuator settling.\\
+Creeping mean flow & Both $\mathrm{Re}_s\ll1$ and $\mathcal I_s\ll1$ over the
+formation and perturbation times being studied. Small convective inertia
+alone does not remove capillary oscillations.\\
+Hydrostatic target load & Negligible mean flow, compatible tangential balance,
+constant density and surface tension, and the declared volume and wetting law.\\
+Isothermal optics & Thermally induced shape, wave-transfer and index changes
+small compared with the requested tolerances over the full operating time.\\
+\bottomrule
+\end{longtable}
+
+As an explicitly limited analytic example, consider two inviscid, infinitely
+deep fluids separated by a flat horizontal interface, with the denser fluid
+below. Let $k_\perp>0$ be an interfacial spatial wavenumber and
+$\omega_\Gamma(k_\perp)$ its gravity--capillary angular frequency. Then
+\begin{equation}
+ \omega_\Gamma^2(k_\perp)
+   =\frac{\Delta\rho\,g_{\rm grav}k_\perp+\sigma k_\perp^3}{\rho_-+\rho_+}.
+ \label{eq:inviscid-capillary-limit}
+\end{equation}
+This is a scale check for fast interface compliance, not the eigenfrequency
+of an unspecified chamber. Finite depth, wetting, curvature and viscosity
+change its response; the viscous problem has a nontrivial dispersion relation
+\cite{denner2016}. In particular, making the carrier much faster than the
+relevant interfacial modes is one ingredient in neglecting first-order
+capillary corrections to acoustic scattering. The actual coupled boundary
+problem determines whether that neglect is accurate enough optically.
+
+\subsection{Physical effects that may set the attainable optical error}
+No single hierarchy is guaranteed for all materials and arrangements. The
+following effects enter the same governing problem when their consequences
+are comparable with the requested optical tolerance:
+\begin{enumerate}
+\item \emph{Streaming and absorption}: steady recirculation changes viscous
+tractions, temperature and the acoustic field. It is not equivalent to adding
+a fitted normal-pressure offset.
+\item \emph{Thermal and composition feedback}: density, viscosity, sound speed,
+attenuation, surface tension and optical index can all depend on temperature
+or composition. Surface-tension gradients create additional tangential stress.
+\item \emph{Fast optical modulation}: interface motion and index modulation in
+\cref{eq:fast-optical-error} may affect an exposure even when the mean shape
+is exactly Cartesian.
+\item \emph{Wetting and rheology}: hysteresis, evaporation, contamination,
+non-Newtonian response or curing alter the state variables or the admissible
+equilibria. Each requires its own measured or justified closure.
+\item \emph{Actuator and boundary loading}: radiation, elastic compliance,
+transducer coupling and source calibration affect both attainable loads and
+their shape derivatives. A finite array is not an arbitrary pressure boundary.
+\item \emph{Disturbances and resolution}: vibration, parameter drift and finite
+sensor bandwidth act on the actual dynamic system. Tolerances must account for
+their optical effect, not only a deterministic design residual.
+\end{enumerate}
+These are model-selection questions, not reasons to include every effect
+indiscriminately. The decision is made by scales and sensitivity against a
+stated optical requirement.
+
+Finite actuator authority particularly limits arbitrary fine spatial detail.
+For a nearly flat surface with a small sinusoidal height component of
+wavenumber $k_\perp$, the capillary part of the required traction scales as
+$\sigma k_\perp^2$ times its height amplitude. Thus fine features require large
+curvature loads. Whether the available wave fields can provide those loads is
+determined by \cref{eq:quadratic-load}, not by the number of pixels in a target
+image. Cartesian surfaces form a restricted optical family, which is a useful
+design focus, but their membership in that family does not prove actuatability.
+
+\subsection{A theoretical specification before any numerical experiment}
+The general problem is specified in this order:
+\begin{enumerate}
+\item Supply the cylinder, fluid laws, conserved mass or volume, initial state,
+wall response and wetting conditions. Choose a class of regular admissible
+surfaces without imposing source or target axisymmetry.
+\item Specify the physical source supports, commanded variables, constitutive
+source response, amplitude, bandwidth and energy limits. Select justified
+wave, mean-flow and thermal models and their averaging regime.
+\item For a target surface, impose its geometric and volume compatibility.
+Derive the required normal load when the quiescent reduction applies;
+otherwise retain the full stationary flow and stress equations.
+\item Formulate the continuous source inverse, test necessary load bounds and
+derive its state, adjoint and constrained optimality equations. Define the
+physical tolerance and regularization independently of numerical resolution.
+\item Linearize the actual maintained state, including memory and all admitted
+three-dimensional disturbances. Determine the required observations and source
+authority for feedback, if the open-loop state is unstable.
+\item Specify formation from the supplied initial state and the intended terminal
+condition: driven operation, temporary transient use, or a separately modeled
+retention mechanism. State uncertainty and the one realizable control policy.
+\item Specialize the target and observations to Cartesian optics if desired.
+The conjugates select an optical surface; they do not replace the preceding
+physical data or feasibility conditions.
+\end{enumerate}
+This construction supplies a reusable inverse formulation. A finite array,
+a numerical basis, and a nonlinear solution algorithm are later choices.
+Continuation can explore branches and expose folds; it is not the definition
+of the inverse map, a required source-generation procedure, or evidence of
+coverage of the target family.
+
+\subsection{Numerical experiments will test stated predictions}
+The following tests are consequences of the equations, to be performed when
+numerical work resumes. None is reported as executed in this revision.
+
+\begin{longtable}{@{}p{36mm}p{108mm}@{}}
+\toprule Prediction or identity & Experiment and what a discrepancy would mean
+\\\midrule\endhead
+Source work, \cref{eq:power-identity} & Compare integrated source power with
+boundary absorption using the same solution and units. A persistent difference
+indicates a sign, phasor normalization, boundary, or omitted-power-term error.\\
+Source adjoint, \cref{eq:source-green-identity,eq:distributed-gradients} &
+Check the Green identity and independent directional derivatives for boundary
+and volume sources. Include a velocity-dependent interface objective; a
+pressure-only check cannot detect a missing adjoint pressure jump.\\
+Shape sensitivity, \cref{eq:wave-sensitivity,eq:curvature-variation} &
+Perturb geometry while holding the same actual physical command fixed. Update
+wave scattering, normals, measure, wall loading and mean flow. Compare the
+complete directional derivative under separate refinements.\\
+Angular selection, \cref{sec:sources} & In a rotationally invariant geometry,
+excite specified angular wave orders and check the predicted load differences
+$m-n$. Test asymmetric geometry separately, where modes should couple.\\
+Source authority, \cref{eq:continuous-certificates} & Compare optimized loads
+with independent lower bounds on source effort and with relaxation bounds.
+A violating solution signals an operator, normalization or constraint error.
+Failure of an optimizer alone does not prove infeasibility.\\
+Passive dynamics, \cref{eq:passive-energy-decay} & Switch off actuation in a
+closed passive limit. Check mass and dissipation. A non-capillary stationary
+shape with every sustaining effect removed contradicts the retention condition.\\
+Coupled stability, \cref{eq:streaming-linearization} & Perturb the complete
+holding state, including non-axisymmetric modes, thermal and wave memory when
+retained. Compare growth with the linearized prediction inside its local range.\\
+Source-space approximation & Refine an admissible source basis with the physical
+model fixed. Separately refine wave, interface, flow and time discretizations.
+Agreement is evidence for those instances, not a proof of the compactness
+hypothesis or the general approximation proposition.\\
+Cartesian specialization & Check the unsquared path, the transmitted Snell
+branch, analytic curvature and actual ray errors. Include fast interface and
+index modulation if they exceed the optical tolerance.\\
+\bottomrule
+\end{longtable}
+
+Earlier apparatus-specific calculations remain examples under their declared
+approximations. They do not set the source space or prove the propositions in
+this manuscript. Before interpreting re-optimization on a finer model, establish
+convergence with the same physical drive and account for every material loss
+mechanism. Experimental validation subsequently needs calibrated source motion,
+material properties, measured interface dynamics and optical response.
+
+\subsection{What this formulation establishes and leaves open}
+The source-to-wave-to-load map, conditional reachability bounds, regularized
+existence argument, explicit acoustic source adjoint, and constrained dynamic
+optimality equations provide a common theoretical entry to inverse shaping.
+Cartesian surfaces supply a useful target family inside that problem. No
+universal excitation formula follows from four optical parameters alone.
+
+The next theoretical specialization must choose constitutive and wall laws
+accurate enough for an intended physical experiment, derive the remaining
+thermoviscous and moving-interface adjoint terms, and establish the relevant
+regularity and stability bounds. Numerics can test approximations and proposed
+algorithms, including their failure cases; they cannot promote assumptions
+about unmodeled physics into a theorem. A stable machine covering a stated
+Cartesian parameter region ultimately requires a documented feasible region,
+source selection rule, formation policy and validation throughout that region.

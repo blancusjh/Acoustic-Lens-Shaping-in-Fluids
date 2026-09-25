@@ -1,0 +1,72 @@
+\section{Initial simultaneous two-face numerical evidence}
+\label{sec:dual-evidence}
+The accompanying repository contains an axisymmetric restriction of the
+three-phase transmission problem with nonlinear capillarity and gravity.
+The hypothetical liquid densities are $(1200,1100,1000)\,\mathrm{kg\,m^{-3}}$,
+sound speeds $(1500,1200,1500)\,\mathrm{m\,s^{-1}}$, and both interface tensions
+are $0.025\,\mathrm{N\,m^{-1}}$. The cylinder radius is $4\,\mathrm{mm}$;
+both clear radii are $2\,\mathrm{mm}$. Two volume-preserving, rim-pinned graph
+spaces describe interfaces nominally at $z=\pm1\,\mathrm{mm}$.
+All source ports act through one pressure field. Thus these are not two
+uncoupled one-interface fits. The materials and source impedances are
+exploratory assumptions, not measured apparatus parameters.
+
+The first Cartesian pair uses front parameters
+$(n_o,z_o,n_i,z_i)=(1.33,-0.1\,\mathrm m,1.5,0.2\,\mathrm m)$ and back parameters
+$(1.5,-0.15\,\mathrm m,1.33,0.15\,\mathrm m)$, with vertex displacements
+$-150\,\mu\mathrm m$ and $+120\,\mu\mathrm m$ from their nominal planes.
+These prescribe independent geometric patches, not a demonstrated stigmatic
+two-surface optical system. The outside annuli satisfy the respective volume
+constraints. Results are absolute maximum mean-height errors, without fitting
+away rigid offsets:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Candidate & Front error (nm) & Back error (nm)\\
+\midrule
+56 ports, 1 MHz, initial screening & 20155 & 10453\\
+56 ports, 1 MHz, joint annulus design & 1779 & 606\\
+56 ports, 1.8 MHz & 462 & 205\\
+112 ports, 1.8 MHz & 284 & 97\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values are independently recomputed stationary equilibria on each
+candidate's refined grid, holding the physical source commands fixed.
+The 112-port candidate changes from approximately $(292,97)$ nm on its design
+grid to $(284,97)$ nm after refinement. Its sampled carrier-height amplitudes
+are approximately $(255,62)$ nm, with acoustic source work approximately
+$32.1\,\mathrm W$ and sampled peak pressure $9.47\,\mathrm{MPa}$ in the
+ideal source-port model. These are not calibrated electrical drive requirements
+or experimentally validated operating pressures. Neither the mean nor the instantaneous
+ten-nanometre requirement is met. Changing frequency also changed numerical
+resolution and flux recovery; the table is not a controlled isolation of a
+frequency effect. All four optimizations stopped at their evaluation limits,
+so no globally optimal residual or physical unreachability bound is inferred.
+
+Independent verification compares the pressure and recovered normal velocity
+with six-amplitude analytic three-layer scattering, including absolute source
+work, and compares capillary compliance with a volume-preserving Bessel mode.
+These tests do not validate streaming, formation, thermal feedback or
+three-dimensional stability: those effects are absent from this numerical
+restriction. Two-grid comparisons are sensitivity checks, not a certified
+nanometre discretization budget. Full configurations, executed-source snapshots,
+states, failed criteria and further source/placement trials are retained in
+the repository's dated dual-Cartesian campaign; its numerical findings document
+is the detailed evidence index. No experimental validation is claimed.
+
+\paragraph{Precision-screening warning (23 September 2026).}
+A subsequent 224-region, 3.6 MHz frozen-compliance candidate gives front/back
+surrogate maxima of approximately $(13.14,18.38)$ nm. A fresh stationary
+solution on its design grid instead gives mean errors $(382.71,135.30)$ nm;
+its fixed-command refinement was interrupted without a fine-grid equilibrium.
+This observed discrepancy directly demonstrates that a small capillary-only
+surrogate is not a coupled accuracy certificate. A 448-region, 7.2 MHz
+screen reduces the surrogate to $(1.84,2.05)$ nm but retains carrier peaks
+$(9.93,11.73)$ nm. It therefore fails the conservative combined screening
+criterion used before the user selected cycle-mean accuracy. Its coupled mean
+check is still pending, so no mean-surface pass is established. These trials changed
+frequency and discretization as well as the number of source regions, and
+their optimizations exhausted their budgets. No emitter-count scaling law,
+global optimum, or achieved ten-nanometre precision follows. Regions are
+ideal full-azimuth annuli and wall bands, not calibrated point emitters.

@@ -1,0 +1,51 @@
+{
+  "name": "cartesian-pair-close-ports",
+  "model": "Source-placement experiment: plates approach the two faces, reducing nominal exterior layer depths from 2 mm to 0.5 mm. One fixed apparatus, two independently specified Cartesian pairs. Ideal source ports remain an assumed boundary model.",
+  "apparatus": {
+    "levels_m": [-0.0015, -0.001, 0.001, 0.0015],
+    "radial_ports": 16,
+    "side_ports_per_layer": 8,
+    "radial_cells": 32,
+    "cells_per_layer": 16,
+    "acoustic_order": 4,
+    "surface_elements": 24,
+    "frequency_hz": 1000000.0,
+    "max_source_speed_m_s": 1.0,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "max_evaluations": 1800,
+  "starts": 3,
+  "max_power_w": 50.0,
+  "refinements": [
+    {"radial_cells": 48, "cells_per_layer": 24, "acoustic_order": 4, "surface_elements": 36}
+  ],
+  "cases": [
+    {
+      "name": "asymmetric-pair-A",
+      "faces": [
+        {
+          "optical": {"n_o": 1.33, "z_o_m": -0.1, "n_i": 1.5, "z_i_m": 0.2},
+          "vertex_displacement_m": -0.00015
+        },
+        {
+          "optical": {"n_o": 1.5, "z_o_m": -0.15, "n_i": 1.33, "z_i_m": 0.15},
+          "vertex_displacement_m": 0.00012
+        }
+      ]
+    },
+    {
+      "name": "asymmetric-pair-B",
+      "seed": 20260923,
+      "faces": [
+        {
+          "optical": {"n_o": 1.33, "z_o_m": -0.15, "n_i": 1.5, "z_i_m": 0.15},
+          "vertex_displacement_m": -0.00013
+        },
+        {
+          "optical": {"n_o": 1.5, "z_o_m": -0.1, "n_i": 1.33, "z_i_m": 0.25},
+          "vertex_displacement_m": 0.00016
+        }
+      ]
+    }
+  ]
+}

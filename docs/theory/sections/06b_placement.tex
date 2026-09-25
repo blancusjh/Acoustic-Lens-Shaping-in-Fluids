@@ -1,0 +1,59 @@
+\section{Continuous source synthesis and placement design}
+\label{sec:placement}
+
+Let $g(\bm y)$ be a complex normal source-velocity density on the admitted
+emitting surface $\Gamma_s$. For the complete chamber Green responses,
+\begin{equation}
+ P_\ell(\bm x)=\int_{\Gamma_s}G_{p\ell}(\bm x,\bm y)g(\bm y)\dd A_y,
+ \qquad
+ \bm V_\ell(\bm x)=\int_{\Gamma_s}\bm G_{v\ell}(\bm x,\bm y)g(\bm y)\dd A_y.
+ \label{eq:source-green-integrals}
+\end{equation}
+The responses include all transmission, wall, impedance and geometry effects;
+a free-space Green function is generally not interchangeable with them.
+Substitution in the radiation tensor gives the central continuous inverse
+\begin{equation}
+ \mathcal Q_\Gamma[g](\bm x)=
+ \int_{\Gamma_s}\int_{\Gamma_s}g(\bm y)^*
+ K_\Gamma(\bm x;\bm y,\bm y')g(\bm y')\dd A_y\dd A_{y'}
+ =\Pi_{\rm req}(\bm x).
+ \label{eq:continuous-load-integral}
+\end{equation}
+There is one equation on each controlled face and one common source field.
+The Hermitian kernel is the pressure/velocity bilinear version of
+\cref{eq:quadratic-load}. Its sign, attainable range and bounded-effort
+limitations remain those of \cref{sec:reachability}.
+
+Finite emitters give $g_N=\sum_k a_k b_k(\bm y;\bm r_k,\ell_k)$, with
+support size $\ell_k$ and positions $\bm r_k=(R_s,\phi_k,z_k)$ on a cylinder.
+An axisymmetric restriction uses rings, but a ring-only control cannot in
+general correct non-axisymmetric disturbances. Position, support, frequency
+and commands can be jointly designed. If $e_i=\bm a^\dagger K_i\bm a-b_i$
+and $J=\tfrac12\sum_i(e_i/F_{i,0})^2$, then at fixed target
+\begin{align}
+ D_aJ[\delta a]&=2\Rea\sum_i\frac{e_i}{F_{i,0}^2}
+                        (K_i\bm a)^\dagger\delta\bm a,\\
+ \partial_{r_{k,\alpha}}J&=\sum_i\frac{e_i}{F_{i,0}^2}
+              \bm a^\dagger(\partial_{r_{k,\alpha}}K_i)\bm a.
+ \label{eq:position-gradient}
+\end{align}
+Constraint derivatives and source-effort penalties must be added. If changing
+placement also changes a reflecting or absorbing boundary, the derivative of
+the wave operator contributes; differentiating the source term alone misses it.
+Frequency derivatives likewise include material dispersion and impedances.
+
+Point controls may be written formally as measures
+$\mu=\sum_k a_k\delta_{\bm r_k}$ with a total-variation penalty, following
+measure formulations of Helmholtz inversion \cite{pieper2020}. Their units,
+singular near fields and relation to finite emitter patches must be declared.
+Linear inverse-source recovery does not establish nonlinear traction synthesis.
+Source separation and control-region geometry materially affect the effort
+and conditioning of active field synthesis \cite{hubenthal2016,egarguin2018}.
+
+Source refinement and field refinement are separate experiments. First freeze
+the actual source support, frequency and complex physical command function
+and refine the forward field and surface representation. Then compare nested
+source spaces under the same pointwise velocity and power bounds, each with
+its own independently checked forward solution. More source coefficients
+cannot compensate for an unresolved wave discretization. An optimized coarse
+field may select precisely the errors that vanish under refinement.

@@ -1,0 +1,182 @@
+\section{Formation as constrained optimal control}\label{sec:control}
+
+\subsection{State, control and a dimensionally defined objective}
+Let $\bm\vartheta$ collect fixed but possibly uncertain material and apparatus
+parameters. The symbol is distinct from temperature $\Theta$ and contact angle
+$\theta$. Let $\mathcal D$ denote the full dynamic residual, including bulk
+equations, moving-interface laws, boundary conditions and algebraic constraints.
+For a prescribed initial physical state $\bm y_0$, write
+\begin{equation}
+ \mathcal D(\bm y,\dot{\bm y},\bm a;\bm\vartheta)=0,
+ \qquad \bm y(0)=\bm y_0,\qquad 0\leq t\leq T_f.
+ \label{eq:dynamic-constraint}
+\end{equation}
+This notation can represent the full compressible problem or a declared
+averaged reduction. In the former the command is the actual waveform; in the
+latter it may be its slowly varying envelope. They are not interchangeable
+for an arbitrarily short pulse.
+
+Use the geometric error $J_s$ defined in \cref{eq:shape-cost} on a general
+target patch. Let $J_{\rm obs}$ be the declared dimensionless observation
+objective, such as error in measured shape or flow. Cartesian optical
+objectives will specialize it in \cref{sec:optics}; they are not needed to
+define the shaping problem. For large departures use a declared geometric
+distance and correspondence, rather than implicitly registering a target to
+the evolving state.
+
+Let $\bm S_a$ be an invertible scaling operator on the commanded fields
+(for a finite array, a diagonal matrix of positive channel scales)
+and $T_{\rm ref}>0$ a rate scale in seconds. Let
+$\beta_o,\beta_s,\beta_a,\beta_{\dot a}\geq0$ be dimensionless weights and
+$\Phi_T(\bm y(T_f))$ a dimensionless terminal objective. A concrete family of
+problems is
+\begin{align}
+ \min_{\bm a,\bm y}\quad
+ J&=\Phi_T(\bm y(T_f))
+    +\int_0^{T_f}\ell(\bm y,\bm a,\dot{\bm a},t)\dd t,
+ \label{eq:dynamic-objective}\\
+ \ell&=\frac{1}{T_f}\left[
+ \beta_oJ_{\rm obs}+\beta_sJ_s
+ +\beta_a\norm{\bm S_a^{-1}\bm a}^2
+ +\beta_{\dot a}\norm{T_{\rm ref}\bm S_a^{-1}\dot{\bm a}}^2\right],
+ \label{eq:running-cost}
+\end{align}
+subject to \cref{eq:dynamic-constraint} and the physical constraints below.
+The norms are the declared Hilbert norms of the scaled spatial command
+fields, integrated over their source supports; they reduce to Euclidean norms
+only after discretization. The penalties describe command effort and smoothness; they are not
+automatically acoustic power. A calibrated input-energy term can replace or
+supplement them. For a velocity-controlled fluid boundary with domain-outward
+normal $\bm n_a$ and wall velocity $\bm v_a$, instantaneous mechanical power
+entering that fluid is
+$\int_{\Gamma_a}(\bm T\bm n_a)\cdot\bm v_a\dd A$. Electrical power requires
+the electromechanical source model. Reversible energy returned to a source and
+gross consumed power are different quantities.
+
+Terminal conditions depend on the purpose. For capture after a pulse, choose
+$\Phi_T$ to penalize optical error, residual fluid kinetic energy and remaining
+acoustic energy, each divided by a declared positive energy or optical scale.
+Require the command to end at zero and apply the retention condition in
+\cref{eq:unforced-retention}. For driven operation, target the complete holding
+state instead; its required nonzero acoustic field is not an unwanted residual.
+For curing, add conversion, heat release, shrinkage, evolving rheology and the
+final optical index before claiming a retained solid lens.
+
+\subsection{Constraints carry physical meaning}
+The admissible set must specify the following quantities, according to the
+chosen physical model:
+\begin{enumerate}
+\item conserved masses or supplied volume constraints, support and wetting
+conditions, clearance and an admissible non-self-intersecting interface;
+\item command amplitude, bandwidth, rate, total energy, source loading and
+the range in which its acoustic response remains valid;
+\item acceptable temperature and flow, and any pressure, cavitation or damage
+limits supported by material and apparatus data;
+\item optical path and direction tolerances at the requested conjugates,
+transmission without total internal reflection, and the intended aperture,
+wavelength and exposure interval;
+\item stability, disturbance rejection and actuator headroom during the
+specified holding interval.
+\end{enumerate}
+There is no universal cavitation threshold or acceptable intensity independent
+of liquid, nuclei, frequency and exposure. Such a constraint must come from a
+specified model or measurement. Similarly, optical quality after curing cannot
+be certified with only liquid-state refractive indices.
+
+\subsection{Adjoint equations give a general derivative method}
+The inverse method need not be a new heuristic for each target. A common
+constrained state equation and a common objective produce the same sensitivity
+and adjoint construction; geometry and constitutive data change its operators.
+Represent complex controls by their stacked real and imaginary components
+before taking the real derivatives below.
+
+For these operator derivatives, fields on moving domains are pulled back to
+fixed reference domains with fixed duality pairings. The residuals then include
+the coordinate Jacobians, moving-coordinate transport and transformed boundary
+conditions. An equivalent geometric derivation must retain those same transport
+and measure-variation terms. Differentiating a fixed-domain equation while
+silently changing its domain would not give the required shape adjoint.
+
+For the stationary residual $\mathcal R$ and objective $J_{\rm stat}$, introduce
+an adjoint multiplier $\bm\lambda$ in the dual residual space and the Lagrangian
+$\mathscr L=J_{\rm stat}+\inner{\bm\lambda}{\mathcal R}$. The superscript
+$\ast$ on an operator now denotes its adjoint in the stated real duality
+pairing, rather than scalar conjugation. Eliminating state variations gives
+\begin{equation}
+ \mathcal R_{\bm y}^{\ast}\bm\lambda
+        =-(J_{\rm stat})_{\bm y},\qquad
+ \nabla_{u}j=(J_{\rm stat})_{u}
+                       +\mathcal R_u^{\ast}\bm\lambda.
+ \label{eq:stationary-adjoint}
+\end{equation}
+Here $j(u)=J_{\rm stat}(\bm y(u),u)$ is the reduced objective.
+The derivatives include all state-dependent loads and boundary terms.
+For the fixed acoustic source subproblem, the plus-sign residual convention
+uses the negative of the field $Z$ in \cref{sec:source-adjoint}; both give
+the same reduced gradient. The adjoint approach supplies many control derivatives from a state solve and
+an adjoint solve per scalar functional \cite{giles2000}. It does not assert
+convexity or global optimality.
+
+For dynamics, introduce the time-dependent adjoint $\bm\Lambda(t)$ and use
+\begin{equation}
+ \mathscr L_T=\Phi_T(\bm y(T_f))+
+   \int_0^{T_f}\left[\ell+
+        \inner{\bm\Lambda}{\mathcal D(\bm y,\dot{\bm y},\bm a)}\right]\dd t.
+ \label{eq:dynamic-lagrangian}
+\end{equation}
+Integrating the $\delta\dot{\bm y}$ term by parts gives the formal adjoint
+equation and terminal condition
+\begin{align}
+ \ell_{\bm y}+\mathcal D_{\bm y}^{\ast}\bm\Lambda
+       -\frac{\dd}{\dd t}
+            (\mathcal D_{\dot{\bm y}}^{\ast}\bm\Lambda)&=0,
+ \label{eq:dynamic-adjoint}\\
+ (\Phi_T)_{\bm y}
+       +\mathcal D_{\dot{\bm y}}^{\ast}\bm\Lambda(T_f)&=0.
+ \label{eq:adjoint-terminal}
+\end{align}
+The terminal equation applies to free terminal state components. Prescribed
+terminal constraints add multipliers. The explicit example in \cref{sec:source-adjoint} supplies those spatial
+conditions for one wave subproblem. Spatial integrations by parts provide
+the remaining adjoint boundary and interface conditions; these depend on the actual physical
+boundaries and objective and cannot be universally omitted. Differential--
+algebraic constraints require their consistent adjoint treatment or elimination.
+
+For a fixed formation horizon, the interior command gradient is
+\begin{equation}
+ \bm g_a=\ell_{\bm a}
+       -\frac{\dd}{\dd t}\ell_{\dot{\bm a}}
+       +\mathcal D_{\bm a}^{\ast}\bm\Lambda.
+ \label{eq:control-gradient}
+\end{equation}
+A free command endpoint has the associated natural boundary term from
+$\ell_{\dot{\bm a}}$; a prescribed pulse endpoint has no free endpoint
+variation. If $T_f$ is optimized, its transversality condition must also be
+included. State and path constraints augment the Lagrangian with their
+multipliers and complementarity conditions. For a convex admissible history
+set $\mathfrak A_{\rm ad}$ after those constraints are treated, first-order optimality
+requires
+\begin{equation}
+ \int_0^{T_f}\inner{\bm g_a}{\bm v-\bm a}\dd t\geq0
+       \quad\text{for every }\bm v\in\mathfrak A_{\rm ad}.
+ \label{eq:control-variational-inequality}
+\end{equation}
+These are necessary local optimality equations under regularity assumptions;
+they are not a closed-form excitation or a proof of a global optimum.
+
+\subsection{Robustness uses one realizable policy}
+Let $\mathcal V$ be a declared set of uncertain parameter values, and let
+$\pi$ be a causal policy mapping available measurement histories to commands.
+A robust formulation is
+\begin{equation}
+ \min_\pi\ \sup_{\bm\vartheta\in\mathcal V}
+       J(\bm y_{\bm\vartheta},\pi;\bm\vartheta),
+ \quad\text{with the governing and operating constraints for every }
+ \bm\vartheta\in\mathcal V.
+ \label{eq:robust-design}
+\end{equation}
+The same policy acts in every case; it cannot choose a different command using
+an unobserved true parameter. Parameter estimation can be part of the
+observation state. An open-loop pulse is the special case of a policy fixed
+before observing the response. This separates a repeatable inverse-design
+method from a shape fitted under a single favorable calibration.

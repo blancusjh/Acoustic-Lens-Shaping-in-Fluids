@@ -1,0 +1,314 @@
+\section{Attainable loads and a regularized inverse}\label{sec:reachability}
+
+\subsection{Continuous quadratic load operators}
+At fixed geometry let $\mathcal A_\Gamma$ denote a well-posed linear acoustic
+operator including its boundary and interface conditions, and let
+$\mathcal B_\Gamma$ map a source field to its right-hand side. The acoustic
+state $\bm z_a$ satisfies
+\begin{equation}
+ \mathcal A_\Gamma\bm z_a=\mathcal B_\Gamma u.
+ \label{eq:distributed-state}
+\end{equation}
+Let $\mathcal S_\Gamma:\mathcal U\to\mathcal X$ map sources to the pressure
+and velocity traces needed for the radiation traction. Here $\mathcal X$ is
+a Hilbert trace space, with fixed physical scaling, continuously embedded in
+the product of $L^4(\Gamma)$ spaces for those components. The latter space
+contains functions with integrable fourth power. This regularity ensures that
+quadratic loads lie in $L^2(\Gamma)$. Such trace regularity is an assumption
+on this reduction, not a property of every sharp-edged or singular-source
+configuration.
+
+For any real dimensionless test function $\phi$ compatible with the surface
+support and with $\int_\Gamma\phi\dd A=0$, define the generalized force
+and the required force by
+\begin{equation}
+ F_\phi(u)=\int_\Gamma\phi\Pi(u)\dd A,
+ \qquad b_\phi=\int_\Gamma\phi(\sigma\kappa+\Delta\rho\Phi)\dd A.
+ \label{eq:continuous-force}
+\end{equation}
+Both have units of newtons. Bounded tests suffice; more general tests are
+allowed where the pairing is continuous. The radiation expression defines a
+bounded Hermitian quadratic form $\mathcal C_\phi$ on $\mathcal X$. With
+the star denoting the Hilbert adjoint in this subsection, set
+\begin{equation}
+ \mathcal K_\phi=\mathcal S_\Gamma^*\mathcal C_\phi\mathcal S_\Gamma,
+ \qquad
+ \boxed{F_\phi(u)=\inner{u}{\mathcal K_\phi u}_{\mathcal U}=b_\phi.}
+ \label{eq:continuous-quadratic}
+\end{equation}
+The operator $\mathcal K_\phi$ is self-adjoint, although it need not be
+positive. Because the source norm is dimensionless, its quadratic form has
+force units. Exact quiescent normal balance requires this equality for a
+dense set of admissible tests, with the wetting and volume constraints.
+Tangential balance and absence of incompatible mean bulk forcing remain
+separate requirements. A steady streaming state instead uses the full
+stationary equations.
+
+At fixed geometry the first variation is
+\begin{equation}
+ DF_\phi(u)[\delta u]=
+       2\Rea\inner{\mathcal K_\phi u}{\delta u}_{\mathcal U}.
+ \label{eq:continuous-load-derivative}
+\end{equation}
+Multiplication of all sources by the same phase $e^{\mathrm i\vartheta}$,
+for real $\vartheta$, leaves the load unchanged. Consequently $\delta u=
+\mathrm i u\,\delta\vartheta$ is a null direction of this derivative.
+Sources invisible to the relevant wave traces add further nonuniqueness.
+At $u=0$ the derivative vanishes; this does not exclude finite-amplitude
+shaping. For infinitesimal target changes, the differentiated required load,
+including the change of $\mathcal K_\phi$ with geometry, must lie in the
+admissible derivative range. This is a condition of local authority, not a
+prescription to generate the family by continuation.
+
+\subsection{Necessary source-effort and sign bounds}
+Choose a finite set of tests $\phi_i$, real coefficients $a_i$, and write
+$b_i=b_{\phi_i}$, $\mathcal K_i=\mathcal K_{\phi_i}$ and
+$\mathcal K_a=\sum_i a_i\mathcal K_i$. Let $C_u>0$ be an upper bound on
+$\norm{u}_{\mathcal U}$ and let $\norm{\mathcal K_a}$ denote operator norm.
+Every exact source under that bound satisfies
+\begin{equation}
+ \left|\sum_i a_i b_i\right|\leq C_u^2\norm{\mathcal K_a},
+ \qquad
+ \mathcal K_a\succeq0\ \Longrightarrow\ \sum_i a_i b_i\geq0.
+ \label{eq:continuous-certificates}
+\end{equation}
+Here $\succeq0$ means a nonnegative quadratic form. The inequalities follow
+directly from \cref{eq:continuous-quadratic} and the operator-norm bound.
+If $\norm{\mathcal K_a}>0$, they also give the lower bound
+$\norm{u}_{\mathcal U}^2\geq|\sum_i a_i b_i|/\norm{\mathcal K_a}$.
+If the operator is zero but the target combination is nonzero, exact matching
+is impossible in this model. These are certificates of necessary conditions;
+passing them does not establish reachability, stability or uniqueness.
+
+A power version needs an additional hypothesis. Suppose input power is the
+quadratic form $\inner{u}{\mathcal R_Pu}_{\mathcal U}$ with a bounded,
+coercive self-adjoint operator $\mathcal R_P$, meaning
+$\inner{u}{\mathcal R_Pu}\geq r_P\norm{u}_{\mathcal U}^2$ for some
+$r_P>0$. If $P_{\max}$ bounds that power, then
+\begin{equation}
+ \left|\sum_i a_i b_i\right|
+ \leq P_{\max}\,
+ \norm{\mathcal R_P^{-1/2}\mathcal K_a\mathcal R_P^{-1/2}}.
+ \label{eq:continuous-power-bound}
+\end{equation}
+This follows by substituting $\mathcal R_P^{1/2}u$ in the quadratic form.
+Passivity alone does not give coercivity: a nearly lossless resonant source
+can have very different stored energy, amplitude and net consumed power.
+The source-effort bound is therefore not silently relabeled a power bound.
+
+\subsection{Why arbitrary source functions do not imply arbitrary loads}
+Let $\mathcal Y=L^2_0(\Gamma)$ be the real space of square-integrable
+zero-mean loads, equipped with the dimensionless norm
+$\norm{f}_{\mathcal Y}^2=\int_\Gamma |f|^2\dd A/(A[\Gamma]\Pi_0^2)$,
+where $\Pi_0>0$ is a chosen stress scale. Define the continuous quadratic
+map $\mathcal Q:\mathcal X\to\mathcal Y$ by taking radiation traction
+and applying the zero-mean projection $\mathcal P_0$ of
+\cref{eq:pressure-gauge}. The required load in this space is
+$b=\mathcal P_0(\sigma\kappa+\Delta\rho\Phi)$.
+
+\begin{proposition}[A conditional obstruction under bounded source effort]
+Suppose $\mathcal U$ is Hilbert, $\mathcal S_\Gamma:\mathcal U\to\mathcal X$
+is compact and linear, and $\mathcal Q$ is continuous. The set
+\begin{equation}
+ \mathfrak R_{C_u}=\{\mathcal Q(\mathcal S_\Gamma u):
+                         \norm{u}_{\mathcal U}\leq C_u\}
+ \label{eq:bounded-reachable-set}
+\end{equation}
+is compact in $\mathcal Y$. If $\mathcal Y$ is infinite dimensional, this
+set has empty interior in $\mathcal Y$.
+\end{proposition}
+\begin{proof}
+Any sequence in the closed source ball has a weakly convergent subsequence
+with limit in that ball. Compactness of $\mathcal S_\Gamma$ makes the
+corresponding traces converge strongly. Continuity of $\mathcal Q$ then
+makes the loads converge to the load of the limiting source. Thus the image
+is sequentially compact, hence compact in the normed load space. A compact
+subset of an infinite-dimensional normed space cannot contain an open ball:
+its closure would contain a scaled closed unit ball, which is not compact.
+\end{proof}
+
+The hypothesis expresses spatial smoothing between regular sources and the
+interface. Positive source-interface separation, regular geometry and a
+frequency away from unresolved poles are settings in which such smoothing
+can be investigated; cylinder geometry alone does not prove compactness.
+Sources acting directly on the observed interface, singular distributions,
+changing source supports or an unbounded frequency range are not automatically
+covered. Nor does the result rule out a finite-dimensional Cartesian target
+family. It rules out claiming that bounded distributed actuation covers an
+open set of unrestricted load fields merely because the source has infinitely
+many degrees of freedom. This is a deduction for the stated operator, not a
+published universal no-go theorem about acoustic lenses.
+
+\subsection{A well-defined regularized fixed-target problem}
+Let $\gamma_u>0$ be a dimensionless regularization weight. A reusable
+fixed-geometry inverse is
+\begin{equation}
+ \min_{u\in\mathcal U_{\rm ad}} j_\Gamma(u),\qquad
+ j_\Gamma(u)=\frac12\norm{\mathcal Q(\mathcal S_\Gamma u)-b}_{\mathcal Y}^2
+                 +\frac{\gamma_u}{2}\norm{u}_{\mathcal U}^2.
+ \label{eq:regularized-source-inverse}
+\end{equation}
+It minimizes load error and declared source effort. The positive penalty
+selects controlled effort; it may deliberately leave nonzero mismatch even
+when an exact match exists. A tolerance-constrained minimum-effort problem
+is another choice. Neither is generally convex because the load is quadratic
+in coherent source amplitude.
+
+\begin{proposition}[Conditional existence of a regularized source]
+Under the compactness assumptions above, if $\mathcal U_{\rm ad}$ is
+nonempty and weakly closed, \cref{eq:regularized-source-inverse} has a
+minimizer.
+\end{proposition}
+\begin{proof}
+A minimizing sequence has bounded norm because $\gamma_u>0$ and the
+mismatch is nonnegative. Select a weakly convergent subsequence in
+$\mathcal U$. Its limit is admissible by weak closedness. Compact wave
+transfer and continuous quadratic loading give strong convergence of the
+load, while the squared source norm is weakly lower semicontinuous. The
+limit therefore attains the infimum.
+\end{proof}
+This proof guarantees a minimizer of the declared reduced problem, not zero
+error, uniqueness, an algorithm finding the global minimum, a stable fluid
+state, or existence for the full moving-interface system. Nonconvex hardware
+constraints need their own weak-closedness check. Regularization and support
+restrictions are also central to linear Helmholtz source problems
+\cite{hubenthal2016,pieper2020}; the nonlinear load problem above has its own
+explicit assumptions and proof.
+
+\subsection{A second-order entry that needs no neighboring target}
+A concrete analytic construction addresses the zero-source degeneracy. Assume
+zero actuation is admissible. Choose
+$M$ generalized forces and positive scales $F_{i,0}$ in newtons. For a
+positive dimensionless penalty $\gamma_u$, consider the projected cost
+\begin{equation}
+ j_M(u)=\frac12\sum_{i=1}^M
+       \left(\frac{F_i(u)-b_i}{F_{i,0}}\right)^2
+                      +\frac{\gamma_u}{2}\norm{u}_{\mathcal U}^2.
+ \label{eq:projected-source-cost}
+\end{equation}
+Define the dimensionless self-adjoint operator
+\begin{equation}
+ \mathcal H_0=\gamma_u\mathcal I_{\mathcal U}
+                   -2\sum_i\frac{b_i}{F_{i,0}^2}\mathcal K_i,
+ \label{eq:zero-source-hessian}
+\end{equation}
+where $\mathcal I_{\mathcal U}$ is the identity on the source space. Expanding
+the squares gives the exact identity
+\begin{equation}
+ j_M(u)-j_M(0)=\frac12\inner{u}{\mathcal H_0u}_{\mathcal U}
+                 +\frac12\sum_i\left(\frac{F_i(u)}{F_{i,0}}\right)^2.
+ \label{eq:zero-source-expansion}
+\end{equation}
+Thus $\mathcal H_0\succeq0$ makes zero a global minimizer of this particular
+penalized objective, even though it need not meet the target tolerance. This
+signals a limitation of the objective or available wave response, not proof
+that the target is physically impossible. If an admissible direction has
+negative quadratic form, a sufficiently small nonzero source in that direction
+strictly improves the cost. The real first derivative at zero cannot detect it.
+
+There is also an exact amplitude optimization along any direction. Let
+$d\in\mathcal U$ have unit norm, write $u=\sqrt{x}\,d$ with $x\geq0$,
+and define $f_i=F_i(d)/F_{i,0}$, $\widehat b_i=b_i/F_{i,0}$,
+$A_d=\sum_i\widehat b_i f_i-\gamma_u/2$, and $B_d=\sum_i f_i^2$.
+Then
+\begin{equation}
+ j_M(\sqrt{x}\,d)=j_M(0)-A_dx+\frac12B_dx^2,
+ \qquad
+ x_\star=\min\{C_u^2,\max\{0,A_d/B_d\}\}
+ \quad (B_d>0),
+ \label{eq:source-ray-amplitude}
+\end{equation}
+for the sole bound $\norm{u}_{\mathcal U}\leq C_u$. If $B_d=0$, the positive
+regularization makes $x_\star=0$. Additional physical constraints change the
+admissible interval or can invalidate the direction. A negative-curvature
+direction of $\mathcal H_0$ and this amplitude rule give a principled entry
+to a source solve for the target at hand. Optimizing the direction, enforcing
+the full unsampled load, and establishing fluid stability remain necessary;
+this construction is not a global inverse solution or a family-coverage proof.
+
+\subsection{What changes when the surface is also unknown}
+Let $\bm y$ collect the surface, hydrodynamic state, acoustic state and, where
+needed, temperature and actuator variables. Let
+$\mathcal R(\bm y,u)=0$ collect the stationary governing equations,
+volume conditions, boundary conditions and chosen pressure gauges.
+Let $\Gamma_{\rm tar}\subseteq\Gamma_\star$ denote the target patch, of area
+$A_{\rm tar}>0$. For a nearby surface let $\eta_s$ be its signed normal
+departure on this fixed target patch, and let $h_0>0$ be a geometric tolerance.
+Define the dimensionless shape error
+\begin{equation}
+ J_s=\frac{1}{A_{\rm tar}h_0^2}\int_{\Gamma_{\rm tar}}\eta_s^2\dd A.
+ \label{eq:shape-cost}
+\end{equation}
+Larger deformations need a declared surface-distance and correspondence
+convention. Let $J_{\rm obs}\geq0$ denote any additional dimensionless
+application-specific observation error, and choose nonnegative weights
+$\beta_s,\beta_o,\beta_u$. A coupled design can minimize
+\begin{equation}
+ J_{\rm stat}=\beta_sJ_s+\beta_oJ_{\rm obs}
+                         +\beta_u\norm{u}_{\mathcal U}^2
+ \quad\text{subject to }\mathcal R(\bm y,u)=0.
+ \label{eq:coupled-static-design}
+\end{equation}
+The admissible set also imposes the declared source and stability limits. For
+an exact target impose $\Gamma=\Gamma_\star$ directly; a soft penalty alone
+does not enforce exact shape. Optical observations are a later specialization.
+The full problem is nonlinear
+because both required curvature and acoustic transfer depend on geometry;
+the fixed-target relaxation does not make it globally convex.
+
+Let $\delta$ denote a first variation of geometry, material state or drive.
+Differentiating \cref{eq:distributed-state} gives
+\begin{equation}
+ \mathcal A_\Gamma\,\delta\bm z_a
+   =(\delta\mathcal B_\Gamma)u
+       +\mathcal B_\Gamma\delta u
+       -(\delta\mathcal A_\Gamma)\bm z_a.
+ \label{eq:wave-sensitivity}
+\end{equation}
+Moving normals, surface measure, interface conditions and material coefficients
+are part of this derivative. Freezing the acoustic field while differentiating
+only capillary curvature omits the central wave--shape feedback.
+
+If the linearized constrained stationary operator $\mathcal R_{\bm y}$ is
+invertible on the gauge-fixed state space, implicit differentiation gives
+\begin{equation}
+ \delta\bm y=-\mathcal R_{\bm y}^{-1}
+                         \mathcal R_u\,\delta u.
+ \label{eq:implicit-sensitivity}
+\end{equation}
+At a fold or singular branch that inverse fails, and a local sensitivity cannot
+be interpreted as a global design map. Resonance can also make it very poorly
+conditioned.
+
+Finally, let $\bm a$ be the actually commanded electrical or mechanical
+field and let $u=\mathcal H(\Gamma,\omega)\bm a$ be its loaded source response.
+Holding $\bm a$ fixed generally does not hold $u$ fixed. The shape derivative
+includes $\delta\mathcal H$. Prescribed boundary velocity is experimentally
+relevant only when it is controlled or when the transducer dynamics needed to
+realize it are included. The same distinction applies to source gradients.
+
+\subsection{Finite arrays approximate a source space}
+Let $\mathcal U_N$ be a nested sequence of finite-dimensional source spaces.
+An array or basis represents $u=E_N\bm w$, where $E_N$ maps its $N$ complex
+coefficients to physical source fields. This is a restriction of
+\cref{eq:regularized-source-inverse}, not its definition. Assume that every
+$u\in\mathcal U_{\rm ad}$ admits strongly convergent admissible
+approximants $u_N\in\mathcal U_N\cap\mathcal U_{\rm ad}$.
+
+\begin{proposition}[Conditional approximation of the inverse value]
+Under the existence hypotheses and the admissible-approximation assumption,
+the minima of $j_\Gamma$ over $\mathcal U_N\cap\mathcal U_{\rm ad}$
+converge to the minimum over $\mathcal U_{\rm ad}$. Every weak accumulation
+point of corresponding minimizers is a minimizer of the continuous problem.
+\end{proposition}
+\begin{proof}
+The restricted infima cannot be smaller than the continuous infimum. Strong
+admissible approximants to a continuous minimizer have convergent objective
+values, giving the reverse limiting bound. Their bounded values bound the
+norms of the restricted minimizers. Apply the weak-compactness and lower
+semicontinuity argument of the preceding proof to their subsequences.
+\end{proof}
+Density of an unconstrained basis alone is insufficient; the approximants
+must respect the physical bounds. Arbitrary unrelated arrays need not form
+such a sequence. This statement also assumes the exact same wave model; it
+does not replace a separate convergence analysis of acoustic or fluid meshes.

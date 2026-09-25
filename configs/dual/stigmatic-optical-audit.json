@@ -1,0 +1,9 @@
+{
+  "apparatus": {"gravity_m_s2": 9.81},
+  "indices": [1.33, 1.5, 1.33],
+  "stigmatic_z_m": [-0.101, 0.201, 0.151],
+  "vertex_displacement_m": [-0.00015, 0.00012],
+  "ray_counts": [101, 1001, 4001],
+  "surface_elements": [20, 36, 52, 80],
+  "scope": "Optical target and representation audit only; provisional middle conjugate, hypothetical materials; not formed surfaces"
+}

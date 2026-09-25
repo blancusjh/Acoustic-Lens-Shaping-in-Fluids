@@ -1,0 +1,5 @@
+{
+  "name": "independent-planar-p5-limit",
+  "apparatus": {"frequency_hz": 7200000, "acoustic_order": 5},
+  "scope": "Analytic three-layer limit, not a lens accuracy experiment."
+}

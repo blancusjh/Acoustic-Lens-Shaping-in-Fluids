@@ -1,0 +1,134 @@
+\section{Finite-array restrictions and coherent-load relaxation}\label{sec:inverse}
+
+\subsection{A linear wave response produces a quadratic load}
+We now restrict the distributed problem to a finite boundary-velocity array.
+Fix a geometry, material state and carrier frequency for which the linear wave
+problem is well posed, and set $\bm F=q=0$. Let $N$ be the number of independent complex mechanical
+actuator channels. In one useful boundary representation, let $b_j(\bm x)$ be
+the dimensionless normal-velocity pattern of channel $j$ on $\Gamma_a$.
+The imposed peak velocity is $\sum_{j=1}^N b_jw_j$. The entries $w_j$ of
+$\bm w\in\C^N$ have units of velocity and describe physical motion, not
+uncalibrated electrical voltages. The restriction map of the preceding section
+is $E_N\bm w=(\sum_jb_jw_j,0,0)$.
+
+Let $\mathcal A_\Gamma(\omega)$ be the linear wave operator, including all
+interface and exterior conditions, and $\mathcal B^{(N)}_\Gamma(\omega)$ the restricted source operator $\mathcal B_\Gamma E_N$. Its acoustic state $\bm z_a$ satisfies
+\begin{equation}
+ \mathcal A_\Gamma(\omega)\bm z_a
+       =\mathcal B^{(N)}_\Gamma(\omega)\bm w.
+ \label{eq:wave-operator}
+\end{equation}
+For each phase define a row response $\bm h_{p\ell}(\bm x)$ and a three-row
+velocity response $\bm H_{v\ell}(\bm x)$ by
+$P_\ell=\bm h_{p\ell}\bm w$ and
+$\bm V_\ell=\bm H_{v\ell}\bm w$. The former has units
+$\mathrm{Pa\,s\,m^{-1}}$ and the latter is dimensionless. Substitution in
+\cref{eq:radiation-flux,eq:acoustic-traction} gives Hermitian matrices
+\begin{align}
+ \bm K_\ell(\bm x)&=
+ \frac{\bm h_{p\ell}^\dagger\bm h_{p\ell}}{4\rho_\ell c_\ell^2}
+ -\frac{\rho_\ell}{4}\bm H_{v\ell}^\dagger\bm H_{v\ell}
+ +\frac{\rho_\ell}{2}\bm H_{v\ell}^\dagger\nn\nn^T\bm H_{v\ell},\\
+ \bm K(\bm x;\Gamma,\omega)&=\bm K_- -\bm K_+,\qquad
+ \boxed{\Pi(\bm x)=\bm w^\dagger\bm K(\bm x;\Gamma,\omega)\bm w.}
+ \label{eq:quadratic-load}
+\end{align}
+A Hermitian matrix equals its conjugate transpose, so the load is real.
+The matrix $\bm K$ has units $\mathrm{kg\,m^{-3}}$ and need not be positive
+semidefinite for two interacting fluids. In the particular limit
+\cref{eq:pressure-release-limit}, it is positive semidefinite at each point.
+Tangential traction components also have Hermitian quadratic forms.
+
+For a quiescent target, choose $M$ real, dimensionless virtual-displacement
+functions $\phi_i$ compatible with the support and satisfying
+$\int_\Gamma\phi_i\dd A=0$. Define generalized forces $F_i$, required forces
+$b_i$, and integrated matrices $\bm K_i$ by
+\begin{equation}
+ \bm K_i=\int_\Gamma\phi_i\bm K\dd A,\qquad
+ F_i=\bm w^\dagger\bm K_i\bm w,\qquad
+ b_i=\int_\Gamma\phi_i(\sigma\kappa+\Delta\rho\Phi)\dd A.
+ \label{eq:modal-loads}
+\end{equation}
+Here $\bm K_i$ has units $\mathrm{kg\,m^{-1}}$, while $F_i,b_i$ are forces.
+The target equations are $F_i=b_i$ for all admitted variations. A finite
+collection is a necessary projection of the continuum balance; its unsampled
+complement and tangential balance still need verification. This construction
+is reusable for different targets. The wave response must, however, be updated
+when the target changes the scattering geometry.
+
+\subsection{Feasibility, coherence and a useful relaxation}
+Define the Hermitian drive matrix $\bm W=\bm w\bm w^\dagger$, whose entries
+have units $\mathrm{m^2\,s^{-2}}$. A matrix $\bm W\succeq0$ is positive
+semidefinite if $\bm q^\dagger\bm W\bm q\geq0$ for every complex vector
+$\bm q$. A nonzero deterministic coherent drive has $\rank\bm W=1$.
+Writing $\tr$ for trace, the exact fixed-target problem includes
+\begin{equation}
+ \tr(\bm K_i\bm W)=b_i,\qquad
+ \bm W\succeq0,\quad\rank\bm W\leq1,\qquad
+ W_{jj}\leq w_{j,\max}^2.
+ \label{eq:lifted-feasibility}
+\end{equation}
+The positive bounds $w_{j,\max}$ specify peak channel velocities. The rank-zero
+case is the undriven state. Let $F_{i,\rm ref}>0$ be meaningful force-error
+scales, let $P_{\rm ref}>0$ be a power scale, and let $\beta_P\geq0$ weight
+power. If the passive, fixed-geometry actuator model gives average input power
+$P_{\rm in}=\bm w^\dagger\bm R_P\bm w$, the Hermitian matrix
+$\bm R_P\succeq0$ has units $\mathrm{kg\,s^{-1}}$ and includes the phasor
+averaging factor. A practical mismatch objective is
+\begin{equation}
+ \min_{\bm W}\ \frac12\sum_{i=1}^M
+  \left[\frac{\tr(\bm K_i\bm W)-b_i}{F_{i,\rm ref}}\right]^2
+       +\beta_P\frac{\tr(\bm R_P\bm W)}{P_{\rm ref}},
+ \label{eq:sdr-cost}
+\end{equation}
+subject to the positivity, rank and hardware constraints. For example, a
+pointwise peak pressure bound is linear in $\bm W$:
+$\tr(\bm h_p^\dagger\bm h_p\bm W)\leq P_{\max}^2$, where $P_{\max}$ is a
+declared pressure limit. Such bounds must hold throughout the specified domain,
+not merely at convenient sample points.
+
+Dropping the rank constraint gives a convex semidefinite relaxation when all
+other constraints are convex at this fixed geometry. This is a standard
+quadratic-optimization construction \cite{luo2010}. Its objective value is a
+lower bound for the coherent problem, not proof that a physical coherent
+solution attains it. If an optimum has rank one, its factor supplies the drive
+up to a global phase. Explicitly, let $\lambda_1>0$ be the single nonzero
+eigenvalue and $\bm q_1$ a unit eigenvector of a rank-one optimum. Let $A_j$
+and $\varphi_j$ denote channel $j$'s peak velocity and phase, and $v_{a,j}(t)$
+its real velocity coefficient. They follow as
+\begin{equation}
+ \bm w=\sqrt{\lambda_1}\bm q_1,\qquad
+ A_j=|w_j|,\quad \varphi_j=\arg w_j,\qquad
+ v_{a,j}(t)=A_j\cos(\omega t-\varphi_j).
+ \label{eq:drive-recovery}
+\end{equation}
+The phase of a zero amplitude is immaterial. A higher-rank optimum requires
+additional work.
+
+In particular, writing $\bm W$ as a sum of rank-one factors does not create
+independent same-frequency coherent fields: those fields add before their
+intensity is squared. A higher-rank $\bm W$ can represent a physical covariance
+$\mathbb E[\bm w\bm w^\dagger]$ only under an implemented incoherence or
+time-multiplexing scheme with appropriate averaging, bandwidth and peak limits.
+Covariance bounds constrain second moments; peak limits must additionally hold
+for each physically realized waveform.
+Switching among patterns must respect the acoustic and mechanical memory in
+\cref{sec:acoustics}. Different carrier frequencies generally have different
+$\bm K_i(\omega)$ and cannot be substituted into a fixed-frequency factorization
+without changing the problem.
+
+\begin{proposition}[A necessary load-feasibility certificate]
+Let $\alpha_i$ be real coefficients and suppose
+$\sum_i\alpha_i\bm K_i\succeq0$. Every exact feasible load vector in
+\cref{eq:lifted-feasibility} must satisfy $\sum_i\alpha_i b_i\geq0$.
+\end{proposition}
+\begin{proof}
+For $\bm W\succeq0$,
+$\sum_i\alpha_i b_i=\tr[(\sum_i\alpha_i\bm K_i)\bm W]\geq0$.
+\end{proof}
+A violated inequality rules out even the relaxed load under that wave model.
+The condition is only necessary; actuator bounds, coherence, optical
+compatibility and stability can still rule out a load that passes it. Its
+purpose is to expose unattainability before treating a failed optimizer as an
+algorithmic problem.
+

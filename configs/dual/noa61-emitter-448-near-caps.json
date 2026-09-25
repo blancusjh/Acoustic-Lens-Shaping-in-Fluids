@@ -1,0 +1,18 @@
+{
+  "material_reference": "configs/dual/noa61-water-pressure-reference.json",
+  "apparatus": {
+    "levels_m": [-0.0016, -0.001, 0.001, 0.0016],
+    "radial_ports": 128, "side_ports_per_layer": 64,
+    "radial_cells": 128, "cells_per_layer": 64,
+    "acoustic_order": 4, "surface_elements": 104,
+    "frequency_hz": 3600000, "max_source_speed_m_s": 1,
+    "normal_velocity_trace": "weak_flux"
+  },
+  "annulus_match_order": 4, "clear_endcap_radius_m": 0.002,
+  "independent_starts": true, "source_spectral_method": "svd",
+  "effort_weight": 0.001,
+  "source_gram_cutoff": 1e-24, "starts": 4, "max_evaluations": 1500,
+  "initial_peak_m_s": 0.1, "seed": 2026092310,
+  "full_surface_defect_goal_m": 1e-12,
+  "design_note": "Declared apparatus redesign: end caps move from ±3 mm to ±1.6 mm; both interface pinning levels, target pupils, conjugates, clear aperture and volumes of the middle resin remain fixed. Shorter outer water gaps. SVD resolves weak source directions without squaring their condition number. Nominal boundary-source model, not calibrated hardware."
+}
