@@ -1,0 +1,26 @@
+{
+  "built_utc": "2026-09-24T14:28:59.002971+00:00",
+  "command": [
+    "latexmk",
+    "-xelatex",
+    "-interaction=nonstopmode",
+    "-halt-on-error",
+    "-file-line-error",
+    "-jobname=ssl-generator-vision",
+    "-outdir=/Users/blancus/Private/CFD-research/acoustic-freeform-lab/artifacts/theory/ssl-generator/build",
+    "main.tex"
+  ],
+  "source_sha256": {
+    "docs/theory/ssl-generator/main.tex": "d3a5832471bc6bd593053d31b60c51f045adfee4daf912bbbf68d8ae5e1ae27e",
+    "docs/theory/ssl-generator/multifluid-variational.tex": "733ed21f5c88e844e77906e34ff123170d08ae3831df381de97933522f7f26f7",
+    "docs/theory/ssl-generator/theory.tex": "ec7896f2d7e2bde4987ebc343c3ba4f38ffdbdc36c56165786d34ae1a1702cf1",
+    "docs/theory/ssl-generator/vision.tex": "f6f5f39e4e904e5cb0bd23edc04877959a68c5834fb3349f79c0b5614d1eb360",
+    "docs/theory/references.bib": "c76ce2ddba609e45e613a188d53d9f9c373cbbac711c0a112d7f877e320cbcae",
+    "tools/build_ssl_report.py": "0f57640035f89036ad0b085d4ee6935c3a39622c1a67ea0bda6fa354ba78840f"
+  },
+  "pdf_sha256": "e86740e8dbf9c08963830998c11b85b4c8bbe752cd50c70ddde0f54c2176b46a",
+  "physics_simulations_executed": false,
+  "scope": "Standalone SSL design vision and theory sketch; main theory PDF unchanged.",
+  "pdf": "ssl-generator-vision.pdf",
+  "relocated_from": "artifacts/theory/ssl-generator/ssl-generator-vision.pdf"
+}

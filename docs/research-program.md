@@ -70,7 +70,8 @@ hypotheses unless accompanied by measurements.
 
 ## Evidence and organization
 
-`docs/theory/` is the canonical manuscript; `artifacts/theory/` contains its build.
+`docs/theory/` is the canonical manuscript; its compiled PDFs are temporarily
+at the repository root, with auxiliary build files under `artifacts/theory/`.
 `src/acoustic_freeform/` contains the two-face implementation in the apparatus,
 acoustics, mechanics, inverse, forward and verify packages; the
 earlier `single_interface/` and `planar/` implementations and outputs retain their

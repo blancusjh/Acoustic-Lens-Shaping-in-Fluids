@@ -17,3 +17,5 @@ establish success. Rebuild the index and status page with
 
 Historical reports and configurations remain intact as execution evidence.
 Their numerical claims are scoped to their own models and protocols.
+Detailed links into `artifacts/studies/` require the separate local research
+data tree; the GitHub repository contains the reviewed study summaries.

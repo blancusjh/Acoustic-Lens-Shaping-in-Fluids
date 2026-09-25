@@ -7,7 +7,7 @@ original model scope still applies.
 
 ## Theory and current program
 
-- [SSL generator report — PDF](../artifacts/theory/ssl-generator/ssl-generator-vision.pdf) · [Editable LaTeX](theory/ssl-generator/main.tex)
+- [SSL generator report — PDF](../ssl-generator-vision.pdf) · [Editable LaTeX](theory/ssl-generator/main.tex)
 - [SSL generator: version-1 vision and software contract](ssl-generator-vision.md)
 - [SSL generator: theoretical sketch](ssl-generator-theory.md)
 - [Research contract and preservation](research-program.md)
