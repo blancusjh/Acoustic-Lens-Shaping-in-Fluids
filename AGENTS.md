@@ -1,9 +1,10 @@
-# Private acoustic freeform research
+# Acoustic freeform research
 
-This is a local research repository, separate from any benchmark task package.
-Keep research notes, papers, notebooks and simulation outputs here. Do not
-publish or add a remote without the user's instruction. Do not forecast model
-scores from past results.
+This public repository contains source, research notes, source notebooks,
+selected theory PDFs and figures. Keep private papers and simulation outputs
+in the local research data tree, separate from any benchmark task package.
+Do not publish additional data or add a remote without the user's instruction.
+Do not forecast model scores from past results.
 
 The current research priority is the general theory of acoustic fluid shaping
 inside a cylinder, allowing arbitrary admissible source distributions and full
