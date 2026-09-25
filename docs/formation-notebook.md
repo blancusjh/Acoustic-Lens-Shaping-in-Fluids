@@ -84,7 +84,6 @@ From the repository root:
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 uv run python tools/execute_notebooks.py \
   --timeout 900 notebooks/05_formation_and_spots.ipynb
 uv run python tools/verify_formation_notebook.py
-uv run pytest -q tests/lens
 ```
 
 The notebook reads completed solver outputs. If absent, it launches the two

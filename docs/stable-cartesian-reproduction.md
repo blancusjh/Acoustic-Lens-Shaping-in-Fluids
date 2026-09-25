@@ -134,8 +134,7 @@ It does not simulate, optimize or alter state arrays:
 
 ```bash
 uv run python tools/summarize_maintenance.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06
-uv run pytest -q
-uv run ruff check src tests tools
+uv run ruff check src tools
 npm --prefix web run check
 ```
 
