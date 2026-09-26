@@ -1,21 +1,18 @@
-# README figure provenance
+# README figures
 
-These are presentation copies of saved numerical visualizations. The original
-study outputs remain under the local `artifacts/studies/` tree with their
-configurations, provenance and validation reports. None is experimental
-validation or a photograph of built hardware.
+Rendered by `tools/render_readme_figures.py` from saved local states under
+`artifacts/studies/`. `provenance.json` records the SHA-256 of every input and
+output file, plus the consistency checks run while rendering. Nothing is
+interpolated toward a target shape; every drawn part is a declared apparatus
+component or a saved numerical state. None is experimental evidence.
 
-| Figure | Original local artifact | SHA-256 |
+| Figure | Source state | Checks while rendering |
 |---|---|---|
-| `modeled-single-interface-apparatus.png` | `artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/apparatus-3d.png` | `fbce80be8f11a3a0363357caf97e6612fc99db8ef098043cf41657cbf5a37cf5` |
-| `interface-formation-and-spots.gif` | 28 sampled plot frames from `artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/formation-and-spots.html` | `8901b7fe2d36e06bec446f039b0bcd350025f97b6cf8f4411fe4b1b54ab21fd7` |
-| `modeled-two-face-cell.png` | `artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/two-face-setup/both-interfaces-3d.png` | `f3d860ee14a03e2615cd8471c3261929b7aeab2fe4cc8b44bd7c4b02d3e3fc53` |
+| `single-interface-cell.png` | S01 `formation-notebook-2026-09-23/dt000625`, final state at 0.2 s | Display ray trace RMS spot agrees with the saved analysis (0.059 vs 0.054 µm) |
+| `interface-formation-and-spots.gif` | The same run: all 321 saved states via `notebooks/05_formation_and_spots/formation-analysis-si.npz` | The held command is constant over the run; playback speed is printed on every frame |
+| `two-face-cell.png` | S04 `noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104` | Saved spots are reproduced by a fresh ray trace; a fresh harmonic solve reproduces the saved source power |
 
-The GIF samples saved fine-run frames with indices `0, 2, ..., 40, 48, 56, 64,
-80, 96, 120, 160` from the 161-frame standalone animation, resizes them to
-1100 pixels wide and converts them to a 128-color GIF. Each frame retains its
-original plotted geometry, spot diagram and physical-time label. The local
-`artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/validation-report.md`
-states the run's scope and limits; the public [formation notes](../studies/S01-single-interface/formation-notebook.md)
-summarize it. The two-face image comes from a separate stationary
-reconstruction; it is not a frame of that GIF.
+The single-interface rays start at an object 50 mm below the vertex, with the
+incident wave prescribed inside the resin (window refraction is not modeled).
+The pressure colour scale in `two-face-cell.png` saturates at the 99.5th
+percentile; the peak value is printed on its colour bar.

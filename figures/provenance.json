@@ -1,0 +1,38 @@
+{
+  "generator": "tools/render_readme_figures.py",
+  "inputs_sha256": {
+    "artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/dt000625/configuration.json": "acc5491a640387f4ea25ca847819a49b3d17e337b13b554889018feb6dda618e",
+    "artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/dt000625/report.json": "553a04e8c189287fb364586762e61d518984866717279c6ba27fe8a661da0b11",
+    "artifacts/studies/S01-single-interface/formation-notebook-2026-09-23/dt000625/trajectory.npz": "38bf95073f0d20355bceba6dec69999fdfd35c67a92420f95c5014d3d8229897",
+    "artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/formation-analysis-si.npz": "2b5c417529d32e1314cbd841884405c9417cc10696d528a9b90515b8f5ceff85",
+    "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/force-448-c4-clear-spot/config.json": "df584b595814be16ac6105f903fe8b2bbb168db6065c07abde212c05b42277d9",
+    "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/config.json": "95ef03c043410a992b9787de6f27fec016d95e54d0c1eeee10e3e90f670be35e",
+    "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/source-regions.json": "12aeaf7c723e18776f8d3761e4b7b79bb19b7a992682b4d2846aadddc73d0dc4",
+    "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/state.npz": "7d858f8517bf63a44e7e7488cbabd377f4d85583c75c60685866df60a3a58341",
+    "artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/validation.json": "878b0d438ef16cf290df19c09d611dafb5419d2b7d7daad3277aa922e38defb8",
+    "configs/dual/noa61-water-pressure-reference.json": "82029021155026678e831cbda63df0aa1a58a89d0832fb214edc2f948dff6504"
+  },
+  "outputs": {
+    "formation": {
+      "bytes": 846745,
+      "figure": "interface-formation-and-spots.gif",
+      "frames": 158,
+      "playback_s": 18.8
+    },
+    "pair": {
+      "figure": "two-face-cell.png",
+      "max_spot_m": 5.126606942172564e-07,
+      "source_power_w": 62.0548227432244
+    },
+    "single": {
+      "display_trace_rms_spot_m": 5.8859375287162084e-08,
+      "figure": "single-interface-cell.png",
+      "saved_rms_spot_m": 5.4112853124824386e-08
+    }
+  },
+  "outputs_sha256": {
+    "interface-formation-and-spots.gif": "6f577264ff066dca08a08b7a5ca86c784267649c3869c6194b7a4f0a062b369a",
+    "single-interface-cell.png": "0ebad0efe13d6af5c7a16eceea5269bd0f324e8145ea45f497fe1c0d9bb8c156",
+    "two-face-cell.png": "5911387373aaea6389b64f009a54cbdf8b8c43d65d86faf693e3d9f93b9b8b9c"
+  }
+}

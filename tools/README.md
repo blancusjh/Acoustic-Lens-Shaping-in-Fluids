@@ -28,6 +28,7 @@ presentations. No utility publishes data or adds a remote.
 | Tool | Study | Role |
 |---|---|---|
 | `execute_notebooks.py` | all | Execute source notebooks into their study artifacts |
+| `render_readme_figures.py` | S01, S04 | Render the README setup figures and formation animation from saved states |
 | `present_viscous_formation.py` | S03 | Build the source notebook for saved ideal-load trajectories |
 | `verify_viewer.py`, `verify_stationary_viewer.py` | S01 | Browser behavior of the single-interface viewers |
 | `verify_formation_notebook.py` | S01 | Surface, error and spot animation synchronization |

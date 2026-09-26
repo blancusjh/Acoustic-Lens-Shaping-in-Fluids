@@ -22,27 +22,40 @@ The active optical height goal is 10 nm maximum cycle-mean error on each fixed
 clear aperture; spot and full-ray-coverage gates are separate. A convincing
 rendering or a small frozen inverse residual is not a verified physical lens.
 
-## The modeled cell and formation
+## The modeled cells and formation
 
-![Three-dimensional cutaway of the modeled cylindrical cell, liquid surface, and ideal acoustic source bands](figures/modeled-single-interface-apparatus.png)
+![Single-interface cell: 3D cutaway, annotated meridional section and focusing ray diagram](figures/single-interface-cell.png)
 
-*Numerical 3D view of the earlier single-interface apparatus. The wall, base,
-liquid surface and ideal source bands are modeled components at equal geometric
-scale; the bands are not fabricated transducers or a photographed experiment.*
+*Single-interface cell (study S01), from the saved state at 0.2 s. (a) Cutaway
+of the declared components: wall, base window, NOA 61 liquid, pinned rim and the
+16 coherent rows of ideal wall-velocity sources, coloured by held amplitude.
+(b) Section at equal scale; the inset shows the 152 µm acoustic lift of the
+vertex. (c) Rays traced through the saved surface to the image point 20 mm above
+the vertex.*
 
-![Recorded forward interface formation and geometric ray spot evolution from 0 to 200 milliseconds](figures/interface-formation-and-spots.gif)
+![Recorded forward formation of the single-interface surface with evolving height error and geometric spot](figures/interface-formation-and-spots.gif)
 
-*Saved states from a fixed-command, single-interface ALE calculation. The
-surface and fixed-detector geometric ray spot update with the displayed physical
-time. Playback is slowed; the run ends with 228.5 nm maximum height error, above
-the 10 nm goal. This is a numerical result, not an experiment or simultaneous
-two-face formation. [Formation notes](studies/S01-single-interface/formation-notebook.md).*
+*Fixed-command formation from the unforced surface, from all 321 saved ALE states
+(0–200 ms). The section, rays, pupil height error and fixed-detector spot update
+with the displayed physical time. Playback runs about 180× slower than real time
+during formation and about 40× slower afterwards. The run ends at 228.5 nm
+maximum height error, above the 10 nm goal.
+[Formation notes](studies/S01-single-interface/formation-notebook.md).*
 
-![Three-dimensional view of the modeled cylinder and both stationary fluid interfaces](figures/modeled-two-face-cell.png)
+![Two-face NOA 61 and water cell: 3D cutaway, meridional section with rays, and harmonic pressure field](figures/two-face-cell.png)
 
-*Two-face stationary geometry at equal scale. It shows both modeled interfaces
-inside the cylinder, not a formation trajectory; the 104-element state misses
-the 10 nm height goal. [Two-face study](studies/S02-independent-two-face/study.md).*
+*Two-face cell (study S04): NOA 61 between two water layers in a sealed 8 mm
+cylinder, held by 448 ideal source regions at 3.6 MHz. (a) Cutaway with both
+faces and rays. (b) Section with fluids, source amplitudes and the face sags
+compared with the Cartesian targets. (c) One instant of the recomputed harmonic
+pressure. This is a stationary design-grid state: its height and ray-coverage
+gates fail, and fixed-command refinement is unfinished.
+[Emitter study](studies/S04-emitter-synthesis/study.md).*
+
+All three are numerical renderings at equal geometric scale unless a panel
+says otherwise; none is a photograph or an experiment.
+`tools/render_readme_figures.py` regenerates them from the local saved states
+and records input hashes in `figures/provenance.json`.
 
 ## Research path
 
