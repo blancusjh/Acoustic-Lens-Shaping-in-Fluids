@@ -11,3 +11,6 @@ artifacts/
 *.egg-info/
 web/node_modules/
 web/static/vtk-runtime.js
+
+# Compiled manuscripts are private; they live under artifacts/theory/.
+*.pdf

@@ -53,7 +53,7 @@ def main() -> None:
     ]
     if problems:
         raise SystemExit("Manuscript build needs review:\n" + "\n".join(problems))
-    pdf = root / "acoustic-fluid-shaping-theory.pdf"
+    pdf = output / "acoustic-fluid-shaping-theory.pdf"
     shutil.copy2(build / pdf.name, pdf)
     files = sorted(source.rglob("*.tex")) + [source / "references.bib", Path(__file__).resolve()]
     manifest = {
@@ -69,7 +69,7 @@ def main() -> None:
         "pdf_sha256": hashlib.sha256(pdf.read_bytes()).hexdigest(),
         "pdf_bytes": pdf.stat().st_size,
     }
-    (root / "acoustic-fluid-shaping-theory.build.json").write_text(
+    (output / "acoustic-fluid-shaping-theory.build.json").write_text(
         json.dumps(manifest, indent=2) + "\n"
     )
     print(pdf)

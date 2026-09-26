@@ -53,8 +53,8 @@ finding and the limits of earlier simulations.
 
 ## Artifacts and presentation
 
-The canonical theory source is `docs/theory/`; its active compiled PDF is
-`acoustic-fluid-shaping-theory.pdf` at the repository root. Active numerical outputs
+The canonical theory source is `docs/theory/`; its compiled PDF is private,
+in `artifacts/theory/acoustic-fluid-shaping-theory.pdf`. Active numerical outputs
 are grouped in `artifacts/studies/`, while editable notebooks stay in
 `notebooks/`. The earlier experiment directories retain their original report
 formats. Outputs use SI units; any visualization conversion or geometric

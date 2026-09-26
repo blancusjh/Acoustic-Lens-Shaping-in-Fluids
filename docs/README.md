@@ -7,8 +7,8 @@ whole program.
 
 | Document | Content |
 |---|---|
-| [General theory](theory/README.md) | Canonical LaTeX manuscript, bibliography and source map; [PDF](../acoustic-fluid-shaping-theory.pdf) |
-| [SSL generator report](theory/ssl-generator/README.md) | Fixed-prescription compiler vision and theory; [PDF](../ssl-generator-vision.pdf) |
+| [General theory](theory/README.md) | Canonical LaTeX manuscript, bibliography and source map; private PDF in `artifacts/theory/` |
+| [SSL generator report](theory/ssl-generator/README.md) | Fixed-prescription compiler vision and theory; private PDF in `artifacts/theory/ssl-generator/` |
 | [Research contract](research-program.md) | Scientific architecture, two-face apparatus contract and preservation record |
 | [Architecture](architecture.md) | Code packages, commands and artifact contract |
 | [Material feasibility](material-feasibility.md) | Real-fluid requirements and experimental precedents |

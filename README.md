@@ -10,7 +10,7 @@ Cartesian optical surfaces are a later worked target.
 
 | Gate | Reviewed state |
 |---|---|
-| General theory | [Canonical LaTeX and bibliography](docs/theory/README.md); [active PDF](acoustic-fluid-shaping-theory.pdf) |
+| General theory | [Canonical LaTeX and bibliography](docs/theory/README.md); compiled PDF kept privately in `artifacts/theory/` |
 | Optical target and required load | Positive numerical ideal-load result in a declared three-fluid model; no acoustic source implied |
 | Finite emitter synthesis | A coupled design-grid root exists, but the optical gates fail and fixed-command refinement is unfinished |
 | Emitter-driven formation | The saved partial Stokes trajectory does not form the target; it does not establish physical impossibility |
@@ -77,7 +77,7 @@ single-interface CLI remains `lenslab`.
 
 | Location | Responsibility |
 |---|---|
-| `docs/theory/` | Canonical general theory; compiled PDFs and build manifests temporarily at the repository root |
+| `docs/theory/` | Canonical general theory; compiled PDFs stay private in `artifacts/theory/` |
 | `src/acoustic_freeform/` | Physics and algorithms grouped by apparatus, optics, mechanics, acoustics, inverse, forward and verification |
 | `studies/` | Reviewed evidence ledger and five scientific questions |
 | `artifacts/studies/` | Active numerical evidence, grouped by study and excluded from Git |
@@ -87,6 +87,6 @@ single-interface CLI remains `lenslab`.
 
 Source and artifact milestones, plus superseded exploratory outputs, are
 preserved separately in the local research archive. The public
-GitHub repository contains the source, two compiled theory PDFs, reviewed study
-summaries and README figures. Detailed numerical runs and private papers remain
-in the local research data tree.
+GitHub repository contains the source, LaTeX theory, reviewed study summaries
+and README figures. Compiled PDFs, detailed numerical runs and private papers
+remain in the local research data tree.

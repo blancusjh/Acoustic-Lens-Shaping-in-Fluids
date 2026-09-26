@@ -14,7 +14,7 @@ def main():
     output = root / "artifacts/theory/ssl-generator"
     output.mkdir(parents=True, exist_ok=True)
     name = "ssl-generator-vision"
-    final = root / f"{name}.pdf"
+    final = output / f"{name}.pdf"
     if final.exists():
         raise FileExistsError(
             "Archive the previous report and source milestone before replacing the PDF"
@@ -60,7 +60,7 @@ def main():
         "physics_simulations_executed": False,
         "scope": "Standalone SSL design vision and theory sketch; main theory PDF unchanged.",
     }
-    (root / f"{name}.build.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    (output / f"{name}.build.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(final)
 
 

@@ -6,11 +6,11 @@ realization → formation and stability. The theory now explicitly treats both
 faces of one lens, with Cartesian ovoids as a geometric target family and a
 10 nm maximum-error specification on each aperture.
 
-- [Compiled manuscript](../../acoustic-fluid-shaping-theory.pdf)
+- [Compiled manuscript](../../artifacts/theory/acoustic-fluid-shaping-theory.pdf)
 - [Main LaTeX source](main.tex)
 - [Bibliography](references.bib)
 - [Source attribution and reading record](source-map.md)
-- [Build provenance](../../acoustic-fluid-shaping-theory.build.json)
+- [Build provenance](../../artifacts/theory/acoustic-fluid-shaping-theory.build.json)
 
 ## Reading guide
 
@@ -38,8 +38,8 @@ uv run --with sympy==1.14.0 python tools/verify_theory_algebra.py
 
 The PDF needs TeX Live/MacTeX with `latexmk`, pdfLaTeX, biber, biblatex, TikZ
 and cleveref. The build rejects unresolved citations/references and overfull
-boxes. Auxiliary files stay in `artifacts/theory/build/`; the active PDF and
-source checksums are temporarily at the repository root. The symbolic audit checks selected
+boxes. Auxiliary files stay in `artifacts/theory/build/`; the private PDF and
+its source checksums are in `artifacts/theory/`. The symbolic audit checks selected
 algebraic identities; it performs no physical simulation, source optimization,
 or numerical stability experiment. It does not validate the continuum model.
 
