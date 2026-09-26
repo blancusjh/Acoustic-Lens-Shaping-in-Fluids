@@ -137,7 +137,7 @@ within our explicitly different finite-element, one-liquid approximation.
 ## Reproduce and read the excitation
 
 The first configuration is
-[`noa61_cartesian_50_20.toml`](../configs/lenses/noa61_cartesian_50_20.toml):
+[`noa61_cartesian_50_20.toml`](../../configs/lenses/noa61_cartesian_50_20.toml):
 \(n_o=1.52,z_o=-50\,\mathrm{mm},n_i=1,z_i=20\,\mathrm{mm}\).
 Its `[diopter]` section contains exactly those four optical parameters.
 
@@ -220,7 +220,7 @@ The separate stationary experiment uses 1.8 MHz and a provisional 1.28 m/s wall-
 envelope. This is a changed design assumption, not a measured transducer capability.
 It retains the same sixteen coherent rows, chamber, liquid and conjugates.
 Its holding amplitudes/phases are in
-[`hold-drive.csv`](../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/hold-drive.csv), with exact
+[`hold-drive.csv`](../../artifacts/studies/S01-single-interface/cartesian-50-20-stationary-p4/hold-drive.csv), with exact
 conventions in the adjacent `excitation-definition.json`. The report contains
 optical performance, pressure, power and the stability result; the first transient
 and the stationary result must not be confused.
@@ -230,7 +230,7 @@ the same drive on a finer mesh with more surface modes gives **8.036 µm**. This
 invalidates a submicrometre accuracy claim. The nominal stability calculation also
 finds one growing mode. The excitation is therefore a **preliminary stationary
 candidate**, not a validated stable stigmatic diopter. See
-[`cartesian-results.md`](cartesian-results.md) for the complete evidence and open
+[`cartesian-results.md`](stationary-candidate.md) for the complete evidence and open
 questions. Neither acoustic feasibility for all conjugates nor a unique drive is
 implied by the optical construction.
 

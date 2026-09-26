@@ -12,4 +12,15 @@ absorption and leading viscous acoustic wall loss.
 numerical result in that model. It does not assess three-dimensional streaming
 base-flow stability, thermal feedback or an experimental apparatus. The
 [maintenance audit](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json)
-and [model limitations](../../docs/numerical-stability.md) specify the scope.
+and [model limitations](numerical-stability.md) specify the scope.
+
+## Records
+
+- [Single-interface history](history.md)
+- [Numerical stability and wall loss](numerical-stability.md)
+- [Physical model](model.md)
+- [Validation](validation.md)
+- [Cartesian geometry and inverse](cartesian-diopters.md)
+- [Superseded stationary candidate](stationary-candidate.md)
+- [Reproduction commands](reproduction.md)
+- [Formation notebook](formation-notebook.md)

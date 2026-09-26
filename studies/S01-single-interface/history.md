@@ -8,9 +8,9 @@ The earlier numerical milestone is a **Cartesian liquid diopter that forms and r
 fixed 1 MHz excitation in the declared axisymmetric, isothermal numerical model**.
 Research, literature and results remain separate from benchmark task packages.
 
-Open the [interactive formation viewer](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html),
-[verification figure](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.png),
-or [research notebook](../notebooks/03_stable_cartesian.ipynb).
+Open the [interactive formation viewer](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html),
+[verification figure](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.png),
+or [research notebook](../../notebooks/03_stable_cartesian.ipynb).
 The viewer initially shows the last computed state at **0.2 s**. Restart/play
 shows the actual fluid trajectory with cylinder, base, liquid, rim, array,
 acoustic pressure, mean flow and refracted rays. It works offline.
@@ -30,10 +30,10 @@ remain open. Sound speed, attenuation and loaded transducer response require
 calibration. The 256 depicted sectors are tied into **16 coherent array rows**.
 
 - [Numerical findings, equations and limitations](numerical-stability.md)
-- [Reproduction commands and artifact guide](stable-cartesian-reproduction.md)
-- [Holding amplitudes and phases](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/hold-drive.csv)
-- [Excitation conventions](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/excitation-definition.json)
-- [Machine-readable verification](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json)
+- [Reproduction commands and artifact guide](reproduction.md)
+- [Holding amplitudes and phases](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/hold-drive.csv)
+- [Excitation conventions](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/operating-state/excitation-definition.json)
+- [Machine-readable verification](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json)
 - [Apparatus, boundary conditions and model scope](model.md)
 
 ## Open or reproduce the current result
@@ -68,8 +68,8 @@ Electrical voltages cannot be exported without transducer calibration.
 
 ## General formulation and earlier milestones
 
-The [LaTeX manuscript and source guide](theory/README.md) and
-[compiled theoretical document](../acoustic-fluid-shaping-theory.pdf)
+The [LaTeX manuscript and source guide](../../docs/theory/README.md) and
+[compiled theoretical document](../../acoustic-fluid-shaping-theory.pdf)
 derive distributed source equations, required traction, attainable loads,
 explicit acoustic source adjoints, stability and formation objectives. Cartesian
 optics is a later specialization. Build with `python3 tools/build_theory.py`.
@@ -81,9 +81,9 @@ Earlier results remain inspectable under their original model assumptions:
 
 | Milestone | Evidence |
 |---|---|
-| Original collimated asphere, earlier Stokes/radiation model | [Time viewer](../artifacts/studies/S01-single-interface/asphere/viewer/index.html), [notebook](../notebooks/01_finite_asphere.ipynb) |
-| First Cartesian construction and restricted-drive trajectory | [Notebook](../notebooks/02_cartesian_diopters.ipynb), [results](cartesian-results.md) |
-| Original stationary candidate and failed refinement | [Historical analysis](cartesian-results.md) |
+| Original collimated asphere, earlier Stokes/radiation model | [Time viewer](../../artifacts/studies/S01-single-interface/asphere/viewer/index.html), [notebook](../../notebooks/01_finite_asphere.ipynb) |
+| First Cartesian construction and restricted-drive trajectory | [Notebook](../../notebooks/02_cartesian_diopters.ipynb), [results](stationary-candidate.md) |
+| Original stationary candidate and failed refinement | [Historical analysis](stationary-candidate.md) |
 | Corrected geometry, inertia, feedback and wall-loss investigation | [Campaign history](numerical-stability.md) |
 
 The old 0.389 µm stationary Cartesian fit did not survive refinement and geometric

@@ -178,7 +178,7 @@ Reaching the sampled gate here means formation in a declared ideal-load Stokes
 discretization. It does not show that emitters can generate this load or its
 stabilizing response, or that real materials stay within 10 nm. Full inertia,
 non-axisymmetric disturbances, material characterization and acoustic-induced
-streaming/heating remain separate checks. See `docs/ideal-load-first.md` and
+streaming/heating remain separate checks. See `studies/S03-stigmatic-target-ideal-load/required-load.md` and
 the canonical manuscript's viscous-load variational section.
 """),
 ]

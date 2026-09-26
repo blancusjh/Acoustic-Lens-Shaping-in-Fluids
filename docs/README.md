@@ -1,39 +1,27 @@
-# Research documentation
+# Documentation
 
 Start with the [reviewed status](../STATUS.md), then the five
-[study protocols and verdicts](../studies/README.md). The pages below retain
-derivations, reproducibility details and historical numerical evidence; their
-original model scope still applies.
+[studies](../studies/README.md). Each study folder holds its protocol, verdict
+and detailed records. This folder keeps only material that applies to the
+whole program.
 
-## Theory and current program
+| Document | Content |
+|---|---|
+| [General theory](theory/README.md) | Canonical LaTeX manuscript, bibliography and source map; [PDF](../acoustic-fluid-shaping-theory.pdf) |
+| [SSL generator report](theory/ssl-generator/README.md) | Fixed-prescription compiler vision and theory; [PDF](../ssl-generator-vision.pdf) |
+| [Research contract](research-program.md) | Scientific architecture, two-face apparatus contract and preservation record |
+| [Architecture](architecture.md) | Code packages, commands and artifact contract |
+| [Material feasibility](material-feasibility.md) | Real-fluid requirements and experimental precedents |
 
-- [SSL generator report — PDF](../ssl-generator-vision.pdf) · [Editable LaTeX](theory/ssl-generator/main.tex)
-- [SSL generator: version-1 vision and software contract](ssl-generator-vision.md)
-- [SSL generator: theoretical sketch](ssl-generator-theory.md)
-- [Research contract and preservation](research-program.md)
-- [General theory and bibliography](theory/README.md)
-- [Precision inverse protocol and acceptance](precision-program.md)
-- [Executed two-face notebook with pressure animation](../artifacts/studies/S02-independent-two-face/notebooks/04_dual_cartesian.html)
-- [Real-fluid feasibility and material selection](material-feasibility.md)
-- [Software and artifact architecture](architecture.md)
+## Detailed records by study
 
-## Preserved numerical reports
+| Study | Records |
+|---|---|
+| [S01 single interface](../studies/S01-single-interface/study.md) | [history](../studies/S01-single-interface/history.md), [numerical stability and wall loss](../studies/S01-single-interface/numerical-stability.md), [model](../studies/S01-single-interface/model.md), [validation](../studies/S01-single-interface/validation.md), [Cartesian geometry](../studies/S01-single-interface/cartesian-diopters.md), [stationary candidate](../studies/S01-single-interface/stationary-candidate.md), [reproduction](../studies/S01-single-interface/reproduction.md), [formation notebook](../studies/S01-single-interface/formation-notebook.md) |
+| [S02 independent two-face](../studies/S02-independent-two-face/study.md) | [results](../studies/S02-independent-two-face/results.md), [precision program](../studies/S02-independent-two-face/precision-program.md), [precision results](../studies/S02-independent-two-face/precision-results.md) |
+| [S03 stigmatic target and load](../studies/S03-stigmatic-target-ideal-load/study.md) | [required load and ideal-load formation](../studies/S03-stigmatic-target-ideal-load/required-load.md) |
+| [S04 emitter synthesis](../studies/S04-emitter-synthesis/study.md) | [stigmatic correction and inverse objectives](../studies/S04-emitter-synthesis/stigmatic-correction-and-objectives.md), [annulus inverse](../studies/S04-emitter-synthesis/annulus-inverse.md), [NOA 61 / water materials](../studies/S04-emitter-synthesis/materials-noa61-water.md) |
+| [S05 emitter formation](../studies/S05-emitter-formation/study.md) | [model and stepping protocol](../studies/S05-emitter-formation/protocol.md) |
 
-- [Initial independent two-face results](dual-cartesian-results.md)
-- [Precision campaign evidence](precision-results.md)
-- [Required load before source design](ideal-load-first.md)
-- [Emitter annulus inverse](emitter-annulus-inverse.md) and [formation protocol](emitter-formation-protocol.md)
-- [Shared-conjugate optical correction](joint-stigmatic-correction.md)
-
-## Earlier single-interface model
-
-- [Fresh formation and spot-evolution notebook](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots.html) ([source](../notebooks/05_formation_and_spots.ipynb))
-- [Single-interface overview and reproduction](single-interface-history.md)
-- [September wall-loss and stability findings](numerical-stability.md)
-- [Single-interface reproduction commands](stable-cartesian-reproduction.md)
-- [Single-interface physical model](model.md) and [validation](validation.md)
-- [Cartesian geometry](cartesian-diopters.md) and [historical results](cartesian-results.md)
-
-The earlier model's dynamics and streaming are not implemented or validated in
-the new two-face stationary model. Numerical, theoretical and experimental
-claims must remain separate.
+Records keep the model scope of their own study. Links into `artifacts/`
+resolve only in the local research data tree, not on GitHub.

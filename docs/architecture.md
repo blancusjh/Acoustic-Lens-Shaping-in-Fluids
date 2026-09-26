@@ -48,7 +48,7 @@ into a scientific pass. Rebuild both outputs with
 A quiescent spectrum does not certify a streaming base flow. Axial
 stigmatism does not imply aplanatism or achromatism. Wall-layer mean
 streaming, thermal feedback and three-dimensional disturbances remain open.
-The [numerical-stability note](numerical-stability.md) records the wall-loss
+The [numerical-stability note](../studies/S01-single-interface/numerical-stability.md) records the wall-loss
 finding and the limits of earlier simulations.
 
 ## Artifacts and presentation

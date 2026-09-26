@@ -27,7 +27,7 @@ spectrum with stability of a streaming base flow. Thermal feedback, wall-layer
 mean streaming and three-dimensional disturbances remain material questions.
 Distinguish driven liquid optics, transient formation and curing. Axial
 stigmatism does not imply aplanatism or achromatism. The 2026-09-06 wall-loss
-finding and numerical limitations are documented in docs/numerical-stability.md.
+finding and numerical limitations are documented in studies/S01-single-interface/numerical-stability.md.
 
 Benchmark tasks, Boreal transcripts, scores and QA analyses belong exclusively
 in /Users/blancus/Private/benchmark-archives, never in this project or its

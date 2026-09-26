@@ -2,9 +2,9 @@
 
 ## New: both interfaces forming in time
 
-[Notebook 06 — executed](../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation.executed.ipynb),
-[browser notebook](../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation.html),
-[interactive viewer](../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation/viewer.html).
+[Notebook 06 — executed](../../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation.executed.ipynb),
+[browser notebook](../../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation.html),
+[interactive viewer](../../artifacts/studies/S02-independent-two-face/notebooks/06_two_face_formation/viewer.html).
 
 This new, separate notebook shows an actual **two-interface forward trajectory**
 over 0–8 ms, both pupil errors, rays traced through both interfaces, and a 3D
@@ -35,12 +35,12 @@ top/back interfaces, a 3D camera-rotation view, and a 2D profile/error compariso
 The selector chooses saved 52-, 80- and 104-element stationary solutions with
 unchanged commands. It is not a physical-time animation. The later single-face
 formation, spots and audio must not be attributed to this different apparatus.
-[Open the two-face setup alone](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/two-face-setup/setup.html).
+[Open the two-face setup alone](../../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/two-face-setup/setup.html).
 
-- [Browser notebook](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots.html)
-- [Executed Jupyter notebook](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots.executed.ipynb)
-- [Source notebook](../notebooks/05_formation_and_spots.ipynb)
-- [Standalone synchronized animation](../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/formation-and-spots.html)
+- [Browser notebook](../../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots.html)
+- [Executed Jupyter notebook](../../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots.executed.ipynb)
+- [Source notebook](../../notebooks/05_formation_and_spots.ipynb)
+- [Standalone synchronized animation](../../artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/formation-and-spots.html)
 
 ## What is computed
 

@@ -1,4 +1,4 @@
-# Design inputs, in SI units. Material provenance: docs/model.md.
+# Design inputs, in SI units. Material provenance: studies/S01-single-interface/model.md.
 [lens]
 name = "noa61_asphere"
 radius_m = 0.004

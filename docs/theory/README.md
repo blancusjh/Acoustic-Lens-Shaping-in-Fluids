@@ -62,7 +62,7 @@ the pre-restructure source is preserved in that revision's repository bundle.
 Version 3.9 derives the coupled viscous load inverse from a Rayleighian,
 including an inertial weak-form compatibility condition for normal-only
 actuation. Its first forward implementation is explicitly creeping flow, not
-full Navier--Stokes/streaming/thermal dynamics. See [ideal-load evidence](../ideal-load-first.md).
+full Navier--Stokes/streaming/thermal dynamics. See [ideal-load evidence](../../studies/S03-stigmatic-target-ideal-load/required-load.md).
 Version 3.8 was archived before replacement under
 `2026-09-23-before-viscous-load-variational/theory.tar.gz` in the external archive.
 

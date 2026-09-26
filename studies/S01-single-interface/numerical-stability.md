@@ -1,6 +1,6 @@
 # Cartesian diopter: convergence, inertia and maintained operation
 
-This numerical investigation follows the [general formulation](theory/README.md).
+This numerical investigation follows the [general formulation](../../docs/theory/README.md).
 The optical example is the same real object/image pair: `n_o=1.52`, `z_o=-50 mm`,
 `n_i=1`, `z_i=+20 mm`, with a 6 mm clear aperture in an 8 mm diameter chamber.
 All conjugate positions refer to the target vertex. Illumination is prescribed
@@ -22,7 +22,7 @@ insert the target as a physical state or change the drive to repair an error.
 This is finite-horizon numerical evidence in an axisymmetric, isothermal model,
 not experimental validation or a proof for every possible disturbance.
 
-Open the [formation viewer](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html).
+Open the [formation viewer](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125/viewer/index.html).
 It starts at the **last computed state, t = 0.2 s**. Restart/play shows the actual
 formation trajectory, beginning with the unforced shape and the final acoustic
 drive switched on. The housing, base window, liquid cap, rim and row array are
@@ -84,7 +84,7 @@ full-aperture RMS disturbance in volume-null mode 0 and a −5 µm disturbance i
 mode 6 both return to approximately 0.05411 µm geometric ray RMS without any
 drive update. Their remaining pupil height offset from the saved stationary
 state is about 0.071 nm, below its 0.1 nm equilibrium correction tolerance. The
-[machine-readable audit and comparison figure](../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json)
+[machine-readable audit and comparison figure](../../artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/verification/maintenance.json)
 record each disturbance, time step, conserved volume, unchanged drive, final
 optics and the complete time-refinement differences.
 
@@ -169,7 +169,7 @@ not time-converged. Successive early-trajectory height differences reach 22,
 destination are reproducible; startup loads and precise arrival times need
 further temporal verification before hardware design.
 
-The [reproduction guide](stable-cartesian-reproduction.md) records commands and
+The [reproduction guide](reproduction.md) records commands and
 artifact meanings. Sources are archived **at execution entry** for the current
 stationary design, control model and nonlinear trajectories. Earlier exploratory
 diagnostics sometimes contain completion-time source hashes; those are not
@@ -373,6 +373,6 @@ a constant optical index. Neither an electrical drive voltage nor long-duration
 physical stability follows from these simulations alone.
 
 Primary references and derivations for the optical target, normal load and
-inverse/control problem are in the [theoretical manuscript](theory/README.md).
+inverse/control problem are in the [theoretical manuscript](../../docs/theory/README.md).
 Research files and numerical data remain in this private repository; benchmark
 material is not an input to this project.

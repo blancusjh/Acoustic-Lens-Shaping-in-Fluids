@@ -91,9 +91,9 @@ the same research archive, SHA-256
 `05aebd6bd14bcbc66114aaed0d14fd0c46b70711a0e2e7145ece5a174f71489f`.
 This is a source/theory milestone, not the final numerical-results snapshot.
 Superseded manuscript-review images remain recoverable under
-`revisions/2026-09-22-superseded-review/review/`; current review images are in
-`artifacts/theory/review-v3p3/`. Superseded review milestones are preserved
-in the separate research archive.
+`revisions/2026-09-22-superseded-review/review/`. Review images of
+intermediate manuscript versions are not retained in the repository; the
+build manifest beside each root PDF records its source and PDF hashes.
 
 The completed two-face campaign, its source, theory and imported-data audit are
 preserved at `revisions/2026-09-22-completed-two-face-campaign/milestone.tar.gz`,

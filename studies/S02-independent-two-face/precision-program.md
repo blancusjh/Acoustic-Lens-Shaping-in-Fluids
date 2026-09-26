@@ -7,7 +7,7 @@ the **cycle-mean driven-liquid surface**. Carrier motion is reported separately;
 it is not added to the mean-error acceptance metric. Historical carrier-aware
 runs below tested a stricter specification and remain unchanged as evidence.
 The user also authorized selecting realistically attainable materials and
-operating conditions. The [material feasibility screen](material-feasibility.md)
+operating conditions. The [material feasibility screen](../../docs/material-feasibility.md)
 keeps missing physical data explicit; hypothetical constants are not renamed
 as real fluids, and old numerical evidence remains unchanged.
 
@@ -200,7 +200,7 @@ and evidence keep their original paths. All runs include provenance and a
 declared model. The private research archive preserves pre-edit milestones.
 September 23 continuations are in `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/`.
 
-The [report index](../studies/run-index.json) inventories preserved reports
+The [report index](../run-index.json) inventories preserved reports
 without inferring scientific success from file presence. Rebuild it with
 `python3 tools/build_research_index.py`.
 

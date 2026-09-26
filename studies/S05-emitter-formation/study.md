@@ -11,4 +11,8 @@ model assumptions no longer support quantitative interpretation.
 **Verdict.** [S05-emitter-formation](../../STATUS.md) is a partial negative
 diagnostic for this command. It neither proves physical impossibility nor a
 reliable settling time. See the [trajectory report](../../artifacts/studies/S05-emitter-formation/noa61-emitter-2026-09-23/viscous-formation/report.md)
-and [protocol](../../docs/emitter-formation-protocol.md).
+and [protocol](protocol.md).
+
+## Records
+
+- [Model and stepping protocol](protocol.md)

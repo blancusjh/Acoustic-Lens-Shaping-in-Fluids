@@ -16,3 +16,10 @@ not a certificate that arbitrary acoustic sources cannot reach other targets.
 See the [fixed-command report](../../artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/verify-mean-448-surface-refinement/report.md).
 The [historical LaTeX evidence section](historical-numerical-evidence.tex) was
 removed from the general theory manuscript and retained with this study.
+
+## Records
+
+- [Initial two-face results](results.md)
+- [Precision program](precision-program.md)
+- [Precision results](precision-results.md)
+- [Former manuscript evidence section](historical-numerical-evidence.tex)

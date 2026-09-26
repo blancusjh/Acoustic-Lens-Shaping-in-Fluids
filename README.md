@@ -36,7 +36,7 @@ scale; the bands are not fabricated transducers or a photographed experiment.*
 surface and fixed-detector geometric ray spot update with the displayed physical
 time. Playback is slowed; the run ends with 228.5 nm maximum height error, above
 the 10 nm goal. This is a numerical result, not an experiment or simultaneous
-two-face formation. [Formation notes](docs/formation-notebook.md).*
+two-face formation. [Formation notes](studies/S01-single-interface/formation-notebook.md).*
 
 ![Three-dimensional view of the modeled cylinder and both stationary fluid interfaces](figures/modeled-two-face-cell.png)
 
@@ -56,7 +56,7 @@ admissible optical target → required full-interface load
 
 The [research contract](docs/research-program.md) and
 [architecture](docs/architecture.md) distinguish implemented models, numerical
-checks and open physics. The [September numerical-stability note](docs/numerical-stability.md)
+checks and open physics. The [September numerical-stability note](studies/S01-single-interface/numerical-stability.md)
 records the wall-loss finding and limitations. The [documentation index](docs/README.md)
 provides detailed historical reports.
 

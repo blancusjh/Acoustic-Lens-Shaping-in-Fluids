@@ -14,3 +14,9 @@ design-grid root but fails the joint optical gates; fixed-command refinement
 is unfinished. The source boundaries and material response remain idealized.
 See the [case audit](../../artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/README.md)
 and [saved validation](../../artifacts/studies/S04-emitter-synthesis/noa61-emitter-2026-09-23/verify-448-c4-clear-spot/design104/validation.json).
+
+## Records
+
+- [Stigmatic correction and inverse objectives](stigmatic-correction-and-objectives.md)
+- [Free-annulus inverse](annulus-inverse.md)
+- [NOA 61 / water material case](materials-noa61-water.md)

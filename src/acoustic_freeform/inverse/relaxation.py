@@ -89,7 +89,7 @@ def main():
         "source_limit_m_s": limit,
         "cutoff": args.cutoff,
         "iterations": args.iterations,
-        "reference": "docs/theory/sections/06_arrays.tex; docs/precision-program.md",
+        "reference": "docs/theory/sections/06_arrays.tex; studies/S02-independent-two-face/precision-program.md",
     }
     (args.out / "config.json").write_text(json.dumps(config, indent=2) + "\n")
     print(f"Relaxation in {coordinates.channels} complex source coordinates", flush=True)

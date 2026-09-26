@@ -14,4 +14,8 @@ mechanics result for a declared three-fluid Stokes model with hypothetical
 viscosities. It supplies a target load for the source-reachability question;
 it does not show that any acoustic source can generate that load. See the
 [formation report](../../artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load-2026-09-23/viscous-fluid-refined/report.md)
-and [derivation](../../docs/ideal-load-first.md).
+and [derivation](required-load.md).
+
+## Records
+
+- [Required load and ideal-load formation](required-load.md)

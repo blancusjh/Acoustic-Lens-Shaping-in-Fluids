@@ -16,6 +16,6 @@ The GIF samples saved fine-run frames with indices `0, 2, ..., 40, 48, 56, 64,
 1100 pixels wide and converts them to a 128-color GIF. Each frame retains its
 original plotted geometry, spot diagram and physical-time label. The local
 `artifacts/studies/S01-single-interface/notebooks/05_formation_and_spots/validation-report.md`
-states the run's scope and limits; the public [formation notes](../docs/formation-notebook.md)
+states the run's scope and limits; the public [formation notes](../studies/S01-single-interface/formation-notebook.md)
 summarize it. The two-face image comes from a separate stationary
 reconstruction; it is not a frame of that GIF.

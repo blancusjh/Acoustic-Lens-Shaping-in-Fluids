@@ -8,7 +8,7 @@ carrier suppression. No material system is yet qualified for that objective.
 ## Experimental starting point, not a precision claim
 
 The current material-referenced lens case is documented in
-[resin design reference](resin-design-reference.md): uncured NOA 61 at 25 C,
+[resin design reference](../studies/S04-emitter-synthesis/materials-noa61-water.md): uncured NOA 61 at 25 C,
 with water on both sides and explicitly recorded unknown/assumed interfacial
 and acoustic properties. Its full-domain static pressure audit is separate
 from the earlier equal-5-Pa-s viscous trajectory. A real resin viscosity is
@@ -73,13 +73,13 @@ The earlier independent-target hypothetical 448-port candidate requires approxim
 peak pressure and 34 W modeled acoustic source work. Neither establishes a
 realistic linear, isothermal operating regime. The fixed-command surface
 refinement also fails: at 104 elements, mean errors are approximately 10.44 µm
-front and 4.81 µm back. See [numerical evidence](precision-results.md).
+front and 4.81 µm back. See [numerical evidence](../studies/S02-independent-two-face/precision-results.md).
 
 The newer shared-conjugate 7.2 MHz candidate in
 `artifacts/studies/S04-emitter-synthesis/dual-stigmatic-2026-09-23/kernel-audit-direct-448` reaches approximately
 53.3 MPa sampled pressure and 47.66 W modeled source work. Its independently
 solved refined equilibrium still misses the target by 370/741 nm. This is not
-a qualified physical operating point; see the [current correction study](joint-stigmatic-correction.md).
+a qualified physical operating point; see the [current correction study](../studies/S04-emitter-synthesis/stigmatic-correction-and-objectives.md).
 
 First resolve numerical traction/surface/acoustic convergence. Then qualify
 a real material system and optimize with pressure, dissipation, temperature

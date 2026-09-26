@@ -123,7 +123,7 @@ Region geometry and SI command exports are implemented in
 - September 22 screening: `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/`.
 - Current runs: `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/`.
 - Protocol: [precision program](precision-program.md).
-- Earlier independently refined results: [initial findings](dual-cartesian-results.md).
+- Earlier independently refined results: [initial findings](results.md).
 
 Completed outputs include configuration, source snapshots and reports. Cached
 operators have acquisition hashes and retain their original execution provenance.
