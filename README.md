@@ -29,14 +29,14 @@ rendering or a small frozen inverse residual is not a verified physical lens.
 *Single-interface cell (study S01), from the saved state at 0.2 s. (a) Cutaway
 of the declared components: wall, base window, NOA 61 liquid, pinned rim and the
 16 coherent rows of ideal wall-velocity sources, coloured by held amplitude.
-(b) Section at equal scale; the inset shows the 152 µm acoustic lift of the
-vertex. (c) Rays traced through the saved surface to the image point 20 mm above
+(b) Section at equal scale; dashed lines are the goal (Cartesian) surface, and
+the inset shows the 152 µm acoustic lift of the vertex. (c) Rays traced through the saved surface to the image point 20 mm above
 the vertex.*
 
 ![Recorded forward formation of the single-interface surface with evolving height error and geometric spot](figures/interface-formation-and-spots.gif)
 
 *Fixed-command formation from the unforced surface, from all 321 saved ALE states
-(0–200 ms). The section, rays, pupil height error and fixed-detector spot update
+(0–200 ms). The section (dashed: goal surface), rays, pupil height error and fixed-detector spot update
 with the displayed physical time. Playback runs about 180× slower than real time
 during formation and about 40× slower afterwards. The run ends at 228.5 nm
 maximum height error, above the 10 nm goal.
@@ -47,8 +47,8 @@ maximum height error, above the 10 nm goal.
 *Two-face cell (study S04): NOA 61 between two water layers in a sealed 8 mm
 cylinder, held by 448 ideal source regions at 3.6 MHz. (a) Cutaway with both
 faces and rays. (b) Section with fluids, source amplitudes and the face sags
-compared with the Cartesian targets. (c) One instant of the recomputed harmonic
-pressure. This is a stationary design-grid state: its height and ray-coverage
+against the dashed Cartesian goals. (c) One instant of the recomputed harmonic
+pressure. (d) Geometric spot of 4001 rays at the fixed image plane. This is a stationary design-grid state: its height and ray-coverage
 gates fail, and fixed-command refinement is unfinished.
 [Emitter study](studies/S04-emitter-synthesis/study.md).*
 

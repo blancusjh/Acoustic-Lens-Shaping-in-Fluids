@@ -154,10 +154,22 @@ def render_single_3d(cfg, space, coefficients, drive, path, size=(1500, 1500)):
     glass = {"smooth_shading": True, "specular": 0.7, "specular_power": 50}
     p.add_mesh(cut_front_quadrant(meshes["cylinder"]), color=GLASS, opacity=0.45, **glass)
     p.add_mesh(cut_front_quadrant(meshes["base"]), color="#b9d7ea", opacity=0.7, **glass)
-    p.add_mesh(cut_front_quadrant(meshes["liquid"]), color=RESIN, opacity=0.30,
+    liquid = meshes["liquid"]
+    body = liquid.extract_cells(np.flatnonzero(liquid.cell_centers().points[:, 2] < -1e-6))
+    p.add_mesh(cut_front_quadrant(body.extract_surface()), color=RESIN, opacity=0.25,
                smooth_shading=True)
-    p.add_mesh(cut_front_quadrant(meshes["surface"]), color="#e39a2d", opacity=0.97,
-               smooth_shading=True, specular=1.0, specular_power=80)
+    surface = cut_front_quadrant(meshes["surface"]).extract_surface().compute_normals(
+        auto_orient_normals=True)
+    p.add_mesh(surface, color="#f0a53a", smooth_shading=True, specular=0.8,
+               specular_power=60, ambient=0.25)
+    # Solid meridional caps on the two cut half-planes (x >= 0, y = 0) and (x = 0, y <= 0).
+    rr = np.linspace(0, cfg.radius_m, 200)
+    top_mm = cfg.radius_m * space.evaluate(coefficients, rr / cfg.radius_m) * 1e3
+    strip = np.stack([np.full_like(top_mm, -cfg.depth_m * 1e3), top_mm - 0.004])
+    rho = np.broadcast_to(rr * 1e3, strip.shape)
+    for x, y in ((rho, np.zeros_like(rho)), (np.zeros_like(rho), -rho)):
+        cap = pv.StructuredGrid(x[..., None].copy(), y[..., None].copy(), strip[..., None].copy())
+        p.add_mesh(cap, color=RESIN, opacity=0.55, ambient=0.45, smooth_shading=True)
     p.add_mesh(cut_front_quadrant(meshes["rim"]), color="#4d565d", smooth_shading=True)
     array = meshes["array"]
     array.cell_data["amplitude"] = np.abs(drive)[row_ids]
@@ -176,8 +188,11 @@ def render_single_3d(cfg, space, coefficients, drive, path, size=(1500, 1500)):
         out = det[k] - hit[k]
         b = hit[k] + (top - hit[k, 1]) / out[1] * out
         pts = np.array([a, hit[k], b]) * 1e3
-        p.add_mesh(ray_tube(np.c_[pts[:, 0], np.zeros(3), pts[:, 1]]), color="#e0312b",
-                   smooth_shading=True, ambient=0.55, diffuse=0.6)
+        if pts[1, 0] < 0:
+            continue  # the x < 0 half of the fan lies inside the kept solid
+        xyz = np.c_[pts[:, 0], np.full(3, -0.03), pts[:, 1]]
+        p.add_mesh(ray_tube(xyz, 0.018), color="#d62728", smooth_shading=True, ambient=0.6,
+                   diffuse=0.5)
     p.camera_position = [(21, -27, 12), (0, 0, -1.4), (0, 0, 1)]
     p.camera.view_angle = 24
     p.screenshot(path)
@@ -245,7 +260,10 @@ def single_interface_figure():
         b = hit[k] + (vertex + 0.0014 - hit[k, 1]) / out[1] * out
         ax.plot(np.array([a[0], hit[k, 0], b[0]]) * mm, np.array([a[1], hit[k, 1], b[1]]) * mm,
                 color=RAY, lw=0.7, alpha=0.8)
-    ax.plot(signed, mirror(h1), color="#b86f0c", lw=2.2)
+    ax.plot(signed, mirror(h1), color="#b86f0c", lw=2.2, label="driven surface, t = 0.2 s")
+    ax.plot(signed, mirror(target), color=INK, lw=1.0, ls="--",
+            label="goal: Cartesian surface")
+    ax.legend(loc="upper right", fontsize=8, frameon=False)
     ax.axvline(0, color=MUTED, lw=0.5, ls=(0, (6, 4)))
     ax.text(0, -3.3, f"NOA 61 resin, uncured\nn = {n1}, ρ = {cfg.density_kg_m3:.0f} kg/m³\n"
             f"μ = {cfg.viscosity_pa_s} Pa·s, σ = {cfg.surface_tension_n_m} N/m",
@@ -276,18 +294,18 @@ def single_interface_figure():
            aspect="equal", xlabel="x (mm)", ylabel="z above the rim (mm)")
     ax.set_title("(b) Meridional section at equal scale", loc="left", color=INK, fontsize=12)
     ax.set_yticks(range(-8, 3, 2))
-    bar = fig.colorbar(plt.cm.ScalarMappable(norm, cmap), ax=ax, orientation="horizontal",
-                       fraction=0.03, pad=0.09, aspect=40, shrink=0.7)
-    bar.set_label("held wall-speed amplitude of each row (m/s)", color=INK, fontsize=9)
+    bar = fig.colorbar(plt.cm.ScalarMappable(norm, cmap), ax=[ax3, ax], orientation="horizontal",
+                       fraction=0.03, pad=0.12, aspect=60, shrink=0.6)
+    bar.set_label("coloured bands in (a) and (b): the 16 source rows, coloured by held "
+                  "wall-speed amplitude (m/s)", color=INK, fontsize=9)
     # Vertex inset: the lift the sound produces.
     inset = ax.inset_axes([0.07, 0.75, 0.36, 0.15])
     window = radius <= 1.2e-3
     rr = np.r_[-radius[window][:0:-1], radius[window]] * mm
     cut = lambda h: np.r_[h[window][:0:-1], h[window]] * mm
-    inset.plot(rr, cut(h0), color=MUTED, ls="--", lw=1.2, label="unforced, t = 0")
-    inset.plot(rr, cut(target), color=INK, ls=":", lw=1.2,
-               label="target (overlaps driven)")
-    inset.plot(rr, cut(h1), color="#b86f0c", lw=2, label="driven, t = 0.2 s")
+    inset.plot(rr, cut(h0), color="#9aa7b0", lw=1.4, label="unforced, t = 0")
+    inset.plot(rr, cut(h1), color="#b86f0c", lw=2.4, label="driven, t = 0.2 s")
+    inset.plot(rr, cut(target), color=INK, ls="--", lw=1.1, label="goal")
     inset.annotate("", (0, h1[0] * mm), (0, h0[0] * mm),
                    arrowprops={"arrowstyle": "->", "color": RAY, "lw": 1.2})
     inset.text(0.08, (h0[0] + h1[0]) / 2 * mm, f"+{(h1[0] - h0[0]) * 1e6:.0f} µm",
@@ -401,17 +419,18 @@ def clip_path(path, z_top):
     return np.vstack([path[:-1], a + s * (b - a)])
 
 
-def render_pair_3d(cfg, space, q, drive, regions, paths, path, size=(1500, 1400)):
+def render_pair_3d(cfg, space, q, drive, regions, paths, path, size=(1500, 1350)):
+    """Half cell (y >= 0): the full meridional section faces the camera."""
     mm = 1e3
-    _first, _last = 0.0, 1.5 * np.pi
+    half = {"first": 0.0, "last": np.pi}
     r = np.linspace(0, cfg.radius_m, 220)
+    inner = r * 0.985  # fluids drawn just inside the source ring at the wall
     levels = np.asarray(cfg.levels_m)
     faces = [levels[j + 1] + space.evaluate(q[j], r) for j in range(2)]
     p = pv.Plotter(off_screen=True, window_size=size)
     p.set_background("white")
     p.enable_anti_aliasing("ssaa")
     p.enable_lightkit()
-    turn = lambda m: m
     amp = np.abs(drive)
     cmap = plt.get_cmap(SOURCE_MAP)
     for reg in regions:
@@ -424,41 +443,32 @@ def render_pair_3d(cfg, space, q, drive, regions, paths, path, size=(1500, 1400)
         else:
             rr = np.array([reg["r_min_m"], reg["r_max_m"]]) * mm
             zz = np.full(2, reg["z_min_m"] * mm)
-        opacity = 1.0 if active else 0.25
-        if reg["boundary"] == "top":
-            opacity = min(opacity, 0.55)
-        p.add_mesh(turn(revolve(rr, zz)), color=colour, opacity=opacity, smooth_shading=True,
-                   specular=0.25)
-    # Fluids: translucent volumes between the saved interfaces.
+        opacity = 1.0 if active else 0.35
+        p.add_mesh(revolve(rr, zz, **half), color=colour, opacity=opacity, specular=0.2)
+    # Fluid layers: solid colour on the cut plane, faint translucent volume behind it.
+    signed = np.r_[-inner[::-1], inner] * mm
     bounds = [np.full_like(r, levels[0]), faces[0], faces[1], np.full_like(r, levels[3])]
     for j, colour in enumerate([WATER, RESIN, WATER]):
         low, high = bounds[j] * mm, bounds[j + 1] * mm
-        rr = np.r_[r, r[::-1]] * mm
-        zz = np.r_[high, low[::-1]]
-        outline = revolve(rr, zz)
-        p.add_mesh(turn(outline), color=colour, opacity=0.18 if j != 1 else 0.42,
-                   smooth_shading=True)
-        del outline
-        # Cap both cut half-planes with this layer's meridional section.
-        strip = np.stack([low, high])
-        rho = np.broadcast_to(r * mm, strip.shape)
-        for x, y in ((rho, np.zeros_like(rho)), (np.zeros_like(rho), -rho)):
-            cap = pv.StructuredGrid(x[..., None].copy(), y[..., None].copy(),
-                                    strip[..., None].copy())
-            p.add_mesh(cap, color=colour, opacity=0.55 if j != 1 else 0.75,
-                       smooth_shading=True, ambient=0.35)
-    for j, z in enumerate(faces):
-        p.add_mesh(turn(revolve(r * mm, z * mm, sectors=180)), color="#c9771a", opacity=0.6,
-                   smooth_shading=True, specular=1.0, specular_power=90)
-    # Rays lie in the two cut half-planes (theta = 0 and theta = 270 degrees).
+        strip = np.stack([np.r_[low[::-1], low], np.r_[high[::-1], high]])
+        x = np.broadcast_to(signed, strip.shape)
+        cap = pv.StructuredGrid(x[..., None].copy(), np.zeros_like(x)[..., None],
+                                strip[..., None].copy())
+        p.add_mesh(cap, color=colour, opacity=0.95, ambient=0.5, diffuse=0.6)
+    for z in faces[1:]:
+        # Only the upper face is seen from above; the section shows both.
+        p.add_mesh(revolve(inner * mm, z * mm, sectors=180, **half), color="#e8b25c",
+                   opacity=0.9, smooth_shading=True, specular=0.8, specular_power=60)
+    for z in faces:
+        line = np.c_[signed, np.full_like(signed, -0.01), np.r_[z[::-1], z] * mm]
+        p.add_mesh(pv.lines_from_points(line).tube(radius=0.02), color="#8a4b06")
+    # Rays on the cut plane, from the lower cap to 0.6 mm past the upper cap.
     for ray in paths:
-        clipped = clip_path(ray, levels[3] + 0.0035) * mm
-        rho, z = np.abs(clipped[:, 0]), clipped[:, 1]
-        for xyz in (np.c_[rho, np.zeros_like(rho), z], np.c_[np.zeros_like(rho), -rho, z]):
-            xyz = xyz + np.array([0.02, -0.02, 0.0])  # just in front of the cap
-            tube = pv.lines_from_points(xyz).tube(radius=0.016, n_sides=12)
-            p.add_mesh(tube, color="#e0312b", ambient=0.55, diffuse=0.6, smooth_shading=True)
-    p.camera_position = [(17, -17, 9.0), (0, 0, 0.2), (0, 0, 1)]
+        seg = clip_path(ray, levels[3] + 0.0006) * mm
+        xyz = np.c_[seg[:, 0], np.full(len(seg), -0.03), seg[:, 1]]
+        p.add_mesh(pv.lines_from_points(xyz).tube(radius=0.012, n_sides=10), color="#d62728",
+                   ambient=0.7, diffuse=0.4)
+    p.camera_position = [(10, -19, 14), (0, 0, -0.3), (0, 0, 1)]
     p.camera.view_angle = 26
     p.screenshot(path)
     p.close()
@@ -467,11 +477,11 @@ def render_pair_3d(cfg, space, q, drive, regions, paths, path, size=(1500, 1400)
 def pair_figure():
     cfg, space, q, drive, regions, targets, material, report, trace, field = pair_state()
     mm = 1e3
-    launch = np.linspace(-cfg.clear_radius_m, cfg.clear_radius_m, 11)
+    launch = np.linspace(-cfg.clear_radius_m, cfg.clear_radius_m, 9)
     paths = pair_ray_paths(cfg, space, q, material, targets, np.abs(launch))
     paths[:, :, 0] *= np.sign(launch + 1e-30)[:, None]
     render = FIGURES / "_pair_render.png"
-    render_pair_3d(cfg, space, q, drive, regions, paths[launch > 0][::1], render)
+    render_pair_3d(cfg, space, q, drive, regions, paths, render)
     levels = np.asarray(cfg.levels_m) * mm
     R = cfg.radius_m * mm
     r = np.linspace(0, cfg.radius_m, 1601)
@@ -485,12 +495,12 @@ def pair_figure():
     n = material["indices"]
     rho = cfg.density_kg_m3
 
-    fig = plt.figure(figsize=(17.5, 8.4))
-    grid = fig.add_gridspec(1, 3, width_ratios=[1.05, 1.0, 0.78], wspace=0.10)
+    fig = plt.figure(figsize=(21, 8.4))
+    grid = fig.add_gridspec(1, 4, width_ratios=[1.05, 1.0, 0.78, 0.72], wspace=0.26)
     ax3 = fig.add_subplot(grid[0])
     ax3.imshow(autocrop(plt.imread(render)))
     ax3.set_axis_off()
-    ax3.set_title("(a) Three-fluid cell · quadrant removed · equal scale",
+    ax3.set_title("(a) Three-fluid cell · front half removed · equal scale",
                   loc="left", color=INK, fontsize=12)
     note = {"fontsize": 9, "color": INK}
 
@@ -520,8 +530,8 @@ def pair_figure():
     for j in range(2):
         ax.plot(signed, mirror(faces[j]), color="#b86f0c", lw=2)
     for ray in paths:
-        seg = clip_path(ray, cfg.levels_m[3] + 0.0012) * mm
-        ax.plot(seg[:, 0], seg[:, 1], color=RAY, lw=0.7, alpha=0.85)
+        seg = clip_path(ray, cfg.levels_m[3] + 0.0009) * mm
+        ax.plot(seg[:, 0], seg[:, 1], color=RAY, lw=0.8, alpha=0.9)
     ax.axvline(0, color=MUTED, lw=0.5, ls=(0, (6, 4)))
     ax.text(-R + 0.35, levels[0] + 0.55, f"water\nn = {n[0]}, ρ = {rho[0]:.0f} kg/m³",
             ha="left", **note)
@@ -561,8 +571,8 @@ def pair_figure():
         inset.plot(r[window] * mm, (faces[j][window] - cfg.levels_m[j + 1]) * 1e6,
                    color="#b86f0c", lw=1.6, label="driven" if j == 0 else None)
         inset.plot(r[window] * mm, (goal[j][window] - cfg.levels_m[j + 1]) * 1e6, color=INK,
-                   ls=":", lw=1.1, label="Cartesian target" if j == 0 else None)
-    inset.axhline(0, color=MUTED, lw=0.6, ls="--", label="unforced (flat)")
+                   ls="--", lw=1.0, label="goal (Cartesian)" if j == 0 else None)
+    inset.axhline(0, color="#9aa7b0", lw=0.9, label="unforced (flat)")
     inset.set_title("sag over the clear aperture (µm)", fontsize=8.5, color=INK)
     inset.tick_params(labelsize=7)
     inset.set_xlabel("radius (mm)", fontsize=7.5)
@@ -598,6 +608,18 @@ def pair_figure():
     peak = float(np.max(np.abs(field["pressure"]))) / 1e6
     cb.set_label(f"acoustic pressure (MPa); scale saturates, peak {peak:.0f} MPa", color=INK,
                  fontsize=9)
+    axs = fig.add_subplot(grid[3])
+    spots = trace["spots_m"] * 1e6
+    axs.scatter(spots[:, 0], spots[:, 1], s=3, color=RAY, alpha=0.45, lw=0)
+    axs.add_patch(plt.Circle((0, 0), 0.5, fill=False, color="#2e8b57", ls="--", lw=1.1))
+    axs.text(0.36, 0.40, "0.5 µm\nacceptance", color="#2e8b57", fontsize=8.5)
+    lost = int((~trace["transmitted"]).sum())
+    axs.set(xlim=(-0.65, 0.65), ylim=(-0.65, 0.65), aspect="equal",
+            xlabel="detector x (µm)", ylabel="detector y (µm)")
+    axs.set_title("(d) Spot at the image plane", loc="left", color=INK, fontsize=12)
+    axs.set_xlabel(f"detector x (µm)\n{len(spots) - lost} of {len(spots)} rays transmitted; "
+                   f"max radius {trace['max_radius_m'] * 1e6:.3f} µm")
+    axs.set_box_aspect(1)
     errors = np.array(report["mean_pupil_max_error_m"]) * 1e9
     fig.text(0.01, 0.012,
              f"Saved stationary design-grid state (104 surface elements, {len(regions)} ideal "
@@ -658,7 +680,7 @@ def formation_animation(width_px=1150):
         h = heights[k]
         ax.add_patch(Polygon(np.c_[np.r_[signed, R, -R], np.r_[mirror(h), -depth, -depth]],
                              color=RESIN, alpha=0.30, lw=0))
-        ax.plot(signed, mirror(heights[0]), color=MUTED, lw=0.9, ls="--")
+        ax.plot(signed, mirror(target), color=INK, lw=1.0, ls="--")
         d, hit, det, _ = meridional_rays(radius, h, z_obj, launch, cfg.refractive_index,
                                          cfg.image_refractive_index, z_det)
         for j in range(len(launch)):
@@ -669,11 +691,12 @@ def formation_animation(width_px=1150):
                     color=RAY, lw=0.7, alpha=0.85)
         ax.plot(signed, mirror(h), color="#b86f0c", lw=2.2)
         ax.text(0, -3.2, "NOA 61 resin", ha="center", fontsize=9, color=INK)
-        ax.text(-R - wall - 0.4, -depth / 2, "16 source rows\nheld command\nfrom t = 0",
+        ax.text(-R - wall - 0.4, -depth / 2, "16 source rows\n(colour: held\namplitude)\n"
+                "command held\nfrom t = 0",
                 ha="right", va="center", fontsize=8.5, color=INK)
         ax.set(xlim=(-R - 3.6, R + 1.2), ylim=(-depth - base - 0.4, target[0] * mm + 4.6),
                aspect="equal", xlabel="x (mm)", ylabel="z above the rim (mm)")
-        ax.set_title("Cell section, equal scale · dashed: unforced surface", loc="left",
+        ax.set_title("Cell section, equal scale · dashed: goal (Cartesian surface)", loc="left",
                      fontsize=10, color=INK)
         # Height error across the pupil.
         ae = fig.add_subplot(grid[0, 1])

@@ -14,7 +14,7 @@
   },
   "outputs": {
     "formation": {
-      "bytes": 846745,
+      "bytes": 852707,
       "figure": "interface-formation-and-spots.gif",
       "frames": 158,
       "playback_s": 18.8
@@ -31,8 +31,8 @@
     }
   },
   "outputs_sha256": {
-    "interface-formation-and-spots.gif": "6f577264ff066dca08a08b7a5ca86c784267649c3869c6194b7a4f0a062b369a",
-    "single-interface-cell.png": "0ebad0efe13d6af5c7a16eceea5269bd0f324e8145ea45f497fe1c0d9bb8c156",
-    "two-face-cell.png": "5911387373aaea6389b64f009a54cbdf8b8c43d65d86faf693e3d9f93b9b8b9c"
+    "interface-formation-and-spots.gif": "5bc5657376c4137de74fbe04866925b0874655e3b3314c072d5f171fb926ba7c",
+    "single-interface-cell.png": "9f8ec7ff346061ffac7113dbe5aefbda98d2d78680d3ab86384607d11bcffe8b",
+    "two-face-cell.png": "0d0c10db000f925317dec7ba87625a78ac42ea68a782d396082477064e3affb0"
   }
 }
