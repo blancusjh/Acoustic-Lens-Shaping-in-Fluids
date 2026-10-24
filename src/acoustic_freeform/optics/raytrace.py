@@ -147,7 +147,7 @@ def trace_graph_pair(
     direction /= np.linalg.norm(direction, axis=1)[:, None]
     origin = np.column_stack([np.zeros(rays), np.full(rays, object_z_m)])
     good = np.ones(rays, dtype=bool)
-    intersections = []
+    intersections, rim_margin = [], []
     for face in range(2):
         level = cfg.levels_m[face + 1]
         nodes = np.linspace(0, cfg.radius_m, 1001)
@@ -164,6 +164,8 @@ def trace_graph_pair(
         distance = (low + high) / 2
         origin = origin + distance[:, None] * direction
         radial = abs(origin[:, 0])
+        # Diagnostic only: positive values are landings outside the clear radius.
+        rim_margin.append(float(np.max(radial - cfg.clear_radius_m)))
         # Picometre intersection tolerance, not an adjustable physical aperture.
         good &= (distance > 0) & (radial <= cfg.clear_radius_m + 1e-12)
         good &= (
@@ -188,6 +190,7 @@ def trace_graph_pair(
         "rms_radius_m": float(np.sqrt(np.mean(signed_spot[good] ** 2))) if good.any() else np.nan,
         "max_radius_m": float(np.max(abs(signed_spot[good]))) if good.any() else np.nan,
         "all_rays_transmitted": bool(good.all()),
+        "face_max_radius_beyond_clear_m": rim_margin,
         "sampled_1um_pass": bool(good.all() and np.max(abs(signed_spot)) <= 1e-6),
         "continuous_pupil_certified": False,
     }

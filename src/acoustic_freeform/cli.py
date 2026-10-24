@@ -35,6 +35,8 @@ STEPS = {
     "coupled-response": ("coupled_response", "Low-mode acoustic shape feedback"),
     "frozen-extremum": ("frozen_extremum", "Polynomial extremum audit of a frozen fit"),
     "stigmatic-state": ("stigmatic_state", "Joint optical gates for saved equilibria"),
+    "force-convergence": ("force_convergence", "Fixed-state force refinement and sensitivity"),
+    "coupled-stability": ("coupled_stability", "Linear stability of a held-command root"),
 }
 
 # Earlier, separately scoped models keep their own command lines.

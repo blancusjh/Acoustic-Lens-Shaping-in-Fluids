@@ -24,6 +24,28 @@ def implicit_step(space, q, force, mobility, dt):
     raise RuntimeError("Implicit viscous step did not converge")
 
 
+def linearized_implicit_step(space, q, force, acoustic_jacobian, mobility, dt):
+    """Backward step with the acoustic load linearized about the old geometry.
+
+    The load is F(q) ~ F(q0) + A (q - q0), with A = dF_ac/dq at the old
+    geometry and the same command, so the acoustic shape stiffness enters the
+    step matrix I + dt M (K - A) instead of being lagged explicitly. Mobility
+    is still frozen at the old geometry; the step is first order.
+    """
+    old = q.ravel()
+    new = old.copy()
+    for _ in range(20):
+        grad, stiffness, _ = space.mechanics(new.reshape(q.shape))
+        load = force + acoustic_jacobian @ (new - old)
+        residual = new - old - dt * mobility @ (load - grad)
+        matrix = np.eye(len(old)) + dt * mobility @ (stiffness - acoustic_jacobian)
+        change = np.linalg.solve(matrix, residual)
+        new -= change
+        if np.max(abs(change)) < 1e-14:
+            return new.reshape(q.shape)
+    raise RuntimeError("Linearized implicit viscous step did not converge")
+
+
 def layer_mass(k, depth, density):
     """Potential-flow mass per radial norm for two layer boundary velocities."""
     x = k * depth

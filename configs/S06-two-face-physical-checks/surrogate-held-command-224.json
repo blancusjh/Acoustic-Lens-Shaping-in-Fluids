@@ -1,0 +1,12 @@
+{
+  "source_file": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/synthesis-224/best-source.npz",
+  "grids": [
+    {"name": "design", "overrides": {}},
+    {"name": "surface52", "overrides": {"surface_elements": 52}}
+  ],
+  "maximum_newton_steps": 12,
+  "force_compliance_tolerance_m": 1e-13,
+  "maximum_step_m": 1e-5,
+  "ray_count": 4001,
+  "scope": "Surrogate for the private S04 states: the historical 224-source NOA 61 synthesis rerun in this checkout, held fixed while the surface space changes. Input to the S06 physical checks, not new design evidence."
+}

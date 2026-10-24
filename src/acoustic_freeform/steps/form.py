@@ -2,7 +2,6 @@
 
 import hashlib
 import json
-from pathlib import Path
 
 import numpy as np
 
@@ -11,7 +10,7 @@ from ..apparatus.config import DualConfig
 from ..apparatus.sources import export_sources
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
-from ..forward.formation import envelope, implicit_step
+from ..forward.formation import envelope, implicit_step, linearized_implicit_step
 from ..mechanics.surface import CartesianPatch, DualSurface
 from ..mechanics.viscous import assemble_mobility
 from ..optics.raytrace import trace_pair
@@ -20,7 +19,12 @@ from ..optics.raytrace import trace_pair
 def run(configuration, output):
     data = json.loads(configuration.read_text())
     source = data_path(data["source_directory"])
-    synthesis = json.loads(Path(data["synthesis_config"]).read_text())
+    synthesis = json.loads(data_path(data["synthesis_config"]).read_text())
+    # "frozen" lags the whole acoustic load (historical S05); "linearized" makes
+    # its analytic shape tangent implicit in each step.
+    acoustic_load = data.get("acoustic_load", "frozen")
+    if acoustic_load not in ("frozen", "linearized"):
+        raise ValueError("acoustic_load must be frozen or linearized")
     material = json.loads(data_path(synthesis["material_reference"]).read_text())
     cfg = DualConfig(**json.loads((source / "config.json").read_text()))
     space = DualSurface(cfg)
@@ -82,7 +86,10 @@ def run(configuration, output):
             reason = "Accepted-step budget reached; partial computed trajectory preserved"
             break
         t = times[-1]
-        response = wave.solve(q, drive)
+        if acoustic_load == "linearized" or data.get("report_acoustic_tangent", False):
+            response, tangent_unit = wave.shape_force_jacobian(q, drive)
+        else:
+            response, tangent_unit = wave.solve(q, drive), None
         force_unit = response.force(np.ones(1, complex))
         fluid = assemble_mobility(
             space, q, mu, data["fluid_radial_cells"], data["fluid_cells_per_layer"]
@@ -91,8 +98,12 @@ def run(configuration, output):
         while True:
             amplitude = envelope(t + dt / 2, data["ramp_s"])
             force = force_unit * amplitude**2
+            tangent = None if tangent_unit is None else tangent_unit * amplitude**2
             try:
-                new = implicit_step(space, q, force, fluid.mobility, dt)
+                if acoustic_load == "linearized":
+                    new = linearized_implicit_step(space, q, force, tangent, fluid.mobility, dt)
+                else:
+                    new = implicit_step(space, q, force, fluid.mobility, dt)
                 increment = max(space.polynomial_maximum(v)["max_abs_m"] for v in new - q)
                 heights = np.array([space.evaluate(v, space.r) for v in new])
                 bounds = np.vstack(
@@ -120,10 +131,22 @@ def run(configuration, output):
         net = force - grad
         velocity = fluid.velocity_basis.interpolate(fluid.velocity_operator @ net)
         speed = float(np.max(np.sqrt(np.sum(velocity**2, axis=0))))
-        work = float(force @ (new - q).ravel())
+        step_change = (new - q).ravel()
+        if acoustic_load == "linearized":
+            # Trapezoidal work of the linearized load: an estimate, not an identity.
+            work = float((force + 0.5 * tangent @ step_change) @ step_change)
+        else:
+            work = float(force @ step_change)
         balance = work - (energy - energies[-1])
-        if balance < -1e-14:
+        if acoustic_load == "frozen" and balance < -1e-14:
             raise RuntimeError("Frozen-load step violates dissipation inequality")
+        tangent_rate = None
+        if tangent is not None:
+            _, stiffness, _ = space.mechanics(q)
+            # Linearized growth rate of the old state, dq/dt = M (A - K) dq.
+            tangent_rate = float(
+                np.max(np.linalg.eigvals(fluid.mobility @ (tangent - stiffness)).real)
+            )
         diagnostics.append(
             {
                 **fluid.diagnostics,
@@ -136,6 +159,8 @@ def run(configuration, output):
                     max(np.array(cfg.density_kg_m3) / mu) * speed * cfg.radius_m
                 ),
                 "work_minus_energy_change_j": balance,
+                "acoustic_load": acoustic_load,
+                "linearized_max_growth_rate_s": tangent_rate,
                 "full_command_wave": response.diagnostics(np.ones(1, complex)),
             }
         )
@@ -161,6 +186,7 @@ def run(configuration, output):
         ),
         "final_observation": rows[-1],
         "target_used_in_rhs": False,
+        "acoustic_load": acoustic_load,
         "scope": "Emitter-driven moving-domain Stokes approximation. No inertia, convection, streaming or thermal physics. Unrefined diagnostic, not a settling or 10 nm claim.",
     }
     (output / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
