@@ -1,0 +1,16 @@
+{
+  "source_directory": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/held-command-224/design",
+  "synthesis_config": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/synthesis-224/config.json",
+  "acoustic_load": "frozen",
+  "report_acoustic_tangent": false,
+  "fluid_radial_cells": 64,
+  "fluid_cells_per_layer": 12,
+  "step_s": 0.05,
+  "minimum_step_s": 0.0001,
+  "maximum_step_displacement_m": 0.000025,
+  "duration_s": 1.0,
+  "ramp_s": 0.5,
+  "maximum_steps": 400,
+  "ray_count": 401,
+  "scope": "Fixed-command time-step study of the formation integrator on the S06 surrogate command: frozen (historical S05) versus linearized acoustic load. Creeping flow only; no inertia, streaming or heating."
+}

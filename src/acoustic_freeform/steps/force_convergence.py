@@ -74,6 +74,13 @@ def run(configuration, output):
     inputs["input_sha256"] = hashes
     (output / "config.json").write_text(json.dumps(inputs, indent=2) + "\n")
     rows, reference = [], None
+    # "reference": one analytic tangent per surface space, at the first trial's
+    # wave discretization and physics that uses it. The coupled shift then
+    # changes only at second order. "per_trial" recomputes A everywhere.
+    tangent_mode = inputs.get("acoustic_tangent", "reference")
+    if tangent_mode not in ("reference", "per_trial"):
+        raise ValueError("acoustic_tangent must be reference or per_trial")
+    tangents = {}
     for trial in inputs["trials"]:
         overrides = trial.get("overrides", {})
         unknown = set(overrides) - NUMERICAL - PHYSICAL
@@ -93,7 +100,14 @@ def run(configuration, output):
             trial_q, geometry_change = q, 0.0
         wave = DualAcoustics(trial_cfg, trial_space, linear_solver="static_condensed")
         wave.order = trial.get("integration_order", wave.order)
-        response, acoustic = wave.shape_force_jacobian(trial_q, drive)
+        cached = tangents.get(trial_cfg.surface_elements)
+        if tangent_mode == "per_trial" or cached is None:
+            response, acoustic = wave.shape_force_jacobian(trial_q, drive)
+            tangents[trial_cfg.surface_elements] = (acoustic, trial["name"])
+            tangent_source = trial["name"]
+        else:
+            response = wave.solve(trial_q, drive)
+            acoustic, tangent_source = cached
         force = response.force(np.ones(1, complex))
         mechanical, stiffness, _ = trial_space.mechanics(trial_q)
         residual = force - mechanical
@@ -133,6 +147,7 @@ def run(configuration, output):
             ),
             "coupled_condition_number": float(np.linalg.cond(stiffness - acoustic)),
             "wave_diagnostics": response.diagnostics(np.ones(1, complex)),
+            "acoustic_tangent_from_trial": tangent_source,
             "linear_prediction_only": True,
         }
         rows.append(row)
