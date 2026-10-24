@@ -86,10 +86,16 @@ def run(configuration, output):
             reason = "Accepted-step budget reached; partial computed trajectory preserved"
             break
         t = times[-1]
-        if acoustic_load == "linearized" or data.get("report_acoustic_tangent", False):
+        wants_tangent = acoustic_load == "linearized" or data.get("report_acoustic_tangent", False)
+        # A tangent from an earlier accepted geometry may be reused for a few
+        # steps; the load itself is always freshly solved on the current faces.
+        if wants_tangent and len(diagnostics) % data.get("tangent_refresh_steps", 1) == 0:
             response, tangent_unit = wave.shape_force_jacobian(q, drive)
+            tangent_time = t
         else:
-            response, tangent_unit = wave.solve(q, drive), None
+            response = wave.solve(q, drive)
+            if not wants_tangent:
+                tangent_unit, tangent_time = None, None
         force_unit = response.force(np.ones(1, complex))
         fluid = assemble_mobility(
             space, q, mu, data["fluid_radial_cells"], data["fluid_cells_per_layer"]
@@ -161,6 +167,7 @@ def run(configuration, output):
                 "work_minus_energy_change_j": balance,
                 "acoustic_load": acoustic_load,
                 "linearized_max_growth_rate_s": tangent_rate,
+                "acoustic_tangent_geometry_time_s": tangent_time,
                 "full_command_wave": response.diagnostics(np.ones(1, complex)),
             }
         )
