@@ -72,7 +72,7 @@ The [LaTeX manuscript and source guide](../../docs/theory/README.md) and
 [compiled theoretical document](../../artifacts/theory/acoustic-fluid-shaping-theory.pdf)
 derive distributed source equations, required traction, attainable loads,
 explicit acoustic source adjoints, stability and formation objectives. Cartesian
-optics is a later specialization. Build with `python3 tools/build_theory.py`.
+optics is a later specialization. Build with `python3 tools/documents/build_theory.py`.
 The [Cartesian-diopter construction](cartesian-diopters.md) accepts signed
 optical parameters `(n_o, z_o, n_i, z_i)`; apparatus feasibility is a separate
 inverse problem. Axial stigmatism does not imply achromatism or aplanatism.
@@ -94,13 +94,13 @@ Earlier artifacts are preserved, not silently regenerated with a new model.
 
 ```bash
 uv run ruff check src tools
-uv run python tools/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
-uv run python tools/verify_viewer.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125
+uv run python tools/presentation/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
+uv run python tools/presentation/verify_viewer.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125
 ```
 
 | Directory | Responsibility |
 |---|---|
-| `src/acoustic_freeform/single_interface/` | Curved chamber, acoustics, flow, capillarity, inverse design, dynamics, optics and rendering |
+| `src/acoustic_freeform/models/single_interface/` | Curved chamber, acoustics, flow, capillarity, inverse design, dynamics, optics and rendering |
 | `src/acoustic_freeform/verify/` | Independent analytic and coupled checks for the two-face model; single-interface checks remain in its own package |
 | `configs/` | Versioned physical apparatus, numerical inputs and optimizer seeds |
 | `web/` | Time viewer source and locked frontend dependencies |

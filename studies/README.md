@@ -5,7 +5,7 @@ reviewed verdicts, and [ledger.json](ledger.json) records nine separate evidence
 states for the representative runs. [run-index.json](run-index.json) inventories
 preserved report files with hashes; presence in that inventory does not
 establish success. Rebuild the index and status page with
-`python3 tools/build_research_index.py`.
+`python3 tools/documents/build_research_index.py`.
 
 | Study | Question |
 |---|---|

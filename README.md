@@ -54,7 +54,7 @@ gates fail, and fixed-command refinement is unfinished.
 
 All three are numerical renderings at equal geometric scale unless a panel
 says otherwise; none is a photograph or an experiment.
-`tools/render_readme_figures.py` regenerates them from the local saved states
+`tools/presentation/render_readme_figures.py` regenerates them from the local saved states
 and records input hashes in `figures/provenance.json`.
 
 ## Research path
@@ -78,24 +78,27 @@ provides detailed historical reports.
 ```sh
 uv sync --dev
 uv run ruff check src tools
-python3 tools/build_research_index.py --check
+python3 tools/documents/build_research_index.py --check
 uv run afl --help
 ```
 
-`afl` exposes the implemented target, load, finite-source synthesis, held-command
-equilibrium, wave-refinement and formation steps. Each command needs a declared
-JSON configuration and writes a new directory under `artifacts/`. It is not a
-validated end-to-end compiler for arbitrary source distributions. The older
-single-interface CLI remains `lenslab`.
+`afl` exposes every implemented research step: optical target, required load,
+finite-source synthesis and diagnostics, held-command equilibrium, wave
+refinement, formation and verification. Each step needs a declared JSON
+configuration and writes a new directory under `artifacts/`. It is not a
+validated end-to-end compiler for arbitrary source distributions. The earlier
+models run as `afl single-interface ...` (also `lenslab`) and `afl planar ...`.
+[Architecture](docs/architecture.md) lists the commands and package layers.
 
 | Location | Responsibility |
 |---|---|
 | `docs/theory/` | Canonical general theory; compiled PDFs stay private in `artifacts/theory/` |
-| `src/acoustic_freeform/` | Physics and algorithms grouped by apparatus, optics, mechanics, acoustics, inverse, forward and verification |
+| `src/acoustic_freeform/` | Library (apparatus, optics, mechanics, acoustics, inverse, forward, verify, present), research `steps/` and earlier `models/` |
 | `studies/` | Reviewed evidence ledger and five scientific questions |
+| `configs/` | Immutable inputs grouped by study, shared material records and relocation map; SI units |
 | `artifacts/studies/` | Active numerical evidence, grouped by study and excluded from Git |
-| `configs/` | Immutable historical inputs and relocation map; all solver values use SI units |
 | `notebooks/` | Editable presentations; executed copies live with their study artifacts |
+| `tools/` | Document builds, study audits and presentation checks |
 | `references/` | Primary-source reading map and private source library |
 
 Source and artifact milestones, plus superseded exploratory outputs, are

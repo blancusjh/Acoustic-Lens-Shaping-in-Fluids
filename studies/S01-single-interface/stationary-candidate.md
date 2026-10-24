@@ -89,8 +89,8 @@ displacement. A measured loaded transducer transfer function is needed to conver
 these to voltages. A global phase rotation leaves the mean force unchanged.
 
 ```bash
-uv run lenslab stationary configs/lenses/noa61_cartesian_50_20_stationary.toml \
-  --seed configs/initialization/cartesian_50_20.json --starts 1 \
+uv run lenslab stationary configs/S01-single-interface/lenses/noa61_cartesian_50_20_stationary.toml \
+  --seed configs/S01-single-interface/initialization/cartesian_50_20.json --starts 1 \
   --out artifacts/reproduced_cartesian --stability
 uv run lenslab verify artifacts/reproduced_cartesian
 uv run lenslab render artifacts/reproduced_cartesian

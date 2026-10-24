@@ -36,7 +36,7 @@ liquid density and index as well as viscosity.
 
 ## Explicit engineering assumptions for the pressure calculation
 
-The case is `configs/dual/noa61-water-pressure-reference.json`. Keep the
+The case is `configs/shared/noa61-water-pressure-reference.json`. Keep the
 existing 4 mm cylinder radius, 2 mm clear radius, 6 mm cell height, vertex
 displacements and shared laboratory conjugates. Reconstruct both Cartesian
 surfaces for the new liquid indices; do not reuse a cached acoustic operator.

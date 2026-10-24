@@ -81,9 +81,9 @@ The waveform, mapping configuration and validation are in the presentation's
 From the repository root:
 
 ```bash
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 uv run python tools/execute_notebooks.py \
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 uv run python tools/presentation/execute_notebooks.py \
   --timeout 900 notebooks/05_formation_and_spots.ipynb
-uv run python tools/verify_formation_notebook.py
+uv run python tools/presentation/verify_formation_notebook.py
 ```
 
 The notebook reads completed solver outputs. If absent, it launches the two

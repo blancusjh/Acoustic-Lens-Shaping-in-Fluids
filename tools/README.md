@@ -1,10 +1,13 @@
 # Research utilities
 
-Numerical experiment entry points live with their declared Python model and
-are exposed by `afl`; these utilities build documents, index evidence and check
-presentations. No utility publishes data or adds a remote.
+Numerical experiment entry points are research steps in
+`src/acoustic_freeform/steps/`, exposed by `afl`. These utilities build
+documents, index evidence and check presentations; each folder below holds one
+role. Run them from the repository root, for example
+`uv run python tools/documents/build_research_index.py --check`. No utility
+publishes data or adds a remote.
 
-## Documents and evidence index
+## Documents and evidence index: `documents/`
 
 | Tool | Role |
 |---|---|
@@ -14,7 +17,7 @@ presentations. No utility publishes data or adds a remote.
 | `verify_ssl_report_math.py` | Algebra and finite-difference checks of the SSL report; no simulation |
 | `build_research_index.py` | Index preserved reports and render `STATUS.md` from `studies/ledger.json` |
 
-## Study-specific audits
+## Study-specific audits: `audits/`
 
 | Tool | Study | Role |
 |---|---|---|
@@ -23,7 +26,7 @@ presentations. No utility publishes data or adds a remote.
 | `audit_imported_discussion.py` | S01 | Audit saved one-interface data; not a dynamics rerun |
 | `audit_viscous_runs.py` | S03 | Saved-state energy and refinement audit of ideal-load trajectories |
 
-## Notebooks and browser presentations
+## Notebooks and browser presentations: `presentation/`
 
 | Tool | Study | Role |
 |---|---|---|

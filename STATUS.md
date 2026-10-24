@@ -1,6 +1,6 @@
 # Research status
 
-Generated from [the reviewed evidence ledger](studies/ledger.json) by `python3 tools/build_research_index.py`.
+Generated from [the reviewed evidence ledger](studies/ledger.json) by `python3 tools/documents/build_research_index.py`.
 Each status applies only to its declared numerical model and evidence file. No experimental validation is recorded.
 
 | Record | Source | Stationary root | Optical gates | Fixed-command convergence | Formation |

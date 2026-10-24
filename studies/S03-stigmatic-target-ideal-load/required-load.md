@@ -12,7 +12,7 @@ and [SI data](../../artifacts/studies/S03-stigmatic-target-ideal-load/ideal-load
 Reproduce with:
 
 ```sh
-OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python -m acoustic_freeform.mechanics.required_load configs/dual/ideal-load-stigmatic.json --out <new-directory>
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python -m acoustic_freeform.mechanics.required_load configs/S03-stigmatic-target-ideal-load/ideal-load-stigmatic.json --out <new-directory>
 ```
 
 The existing shared-conjugate Cartesian pupils and C2 sealed-volume annuli are

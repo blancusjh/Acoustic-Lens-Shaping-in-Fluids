@@ -137,12 +137,12 @@ within our explicitly different finite-element, one-liquid approximation.
 ## Reproduce and read the excitation
 
 The first configuration is
-[`noa61_cartesian_50_20.toml`](../../configs/lenses/noa61_cartesian_50_20.toml):
+[`noa61_cartesian_50_20.toml`](../../configs/S01-single-interface/lenses/noa61_cartesian_50_20.toml):
 \(n_o=1.52,z_o=-50\,\mathrm{mm},n_i=1,z_i=20\,\mathrm{mm}\).
 Its `[diopter]` section contains exactly those four optical parameters.
 
 ```bash
-uv run lenslab simulate configs/lenses/noa61_cartesian_50_20.toml --out artifacts/my_cartesian
+uv run lenslab simulate configs/S01-single-interface/lenses/noa61_cartesian_50_20.toml --out artifacts/my_cartesian
 uv run lenslab excitation artifacts/my_cartesian
 uv run lenslab render artifacts/my_cartesian
 uv run lenslab verify artifacts/my_cartesian --spatial
@@ -190,7 +190,7 @@ fabrication process.
 `lenslab stationary` provides the direct conjugates-to-holding-excitation route:
 
 ```bash
-uv run lenslab stationary configs/lenses/noa61_cartesian_50_20_stationary.toml --out artifacts/my_stationary --stability
+uv run lenslab stationary configs/S01-single-interface/lenses/noa61_cartesian_50_20_stationary.toml --out artifacts/my_stationary --stability
 uv run lenslab render artifacts/my_stationary
 ```
 
@@ -203,7 +203,7 @@ not fluid times; stationary outputs are stored in `stationary.npz`, and no appro
 trajectory is invented for their visualization.
 
 For the documented optimization branch, add
-`--seed configs/initialization/cartesian_50_20.json --starts 1`. This is a recorded
+`--seed configs/S01-single-interface/initialization/cartesian_50_20.json --starts 1`. This is a recorded
 initial guess; the optimizer still solves for the final drive. Run
 `uv run lenslab verify artifacts/my_stationary` before rendering to include the
 fixed-drive refinement comparison. A declared 0.1 nm full-aperture area-RMS

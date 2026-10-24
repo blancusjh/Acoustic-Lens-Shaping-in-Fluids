@@ -1,6 +1,6 @@
 # README figures
 
-Rendered by `tools/render_readme_figures.py` from saved local states under
+Rendered by `tools/presentation/render_readme_figures.py` from saved local states under
 `artifacts/studies/`. `provenance.json` records the SHA-256 of every input and
 output file, plus the consistency checks run while rendering. Nothing is
 interpolated toward a target shape; every drawn part is a declared apparatus

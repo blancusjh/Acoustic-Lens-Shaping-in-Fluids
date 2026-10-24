@@ -58,8 +58,8 @@ windows and their refraction are not included in this two-interface model.
 
 ## Reproduction and present result
 
-Run `.venv/bin/python -m acoustic_freeform.verify.stigmatic_target
-configs/dual/stigmatic-optical-audit.json --out <new-artifact-directory>`.
+Run `uv run afl target
+configs/S03-stigmatic-target-ideal-load/stigmatic-optical-audit.json --out <new-artifact-directory>`.
 
 Results: `artifacts/studies/S03-stigmatic-target-ideal-load/dual-stigmatic-2026-09-23/optical-audit/`, with configuration,
 source provenance and validation. All 4001 exact-target rays transmit and the

@@ -119,7 +119,7 @@ Region geometry and SI command exports are implemented in
 
 ## Reproduce and inspect
 
-- Inputs: `configs/dual/precision/`.
+- Inputs: `configs/S02-independent-two-face/precision/`; the later shared-conjugate (`stigmatic-*`) inputs are in `configs/S04-emitter-synthesis/precision/`.
 - September 22 screening: `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/`.
 - Current runs: `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-23/`.
 - Protocol: [precision program](precision-program.md).

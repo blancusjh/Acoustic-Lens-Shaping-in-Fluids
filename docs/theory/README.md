@@ -32,8 +32,8 @@ inverse definition or a requirement for producing the Cartesian family.
 From the repository root:
 
 ```bash
-python3 tools/build_theory.py
-uv run --with sympy==1.14.0 python tools/verify_theory_algebra.py
+python3 tools/documents/build_theory.py
+uv run --with sympy==1.14.0 python tools/documents/verify_theory_algebra.py
 ```
 
 The PDF needs TeX Live/MacTeX with `latexmk`, pdfLaTeX, biber, biblatex, TikZ

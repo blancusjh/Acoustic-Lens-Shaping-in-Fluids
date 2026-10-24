@@ -48,7 +48,7 @@ a realizable coherent command. Numerical solver status alone is not a verified
 dual certificate; truncation bounds apply only within the chosen source space.
 The implementation uses [CVXPY's complex semidefinite constraints](https://www.cvxpy.org/tutorial/constraints/index.html),
 with the actual package version recorded in each run. This optional diagnostic
-can be run using `uv run --with cvxpy==1.9.3 python -m acoustic_freeform.inverse.relaxation`.
+can be run using `uv run --with cvxpy==1.9.3 afl relaxation`.
 
 ## Verification sequence
 
@@ -194,7 +194,7 @@ outer-iteration budget, not a bound on acoustic solves. A small shared-wave
 regression compares the two algorithms; convergence of a large candidate
 still requires independent fixed-command refinements.
 
-New precision configurations are in `configs/dual/precision/`; their outputs
+New precision configurations are in `configs/S02-independent-two-face/precision/`; their outputs
 are grouped under `artifacts/studies/S02-independent-two-face/dual-precision-2026-09-22/`. Older configurations
 and evidence keep their original paths. All runs include provenance and a
 declared model. The private research archive preserves pre-edit milestones.
@@ -202,7 +202,7 @@ September 23 continuations are in `artifacts/studies/S02-independent-two-face/du
 
 The [report index](../run-index.json) inventories preserved reports
 without inferring scientific success from file presence. Rebuild it with
-`python3 tools/build_research_index.py`.
+`python3 tools/documents/build_research_index.py`.
 
 Run large two-dimensional wave jobs sequentially on the current 16 GB host.
 Concurrent refined equilibria and convex factorizations caused severe swapping

@@ -81,7 +81,7 @@ radii gives sampled traction oscillations 0.60837 Pa (front) and 0.47579 Pa
 to carrier motion, these give necessary frequency lower bounds of approximately
 2.483 MHz and 2.196 MHz. Curvature uses
 `κ = −h''/(1+h'^2)^(3/2) − h'/(r sqrt(1+h'^2))`, with the axis limit understood.
-The input is pair A in `configs/dual/cartesian-pair-frequency.json`; no source
+The input is pair A in `configs/S02-independent-two-face/cartesian-pair-frequency.json`; no source
 optimization enters this calculation.
 
 The sampled oscillation is a lower bound, so it can supply a necessary bound

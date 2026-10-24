@@ -12,7 +12,7 @@ and `vision.tex`.
 The shared bibliography is `../references.bib`. This report is separate from
 the main theoretical manuscript; it does not replace its PDF.
 
-Build with `python tools/build_ssl_report.py` from the repository root.
+Build with `python tools/documents/build_ssl_report.py` from the repository root.
 XeLaTeX, latexmk and biber are required. The builder checks unresolved
 references, missing characters and overfull boxes, and records source/PDF hashes.
 Before rebuilding a released report, preserve the source and PDF milestone
@@ -28,7 +28,7 @@ do not regenerate over edited LaTeX without reviewing and archiving it.
 Optional algebra checks (SymPy and NumPy, without changing project dependencies):
 
 ```sh
-uv run --no-project --with numpy --with sympy python tools/verify_ssl_report_math.py
+uv run --no-project --with numpy --with sympy python tools/documents/verify_ssl_report_math.py
 ```
 
 The check records are in `artifacts/theory/ssl-generator/algebra-checks.json`;

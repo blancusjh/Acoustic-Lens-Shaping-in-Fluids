@@ -32,7 +32,7 @@ accuracy alone does not satisfy an unqualified instantaneous 10 nm specification
 The [user-supplied discussion](https://chatgpt.com/share/6ab2119a-197c-83e9-9801-223a8b8ea45e)
 was retrieved on 22 September 2026. Its visible messages and acquisition manifest
 are preserved privately in `references/discussions/2026-09-22-cartesian/`.
-The source can be re-extracted with `tools/import_shared_conversation.py`.
+The source can be re-extracted with `tools/audits/import_shared_conversation.py`.
 
 Accepted mathematical developments are the geometric multiplier field, the
 continuous quadratic source integral, source placement as a design variable,
@@ -74,7 +74,7 @@ hypotheses unless accompanied by measurements.
 stay, with auxiliary build files, under `artifacts/theory/`.
 `src/acoustic_freeform/` contains the two-face implementation in the apparatus,
 acoustics, mechanics, inverse, forward and verify packages; the
-earlier `single_interface/` and `planar/` implementations and outputs retain their
+earlier `models/single_interface/` and `models/planar/` implementations and outputs retain their
 declared models. Each new campaign stores its input configuration, source
 snapshot/checksums, commands, states, validation and a readable report together.
 Promote results only after their independent checks; failed tests remain useful

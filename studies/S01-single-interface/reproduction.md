@@ -12,7 +12,7 @@ uv sync --dev
 npm --prefix web ci
 npm --prefix web run build
 uv run lenslab view artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06/step-formation-dt00125
-uv run python tools/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
+uv run python tools/presentation/execute_notebooks.py notebooks/03_stable_cartesian.ipynb
 ```
 
 The viewer starts at its last computed frame, 0.2 s. Restart/play shows formation
@@ -36,8 +36,8 @@ array solution. The local nonconvex optimizer is not guaranteed to find every
 reachable target or a global optimum.
 
 ```bash
-uv run lenslab stationary configs/lenses/noa61_cartesian_50_20_viscous_1mhz.toml \
-  --seed configs/initialization/cartesian_wall_1mhz.json --starts 1 \
+uv run lenslab stationary configs/S01-single-interface/lenses/noa61_cartesian_50_20_viscous_1mhz.toml \
+  --seed configs/S01-single-interface/initialization/cartesian_wall_1mhz.json --starts 1 \
   --out artifacts/reproduction/design
 
 uv run lenslab verify-coupled artifacts/reproduction/design \
@@ -77,7 +77,7 @@ uv run lenslab evolve artifacts/reproduction/operating-state \
 
 uv run lenslab excitation artifacts/reproduction/formation
 uv run lenslab render artifacts/reproduction/formation
-uv run python tools/verify_viewer.py artifacts/reproduction/formation
+uv run python tools/presentation/verify_viewer.py artifacts/reproduction/formation
 ```
 
 For the recorded case the control surrogate has no growing mode, so `feedback`
@@ -128,12 +128,12 @@ All paths in this table are relative to
 | `wall-frequency-screen/` | Frozen-target screening, before coupled verification |
 | `recovery-dt005/`, `recovery-dt0025/` | Earlier 1.8 MHz feedback/time-method studies, before wall damping |
 
-`tools/summarize_maintenance.py` reads completed files, checks unchanged drives
+`tools/audits/summarize_maintenance.py` reads completed files, checks unchanged drives
 and volume, compares matching physical times, and creates the campaign audit.
 It does not simulate, optimize or alter state arrays:
 
 ```bash
-uv run python tools/summarize_maintenance.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06
+uv run python tools/audits/summarize_maintenance.py artifacts/studies/S01-single-interface/cartesian-maintenance-2026-09-06
 uv run ruff check src tools
 npm --prefix web run check
 ```

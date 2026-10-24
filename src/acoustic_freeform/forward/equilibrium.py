@@ -1,6 +1,7 @@
 """Fixed-command coupled stationary solve: fresh wave fields on every trial shape."""
 
 import numpy as np
+from numpy.polynomial.legendre import leggauss
 from scipy.linalg import block_diag
 from scipy.optimize import root
 
@@ -87,3 +88,18 @@ def coupled_equilibrium(
         "compliance_residual_max_m": residual_m,
         "interpretation": "Stationary root solve, not a formation trajectory.",
     }
+
+
+def project_acoustic_tangent(reference_space, space, acoustic):
+    """Galerkin transfer of a reference derivative for root preconditioning."""
+    radius = space.config.radius_m
+    if reference_space.config.radius_m != radius:
+        raise ValueError("Tangent transfer requires the same physical radius")
+    edges = np.unique(np.r_[reference_space.raw.t, space.raw.t]) * radius
+    x, w = leggauss(12)
+    r = (edges[:-1, None] + np.diff(edges)[:, None] * (x + 1) / 2).ravel()
+    weights = (np.diff(edges)[:, None] * w / 2).ravel() * 2 * np.pi * r
+    cross = reference_space.basis(r).T @ (weights[:, None] * space.basis(r))
+    single = np.linalg.solve(reference_space.mass, cross)
+    transfer = block_diag(single, single)
+    return transfer.T @ acoustic @ transfer

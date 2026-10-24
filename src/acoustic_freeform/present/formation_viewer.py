@@ -9,7 +9,7 @@ import numpy as np
 from ..apparatus.config import DualConfig
 from ..apparatus.sources import source_regions
 from ..core.paths import data_path
-from ..forward.inertial_formation import envelope
+from ..forward.formation import envelope
 from ..mechanics.surface import CartesianPatch, DualSurface
 from ..optics.raytrace import trace_pair
 
@@ -30,7 +30,10 @@ def prepare(root, destination):
     pupil = r <= apparatus.clear_radius_m
     profiles = np.einsum("rc,tfc->tfr", space.basis(r), q)
     target_config = json.loads(
-        (root / "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/config.json").read_text()
+        (
+            root
+            / "artifacts/studies/S02-independent-two-face/dual-cartesian-2026-09-22/sources-112/config.json"
+        ).read_text()
     )["cases"][0]["faces"]
     target = np.array(
         [CartesianPatch(apparatus, j, **data).evaluate(r) for j, data in enumerate(target_config)]
@@ -77,7 +80,7 @@ def prepare(root, destination):
         source,
         Path(__file__),
         Path(__file__).with_name("formation_viewer.html"),
-        Path(__file__).with_name("optics.py"),
+        Path(__file__).resolve().parents[1] / "optics" / "raytrace.py",
     ]
     (destination / "provenance.json").write_text(
         json.dumps({str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}, indent=2)
