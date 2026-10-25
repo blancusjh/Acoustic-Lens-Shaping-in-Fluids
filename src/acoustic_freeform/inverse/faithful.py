@@ -72,7 +72,8 @@ class FaithfulProblem:
         mobility=None,
     ):
         self.cfg, self.modes, self.targets = cfg, modes, targets
-        self.space = DualSurface(cfg)
+        self.space = DualSurface(cfg, allow_volume_offsets=True)
+        self.start = self.space.unforced_equilibrium()
         self.wave = DualAcoustics(cfg, self.space, linear_solver="static_condensed")
         self.radii = np.asarray(pupil_radii, float)
         self.pupil_basis = self.space.basis(self.radii)
@@ -97,7 +98,7 @@ class FaithfulProblem:
         ]
 
     def pupil_heights(self, q):
-        return np.array([self.pupil_basis @ v for v in q])
+        return np.array([self.space.height(j, v, self.radii) for j, v in enumerate(q)])
 
     def reachable(self, c, progress=None):
         return startup_branch(
@@ -105,6 +106,7 @@ class FaithfulProblem:
             self.space,
             self.modes @ c,
             self.sigmas,
+            initial=self.start,
             tolerance_m=self.tolerance_m,
             mobility=self.mobility,
             progress=progress,
@@ -126,7 +128,7 @@ class FaithfulProblem:
         }
         grad, _, _ = self.space.mechanics(q)
         for p in self.perturbations:
-            space = DualSurface(p["config"])
+            space = DualSurface(p["config"], allow_volume_offsets=True)
             wave = DualAcoustics(p["config"], space, linear_solver="static_condensed")
             perturbed = ModalOperators(wave, q, self.modes, 1)
             difference = perturbed.kernels - operators.kernels
@@ -156,25 +158,34 @@ class FaithfulProblem:
         reduced = jacobian[:, free]
         scale = max(np.linalg.norm(x), 1e-12)
 
+        # Every term is normalized to order one; SLSQP fails on the raw scales
+        # (pressures squared in Pa^2 against powers in W).
+        normal = max(0.5 * residual @ residual, 1e-300)
+
+        def merit(d):
+            value = residual + reduced @ d
+            return 0.5 * value @ value
+
         def objective(d):
             value = residual + reduced @ d
-            return 0.5 * value @ value, reduced.T @ value
+            return 0.5 * value @ value / normal, reduced.T @ value / normal
 
         def new(d):
             y = x.copy()
             y[free] += d
             return complex_coefficients(y)
 
+        size = radius * scale
         constraints = [
-            {"type": "ineq", "fun": lambda d: radius**2 * scale**2 - d @ d},
+            {"type": "ineq", "fun": lambda d: 1 - (d @ d) / size**2},
             {
                 "type": "ineq",
-                "fun": lambda d: limits["source_power_w"] - operators.source_power(new(d)),
+                "fun": lambda d: 1 - operators.source_power(new(d)) / limits["source_power_w"],
             },
             {
                 "type": "ineq",
                 "fun": lambda d: (
-                    limits["peak_pressure_pa"] ** 2 - abs(operators.pressure_rows @ new(d)) ** 2
+                    1 - abs(operators.pressure_rows @ new(d)) ** 2 / limits["peak_pressure_pa"] ** 2
                 ),
             },
         ]
@@ -184,30 +195,34 @@ class FaithfulProblem:
             jac=True,
             method="SLSQP",
             constraints=constraints,
-            options={"maxiter": 200, "ftol": 1e-12},
+            options={"maxiter": 300, "ftol": 1e-14},
         )
-        return new(solution.x), float(objective(solution.x)[0]), solution
+        return new(solution.x), float(merit(solution.x)), solution
 
 
-def frozen_start(problem, limits, seeds, rng, evaluations=400):
-    """Initial command from a frozen pupil-only fit at the projected target.
+def frozen_start(problem, limits, seeds, rng, evaluations=400, seed_power_fraction=0.01):
+    """Initial command from a frozen pupil-only correction of the acoustics-off state.
 
     Only an initial guess: forces are quadratic, so a Gauss-Newton step from
-    c = 0 is degenerate. The frozen compliance K^-1 is used here and nowhere in
-    acceptance. Each candidate is scaled into both caps before it is returned.
+    c = 0 is degenerate. About the acoustics-off equilibrium q0, the pupil
+    heights move by H K0^-1 F_ac(q0; c) to first order; the fit asks this to
+    close the pupil residual of the meniscus. The frozen compliance is used
+    here and nowhere in acceptance. Candidates are scaled into both caps.
     """
     space = problem.space
-    q = space.project(problem.targets)
-    grad, stiffness, _ = space.mechanics(q)
+    q = problem.start
+    _, stiffness, _ = space.mechanics(q)
     operators = ModalOperators(problem.wave, q, problem.modes, problem.pressure_samples)
     observe = np.kron(np.eye(2), problem.pupil_basis) / problem.scale
     compliance = observe @ np.linalg.inv(stiffness)
-    target = compliance @ grad
+    target = ((problem.target_heights - problem.pupil_heights(q)) / problem.scale).ravel()
     m = problem.modes.shape[1]
     candidates = []
     for _ in range(seeds):
         c = rng.normal(size=m) + 1j * rng.normal(size=m)
-        c *= np.sqrt(0.5 * limits["source_power_w"] / max(operators.source_power(c), 1e-30))
+        c *= np.sqrt(
+            seed_power_fraction * limits["source_power_w"] / max(operators.source_power(c), 1e-30)
+        )
 
         def fun(x):
             return compliance @ operators.force(complex_coefficients(x)) - target
@@ -231,3 +246,30 @@ def frozen_start(problem, limits, seeds, rng, evaluations=400):
             }
         )
     return sorted(candidates, key=lambda item: item["frozen_pupil_defect_scaled"])
+
+
+def best_fill_volumes(cfg, targets, radii):
+    """Per-face displaced volume whose acoustics-off meniscus best fits the pupil.
+
+    Minimizes the maximum pupil height error of the capillary-gravity meniscus
+    at fixed pinned rims; each face is fitted with the other at zero offset,
+    which is exact because the two acoustics-off interfaces do not interact.
+    """
+    from scipy.optimize import minimize_scalar
+
+    volumes, errors = [], []
+    for j, target in enumerate(targets):
+        heights = target.evaluate(radii)
+
+        def error(volume, j=j, heights=heights):
+            offsets = [0.0, 0.0]
+            offsets[j] = volume
+            space = DualSurface(replace(cfg, volume_offsets_m3=tuple(offsets)), True)
+            q = space.unforced_equilibrium()
+            return float(np.max(abs(space.height(j, q[j], radii) - heights)))
+
+        guess = np.pi * cfg.radius_m**2 / 2 * heights[0]
+        fit = minimize_scalar(error, bracket=(0.5 * guess, guess))
+        volumes.append(float(fit.x))
+        errors.append(float(fit.fun))
+    return volumes, errors

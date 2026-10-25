@@ -27,7 +27,7 @@ def run(configuration, output):
         raise ValueError("acoustic_load must be frozen or linearized")
     material = json.loads(data_path(synthesis["material_reference"]).read_text())
     cfg = DualConfig(**json.loads((source / "config.json").read_text()))
-    space = DualSurface(cfg)
+    space = DualSurface(cfg, allow_volume_offsets=True)
     drive = np.load(source / "state.npz")["source_velocity_m_s"]
     mu = np.array(material["viscosities_pa_s"])
     output.mkdir(parents=True, exist_ok=False)
@@ -41,10 +41,13 @@ def run(configuration, output):
     r = np.linspace(0, cfg.clear_radius_m, data["ray_count"])
     launch = cfg.levels_m[1] + targets[0].evaluate(r)
     target_h = np.array([t.evaluate(r) for t in targets])
-    q = np.zeros((2, space.count))
+    # Start from the acoustics-off equilibrium at the declared volumes (flat
+    # for the historical equal-volume convention).
+    q = space.unforced_equilibrium()
     f0, k0, _ = space.mechanics(q)
     minimum_stiffness = float(np.linalg.eigvalsh(k0)[0])
-    assert np.max(abs(f0)) == 0 and minimum_stiffness > 0
+    if np.max(abs(np.linalg.solve(k0, f0))) > 1e-12 or minimum_stiffness <= 0:
+        raise ValueError("The acoustics-off start is not a stable mechanical equilibrium")
     wave = DualAcoustics(cfg, space, linear_solver="static_condensed")
     times, states, rows, diagnostics, energies = [0.0], [q.copy()], [], [], [0.0]
 
@@ -58,7 +61,9 @@ def run(configuration, output):
             launch_radius_m=r,
             launch_height_m=launch,
         )
-        error = np.max(abs(np.array([space.evaluate(v, r) for v in q]) - target_h), axis=1)
+        error = np.max(
+            abs(np.array([space.height(j, v, r) for j, v in enumerate(q)]) - target_h), axis=1
+        )
         return {
             "time_s": times[-1],
             "sampled_pupil_error_m": error.tolist(),
@@ -111,7 +116,7 @@ def run(configuration, output):
                 else:
                     new = implicit_step(space, q, force, fluid.mobility, dt)
                 increment = max(space.polynomial_maximum(v)["max_abs_m"] for v in new - q)
-                heights = np.array([space.evaluate(v, space.r) for v in new])
+                heights = np.array([space.height(j, v, space.r) for j, v in enumerate(new)])
                 bounds = np.vstack(
                     [
                         np.full(len(space.r), cfg.levels_m[0]),

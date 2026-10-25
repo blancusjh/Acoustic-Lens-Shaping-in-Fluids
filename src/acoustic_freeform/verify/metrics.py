@@ -10,11 +10,17 @@ def maximum_error(space, q, target):
     The mesh is independent of acoustic quadrature and surface collocation.
     """
     r = np.linspace(0, space.config.clear_radius_m, 2001)
+
+    def shape(x, derivative=0):
+        if hasattr(target, "face"):
+            return space.height(target.face, q, x, derivative)
+        return space.evaluate(q, x, derivative)
+
     target_h = target.evaluate(r)
-    error = space.evaluate(q, r) - target_h
+    error = shape(r) - target_h
     values = abs(error)
     best = float(np.max(values))
-    derivative = space.evaluate(q, r, 1) - target.evaluate(r, 1)
+    derivative = shape(r, 1) - target.evaluate(r, 1)
     crossings = np.flatnonzero(derivative[:-1] * derivative[1:] < 0)
     low, high = r[crossings].copy(), r[crossings + 1].copy()
     left = derivative[crossings].copy()
@@ -23,13 +29,13 @@ def maximum_error(space, q, target):
         # spend minutes resolving roundoff peaks of near-exact projections.
         for _ in range(32):
             middle = (low + high) / 2
-            value = space.evaluate(q, middle, 1) - target.evaluate(middle, 1)
+            value = shape(middle, 1) - target.evaluate(middle, 1)
             same_sign = np.signbit(value) == np.signbit(left)
             low = np.where(same_sign, middle, low)
             high = np.where(same_sign, high, middle)
             left = np.where(same_sign, value, left)
         roots = (low + high) / 2
-        best = max(best, float(np.max(abs(space.evaluate(q, roots) - target.evaluate(roots)))))
+        best = max(best, float(np.max(abs(shape(roots) - target.evaluate(roots)))))
     rms = np.sqrt(np.trapezoid(r * error**2, r) * 2 / space.config.clear_radius_m**2)
     return {
         "max_error_m": best,

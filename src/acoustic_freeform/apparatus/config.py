@@ -26,6 +26,10 @@ class DualConfig:
     normal_velocity_trace: str = "weak_flux"
     surface_elements: int = 20
     surface_degree: int = 5
+    # Displaced volume of each interface relative to its flat pinned level (m^3).
+    # Nonzero values give a curved acoustics-off meniscus; default keeps the
+    # historical equal-volume convention.
+    volume_offsets_m3: tuple = (0.0, 0.0)
 
     def validate(self):
         if not 0 < self.clear_radius_m < self.radius_m:
@@ -49,10 +53,17 @@ class DualConfig:
             raise ValueError("Unknown normal-velocity trace recovery.")
         if self.surface_degree != 5 or self.surface_elements < 4:
             raise ValueError("Use quintic surfaces with at least four elements.")
+        if len(self.volume_offsets_m3) != 2 or not np.all(np.isfinite(self.volume_offsets_m3)):
+            raise ValueError("Two finite interface volume offsets are required.")
 
     @property
     def channels(self):
         return 2 * self.radial_ports + 3 * self.side_ports_per_layer
 
     def as_dict(self):
-        return asdict(self)
+        data = asdict(self)
+        # Omitted at its default so records and cache checks written before the
+        # field existed still compare equal.
+        if not any(self.volume_offsets_m3):
+            data.pop("volume_offsets_m3")
+        return data

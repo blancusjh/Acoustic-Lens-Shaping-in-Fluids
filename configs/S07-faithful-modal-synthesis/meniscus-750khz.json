@@ -1,0 +1,79 @@
+{
+  "material_reference": "configs/shared/noa61-water-pressure-reference.json",
+  "apparatus": {
+    "frequency_hz": 750000,
+    "radial_ports": 32,
+    "side_ports_per_layer": 16,
+    "radial_cells": 32,
+    "cells_per_layer": 12,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "max_source_speed_m_s": 1,
+    "volume_offsets_m3": "best_fit"
+  },
+  "optics": {
+    "vertex_displacement_m": [
+      -0.00085473,
+      5.872e-05
+    ]
+  },
+  "modes": {
+    "window_modes": {
+      "bottom": 6,
+      "top": 6
+    },
+    "wall_modes": 8
+  },
+  "pupil_samples": 41,
+  "height_goal_m": 1e-08,
+  "sigmas": [
+    0,
+    0.1,
+    0.2,
+    0.35,
+    0.5,
+    0.7,
+    0.85,
+    1.0
+  ],
+  "limits": {
+    "source_power_w": 1.0,
+    "peak_pressure_pa": 2000000
+  },
+  "perturbations": [
+    {
+      "name": "water-sound-speed-plus-0.1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1498.497,
+          1500.0,
+          1498.497
+        ]
+      }
+    },
+    {
+      "name": "resin-sound-speed-plus-0.1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1497.0,
+          1501.5,
+          1497.0
+        ]
+      }
+    },
+    {
+      "name": "interfacial-tension-plus-1pct",
+      "overrides": {
+        "surface_tension_n_m": [
+          0.02525,
+          0.02525
+        ]
+      }
+    }
+  ],
+  "seeds": 4,
+  "seed": 20261025,
+  "max_iterations": 15,
+  "initial_radius": 0.3,
+  "scope": "Faithful synthesis from the acoustics-off meniscus: shared-conjugate prescription with vertices chosen so the capillary-gravity meniscus at best-fit fill volumes is within 289/40 nm of the Cartesian pupils; 20 low-order modes correct the remainder under the 1 W / 2 MPa caps with first-order tolerance shifts."
+}

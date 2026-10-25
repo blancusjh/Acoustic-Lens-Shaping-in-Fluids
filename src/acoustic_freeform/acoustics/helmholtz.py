@@ -77,12 +77,15 @@ class LayerMapping(MappingAffine):
         t = (z - lower) / (upper - lower)
         h = (
             [np.zeros_like(r)]
-            + [self.surface.evaluate(q, r * self.cfg.radius_m) / self.cfg.radius_m for q in self.q]
+            + [
+                self.surface.height(j, q, r * self.cfg.radius_m) / self.cfg.radius_m
+                for j, q in enumerate(self.q)
+            ]
             + [np.zeros_like(r)]
         )
         hp = (
             [np.zeros_like(r)]
-            + [self.surface.evaluate(q, r * self.cfg.radius_m, 1) for q in self.q]
+            + [self.surface.height(j, q, r * self.cfg.radius_m, 1) for j, q in enumerate(self.q)]
             + [np.zeros_like(r)]
         )
         lo = np.choose(regions, h[:-1])
@@ -113,7 +116,7 @@ class LayerMapping(MappingAffine):
             moved = [np.full_like(r, self.levels[0])]
             moved += [
                 self.levels[j + 1]
-                + self.surface.evaluate(q, r * self.cfg.radius_m) / self.cfg.radius_m
+                + self.surface.height(j, q, r * self.cfg.radius_m) / self.cfg.radius_m
                 for j, q in enumerate(self.q)
             ]
             regions = (z >= moved[1]).astype(int) + (z >= moved[2]).astype(int)
@@ -122,7 +125,10 @@ class LayerMapping(MappingAffine):
         lower, upper = self.levels[regions], self.levels[regions + 1]
         h = (
             [np.zeros_like(r)]
-            + [self.surface.evaluate(q, r * self.cfg.radius_m) / self.cfg.radius_m for q in self.q]
+            + [
+                self.surface.height(j, q, r * self.cfg.radius_m) / self.cfg.radius_m
+                for j, q in enumerate(self.q)
+            ]
             + [np.zeros_like(r)]
         )
         lo, hi = np.choose(regions, h[:-1]), np.choose(regions, h[1:])
@@ -493,7 +499,7 @@ class DualAcoustics:
             p_values, grad_values, phase_values = [], [], []
             coords = traces[0].global_coordinates()
             rr = coords[0].ravel() * radius
-            slope = space.evaluate(coefficients[j], rr, 1)
+            slope = space.height(j, coefficients[j], rr, 1)
             nz = 1 / np.sqrt(1 + slope**2)
             normal = np.stack([-slope * nz, nz], axis=1)
             tangent = np.stack([nz, slope * nz], axis=1)
@@ -799,7 +805,7 @@ class DualAcoustics:
                 for side in (0, 1)
             ]
             rr = traces[0].global_coordinates()[0].ravel() * radius
-            slope = space.evaluate(coefficients[j], rr, 1)
+            slope = space.height(j, coefficients[j], rr, 1)
             nz = 1 / np.sqrt(1 + slope**2)
             pp = [probe(t) for t in traces]
             gr = [probe(t, 0) / radius for t in traces]

@@ -43,10 +43,11 @@ def startup_branch(
     sigmas = np.asarray(sigmas, float)
     if sigmas[0] != 0 or np.any(np.diff(sigmas) <= 0):
         raise ValueError("Load parameters must start at zero and increase")
-    q = np.zeros((2, space.count)) if initial is None else np.array(initial, float)
+    q = space.unforced_equilibrium() if initial is None else np.array(initial, float)
     grad, stiffness, _ = space.mechanics(q)
-    if np.max(abs(grad)) > 1e-12 and initial is None:
-        raise ValueError("The unforced state must be an exact mechanical equilibrium")
+    # The start is the acoustics-off capillary-gravity equilibrium.
+    if np.max(abs(np.linalg.solve(stiffness, grad))) > 1e-12:
+        raise ValueError("The start of the branch must be an acoustics-off equilibrium")
     response, acoustic = wave.shape_force_jacobian(q, drive)
     force = response.force(np.ones(1, complex))
     points = [

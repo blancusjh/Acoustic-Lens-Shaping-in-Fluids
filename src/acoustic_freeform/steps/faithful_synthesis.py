@@ -10,6 +10,7 @@ apply to it unchanged. Acceptance remains those independent checks.
 """
 
 import json
+from dataclasses import replace
 
 import numpy as np
 
@@ -17,7 +18,7 @@ from ..apparatus.config import DualConfig
 from ..apparatus.sources import export_sources, modal_source_matrix
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
-from ..inverse.faithful import FaithfulProblem, frozen_start
+from ..inverse.faithful import FaithfulProblem, best_fill_volumes, frozen_start
 from ..mechanics.surface import CartesianPatch
 from ..mechanics.viscous import assemble_mobility
 from ..optics.stigmatic import pair_prescription
@@ -26,7 +27,9 @@ from ..optics.stigmatic import pair_prescription
 def run(configuration, output):
     inputs = json.loads(configuration.read_text())
     material = json.loads(data_path(inputs["material_reference"]).read_text())
-    cfg = DualConfig(**{**material["apparatus"], **inputs["apparatus"]})
+    apparatus = dict(inputs["apparatus"])
+    fill = apparatus.pop("volume_offsets_m3", None)
+    cfg = DualConfig(**{**material["apparatus"], **apparatus})
     optics = {**{k: material[k] for k in ("indices", "stigmatic_z_m", "vertex_displacement_m")}}
     optics.update(inputs.get("optics", {}))
     faces = pair_prescription(
@@ -35,6 +38,12 @@ def run(configuration, output):
     for face in faces:
         face["annulus_match_order"] = inputs.get("annulus_match_order", 4)
     targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(faces)]
+    pupil = np.linspace(0, cfg.clear_radius_m, inputs.get("pupil_samples", 41))
+    meniscus_errors = None
+    if fill == "best_fit":
+        fill, meniscus_errors = best_fill_volumes(cfg, targets, pupil)
+    if fill is not None:
+        cfg = replace(cfg, volume_offsets_m3=tuple(fill))
     modes, labels = modal_source_matrix(
         cfg, inputs["modes"]["window_modes"], inputs["modes"]["wall_modes"]
     )
@@ -44,6 +53,7 @@ def run(configuration, output):
         **inputs,
         "apparatus": cfg.as_dict(),
         "case": {"faces": faces},
+        "acoustics_off_meniscus_pupil_error_m": meniscus_errors,
         "optics": optics,
         "source_file": str(output / "best-source.npz"),
     }
@@ -59,7 +69,6 @@ def run(configuration, output):
             space_holder["space"], q, viscosity, fluid["radial_cells"], fluid["cells_per_layer"]
         ).mobility
 
-    pupil = np.linspace(0, cfg.clear_radius_m, inputs.get("pupil_samples", 41))
     problem = FaithfulProblem(
         cfg,
         modes,

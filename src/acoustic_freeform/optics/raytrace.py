@@ -44,8 +44,8 @@ def fixed_detector_spot_jacobian(
         point = traced["intersections_m"][face]
         distance = (point[:, 1] - origin[:, 1]) / direction[:, 1]
         radius, sign = abs(point[:, 0]), np.sign(point[:, 0])
-        slope = sign * space.evaluate(q[face], radius, 1)
-        second = space.evaluate(q[face], radius, 2)
+        slope = sign * space.height(face, q[face], radius, 1)
+        second = space.height(face, q[face], radius, 2)
         explicit_height = np.zeros((len(r), 2 * space.count))
         explicit_slope = np.zeros_like(explicit_height)
         columns = slice(face * space.count, (face + 1) * space.count)
@@ -98,7 +98,7 @@ def trace_pair(
 ):
     return trace_graph_pair(
         space.config,
-        lambda face, r, derivative=0: space.evaluate(q[face], r, derivative),
+        lambda face, r, derivative=0: space.height(face, q[face], r, derivative),
         indices,
         object_z_m,
         detector_z_m,

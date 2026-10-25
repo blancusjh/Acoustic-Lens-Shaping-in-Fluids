@@ -43,17 +43,21 @@ def load_state(directory):
 
 def reproject(space, q, target_space):
     """The same geometry in another surface space, and the largest height change."""
-    heights = np.array([space.evaluate(v, target_space.r) for v in q])
+    heights = np.array([space.height(j, v, target_space.r) for j, v in enumerate(q)])
     moved = np.stack(
         [
-            np.linalg.solve(target_space.mass, target_space.b.T @ (target_space.weights * h))
-            for h in heights
+            np.linalg.solve(
+                target_space.mass,
+                target_space.b.T
+                @ (target_space.weights * (h - target_space.base(j, target_space.r))),
+            )
+            for j, h in enumerate(heights)
         ]
     )
     radii = np.linspace(0, space.config.radius_m, 2001)
     change = max(
-        float(np.max(abs(target_space.evaluate(a, radii) - space.evaluate(b, radii))))
-        for a, b in zip(moved, q)
+        float(np.max(abs(target_space.height(j, a, radii) - space.height(j, b, radii))))
+        for j, (a, b) in enumerate(zip(moved, q))
     )
     return moved, change
 
@@ -61,14 +65,14 @@ def reproject(space, q, target_space):
 def run(configuration, output):
     inputs = json.loads(configuration.read_text())
     cfg, q, drive, synthesis, hashes = load_state(inputs["state_directory"])
-    space = DualSurface(cfg)
+    space = DualSurface(cfg, allow_volume_offsets=True)
     if q.shape != (2, space.count) or drive.shape != (cfg.channels,):
         raise ValueError("Saved geometry/command does not match the saved apparatus")
     targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(synthesis["case"]["faces"])]
     radii = np.linspace(0, cfg.radius_m, inputs.get("radial_samples", 801))
     pupil = radii <= cfg.clear_radius_m
     target_h = np.array([t.evaluate(radii) for t in targets])
-    state_h = np.array([space.evaluate(v, radii) for v in q])
+    state_h = np.array([space.height(j, v, radii) for j, v in enumerate(q)])
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
     inputs["input_sha256"] = hashes
@@ -94,7 +98,7 @@ def run(configuration, output):
         )
         # The surface space carries tension, densities and gravity, so every trial
         # builds its own; geometry is reprojected only when the basis changes.
-        trial_space = DualSurface(trial_cfg)
+        trial_space = DualSurface(trial_cfg, allow_volume_offsets=True)
         if trial_cfg.surface_elements != cfg.surface_elements:
             trial_q, geometry_change = reproject(space, q, trial_space)
         else:

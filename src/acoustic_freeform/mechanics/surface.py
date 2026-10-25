@@ -134,10 +134,30 @@ class CartesianPatch:
         return result.reshape(r.shape)
 
 
+def spherical_cap(radius, volume):
+    """Vertex height and sphere radius of the cap pinned at ``radius`` with ``volume``.
+
+    The cap volume pi a (3 R^2 + a^2) / 6 has one real positive root a for
+    |volume|; the sign of the volume gives the side of the bulge.
+    """
+    if volume == 0:
+        return None
+    roots = np.roots([1.0, 0.0, 3 * radius**2, -6 * abs(volume) / np.pi])
+    height = float(roots[np.argmin(abs(roots.imag))].real)
+    if height >= radius:
+        raise ValueError("Volume offset beyond a hemispherical cap; the face is not a graph")
+    return height, (radius**2 + height**2) / (2 * height), float(np.sign(volume))
+
+
 class DualSurface:
-    def __init__(self, config):
+    def __init__(self, config, allow_volume_offsets=False):
         self.config = config
         config.validate()
+        offsets = tuple(config.volume_offsets_m3)
+        if any(offsets) and not allow_volume_offsets:
+            # Only callers that evaluate shapes through height() support offsets.
+            raise ValueError("This step assumes equal-volume (flat) acoustics-off interfaces")
+        self.caps = [spherical_cap(config.radius_m, v) for v in offsets]
         degree, radius = config.surface_degree, config.radius_m
         edges = np.unique(
             np.r_[np.linspace(0, 1, config.surface_elements + 1), config.clear_radius_m / radius]
@@ -179,7 +199,28 @@ class DualSurface:
             / self.config.radius_m**derivative
         )
 
+    def base(self, face, r, derivative=0):
+        """Spherical-cap base shape carrying the face's displaced volume."""
+        r = np.asarray(r, float)
+        cap = self.caps[face]
+        if cap is None:
+            return np.zeros_like(r)
+        height, sphere, sign = cap
+        root = np.sqrt(sphere**2 - r**2)
+        if derivative == 0:
+            return sign * (root - (sphere - height))
+        if derivative == 1:
+            return -sign * r / root
+        if derivative == 2:
+            return -sign * sphere**2 / root**3
+        raise ValueError("Base derivatives up to second order are available")
+
+    def height(self, face, coefficients, r, derivative=0):
+        """Interface shape: base cap plus the volume-preserving spline."""
+        return self.evaluate(coefficients, r, derivative) + self.base(face, r, derivative)
+
     def evaluate(self, coefficients, r, derivative=0):
+        # Linear in the coefficients; use height() for a face's actual shape.
         # Direct spline evaluation avoids a large basis tensor on FE quadrature.
         spline = BSpline(self.raw.t, self.transform @ coefficients, self.raw.k)
         return (
@@ -190,8 +231,11 @@ class DualSurface:
     def project(self, targets):
         return np.stack(
             [
-                np.linalg.solve(self.mass, self.b.T @ (self.weights * t.evaluate(self.r)))
-                for t in targets
+                np.linalg.solve(
+                    self.mass,
+                    self.b.T @ (self.weights * (t.evaluate(self.r) - self.base(j, self.r))),
+                )
+                for j, t in enumerate(targets)
             ]
         )
 
@@ -227,7 +271,8 @@ class DualSurface:
             sigma = self.config.surface_tension_n_m[j]
             drho = self.config.density_kg_m3[j] - self.config.density_kg_m3[j + 1]
             gravity = drho * self.config.gravity_m_s2
-            height, slope = self.b @ coeff, self.dr @ coeff
+            height = self.b @ coeff + self.base(j, self.r)
+            slope = self.dr @ coeff + self.base(j, self.r, 1)
             stretch = np.sqrt(1 + slope**2)
             forces.append(
                 sigma * self.dr.T @ (self.weights * slope / stretch)
@@ -242,6 +287,10 @@ class DualSurface:
                 np.dot(self.weights, sigma * slope**2 / (stretch + 1) + 0.5 * gravity * height**2)
             )
         return np.concatenate(forces), block_diag(*hessians), float(sum(energies))
+
+    def unforced_equilibrium(self):
+        """Acoustics-off capillary-gravity equilibrium at the declared volumes."""
+        return self.prescribed_equilibrium(np.zeros(2 * self.count))
 
     def prescribed_equilibrium(self, force, initial=None):
         q = np.zeros((2, self.count)) if initial is None else np.array(initial).copy()

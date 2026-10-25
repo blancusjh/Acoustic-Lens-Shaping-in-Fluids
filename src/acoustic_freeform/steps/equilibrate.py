@@ -32,7 +32,7 @@ def run(configuration, output):
         directory.mkdir()
         cfg = DualConfig(**{**synthesis["apparatus"], **grid["overrides"]})
         (directory / "config.json").write_text(json.dumps(cfg.as_dict(), indent=2) + "\n")
-        space = DualSurface(cfg)
+        space = DualSurface(cfg, allow_volume_offsets=True)
         reference_acoustic = None
         if inputs.get("reference_linearization_file"):
             path = data_path(inputs["reference_linearization_file"])

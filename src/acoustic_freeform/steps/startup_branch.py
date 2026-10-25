@@ -23,7 +23,7 @@ def run(configuration, output):
     inputs = json.loads(configuration.read_text())
     cfg, _, drive, synthesis, hashes = load_state(inputs["state_directory"])
     material = json.loads(data_path(synthesis["material_reference"]).read_text())
-    space = DualSurface(cfg)
+    space = DualSurface(cfg, allow_volume_offsets=True)
     targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(synthesis["case"]["faces"])]
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
@@ -58,7 +58,7 @@ def run(configuration, output):
     end = branch["points"][-1]["coefficients_m"]
     radii = np.linspace(0, cfg.radius_m, 801)
     pupil = radii <= cfg.clear_radius_m
-    end_h = np.array([space.evaluate(v, radii) for v in end])
+    end_h = np.array([space.height(j, v, radii) for j, v in enumerate(end)])
     target_h = np.array([t.evaluate(radii) for t in targets])
     report = {
         "reached_end": branch["reached_end"],
@@ -71,7 +71,7 @@ def run(configuration, output):
     }
     if inputs.get("compare_state_directory"):
         _, other, _, _, _ = load_state(inputs["compare_state_directory"])
-        other_h = np.array([space.evaluate(v, radii) for v in other])
+        other_h = np.array([space.height(j, v, radii) for j, v in enumerate(other)])
         report["end_difference_to_compared_state_max_m"] = np.max(
             abs(end_h - other_h), axis=1
         ).tolist()

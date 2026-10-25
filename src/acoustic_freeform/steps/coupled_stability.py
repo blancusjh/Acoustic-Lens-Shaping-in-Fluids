@@ -73,7 +73,7 @@ def run(configuration, output):
     cfg, q, drive, synthesis, hashes = load_state(inputs["state_directory"])
     material = json.loads(data_path(synthesis["material_reference"]).read_text())
     viscosity = np.array(inputs.get("viscosities_pa_s", material["viscosities_pa_s"]))
-    space = DualSurface(cfg)
+    space = DualSurface(cfg, allow_volume_offsets=True)
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
     inputs["input_sha256"] = hashes

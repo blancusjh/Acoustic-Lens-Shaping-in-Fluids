@@ -43,9 +43,7 @@ def assemble_mobility(space, coefficients, viscosities_pa_s, radial_cells=32, ce
     levels = np.asarray(cfg.levels_m)
     r = np.linspace(0, R, radial_cells + 1)
     z = np.unique(
-        np.concatenate(
-            [np.linspace(a, b, cells_per_layer + 1) for a, b in pairwise(levels)]
-        )
+        np.concatenate([np.linspace(a, b, cells_per_layer + 1) for a, b in pairwise(levels)])
     )
     flat = MeshTri.init_tensor(r, z)
     midpoint = flat.p[:, flat.t].mean(axis=1)
@@ -61,7 +59,7 @@ def assemble_mobility(space, coefficients, viscosities_pa_s, radial_cells=32, ce
     axis = boundary[np.all(np.isclose(fp[0], 0, atol=1e-14), axis=0)]
     wall = np.setdiff1d(boundary, axis)
     p = flat.p.copy()
-    h = np.array([space.evaluate(q, p[0]) for q in coefficients])
+    h = np.array([space.height(j, q, p[0]) for j, q in enumerate(coefficients)])
     bounds = np.vstack(
         [np.full(p.shape[1], levels[0]), levels[1:3, None] + h, np.full(p.shape[1], levels[3])]
     )
