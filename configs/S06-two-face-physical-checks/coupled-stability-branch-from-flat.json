@@ -1,0 +1,11 @@
+{
+  "state_directory": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/branch-from-flat/frozen-dt001-t0p9",
+  "fluid_meshes": [
+    {"radial_cells": 64, "cells_per_layer": 12},
+    {"radial_cells": 128, "cells_per_layer": 24}
+  ],
+  "difference_directions": 2,
+  "difference_step_m": 1e-9,
+  "seed": 20261024,
+  "scope": "Axisymmetric inertia-free creeping-flow stability of the second equilibrium reached from flat at the surrogate command."
+}

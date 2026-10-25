@@ -1,0 +1,65 @@
+{
+  "state_directory": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/held-command-224/design",
+  "radial_samples": 801,
+  "scope": "Fixed saved surrogate state and command. Numerical trials refine one discretization at a time; physical trials perturb one declared parameter by a small, realistic amount (0.1 % in water sound speed is about 0.5 K of temperature). Height shifts are linear predictions, not new equilibria. Part 'physical' of the split study; each part starts from the same design trial.",
+  "trials": [
+    {
+      "name": "design-96x48-p4-s36"
+    },
+    {
+      "name": "resin-sound-speed-plus-0.1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1497.0,
+          1501.5,
+          1497.0
+        ]
+      }
+    },
+    {
+      "name": "resin-sound-speed-plus-1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1497.0,
+          1515.0,
+          1497.0
+        ]
+      }
+    },
+    {
+      "name": "water-sound-speed-plus-0.1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1498.497,
+          1500.0,
+          1498.497
+        ]
+      }
+    },
+    {
+      "name": "frequency-plus-100ppm",
+      "overrides": {
+        "frequency_hz": 3600360.0
+      }
+    },
+    {
+      "name": "resin-density-plus-0.1pct",
+      "overrides": {
+        "density_kg_m3": [
+          997.0,
+          1232.231,
+          997.0
+        ]
+      }
+    },
+    {
+      "name": "interfacial-tension-plus-1pct",
+      "overrides": {
+        "surface_tension_n_m": [
+          0.02525,
+          0.02525
+        ]
+      }
+    }
+  ]
+}

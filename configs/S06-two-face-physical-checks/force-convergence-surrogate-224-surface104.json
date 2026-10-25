@@ -1,0 +1,17 @@
+{
+  "state_directory": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/held-command-224/design",
+  "radial_samples": 801,
+  "scope": "Fixed saved surrogate state and command. Numerical trials refine one discretization at a time; physical trials perturb one declared parameter by a small, realistic amount (0.1 % in water sound speed is about 0.5 K of temperature). Height shifts are linear predictions, not new equilibria. Part 'surface104' of the split study; each part starts from the same design trial.",
+  "trials": [
+    {
+      "name": "design-96x48-p4-s36"
+    },
+    {
+      "name": "surface-104",
+      "overrides": {
+        "surface_elements": 104
+      },
+      "sequence": null
+    }
+  ]
+}
