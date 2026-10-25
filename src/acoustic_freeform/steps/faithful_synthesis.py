@@ -155,6 +155,10 @@ def run(configuration, output):
         if radius < 1e-6:
             history.append({"stop": "trust radius below 1e-6"})
             break
+    if best is None:
+        history.append(state)
+        best = (state, c, q, branch)
+        save(output, cfg, modes, c, q, state)
     state, c, q, branch = best
     report = {
         "best": state,

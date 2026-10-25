@@ -1,0 +1,54 @@
+{
+  "material_reference": "configs/shared/noa61-water-pressure-reference.json",
+  "apparatus": {
+    "frequency_hz": 750000,
+    "radial_ports": 32,
+    "side_ports_per_layer": 16,
+    "radial_cells": 32,
+    "cells_per_layer": 12,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "port_admittance_factor": 1.0,
+    "side_admittance_factor": 0.5,
+    "max_source_speed_m_s": 1
+  },
+  "modes": {
+    "window_modes": {
+      "bottom": 6,
+      "top": 6
+    },
+    "wall_modes": 8
+  },
+  "pupil_samples": 41,
+  "height_goal_m": 1e-08,
+  "sigmas": [
+    0,
+    0.1,
+    0.2,
+    0.35,
+    0.5,
+    0.7,
+    0.85,
+    1.0
+  ],
+  "limits": {
+    "source_power_w": 1000.0,
+    "peak_pressure_pa": 2000000
+  },
+  "perturbations": [
+    {
+      "name": "water-sound-speed-plus-0.1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1498.497,
+          1500.0,
+          1498.497
+        ]
+      }
+    }
+  ],
+  "seeds": 4,
+  "seed": 20261025,
+  "max_iterations": 0,
+  "scope": "Operating-point probe: frozen modal start and its start-up branch only, peak pressure capped at 2 MPa and power left loose to expose the power the fit needs. No Gauss-Newton iterations."
+}
