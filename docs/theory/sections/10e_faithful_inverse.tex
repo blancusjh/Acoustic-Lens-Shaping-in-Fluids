@@ -1,0 +1,166 @@
+\section{Faithful two-face shaping: reachable equilibria of a modal source}\label{sec:faithful}
+
+The finite-array inverse of the preceding sections fits the required load at
+the target geometry. A numerical audit of such a fit (study S06 of the
+research record) found an equilibrium that matches the target only on its
+design grid, moves by micrometres under part-per-thousand changes of wave
+parameters, and is not the state reached from the unforced liquid: under the
+same command a nearly mirror-image equilibrium attracts the flat start. This
+section defines the shaping problem by the equilibrium that the physical
+start-up actually reaches, restricts the source to a low-order continuous
+modal space, and states the conditions under which the target is formed
+faithfully. The statements are conditional on the declared quiescent,
+axisymmetric, creeping-flow reduction; non-axisymmetric disturbances, inertia,
+streaming and heating remain the separate questions of \cref{sec:stability}
+and \cref{sec:validity}.
+
+\subsection{Modal source space}
+On each source boundary $\Sigma_b$ (lower window, upper window, cylinder wall)
+let the source velocity be a finite combination of fixed real functions,
+\begin{equation}
+ u(\bm x)=\sum_{k=1}^{m}c_k\,\psi_k(\bm x),\qquad c\in\C^m .
+ \label{eq:modal-source}
+\end{equation}
+On a window of radius $R$ we use the axisymmetric Neumann eigenfunctions
+$\psi(r)=J_0(j'_{0,k}r/R)$, with $j'_{0,k}$ the zeros of $J_0'$ including
+$j'_{0,1}=0$; on the wall, of height $H$, the cosines $\psi(z)=\cos(k\pi(z-z_0)/H)$.
+Each $\psi_k$ is normalized to unit mean square on its boundary, so that
+$\lvert c_k\rvert$ is a velocity amplitude in m/s. Low order is a deliberate
+restriction: the source has no structure finer than the half-wavelength of its
+highest mode, which excludes the cancelling fine-scale fields an
+underdetermined fit can use. Any finite partition of $\Sigma_b$ into ideal
+regions with region averages of $u$ is a quadrature of
+\cref{eq:modal-source}; the region count is then a numerical parameter whose
+convergence must be shown, not an apparatus property.
+
+Writing the region values as $g=\Phi c$, every generalized force of
+\cref{eq:continuous-quadratic} becomes a Hermitian form in the coefficients,
+\begin{equation}
+ F_i(q;c)=c^{\mathsf H}\tilde{\bm K}_i(q)\,c,\qquad
+ \tilde{\bm K}_i=\Phi^{\mathsf H}\bm K_i\Phi ,
+ \label{eq:modal-force}
+\end{equation}
+with derivative $\partial F_i/\partial(\Rea c,\Ima c)=2(\Rea\tilde{\bm K}_ic,
+\Ima\tilde{\bm K}_ic)$. The global phase $c\mapsto e^{\mathrm i\vartheta}c$
+leaves every force unchanged; one coefficient phase is fixed.
+
+\subsection{Held-command equilibria and the start-up branch}
+Let $q$ collect both interface coefficient vectors in a space that already
+enforces the pinned rims and both phase volumes. A held-command equilibrium
+satisfies
+\begin{equation}
+ \mathcal R(q;c)=F_{\mathrm{ac}}(q;c)-\nabla E(q)=0,
+ \label{eq:held-equilibrium}
+\end{equation}
+where $E$ is the capillary--gravity energy, $K=\nabla^2E$ and
+$A=\partial F_{\mathrm{ac}}/\partial q$ at fixed $c$. Equation
+\cref{eq:held-equilibrium} generally has several solutions. Start-up applies
+$s(t)c$ with a ramp $s$ rising from $0$ to $1$. Because every force is
+quadratic in the command, the instantaneous load is $s^2F_{\mathrm{ac}}(q;c)$.
+Define the start-up branch $q_{\mathcal B}(s)$ by
+\begin{equation}
+ s^2F_{\mathrm{ac}}(q_{\mathcal B};c)=\nabla E(q_{\mathcal B}),\qquad
+ q_{\mathcal B}(0)=q_0,
+ \label{eq:startup-branch}
+\end{equation}
+with $q_0$ the unforced state. Along it,
+\begin{equation}
+ \bigl(K-s^2A\bigr)\frac{\dd q_{\mathcal B}}{\dd s}=2s\,F_{\mathrm{ac}} .
+ \label{eq:branch-tangent}
+\end{equation}
+
+\begin{proposition}[Slow start-up follows the branch]\label{prop:adiabatic}
+Assume the creeping-flow reduction $\dot q=M(q)\bigl(s^2F_{\mathrm{ac}}
+(q;c)-\nabla E(q)\bigr)$ with a symmetric positive definite mobility $M$, and
+suppose that for all $s\in[0,1]$ the branch exists and every eigenvalue of
+$-M(K-s^2A)$ has real part at most $-\lambda<0$. Then for a ramp with
+$\lvert\dot s\rvert\leq\epsilon$ and $\epsilon$ small relative to $\lambda$ and
+the branch curvature, the trajectory from $q_0$ remains within
+$O(\epsilon/\lambda)$ of $q_{\mathcal B}(s(t))$ and converges to
+$q_{\mathcal B}(1)$ after the ramp ends.
+\end{proposition}
+
+This is the standard slow-manifold estimate for a uniformly stable family of
+equilibria of a slowly varying vector field \cite{fenichel1979}; the deviation obeys a linear system with decay rate at
+least $\lambda$ forced by $\dot s\,\partial_s q_{\mathcal B}$. If $K-s^2A$
+becomes singular at some $s_f<1$ (a fold), the branch ends there and the
+trajectory jumps to another attractor: the start-up then forms a different
+state, as in S06. The reachable equilibrium is
+$q_{\mathcal R}(c)=q_{\mathcal B}(1)$ when the hypotheses hold. The branch is a
+property of the physical start-up, not continuation in the target; whether a
+computed trajectory actually follows it is checked independently by
+integrating the forward model from $q_0$.
+
+\subsection{Faithful inverse}
+Let $H$ sample both pupils, $q^\star$ be the target, and
+$\rho(c)=H(q_{\mathcal R}(c)-q^\star)$. Only the pupils are prescribed: the
+non-optical annuli take whatever equilibrium shape the command produces,
+subject to pinning and volume. Differentiating \cref{eq:held-equilibrium} at
+$s=1$,
+\begin{equation}
+ \frac{\partial\rho}{\partial(\Rea c,\Ima c)}
+ =H\,(K-A)^{-1}\,2\bigl(\Rea\tilde{\bm K}c,\ \Ima\tilde{\bm K}c\bigr),
+ \label{eq:faithful-jacobian}
+\end{equation}
+with $\tilde{\bm K}c$ the matrix of rows $\tilde{\bm K}_ic$. The coupled
+operator $(K-A)^{-1}$ replaces the frozen $K^{-1}$ of the earlier inverse;
+the two differ by the acoustic shape stiffness, which at S06 amplified
+force errors about sixfold. The faithful inverse is
+\begin{equation}
+ \min_{c}\ \tfrac12\norm{W_h\rho(c)}^2
+ +\tfrac12\sum_{\theta}\norm{W_h H\,\delta q_\theta\,\Delta\theta}^2
+ \quad\text{subject to}\quad
+ \mathcal P(c)\leq P_{\max},\ \ \max_j\lvert p_j(c)\rvert\leq p_{\max},
+ \label{eq:faithful-problem}
+\end{equation}
+where $W_h$ scales heights by the accuracy goal, $\delta q_\theta
+=-(K-A)^{-1}\partial_\theta\mathcal R$ is the first-order equilibrium shift per
+unit of an uncertain parameter $\theta$ (temperature through the sound speeds,
+interfacial tension, frequency) with declared tolerance $\Delta\theta$, the
+source power $\mathcal P(c)=c^{\mathsf H}\bm W_{\mathcal P}c$ is a Hermitian
+form and $p_j=\bm s_j^{\mathsf T}c$ are sampled pressures. Both caps are
+convex in $c$. The robustness term is necessary because a residual that
+vanishes at nominal parameters says nothing about the shift
+$\delta q_\theta\Delta\theta$; S06 found shifts of micrometres for
+$\Delta\theta$ of order $10^{-3}$.
+
+\begin{remark}[Number of modes]
+With $m$ complex modes and one fixed phase there are $2m-1$ real unknowns,
+fewer than the pupil observations. Problem \cref{eq:faithful-problem} is then
+a least-squares fit whose residual is the faithfulness error itself; an exact
+zero is not expected and is not the acceptance test. This is the opposite of
+the S04 regime, where more source coordinates than force equations made the
+frozen fit exact on the design grid and uninformative off it.
+\end{remark}
+
+\subsection{Field energy and the scale of force wells}
+For a standing wave of wavenumber $k$ the radiation stress on an interface
+varies on the length $\pi/k=\lambda/2$, so the equilibria of
+\cref{eq:held-equilibrium} at fixed $c$ are separated by displacements of order
+$\lambda/4$. A target whose sag $h$ is comparable to $\lambda/4$ lies in one
+well among several, and the unforced start may belong to another; at
+3.6~MHz in water $\lambda/4\approx104~\mu$m while the S04 vertices move by
+$150~\mu$m. Choosing $h\ll\lambda/8$, that is $f\ll c/(8h)$, places the
+start-up and the target in one well. This is a guideline from the length
+scale of the stress, not a theorem; the branch conditions of
+\cref{prop:adiabatic} are the test. Capping the field energy limits the
+radiation stress to the scale of the required load, of order
+$p_{\max}^2/(\rho c^2)$ times the acoustic contrast, so that the load is not
+the small difference of large cancelling stresses that made S04 sensitive
+to parameters.
+
+\subsection{Acceptance}
+A command is accepted as faithful when, in the declared model,
+\begin{enumerate}
+ \item the start-up branch from $q_0$ satisfies the hypotheses of
+ \cref{prop:adiabatic}, and a forward start-up trajectory, integrated with a
+ stable scheme at refined time steps, reaches the same state;
+ \item that state meets the pupil height goal under fixed-command refinement of
+ the wave, the element order and the surface space;
+ \item the first-order shifts $\delta q_\theta\Delta\theta$ for the declared
+ tolerances stay within the goal;
+ \item the coupled spectrum at $s=1$ keeps a declared margin $\lambda$.
+\end{enumerate}
+Optical ray gates are applied to the accepted state. None of these conditions
+addresses non-axisymmetric modes, fluid inertia, acoustic streaming or
+heating, and none is experimental validation.
