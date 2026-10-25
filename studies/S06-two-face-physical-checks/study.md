@@ -109,8 +109,10 @@ Formation from the unforced flat state under the held command, with a
 | Frozen load, dt 0.05 s (unstable range) | 251 / 234, still moving | 1.4e-3 |
 | Frozen load, dt 0.01 s (stopped at 0.9 s) | 253.3 / 230.6 | 9e-11 |
 | Linearized load, dt 0.05 s (adaptive to 0.006 s) | 253.3 / 230.6 | 4e-10 |
+| Linearized load, dt 0.025 s | 253.3 / 230.6 | 2e-10 |
 
-Two independent stable integrators reach the same steady state. Because a
+Two independent stable integrators reach the same steady state; the two
+linearized runs end within 5 pm of each other. Because a
 steady state of either scheme is an exact discrete force balance, this is a
 second equilibrium of the same command. It is almost a mirror image of the
 target: front vertex +103 µm instead of −150 µm, back vertex −111 µm instead
