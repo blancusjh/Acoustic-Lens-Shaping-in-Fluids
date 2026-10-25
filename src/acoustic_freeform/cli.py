@@ -20,6 +20,7 @@ STEPS = {
     "ideal-load-formation": ("ideal_load_formation", "Creeping flow under a fixed ideal load"),
     "screen": ("screen", "Build the frozen operator and screen source commands"),
     "synthesize": ("synthesize", "Fit bounded finite source commands"),
+    "faithful-synthesis": ("faithful_synthesis", "Fit the reachable equilibrium of a modal source"),
     "conic": ("conic", "Sequential convex frozen-target source steps"),
     "relaxation": ("relaxation", "Semidefinite source diagnostic on a frozen operator"),
     "free-annulus": ("free_annulus", "Coupled inverse with fixed pupils and free annuli"),
@@ -37,6 +38,7 @@ STEPS = {
     "stigmatic-state": ("stigmatic_state", "Joint optical gates for saved equilibria"),
     "force-convergence": ("force_convergence", "Fixed-state force refinement and sensitivity"),
     "coupled-stability": ("coupled_stability", "Linear stability of a held-command root"),
+    "startup-branch": ("startup_branch", "Quasi-static start-up branch from the unforced state"),
 }
 
 # Earlier, separately scoped models keep their own command lines.

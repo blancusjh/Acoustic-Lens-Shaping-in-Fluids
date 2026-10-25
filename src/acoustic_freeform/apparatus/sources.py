@@ -5,6 +5,7 @@ import json
 from itertools import pairwise
 
 import numpy as np
+from scipy.special import j0, jn_zeros
 
 
 def source_regions(config):
@@ -73,3 +74,53 @@ def export_sources(directory, config, drive=None):
             writer.writerow(["channel", "real_m_s", "imag_m_s", "peak_amplitude_m_s", "phase_rad"])
             for j, value in enumerate(drive):
                 writer.writerow([j, value.real, value.imag, abs(value), np.angle(value)])
+
+
+def modal_source_matrix(config, window_modes, wall_modes, quadrature=64):
+    """Region averages of low-order continuous source modes; columns are modes.
+
+    Window modes are the axisymmetric Neumann eigenfunctions J0(j'_{0,k} r / R),
+    including the uniform mode; wall modes are cos(k pi (z - z0) / H) over the
+    whole wall height, including the uniform mode. Every mode has unit mean
+    square on its boundary, so a coefficient is a velocity amplitude in m/s.
+    ``window_modes`` maps "bottom"/"top" to a mode count (0 disables a window).
+    The declared regions are a quadrature of these continuous sources.
+    """
+    radius, levels = config.radius_m, config.levels_m
+    zeros = np.r_[0.0, jn_zeros(1, max(window_modes.values(), default=1))]
+    x, w = np.polynomial.legendre.leggauss(quadrature)
+    columns, labels = [], []
+    regions = source_regions(config)
+
+    def average(region, profile):
+        if region["boundary"] == "side":
+            lo, hi = region["z_min_m"], region["z_max_m"]
+            z = lo + (hi - lo) * (x + 1) / 2
+            return float(np.sum(w * profile(z)) / 2)
+        lo, hi = region["r_min_m"], region["r_max_m"]
+        r = lo + (hi - lo) * (x + 1) / 2
+        weight = w * r * (hi - lo) / 2
+        return float(np.sum(weight * profile(r)) / np.sum(weight))
+
+    for boundary in ("bottom", "top"):
+        for k in range(window_modes.get(boundary, 0)):
+            # Mean square of J0(j r / R) over the disk is J0(j)^2 for j' zeros.
+            scale = 1 / abs(j0(zeros[k]))
+
+            def profile(r, k=k, scale=scale):
+                return scale * j0(zeros[k] * r / radius)
+
+            columns.append(
+                [average(g, profile) if g["boundary"] == boundary else 0.0 for g in regions]
+            )
+            labels.append({"boundary": boundary, "order": k, "function": "J0(j'_{0,k} r/R)"})
+    height = levels[-1] - levels[0]
+    for k in range(wall_modes):
+        scale = 1.0 if k == 0 else np.sqrt(2.0)
+
+        def profile(z, k=k, scale=scale):
+            return scale * np.cos(k * np.pi * (z - levels[0]) / height)
+
+        columns.append([average(g, profile) if g["boundary"] == "side" else 0.0 for g in regions])
+        labels.append({"boundary": "side", "order": k, "function": "cos(k pi (z-z0)/H)"})
+    return np.array(columns).T, labels

@@ -1,0 +1,7 @@
+{
+  "state_directory": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/held-command-224/design",
+  "compare_state_directory": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/branch-from-flat/frozen-dt001-t0p9",
+  "sigmas": [0, 0.1, 0.2, 0.35, 0.5, 0.7, 0.85, 1.0],
+  "fluid_mesh": {"radial_cells": 64, "cells_per_layer": 12},
+  "scope": "Independent check of the branch solver: its end at sigma = 1 must equal the start-up state reached by time integration at the same command."
+}
