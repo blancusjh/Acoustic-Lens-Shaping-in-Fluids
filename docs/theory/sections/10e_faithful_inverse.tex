@@ -63,7 +63,10 @@ Define the start-up branch $q_{\mathcal B}(s)$ by
  q_{\mathcal B}(0)=q_0,
  \label{eq:startup-branch}
 \end{equation}
-with $q_0$ the unforced state. Along it,
+with $q_0$ the acoustics-off equilibrium $\nabla E(q_0)=0$ at the declared
+phase volumes. This start is generally curved: with pinned rims, the fill
+volume of each phase fixes the displaced volume of its interface, and gravity
+and the Laplace pressure balance then select a meniscus. Along the branch,
 \begin{equation}
  \bigl(K-s^2A\bigr)\frac{\dd q_{\mathcal B}}{\dd s}=2s\,F_{\mathrm{ac}} .
  \label{eq:branch-tangent}
@@ -133,6 +136,36 @@ the S04 regime, where more source coordinates than force equations made the
 frozen fit exact on the design grid and uninformative off it.
 \end{remark}
 
+\subsection{The acoustics-off meniscus as the main shaping element}
+Write the displaced volume of interface $j$ as $V_j$ and its pinned rim radius
+as $R$. With $\nabla E(q_0)=0$, the acoustic load must supply only the
+difference between the target and the meniscus selected by $(V_0,V_1)$:
+\begin{equation}
+ F_{\mathrm{ac}}(q^\star;c)=\nabla E(q^\star)
+ =\nabla E(q^\star)-\nabla E(q_0),
+\end{equation}
+which vanishes when the target is itself a meniscus. In zero gravity the
+meniscus at fixed volume is the spherical cap through the rim, the surface of
+constant mean curvature; with gravity it solves the axisymmetric
+Young--Laplace equation $\sigma\kappa=\Delta\rho\,g\,h-\lambda_j$ with a
+multiplier $\lambda_j$ for the volume \cite{finn1986}. Fluidic fabrication
+uses the same principle with density matching and solidification
+\cite{elgarisi2021}. Here the meniscus is the starting state of the acoustic
+problem, so the fill volumes and the free optical parameters of the target
+(for a shared-conjugate pair, the vertex positions at fixed conjugates)
+should be chosen first, so that the pupils of the target lie as close as
+possible to an acoustics-off meniscus. Gravity enters only through the Bond
+number $\Delta\rho\,gR^2/\sigma$. It may be treated as part of the meniscus,
+or the problem may be posed first at zero gravity, as with density-matched
+fluids, and gravity then corrected as a parasitic load by the acoustics.
+
+This ordering reduces the acoustic task from forming the lens to correcting
+the residual asphericity between a meniscus and the optical surface. Because
+the first-order shifts $\delta q_\theta\Delta\theta$ scale with the acoustic
+load, a smaller correction is also less sensitive to the parameter tolerances
+of \cref{eq:faithful-problem}, which is the robustness failure observed when
+the whole lens shape is supplied acoustically.
+
 \subsection{Field energy and the scale of force wells}
 For a standing wave of wavenumber $k$ the radiation stress on an interface
 varies on the length $\pi/k=\lambda/2$, so the equilibria of
@@ -152,7 +185,8 @@ to parameters.
 \subsection{Acceptance}
 A command is accepted as faithful when, in the declared model,
 \begin{enumerate}
- \item the start-up branch from $q_0$ satisfies the hypotheses of
+ \item the acoustics-off state $q_0$ at the declared fill volumes is a stable
+ capillary-gravity equilibrium, and the start-up branch from $q_0$ satisfies the hypotheses of
  \cref{prop:adiabatic}, and a forward start-up trajectory, integrated with a
  stable scheme at refined time steps, reaches the same state;
  \item that state meets the pupil height goal under fixed-command refinement of
