@@ -92,9 +92,10 @@ def run(configuration, output):
         trial_cfg = replace(
             cfg, **{k: tuple(v) if isinstance(v, list) else v for k, v in overrides.items()}
         )
-        trial_space = space if trial_cfg.surface_elements == cfg.surface_elements else None
-        if trial_space is None:
-            trial_space = DualSurface(trial_cfg)
+        # The surface space carries tension, densities and gravity, so every trial
+        # builds its own; geometry is reprojected only when the basis changes.
+        trial_space = DualSurface(trial_cfg)
+        if trial_cfg.surface_elements != cfg.surface_elements:
             trial_q, geometry_change = reproject(space, q, trial_space)
         else:
             trial_q, geometry_change = q, 0.0
