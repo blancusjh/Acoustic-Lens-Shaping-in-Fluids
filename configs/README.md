@@ -11,6 +11,7 @@ Configurations are grouped by the study whose question they serve, matching
 | `S03-stigmatic-target-ideal-load/` | Shared-conjugate optical audit, required load and ideal-load viscous formation |
 | `S04-emitter-synthesis/` | NOA 61 / water emitter synthesis, held-command checks and `precision/` shared-conjugate (`stigmatic-*`) and audit inputs |
 | `S05-emitter-formation/` | Emitter-driven viscous formation diagnostic |
+| `S06-two-face-physical-checks/` | Surrogate held-command state, fixed-state force studies, stability and formation time-step checks |
 | `verification/` | Planar-interface verification limits (`afl planar validate`) |
 
 The files are immutable inputs to preserved experiments; they were moved into

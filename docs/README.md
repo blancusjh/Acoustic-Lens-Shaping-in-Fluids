@@ -22,6 +22,7 @@ whole program.
 | [S03 stigmatic target and load](../studies/S03-stigmatic-target-ideal-load/study.md) | [required load and ideal-load formation](../studies/S03-stigmatic-target-ideal-load/required-load.md) |
 | [S04 emitter synthesis](../studies/S04-emitter-synthesis/study.md) | [stigmatic correction and inverse objectives](../studies/S04-emitter-synthesis/stigmatic-correction-and-objectives.md), [annulus inverse](../studies/S04-emitter-synthesis/annulus-inverse.md), [NOA 61 / water materials](../studies/S04-emitter-synthesis/materials-noa61-water.md) |
 | [S05 emitter formation](../studies/S05-emitter-formation/study.md) | [model and stepping protocol](../studies/S05-emitter-formation/protocol.md) |
+| [S06 two-face physical checks](../studies/S06-two-face-physical-checks/study.md) | Refinement, physical sensitivity, stability, formation and coverage-gate checks of a surrogate state |
 
 Records keep the model scope of their own study. Links into `artifacts/`
 resolve only in the local research data tree, not on GitHub.

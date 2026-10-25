@@ -14,6 +14,7 @@ establish success. Rebuild the index and status page with
 | [S03](S03-stigmatic-target-ideal-load/study.md) | What load forms a shared-conjugate pair before asking whether sound can supply it? |
 | [S04](S04-emitter-synthesis/study.md) | Can the idealized finite source array supply the required load? |
 | [S05](S05-emitter-formation/study.md) | Does the saved emitter command form the target in the declared Stokes model? |
+| [S06](S06-two-face-physical-checks/study.md) | Is a converged two-interface emitter state robust, stable and reachable? |
 
 Historical reports and configurations remain intact as execution evidence.
 Their numerical claims are scoped to their own models and protocols.
