@@ -191,6 +191,7 @@ def trace_graph_pair(
         "max_radius_m": float(np.max(abs(signed_spot[good]))) if good.any() else np.nan,
         "all_rays_transmitted": bool(good.all()),
         "face_max_radius_beyond_clear_m": rim_margin,
+        "final_directions": direction,
         "sampled_1um_pass": bool(good.all() and np.max(abs(signed_spot)) <= 1e-6),
         "continuous_pupil_certified": False,
     }
