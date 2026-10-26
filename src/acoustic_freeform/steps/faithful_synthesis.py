@@ -103,7 +103,7 @@ def run(configuration, output):
     limits = inputs["limits"]
     rng = np.random.default_rng(inputs.get("seed", 0))
     if inputs.get("initial_command", "frozen") == "convex":
-        starts = convex_start(problem, modes, limits)
+        starts = convex_start(problem, modes, limits, inputs.get("stability_margin"))
     else:
         starts = frozen_start(problem, limits, inputs.get("seeds", 4), rng)
     (output / "starts.json").write_text(
@@ -208,12 +208,14 @@ def run(configuration, output):
     )
 
 
-def convex_start(problem, modes, limits):
+def convex_start(problem, modes, limits, stability_margin=None):
     """Initial command from the convex multi-tone capability program at the target.
 
     The semidefinite relaxation is global, so it avoids the local minima of a
     frozen fit from random seeds; its leading eigenvector is refined to a single
-    tone and scaled into the caps. Acceptance is still the nonlinear branch.
+    tone and scaled into the caps. With ``stability_margin`` mu, the program
+    and the refinement require sym(K - A) >= mu K, a static fold margin of mu
+    (theory section 10f). Acceptance is still the nonlinear branch.
     """
     from ..inverse.capability import Tone, best_tolerance, single_tone_refinement
     from ..mechanics.demand import demanded_force
@@ -221,9 +223,21 @@ def convex_start(problem, modes, limits):
     q, demand, stiffness = demanded_force(problem.space, problem.targets)
     observe = np.kron(np.eye(2), problem.pupil_basis) @ np.linalg.inv(stiffness)
     tone = Tone(problem.cfg, problem.space, q, modes)
-    convex = best_tolerance([tone], observe, demand, limits["source_power_w"])
+    stability = None
+    if stability_margin is not None:
+        tone.shape_derivatives()
+        stability = (stiffness, stability_margin)
+    convex = best_tolerance([tone], observe, demand, limits["source_power_w"], stability=stability)
     lead = convex["tones"][0]["amplitudes"][:, 0]
-    single = single_tone_refinement(tone, observe, demand, lead, limits["source_power_w"])
+    single = single_tone_refinement(
+        tone,
+        observe,
+        demand,
+        lead,
+        limits["source_power_w"],
+        pressure_cap_pa=limits["peak_pressure_pa"],
+        stability=stability,
+    )
     c = single["amplitudes"]
     factor = min(
         1.0,
@@ -237,6 +251,9 @@ def convex_start(problem, modes, limits):
             "convex_rank": convex["tones"][0]["rank"],
             "single_tone_frozen_pupil_error_m": single["pupil_max_error_m"],
             "single_tone_power_w": single["power_w"],
+            "single_tone_peak_pressure_pa": single["peak_pressure_pa"],
+            "single_tone_fold_margin": single["fold_margin"],
+            "required_fold_margin": stability_margin,
             "cap_scale_factor": float(factor),
         }
     ]

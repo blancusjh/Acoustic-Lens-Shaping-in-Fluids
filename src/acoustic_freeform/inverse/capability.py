@@ -174,22 +174,39 @@ def best_tolerance(
 
 
 def single_tone_refinement(
-    tone, observe, demand, start, power_cap_w, pressure_cap_pa=None, evaluations=400
+    tone, observe, demand, start, power_cap_w, pressure_cap_pa=None, evaluations=400, stability=None
 ):
     """Local rank-one fit from a starting amplitude (e.g. the leading eigenvector)."""
     result = tone_per_band_refinement(
-        [tone], observe, demand, [start], power_cap_w, pressure_cap_pa, evaluations
+        [tone], observe, demand, [start], power_cap_w, pressure_cap_pa, evaluations, stability
     )
     return {**result, "amplitudes": result["amplitudes"][0]}
 
 
+def fold_margin(tones, amplitudes, stiffness):
+    """min Re eig K^-1 (K - A) for one tone per band (needs shape_derivatives)."""
+    acoustic = sum(
+        np.real(np.einsum("i,jnik,k->nj", c.conj(), t.kernel_derivatives, c))
+        for t, c in zip(tones, amplitudes)
+    )
+    return float(np.min(np.linalg.eigvals(np.linalg.solve(stiffness, stiffness - acoustic)).real))
+
+
 def tone_per_band_refinement(
-    tones, observe, demand, starts, power_cap_w, pressure_cap_pa=None, evaluations=400
+    tones,
+    observe,
+    demand,
+    starts,
+    power_cap_w,
+    pressure_cap_pa=None,
+    evaluations=400,
+    stability=None,
 ):
     """Local fit with exactly one tone in each band, from given starting amplitudes.
 
     Minimizes the pupil height misfit with soft penalties above the total power
-    cap and, optionally, above the per-band sampled peak pressure cap.
+    cap, optionally above the per-band sampled peak pressure cap, and, with
+    ``stability=(K, mu)``, below the static fold margin mu.
     """
     from scipy.optimize import least_squares
 
@@ -218,12 +235,19 @@ def tone_per_band_refinement(
             for t, c in zip(tones, cs):
                 peak = abs(t.operators.pressure_rows @ c) / pressure_cap_pa
                 penalties.append(10 * np.sqrt(np.sum(np.maximum(0.0, peak - 1.0) ** 2)))
+        if stability is not None:
+            stiffness, mu = stability
+            penalties.append(10 * max(0.0, mu - fold_margin(tones, cs, stiffness)))
         return np.r_[observe @ (force - demand) / scale, penalties]
 
     x0 = np.concatenate([np.r_[c.real, c.imag] for c in starts])
     fit = least_squares(fun, x0, max_nfev=evaluations)
     cs, force, power = evaluate(fit.x)
+    margin = None
+    if stability is not None:
+        margin = fold_margin(tones, cs, stability[0])
     return {
+        "fold_margin": margin,
         "pupil_max_error_m": float(np.max(abs(observe @ (force - demand)))),
         "power_w": power,
         "peak_pressure_pa": float(max(np.max(abs(t.pressure @ c)) for t, c in zip(tones, cs))),
