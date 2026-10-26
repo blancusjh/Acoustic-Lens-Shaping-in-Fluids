@@ -130,32 +130,60 @@ def best_tolerance(
     return _report(tones, variables, observe, demand, problem.status, volume_columns, pumps)
 
 
-def single_tone_refinement(tone, observe, demand, start, power_cap_w, evaluations=400):
-    """Local rank-one fit from a starting amplitude (e.g. the leading eigenvector).
+def single_tone_refinement(
+    tone, observe, demand, start, power_cap_w, pressure_cap_pa=None, evaluations=400
+):
+    """Local rank-one fit from a starting amplitude (e.g. the leading eigenvector)."""
+    result = tone_per_band_refinement(
+        [tone], observe, demand, [start], power_cap_w, pressure_cap_pa, evaluations
+    )
+    return {**result, "amplitudes": result["amplitudes"][0]}
 
-    Minimizes the pupil height misfit with a soft penalty above the power cap.
+
+def tone_per_band_refinement(
+    tones, observe, demand, starts, power_cap_w, pressure_cap_pa=None, evaluations=400
+):
+    """Local fit with exactly one tone in each band, from given starting amplitudes.
+
+    Minimizes the pupil height misfit with soft penalties above the total power
+    cap and, optionally, above the per-band sampled peak pressure cap.
     """
     from scipy.optimize import least_squares
 
-    m = len(start)
+    sizes = [t.kernels.shape[1] for t in tones]
     scale = np.linalg.norm(observe @ demand) + 1e-300
 
     def unpack(x):
-        return x[:m] + 1j * x[m:]
+        out, offset = [], 0
+        for m in sizes:
+            out.append(x[offset : offset + m] + 1j * x[offset + m : offset + 2 * m])
+            offset += 2 * m
+        return out
+
+    def evaluate(x):
+        cs = unpack(x)
+        force = sum(
+            np.real(np.einsum("i,nij,j->n", c.conj(), t.kernels, c)) for t, c in zip(tones, cs)
+        )
+        power = sum(float(np.real(c.conj() @ t.power @ c)) for t, c in zip(tones, cs))
+        return cs, force, power
 
     def fun(x):
-        c = unpack(x)
-        force = np.real(np.einsum("i,nij,j->n", c.conj(), tone.kernels, c))
-        power = float(np.real(c.conj() @ tone.power @ c))
-        excess = max(0.0, power / power_cap_w - 1.0)
-        return np.r_[observe @ (force - demand) / scale, 10 * excess]
+        cs, force, power = evaluate(x)
+        penalties = [10 * max(0.0, power / power_cap_w - 1.0)]
+        if pressure_cap_pa is not None:
+            for t, c in zip(tones, cs):
+                peak = abs(t.operators.pressure_rows @ c) / pressure_cap_pa
+                penalties.append(10 * np.sqrt(np.sum(np.maximum(0.0, peak - 1.0) ** 2)))
+        return np.r_[observe @ (force - demand) / scale, penalties]
 
-    fit = least_squares(fun, np.r_[start.real, start.imag], max_nfev=evaluations)
-    c = unpack(fit.x)
-    force = np.real(np.einsum("i,nij,j->n", c.conj(), tone.kernels, c))
+    x0 = np.concatenate([np.r_[c.real, c.imag] for c in starts])
+    fit = least_squares(fun, x0, max_nfev=evaluations)
+    cs, force, power = evaluate(fit.x)
     return {
         "pupil_max_error_m": float(np.max(abs(observe @ (force - demand)))),
-        "power_w": float(np.real(c.conj() @ tone.power @ c)),
-        "peak_pressure_pa": float(np.max(abs(tone.pressure @ c))),
-        "amplitudes": c,
+        "power_w": power,
+        "peak_pressure_pa": float(max(np.max(abs(t.pressure @ c)) for t, c in zip(tones, cs))),
+        "band_power_w": [float(np.real(c.conj() @ t.power @ c)) for t, c in zip(tones, cs)],
+        "amplitudes": cs,
     }
