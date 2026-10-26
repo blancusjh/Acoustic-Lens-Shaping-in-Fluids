@@ -100,8 +100,60 @@ faces. The earlier limit was a local minimum of the optimizer, not a property
 of the liquids. The convex program is therefore used both as a certificate of
 impossibility and as the initializer of the faithful inverse.
 
+\subsection{Pressure and stability as convex constraints}
+The same linearity carries two further requirements into
+\cref{eq:capability}. The squared pressure amplitude of band $t$ at a sample
+point $s$ is $\lvert p_{t,s}\rvert^2=\bm p_{t,s}^{\mathsf H}X_t\bm p_{t,s}$,
+so a per-band peak cap is the set of linear inequalities
+$\bm p_{t,s}^{\mathsf H}X_t\bm p_{t,s}\le p_{\max}^2$ (exact for one tone per
+band, a root-mean-square bound for several). The acoustic shape stiffness is
+also linear in the drive: with the shape derivatives of the kernels,
+$A_{ij}(X)=\sum_t\operatorname{tr}\bigl(\partial_{q_j}G_{t,i}X_t\bigr)$. For the
+mechanical stiffness $K\succ0$ and any vector $x$,
+$x^{\mathsf H}(K-A)x=\lambda\,x^{\mathsf H}Kx$ for an eigenpair of
+$K^{-1}(K-A)$, so
+\begin{equation}
+ \operatorname{sym}\bigl(K-A(X)\bigr)\succeq\mu K
+ \quad\Longrightarrow\quad
+ \operatorname{Re}\lambda\bigl(K^{-1}(K-A)\bigr)\ge\mu ,
+ \label{eq:fold-lmi}
+\end{equation}
+a linear matrix inequality that guarantees a static fold margin $\mu$ at the
+target. It is a sufficient condition only; it says nothing about the path to
+the target, which the start-up branch still checks. For the published Fig.~7a
+singlet the unconstrained single tone lay within 7\,\% of a fold (margin
+0.068, frozen-to-coupled amplification 18.5); with \cref{eq:fold-lmi} at
+$\mu=0.7$ the refined tone has margin 0.94 and amplification 1.09 at a
+similar power (1.1\,W).
+
+\subsection{Several bands in the nonlinear chain}
+Because the time-averaged forces and their shape Jacobians of separate bands
+add, the start-up branch, fixed-command refinement, coupled stability and
+formation apply unchanged to a drive with one command per band, with
+$F=\sum_tF_t$ and $A=\sum_tA_t$. A one-tone-per-band command is refined from
+the leading eigenvectors of the optimal $X_t$.
+
+\subsection{A common machine}
+For a family of Silva-Lora and Torres stigmatic singlets \cite{silva2020}
+($n=1/1.7/1$; object at infinity, $-300$ or $-150$\,mm; image at 60, 90 or
+120\,mm; thickness 10, 15 or 20\,mm; shape factor $-0.5$, 0 or 0.5; scaled to
+a 4\,mm aperture), 68 of 81 lenses fit one fixed water / NOA~61 / water cell.
+For all 68 the bound \cref{eq:capability} is below 0.5\,nm within 1\,W with
+the same 26 modes at 1.5\,MHz; one tone at 1.5\,MHz realizes 58 of them, and
+one tone at 0.75\,MHz with one at 1.5\,MHz the other 10, within 1\,W and
+2\,MPa per band. Four lenses (two published, two from the family, one of them
+two-band) were taken through the full nonlinear chain and form within 1\,nm.
+A first pass of this survey was corrupted by degenerate wave meshes (grid
+nodes one rounding unit apart): the linear residual of the wave solve, not
+only the optimizer's output, must be part of every acceptance.
+
 \paragraph{Scope.} The capability is a first-order, frozen-compliance statement
 about the target state; it ignores the acoustic shape stiffness
 ($\norm{A}/\norm{K}\sim10^{-4}$ here) and the start-up path. Acceptance of a
 command remains the nonlinear chain of \cref{sec:faithful}: start-up branch,
-fixed-command refinement, coupled stability and formation.
+fixed-command refinement, coupled stability and formation. All statements
+here are within the axisymmetric, quiescent, creeping-flow reduction: the
+radiation stress is the only acoustic load. Acoustic streaming driven at the
+same pressures exerts viscous stresses on the interfaces that may be
+comparable to the 0.1--1\,Pa demands of \cref{eq:demand-series}, and
+non-axisymmetric disturbances are not assessed (\cref{sec:validity}).
