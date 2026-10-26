@@ -13,6 +13,7 @@ Configurations are grouped by the study whose question they serve, matching
 | `S05-emitter-formation/` | Emitter-driven viscous formation diagnostic |
 | `S06-two-face-physical-checks/` | Surrogate held-command state, fixed-state force studies, stability and formation time-step checks |
 | `S07-faithful-modal-synthesis/` | Meniscus-start modal synthesis and its verification; stopped flat-start probes |
+| `S08-published-singlet/` | Reproduction of the Silva-Lora and Torres Fig. 7a singlet geometry, cell derived from the lens |
 | `verification/` | Planar-interface verification limits (`afl planar validate`) |
 
 The files are immutable inputs to preserved experiments; they were moved into
