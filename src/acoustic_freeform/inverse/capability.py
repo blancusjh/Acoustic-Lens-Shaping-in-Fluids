@@ -37,9 +37,28 @@ class Tone:
         self.power = ops.power
         self.pressure = ops.all_pressure
         self.operators = ops
+        self.wave, self.q, self.modes = wave, np.array(q), modes
+        self.kernel_derivatives = None
+
+    def shape_derivatives(self, step_m=1e-9):
+        """d kernels / d q_j by forward differences, shape (n_q, n_force, m, m).
+
+        The acoustic shape stiffness of a drive matrix X is then
+        A_ij = Re tr(dG_ji X), linear in X like the force itself.
+        """
+        flat = self.q.ravel()
+        derivatives = []
+        for j in range(len(flat)):
+            moved = flat.copy()
+            moved[j] += step_m
+            ops = ModalOperators(self.wave, moved.reshape(self.q.shape), self.modes, 1)
+            hermitian = (ops.kernels + np.conj(np.swapaxes(ops.kernels, 1, 2))) / 2
+            derivatives.append((hermitian - self.kernels) / step_m)
+        self.kernel_derivatives = np.array(derivatives)
+        return self.kernel_derivatives
 
 
-def _problem(tones, observe, demand, scale_m, volume_columns=None):
+def _problem(tones, observe, demand, scale_m, volume_columns=None, stability=None):
     """Scaled SDP pieces. Each band's matrix is X_t = s_t Y_t with s_t chosen so the
     pupil-height rows of Y_t are O(1) in units of scale_m; only the pupil heights of
     the force enter. Pump trims are in nanolitres."""
@@ -59,6 +78,22 @@ def _problem(tones, observe, demand, scale_m, volume_columns=None):
         pumps = cp.Variable(volume_columns.shape[1])
         heights = heights + volume_columns @ pumps * (1e-12 / scale_m)
     constraints = [Y >> 0 for Y, _ in variables]
+    if stability is not None:
+        # Static fold margin as a linear matrix inequality:
+        # sym(K - A(X)) >= mu K  implies  Re eig(K^-1 (K - A)) >= mu.
+        stiffness, mu = stability
+        norm = np.linalg.norm(stiffness, 2)
+        n = stiffness.shape[0]
+        coupled = (1 - mu) * stiffness / norm
+        for t, (Y, s) in zip(tones, variables):
+            m = t.kernels.shape[1]
+            # rows (i, j) -> A_ij = Re tr(dG_ji Y): transpose the (j, i) layout.
+            derivative = np.conj(np.swapaxes(t.kernel_derivatives, 0, 1)).reshape(n * n, m * m)
+            acoustic = cp.reshape(
+                cp.real(derivative @ cp.vec(Y, order="C")) * (s / norm), (n, n), order="C"
+            )
+            coupled = coupled - (acoustic + acoustic.T) / 2
+        constraints.append(coupled >> 0)
     return variables, heights, power, constraints, pumps
 
 
@@ -115,10 +150,18 @@ def minimum_power(tones, observe, demand, tolerance_m, volume_columns=None, solv
 
 
 def best_tolerance(
-    tones, observe, demand, power_cap_w, scale_m=1e-8, volume_columns=None, solver="CLARABEL"
+    tones,
+    observe,
+    demand,
+    power_cap_w,
+    scale_m=1e-8,
+    volume_columns=None,
+    stability=None,
+    solver="CLARABEL",
 ):
+    """``stability=(K, mu)`` adds the fold-margin inequality (needs shape_derivatives)."""
     variables, heights, power, constraints, pumps = _problem(
-        tones, observe, demand, scale_m, volume_columns
+        tones, observe, demand, scale_m, volume_columns, stability
     )
     bound = cp.Variable()
     problem = cp.Problem(
