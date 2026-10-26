@@ -398,7 +398,11 @@ class DualAcoustics:
             )
             xx = fb.global_coordinates()
             phase = np.searchsorted(levels[1:-1], xx[1])
-            factor = cfg.side_admittance_factor if kind == "side" else cfg.port_admittance_factor
+            if kind == "side":
+                factor = cfg.side_admittance_factor
+            else:
+                window = getattr(cfg, f"{kind}_admittance_factor")
+                factor = cfg.port_admittance_factor if window is None else window
             admittance = factor / (rho[phase] * speed[phase])
             boundary_matrix += asm(absorption, fb, admittance=admittance)
             if cfg.normal_velocity_trace == "weak_flux":

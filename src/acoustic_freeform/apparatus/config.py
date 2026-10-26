@@ -30,6 +30,11 @@ class DualConfig:
     # Nonzero values give a curved acoustics-off meniscus; default keeps the
     # historical equal-volume convention.
     volume_offsets_m3: tuple = (0.0, 0.0)
+    # Optional per-window admittance factors (relative to rho c of the adjacent
+    # liquid); None keeps port_admittance_factor. A plain, undriven glass window
+    # is nearly rigid (factor about rho c_liquid / Z_glass, roughly 0.1).
+    bottom_admittance_factor: float | None = None
+    top_admittance_factor: float | None = None
 
     def validate(self):
         if not 0 < self.clear_radius_m < self.radius_m:
@@ -45,6 +50,9 @@ class DualConfig:
             raise ValueError("Positive frequency, admittance and source limit required.")
         if self.side_admittance_factor < 0:
             raise ValueError("Side ports must be passive.")
+        for factor in (self.bottom_admittance_factor, self.top_admittance_factor):
+            if factor is not None and factor < 0:
+                raise ValueError("Windows must be passive.")
         if min(self.radial_ports, self.side_ports_per_layer) < 1:
             raise ValueError("Each source boundary must have at least one port.")
         if self.acoustic_order not in (2, 3, 4, 5, 6):
@@ -66,4 +74,7 @@ class DualConfig:
         # field existed still compare equal.
         if not any(self.volume_offsets_m3):
             data.pop("volume_offsets_m3")
+        for key in ("bottom_admittance_factor", "top_admittance_factor"):
+            if data[key] is None:
+                data.pop(key)
         return data
