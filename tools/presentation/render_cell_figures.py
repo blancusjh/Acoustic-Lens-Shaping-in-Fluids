@@ -1,9 +1,9 @@
-"""Render the S07 modelled apparatus, design and formation from saved states.
+"""Render a modelled two-face cell, its design and formation from saved states.
 
-Reads the S07 faithful-synthesis run and its forward start-up trajectory under
-artifacts/studies/S07-faithful-modal-synthesis/, recomputes every displayed
-field, ray and spot from the saved geometry and command, and writes figures,
-videos and input hashes to a figures/ directory beside them. Every drawn part
+Reads a faithful-synthesis run (S07 shared-conjugate patches or an S08
+prescribed singlet) and its forward start-up trajectory, recomputes every
+displayed field, ray and spot from the saved geometry and command, and writes
+figures, videos and input hashes to the output directory. Every drawn part
 is a declared component of the numerical model; nothing here is an
 experiment. Geometric exaggeration and playback speed are labelled.
 """
@@ -40,13 +40,13 @@ def load(run, formation):
     from acoustic_freeform.acoustics.helmholtz import DualAcoustics
     from acoustic_freeform.apparatus.config import DualConfig
     from acoustic_freeform.core.paths import data_path
-    from acoustic_freeform.mechanics.surface import CartesianPatch, DualSurface
+    from acoustic_freeform.mechanics.surface import DualSurface, targets_from_record
 
     record = json.loads(read(run / "config.json").read_text())
     cfg = DualConfig(**json.loads(read(run / "design/config.json").read_text()))
     space = DualSurface(cfg, allow_volume_offsets=True)
     material = json.loads(read(data_path(record["material_reference"])).read_text())
-    targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(record["case"]["faces"])]
+    targets = targets_from_record(cfg, record)
     state = np.load(read(run / "design/state.npz"))
     q, drive = state["coefficients_m"], state["source_velocity_m_s"]
     modal = np.load(read(run / "best-source.npz"))["modal_coefficients_m_s"]
@@ -71,6 +71,7 @@ def load(run, formation):
         "targets": targets, "q": q, "drive": drive, "modal": modal, "labels": labels,
         "summary": summary, "trajectory": trajectory, "formation": formation_config,
         "start": start, "field": field, "optics": record["optics"],
+        "conjugates": [float(z) for z in record["optics"]["stigmatic_z_m"]],
     }
 
 
@@ -90,23 +91,33 @@ def ray_paths(data, q, launch):
     from acoustic_freeform.optics.raytrace import trace_pair
 
     cfg, optics = data["cfg"], data["optics"]
-    z0, z2 = float(optics["stigmatic_z_m"][0]), optics["stigmatic_z_m"][2]
+    z0, _, z2 = data["conjugates"]
     paths = []
     for rho in launch:
         point = np.array([abs(rho)])
         tr = trace_pair(data["space"], q, optics["indices"], z0, z2, launch_radius_m=point,
                         launch_height_m=cfg.levels_m[1] + data["targets"][0].evaluate(point))
         hits = tr["intersections_m"][:, 0, :]
-        d = hits[0] - np.array([0.0, z0])
-        entry = np.array([0.0, z0]) + (cfg.levels_m[0] - z0) / d[1] * d
+        if np.isinf(z0):
+            entry = np.array([hits[0][0], cfg.levels_m[0]])
+        else:
+            d = hits[0] - np.array([0.0, z0])
+            entry = np.array([0.0, z0]) + (cfg.levels_m[0] - z0) / d[1] * d
         out = tr["spots_m"][0, 0]
-        top = cfg.levels_m[3] + 0.0012
+        top = image_top(data)
         direction = np.array([out, z2]) - hits[1]
         end = hits[1] + (top - hits[1][1]) / direction[1] * direction
         path = np.vstack([entry, hits[0], hits[1], end])
         path[:, 0] *= np.sign(rho) if rho else 1
         paths.append(path)
     return paths
+
+
+def image_top(data):
+    """Rays are drawn to a near image plane, or 0.2 cell heights past the cell."""
+    levels, z2 = data["cfg"].levels_m, data["conjugates"][2]
+    height = levels[3] - levels[0]
+    return z2 + 0.05 * height if z2 < levels[3] + 3 * height else levels[3] + 0.2 * height
 
 
 def faces_mm(data, q, r):
@@ -169,12 +180,13 @@ def render_3d(data, sources, paths, path, size=(1500, 1350)):
         p.add_mesh(revolve(inner * mm, z, sectors=180), color="#e8b25c", opacity=0.55,
                    smooth_shading=True, specular=0.8, specular_power=60)
         line = np.c_[signed, np.full_like(signed, -0.01), np.r_[z[::-1], z]]
-        p.add_mesh(pv.lines_from_points(line).tube(radius=0.02), color=FACE)
+        p.add_mesh(pv.lines_from_points(line).tube(radius=0.005 * cfg.radius_m * mm), color=FACE)
     for ray in paths:
-        xyz = np.c_[ray[:, 0] * mm, np.full(len(ray), -0.03), ray[:, 1] * mm]
-        p.add_mesh(pv.lines_from_points(xyz).tube(radius=0.012, n_sides=10), color=RAY,
+        xyz = np.c_[ray[:, 0] * mm, np.full(len(ray), -0.0075 * cfg.radius_m * mm), ray[:, 1] * mm]
+        p.add_mesh(pv.lines_from_points(xyz).tube(radius=0.003 * cfg.radius_m * mm, n_sides=10), color=RAY,
                    ambient=0.7, diffuse=0.4)
-    p.camera_position = [(10, -19, 14), (0, 0, -0.3), (0, 0, 1)]
+    u, centre = cfg.radius_m * mm / 4, np.mean(levels[[0, 3]]) * mm
+    p.camera_position = [(10 * u, -19 * u, centre + 14 * u), (0, 0, centre - 0.3 * u), (0, 0, 1)]
     p.camera.view_angle = 26
     p.screenshot(path)
     p.close()
@@ -186,7 +198,7 @@ def autocrop(image, margin=12):
     return image[max(rows[0] - margin, 0):rows[-1] + margin, max(cols[0] - margin, 0):cols[-1] + margin]
 
 
-def setup_figure(data, out):
+def setup_figure(data, out, prefix):
     cfg, mm = data["cfg"], 1e3
     sources = source_amplitudes(data)
     launch = np.linspace(-cfg.clear_radius_m, cfg.clear_radius_m, 9)
@@ -204,6 +216,8 @@ def setup_figure(data, out):
     cmap = plt.get_cmap(SOURCE_MAP)
     n, rho = data["optics"]["indices"], cfg.density_kg_m3
     volumes = np.array(cfg.volume_offsets_m3) * 1e9  # µL
+    u = R / 4  # drawing unit: offsets below were laid out for the 4 mm S07 cell
+    w = 0.22 * u  # source strip width
 
     fig = plt.figure(figsize=(22, 9))
     grid = fig.add_gridspec(1, 4, width_ratios=[1.05, 1.0, 0.75, 0.8], wspace=0.28)
@@ -217,17 +231,17 @@ def setup_figure(data, out):
               np.full_like(signed, levels[3])]
     for j, colour in enumerate([WATER, RESIN, WATER]):
         ax.fill_between(signed, layers[j], layers[j + 1], color=colour, alpha=0.25 if j != 1 else 0.4, lw=0)
-    for boundary, z, dz in (("bottom", levels[0], -0.22), ("top", levels[3], 0.0)):
+    for boundary, z, dz in (("bottom", levels[0], -w), ("top", levels[3], 0.0)):
         for i in range(len(sources["r"]) - 1):
             c = cmap(norm(abs(sources[boundary][i])))
             for sgn in (1, -1):
                 x0, x1 = sorted((sgn * sources["r"][i] * mm, sgn * sources["r"][i + 1] * mm))
-                ax.add_patch(plt.Rectangle((x0, z + dz), x1 - x0, 0.22, color=c, lw=0))
+                ax.add_patch(plt.Rectangle((x0, z + dz), x1 - x0, w, color=c, lw=0))
     for i in range(len(sources["z"]) - 1):
         c = cmap(norm(abs(sources["side"][i])))
         z0, z1 = sources["z"][i] * mm, sources["z"][i + 1] * mm
-        for x in (R, -R - 0.22):
-            ax.add_patch(plt.Rectangle((x, z0), 0.22, z1 - z0, color=c, lw=0))
+        for x in (R, -R - w):
+            ax.add_patch(plt.Rectangle((x, z0), w, z1 - z0, color=c, lw=0))
     for j in range(2):
         ax.plot(signed, mirror(faces[j]), color=FACE, lw=2)
         ax.plot([-R, R], [levels[j + 1]] * 2, color=MUTED, lw=0.6, ls=":")
@@ -235,21 +249,32 @@ def setup_figure(data, out):
     for ray in paths:
         ax.plot(ray[:, 0] * mm, ray[:, 1] * mm, color=RAY, lw=0.8)
     note = {"fontsize": 9, "color": INK}
-    ax.text(-R + 0.3, levels[0] + 0.12, f"water  n={n[0]}  ρ={rho[0]:.0f} kg/m³", **note)
-    ax.text(-R + 0.3, -0.35, f"NOA 61 (uncured)  n={n[1]}  ρ={rho[1]:.0f} kg/m³", **note)
-    ax.text(-R + 0.3, levels[3] - 0.45, f"water  n={n[2]}  ρ={rho[2]:.0f} kg/m³", **note)
-    ax.text(R + 0.3, levels[1] + 0.15, "pinned\nrims", ha="left", fontsize=8, color=MUTED)
-    ax.text(0.15, faces[0][0] + 0.12, f"front face, displaced volume {volumes[0]:+.2f} µL", fontsize=8.5, color=FACE)
-    ax.text(0.15, faces[1][0] + 0.12, f"back face, displaced volume {volumes[1]:+.3f} µL", fontsize=8.5, color=FACE)
-    z0, z1, z2 = np.array(data["optics"]["stigmatic_z_m"]) * mm
-    ax.text(0, levels[0] - 0.55, f"rays from on-axis object at z = {z0:.0f} mm", ha="center", va="top",
-            fontsize=8.5, color=RAY)
-    ax.text(0, levels[3] + 1.35, f"to image at z = {z2:.0f} mm; shared conjugate {z1:.0f} mm",
+    # Optical indices are the lens prescription's; for a published singlet they
+    # are the cured lens in air, not the liquids being shaped.
+    singlet = "singlet" in data["record"]
+    names = ("water", "NOA 61 (uncured)", "water")
+    middle = (faces[0][-1] + faces[1][-1]) / 2
+    top = image_top(data) * mm
+    for j, z in enumerate((levels[0] + 0.12 * u, middle, levels[3] - 0.45 * u)):
+        index = f"  n={n[j]}" if not singlet else ""
+        ax.text(-R + 0.3 * u, z, f"{names[j]}{index}  ρ={rho[j]:.0f} kg/m³", va="center", **note)
+    ax.text(R + 0.3 * u, levels[1] + 0.15 * u, "pinned\nrims", ha="left", fontsize=8, color=MUTED)
+    ax.text(0.15 * u, faces[0][0] - 0.25 * u, f"front face, displaced volume {volumes[0]:+.3f} µL",
+            fontsize=8.5, color=FACE)
+    ax.text(0.15 * u, faces[1][0] + 0.12 * u, f"back face, displaced volume {volumes[1]:+.3f} µL",
+            fontsize=8.5, color=FACE)
+    z0, z1, z2 = np.array(data["conjugates"]) * mm
+    source = "collimated input (object at infinity)" if np.isinf(z0) else f"rays from on-axis object at z = {z0:.1f} mm"
+    ax.text(0, levels[0] - 0.55 * u, source, ha="center", va="top", fontsize=8.5, color=RAY)
+    ax.text(0, top + 0.2 * u, f"to image at z = {z2:.2f} mm; intermediate conjugate {z1:.1f} mm",
             ha="center", fontsize=8.5, color=RAY)
-    ax.text(0, levels[0] - 1.25, f"cylinder Ø {2 * R:.0f} mm, height {levels[3] - levels[0]:.0f} mm, "
-            f"clear apertures Ø {2 * cfg.clear_radius_m * mm:.0f} mm", ha="center", fontsize=8.5, color=MUTED)
-    ax.set(xlim=(-R - 0.5, R + 1.0), ylim=(levels[0] - 1.6, levels[3] + 2.0), aspect="equal",
-           xlabel="x (mm)", ylabel="z (mm)")
+    ax.text(0, levels[0] - 1.25 * u, f"cylinder Ø {2 * R:.2f} mm, height {levels[3] - levels[0]:.2f} mm, "
+            f"clear apertures Ø {2 * cfg.clear_radius_m * mm:.1f} mm", ha="center", fontsize=8.5, color=MUTED)
+    if singlet:
+        ax.text(0, levels[0] - 1.6 * u, f"rays traced with the published lens indices {n[0]:g} / {n[1]:g} / {n[2]:g}",
+                ha="center", fontsize=8.5, color=RAY)
+    ax.set(xlim=(-R - 0.5 * u, R + 1.0 * u), ylim=(levels[0] - 1.9 * u, max(levels[3] + 2.0 * u, top + 0.6 * u)),
+           aspect="equal", xlabel="x (mm)", ylabel="z (mm)")
     ax.set_title("(b) Meridional section, equal scale", loc="left", fontsize=12)
     bar = fig.colorbar(plt.cm.ScalarMappable(norm, cmap), ax=ax, orientation="horizontal",
                        fraction=0.035, pad=0.09, shrink=0.85)
@@ -289,12 +314,12 @@ def setup_figure(data, out):
              "with passive ideal source boundaries, capillarity and gravity. Source power "
              f"{d['source_power_w']:.2f} W, sampled peak pressure {d['sampled_pressure_peak_pa'] / 1e6:.2f} MPa. "
              "No apparatus has been built.", fontsize=9, color=MUTED)
-    fig.savefig(out / "s07-setup.png", dpi=120, bbox_inches="tight")
+    fig.savefig(out / f"{prefix}-setup.png", dpi=120, bbox_inches="tight")
     plt.close(fig)
     render.unlink()
 
 
-def faces_figure(data, out):
+def faces_figure(data, out, prefix):
     cfg, mm = data["cfg"], 1e3
     r = np.linspace(0, cfg.clear_radius_m, 801)
     states = {"acoustics-off meniscus": data["start"], "acoustic design": data["q"]}
@@ -327,11 +352,11 @@ def faces_figure(data, out):
     fig.text(0.01, 0.005, "Green circle: 1 µm. Numerical model; errors are cycle-mean surface heights, no piston removed.",
              fontsize=9, color=MUTED)
     fig.tight_layout()
-    fig.savefig(out / "s07-faces.png", dpi=120, bbox_inches="tight")
+    fig.savefig(out / f"{prefix}-faces.png", dpi=120, bbox_inches="tight")
     plt.close(fig)
 
 
-def formation_video(data, out, fps=10):
+def formation_video(data, out, prefix, label, fps=10):
     from acoustic_freeform.forward.formation import envelope
 
     cfg, mm = data["cfg"], 1e3
@@ -343,11 +368,17 @@ def formation_video(data, out, fps=10):
     targets = [t.evaluate(r) for t in data["targets"]]
     history = {"t": [], "front": [], "back": [], "spot": []}
     traces = [trace(data, q) for q in states]
+    levels = np.asarray(cfg.levels_m) * 1e3
+    R = cfg.radius_m * 1e3
+    change = max(np.max(abs(data["space"].height(j, states[-1][j], r_full) - data["space"].height(j, states[0][j], r_full)))
+                 for j in range(2))
     for t, q, tt in zip(times, states, traces):
         history["t"].append(t)
         for j, name in enumerate(("front", "back")):
             history[name].append(np.max(abs(data["space"].height(j, q[j], r) - targets[j])) * 1e9)
         history["spot"].append(tt["max_radius_m"] * 1e6)
+    error_limit = 1.1 * max(max(history["front"]), max(history["back"]))
+    spot_limit = 1.1 * max(1.3, max(history["spot"]))
     frames = []
     for i, (t, q) in enumerate(zip(times, states)):
         fig = plt.figure(figsize=(16, 8.5))
@@ -356,19 +387,20 @@ def formation_video(data, out, fps=10):
         faces = faces_mm(data, q, r_full)
         signed = np.r_[-r_full[:0:-1], r_full] * mm
         mirror = lambda h: np.r_[h[:0:-1], h]
-        levels = np.asarray(cfg.levels_m) * mm
         layers = [np.full_like(signed, levels[0]), mirror(faces[0]), mirror(faces[1]), np.full_like(signed, levels[3])]
         for j, colour in enumerate([WATER, RESIN, WATER]):
             ax.fill_between(signed, layers[j], layers[j + 1], color=colour, alpha=0.25 if j != 1 else 0.4, lw=0)
         for j in range(2):
             ax.plot(signed, mirror(faces[j]), color=FACE, lw=2)
-        ax.set(xlim=(-4.2, 4.2), ylim=(-3.1, 3.1), aspect="equal", xlabel="x (mm)", ylabel="z (mm)")
-        ax.set_title("section, equal scale\n(changes during formation are < 0.4 µm: see right)", loc="left", fontsize=10)
+        ax.set(xlim=(-1.05 * R, 1.05 * R), ylim=(levels[0] - 0.05 * R, levels[3] + 0.05 * R), aspect="equal",
+               xlabel="x (mm)", ylabel="z (mm)")
+        ax.set_title(f"section, equal scale\n(changes during formation are ≤ {change * 1e6:.2f} µm: see right)",
+                     loc="left", fontsize=10)
         a = fig.add_subplot(g[0, 1])
         for j, (name, colour) in enumerate((("front", FACE), ("back", WATER))):
             a.plot(r * mm, (data["space"].height(j, q[j], r) - targets[j]) * 1e9, color=colour, lw=1.5, label=f"{name} face")
         a.axhspan(-10, 10, color="#2e8b57", alpha=0.12)
-        a.set(ylim=(-450, 450), xlabel="radius (mm)", ylabel="height error to target (nm)")
+        a.set(ylim=(-error_limit, error_limit), xlabel="radius (mm)", ylabel="height error to target (nm)")
         a.set_title("height error over the clear aperture (magnified view)", loc="left", fontsize=10)
         a.legend(fontsize=8, frameon=False, loc="upper left")
         a = fig.add_subplot(g[1, 1])
@@ -386,10 +418,11 @@ def formation_video(data, out, fps=10):
         s = traces[i]["spots_m"] * 1e6
         a.scatter(s[:, 0], s[:, 1], s=5, color=RAY, alpha=0.5, lw=0)
         a.add_patch(plt.Circle((0, 0), 1, fill=False, color="#2e8b57", ls="--"))
-        a.set(xlim=(-50, 50), ylim=(-50, 50), aspect="equal", xlabel="detector x (µm)", ylabel="detector y (µm)")
+        a.set(xlim=(-spot_limit, spot_limit), ylim=(-spot_limit, spot_limit), aspect="equal",
+              xlabel="detector x (µm)", ylabel="detector y (µm)")
         a.set_title(f"spot at the image plane\nmax {history['spot'][i]:.2f} µm "
-                    f"({int(traces[i]['transmitted'].sum())}/401 rays)", loc="left", fontsize=10)
-        fig.suptitle(f"Start-up from the acoustics-off meniscus under the held S07 command    t = {t:.3f} s",
+                    f"({int(traces[i]['transmitted'].sum())}/{len(traces[i]['transmitted'])} rays)", loc="left", fontsize=10)
+        fig.suptitle(f"Start-up from the acoustics-off meniscus under the held {label} command    t = {t:.3f} s",
                      x=0.01, ha="left", fontsize=13)
         fig.text(0.01, 0.01, f"Saved creeping-flow trajectory ({len(times)} states, 0–{times[-1]:.1f} s), "
                  f"recomputed rays. Playback {1 / (fps * (times[1] - times[0])):.0f}× slower than real time. "
@@ -397,12 +430,12 @@ def formation_video(data, out, fps=10):
         fig.canvas.draw()
         frames.append(np.asarray(fig.canvas.buffer_rgba())[..., :3].copy())
         plt.close(fig)
-    imageio.mimsave(out / "s07-formation.mp4", frames, fps=fps, quality=8, macro_block_size=1)
-    imageio.mimsave(out / "s07-formation.gif", [f[::2, ::2] for f in frames], duration=1 / fps, loop=0)
+    imageio.mimsave(out / f"{prefix}-formation.mp4", frames, fps=fps, quality=8, macro_block_size=1)
+    imageio.mimsave(out / f"{prefix}-formation.gif", [f[::2, ::2] for f in frames], duration=1 / fps, loop=0)
     return history
 
 
-def pressure_cycle_video(data, out, frames_per_cycle=24, fps=12):
+def pressure_cycle_video(data, out, prefix, frames_per_cycle=24, fps=12):
     cfg, mm = data["cfg"], 1e3
     field = data["field"]
     xy = field["xy"] * mm
@@ -427,7 +460,7 @@ def pressure_cycle_video(data, out, frames_per_cycle=24, fps=12):
         fig.canvas.draw()
         images.append(np.asarray(fig.canvas.buffer_rgba())[..., :3].copy())
         plt.close(fig)
-    imageio.mimsave(out / "s07-pressure-cycle.gif", images * 3, duration=1 / fps, loop=0)
+    imageio.mimsave(out / f"{prefix}-pressure-cycle.gif", images * 3, duration=1 / fps, loop=0)
 
 
 def main():
@@ -435,13 +468,15 @@ def main():
     parser.add_argument("--run", type=Path, default=BASE / "meniscus-750khz")
     parser.add_argument("--formation", type=Path, default=BASE / "formation-750khz-dt0025")
     parser.add_argument("--out", type=Path, default=BASE / "figures")
+    parser.add_argument("--prefix", default="s07", help="file name prefix")
+    parser.add_argument("--label", default="S07", help="design name in titles")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     data = load(args.run.resolve(), args.formation.resolve())
-    setup_figure(data, args.out)
-    faces_figure(data, args.out)
-    history = formation_video(data, args.out)
-    pressure_cycle_video(data, args.out)
+    setup_figure(data, args.out, args.prefix)
+    faces_figure(data, args.out, args.prefix)
+    history = formation_video(data, args.out, args.prefix, args.label)
+    pressure_cycle_video(data, args.out, args.prefix)
     (args.out / "provenance.json").write_text(json.dumps({
         "inputs_sha256": inputs_used,
         "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

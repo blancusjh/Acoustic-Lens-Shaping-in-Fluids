@@ -1,5 +1,6 @@
 {
   "name": "S07 apparatus proposal",
+  "study": "S07",
   "design_state": "artifacts/studies/S07-faithful-modal-synthesis/meniscus-2026-10-25/meniscus-750khz/design",
   "status_meaning": {
     "modelled": "Present in the S07 numerical model with these dimensions and values",

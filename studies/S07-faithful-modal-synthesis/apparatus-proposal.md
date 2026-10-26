@@ -2,7 +2,7 @@
 
 Nothing here has been built or measured. The component list is declared in
 `configs/S07-faithful-modal-synthesis/apparatus-proposal.json`, and the figure
-is rendered from it by `tools/presentation/render_s07_apparatus.py`
+is rendered from it by `tools/presentation/render_apparatus.py`
 (`artifacts/.../figures/s07-apparatus.png`). **Modelled** parts are in the S07
 numerical model with the stated values; **proposed** parts are needed to build
 it but are not yet represented in any simulation.
