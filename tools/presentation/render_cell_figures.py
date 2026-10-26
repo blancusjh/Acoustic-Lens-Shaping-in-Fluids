@@ -11,6 +11,7 @@ experiment. Geometric exaggeration and playback speed are labelled.
 import argparse
 import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import matplotlib
@@ -57,14 +58,28 @@ def load(run, formation):
     start = space.unforced_equilibrium()
     if np.max(abs(trajectory["coefficients_m"][0] - start)) > 1e-12:
         raise ValueError("The saved trajectory does not start at the acoustics-off meniscus")
-    wave = DualAcoustics(cfg, space, linear_solver="static_condensed")
-    response = wave.solve(q, drive)
-    xy = response.basis.mapping.geometry(wave.flat.p)[0] * cfg.radius_m
+    # One field per frequency band; a single-band state is one band at the config frequency.
+    bands = state["band_frequencies_hz"].tolist() if "band_frequencies_hz" in state else [cfg.frequency_hz]
+    drives = np.atleast_2d(drive)
+    responses, pressures, diagnostics = [], [], []
+    for f, d in zip(bands, drives):
+        wave = DualAcoustics(replace(cfg, frequency_hz=f), space, linear_solver="static_condensed")
+        response = wave.solve(q, d)
+        responses.append(response)
+        pressures.append(response.solution[response.basis.nodal_dofs[0], 0])
+        diagnostics.append(response.diagnostics(np.ones(1, complex)))
+    xy = responses[0].basis.mapping.geometry(wave.flat.p)[0] * cfg.radius_m
     field = {
         "xy": xy,
         "triangles": wave.flat.t.T,
-        "pressure": response.solution[response.basis.nodal_dofs[0], 0],
-        "diagnostics": response.diagnostics(np.ones(1, complex)),
+        "pressure": pressures[0],
+        "bands": list(zip(bands, pressures)),
+        "diagnostics": {
+            "source_power_w": sum(d["source_power_w"] for d in diagnostics),
+            # Worst case of the instantaneous sum: band peaks in phase.
+            "sampled_pressure_peak_pa": sum(d["sampled_pressure_peak_pa"] for d in diagnostics),
+            "band_peaks_pa": [d["sampled_pressure_peak_pa"] for d in diagnostics],
+        },
     }
     return {
         "record": record, "cfg": cfg, "space": space, "material": material,
@@ -131,11 +146,22 @@ def source_amplitudes(data):
     cfg = data["cfg"]
     r = np.linspace(0, cfg.radius_m, 200)
     z = np.linspace(cfg.levels_m[0], cfg.levels_m[-1], 200)
+    modal = np.atleast_2d(data["modal"])
+    per_band = [
+        {
+            "bottom": modal_source_profile(cfg, data["labels"], m, "bottom", r),
+            "top": modal_source_profile(cfg, data["labels"], m, "top", r),
+            "side": modal_source_profile(cfg, data["labels"], m, "side", z),
+        }
+        for m in modal
+    ]
+    if len(per_band) == 1:
+        return {"r": r, "z": z, **per_band[0]}
+    # Several bands: strips and 3D show the combined RMS amplitude; panels show each band.
+    combined = {k: np.sqrt(sum(abs(b[k]) ** 2 for b in per_band)) for k in ("bottom", "top", "side")}
     return {
-        "r": r, "z": z,
-        "bottom": modal_source_profile(cfg, data["labels"], data["modal"], "bottom", r),
-        "top": modal_source_profile(cfg, data["labels"], data["modal"], "top", r),
-        "side": modal_source_profile(cfg, data["labels"], data["modal"], "side", z),
+        "r": r, "z": z, **combined,
+        "bands": [(f, b) for (f, _), b in zip(data["field"]["bands"], per_band)],
     }
 
 
@@ -286,10 +312,16 @@ def setup_figure(data, out, prefix):
                                                  ("side", "z", "cylinder wall"))):
         a = fig.add_subplot(sub[k])
         x = sources[axis] * mm
-        a.plot(x, abs(sources[boundary]) * 1e3, color=INK, lw=1.4)
-        a.set_ylabel("|u| (mm/s)", fontsize=8.5)
         b = a.twinx()
-        b.plot(x, np.angle(sources[boundary]), color=MUTED, lw=0.8, ls="--")
+        if "bands" in sources:
+            for (f, band), colour in zip(sources["bands"], (INK, "#c62828", "#2e7d32")):
+                a.plot(x, abs(band[boundary]) * 1e3, color=colour, lw=1.4, label=f"{f / 1e6:.2f} MHz")
+                b.plot(x, np.angle(band[boundary]), color=colour, lw=0.6, ls="--", alpha=0.6)
+            a.legend(fontsize=7.5, frameon=False, loc="upper right")
+        else:
+            a.plot(x, abs(sources[boundary]) * 1e3, color=INK, lw=1.4)
+            b.plot(x, np.angle(sources[boundary]), color=MUTED, lw=0.8, ls="--")
+        a.set_ylabel("|u| (mm/s)", fontsize=8.5)
         b.set_ylim(-np.pi, np.pi)
         b.set_ylabel("phase (rad)", fontsize=8, color=MUTED)
         a.set_xlabel("radius (mm)" if axis == "r" else "z (mm)", fontsize=8.5)
@@ -300,13 +332,15 @@ def setup_figure(data, out, prefix):
     field = data["field"]
     xy = field["xy"] * mm
     tri = mtri.Triangulation(xy[0], xy[1], field["triangles"])
-    pressure = field["pressure"].real / 1e6
-    limit = float(np.max(abs(field["pressure"]))) / 1e6
+    # Instantaneous total of all bands at t = 0.
+    pressure = sum(p.real for _, p in field["bands"]) / 1e6
+    limit = float(sum(np.max(abs(p)) for _, p in field["bands"])) / 1e6
     image = ax.tripcolor(tri, pressure, shading="gouraud", cmap="RdBu_r", vmin=-limit, vmax=limit, rasterized=True)
     for j in range(2):
         ax.plot(r * mm, faces[j], color="black", lw=1)
     ax.set(xlim=(0, R), ylim=(levels[0], levels[3]), aspect="equal", xlabel="radius (mm)", ylabel="z (mm)")
-    ax.set_title(f"(f) Pressure at one instant, {cfg.frequency_hz / 1e6:.2f} MHz", loc="left", fontsize=12)
+    band_text = " + ".join(f"{f / 1e6:.2f}" for f, _ in field["bands"])
+    ax.set_title(f"(f) Pressure at one instant, {band_text} MHz", loc="left", fontsize=12)
     cb = fig.colorbar(image, ax=ax, orientation="horizontal", fraction=0.035, pad=0.09, shrink=0.9)
     cb.set_label("acoustic pressure (MPa)", fontsize=9)
     d = field["diagnostics"]
@@ -441,14 +475,15 @@ def pressure_cycle_video(data, out, prefix, frames_per_cycle=24, fps=12):
     field = data["field"]
     xy = field["xy"] * mm
     tri = mtri.Triangulation(xy[0], xy[1], field["triangles"])
-    limit = float(np.max(abs(field["pressure"]))) / 1e6
+    limit = float(sum(np.max(abs(p)) for _, p in field["bands"])) / 1e6
     r = np.linspace(0, cfg.radius_m, 401)
     faces = faces_mm(data, data["q"], r)
-    period = 1 / cfg.frequency_hz
+    # The slowest band's period; harmonically related bands repeat over it.
+    period = 1 / min(f for f, _ in field["bands"])
     images = []
     for k in range(frames_per_cycle):
         t = k * period / frames_per_cycle
-        value = (field["pressure"] * np.exp(-2j * np.pi * cfg.frequency_hz * t)).real / 1e6
+        value = sum((p * np.exp(-2j * np.pi * f * t)).real for f, p in field["bands"]) / 1e6
         fig, ax = plt.subplots(figsize=(6.5, 5.6))
         ax.tripcolor(tri, value, shading="gouraud", cmap="RdBu_r", vmin=-limit, vmax=limit)
         for j in range(2):
