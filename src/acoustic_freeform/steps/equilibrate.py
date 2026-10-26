@@ -11,7 +11,7 @@ from ..apparatus.sources import export_sources
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
 from ..forward.equilibrium import project_acoustic_tangent
-from ..mechanics.surface import CartesianPatch, DualSurface
+from ..mechanics.surface import DualSurface, targets_from_record
 from ..optics.raytrace import trace_pair
 from ..verify.metrics import maximum_error
 
@@ -21,6 +21,8 @@ def run(configuration, output):
     source_path = data_path(inputs["source_file"])
     synthesis = json.loads((source_path.parent / "config.json").read_text())
     material = json.loads(data_path(synthesis["material_reference"]).read_text())
+    # The lens optics of the synthesis record when present (a prescribed singlet).
+    optics = synthesis.get("optics", material)
     drive = np.load(source_path)["source_velocity_m_s"]
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
@@ -66,9 +68,7 @@ def run(configuration, output):
                 )
                 + "\n"
             )
-        targets = [
-            CartesianPatch(cfg, j, **face) for j, face in enumerate(synthesis["case"]["faces"])
-        ]
+        targets = targets_from_record(cfg, synthesis)
         q = space.project(targets)
         wave = DualAcoustics(cfg, space, linear_solver="static_condensed")
         export_sources(directory, cfg, drive)
@@ -171,9 +171,9 @@ def run(configuration, output):
         trace = trace_pair(
             space,
             q,
-            material["indices"],
-            material["stigmatic_z_m"][0],
-            material["stigmatic_z_m"][2],
+            optics["indices"],
+            optics["stigmatic_z_m"][0],
+            optics["stigmatic_z_m"][2],
             launch_radius_m=radii,
             launch_height_m=cfg.levels_m[1] + targets[0].evaluate(radii),
         )

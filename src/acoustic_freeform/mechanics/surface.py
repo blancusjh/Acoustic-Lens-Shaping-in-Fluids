@@ -301,3 +301,109 @@ class DualSurface:
             if np.max(np.abs(step)) < 1e-13:
                 return q
         raise RuntimeError("Prescribed-traction equilibrium did not converge.")
+
+
+class PinnedCartesianFace:
+    """One face of a prescribed Cartesian singlet, pinned on the cell ring.
+
+    The whole face out to the pinning radius is the exact Cartesian surface of
+    the lens (closed-form superconic parametrization); there is no designed
+    annulus. Heights are relative to the face's pinned level, which must be the
+    height of the surface at the pinning radius, so h(R) = 0 by construction.
+    """
+
+    def __init__(self, config, face, diopter, vertex_m):
+        self.config, self.face, self.diopter, self.vertex = config, face, diopter, vertex_m
+        rim = self.diopter.sag_superconic(np.array([config.radius_m]))[0] + vertex_m
+        if abs(rim - config.levels_m[face + 1]) > 1e-12:
+            raise ValueError(
+                "The pinned level must be the lens surface height at the pinning radius"
+            )
+
+    def evaluate(self, r, derivative=0):
+        r = np.asarray(r, float)
+        if derivative == 0:
+            return (
+                self.diopter.sag_superconic(r) + self.vertex - self.config.levels_m[self.face + 1]
+            )
+        if derivative == 1:
+            return self.diopter.slope_superconic(r)
+        if derivative == 2:
+            # slope_superconic is odd in r, so the central difference holds on the axis too.
+            step = 1e-7 * self.config.radius_m
+            upper = self.diopter.slope_superconic(r + step)
+            lower = self.diopter.slope_superconic(r - step)
+            return (upper - lower) / (2 * step)
+        raise ValueError("Derivatives up to second order are available")
+
+    def volume_offset(self, samples=4001):
+        """Displaced volume of the face relative to its flat pinned plane (m^3)."""
+        r = np.linspace(0, self.config.radius_m, samples)
+        return float(np.trapezoid(2 * np.pi * r * self.evaluate(r), r))
+
+
+def pinned_singlet(config, indices, conjugates_m, front_vertex_m, thickness_m):
+    """Both faces of a stigmatic singlet whose rims are pinned on the cell ring.
+
+    ``conjugates_m`` are laboratory object, intermediate and image points.
+    The returned faces require config.levels_m[1:3] to equal the surface
+    heights at config.radius_m (see ``pinned_levels``).
+    """
+    d0, d1, d2 = conjugates_m
+    vertices = [front_vertex_m, front_vertex_m + thickness_m]
+    diopters = [
+        CartesianDiopter(indices[0], d0 - vertices[0], indices[1], d1 - vertices[0]),
+        CartesianDiopter(indices[1], d1 - vertices[1], indices[2], d2 - vertices[1]),
+    ]
+    return [PinnedCartesianFace(config, j, diopters[j], vertices[j]) for j in range(2)]
+
+
+def pinned_levels(radius_m, indices, conjugates_m, front_vertex_m, thickness_m):
+    """Laboratory heights of both lens surfaces at the pinning radius."""
+    d0, d1, d2 = conjugates_m
+    vertices = [front_vertex_m, front_vertex_m + thickness_m]
+    diopters = [
+        CartesianDiopter(indices[0], d0 - vertices[0], indices[1], d1 - vertices[0]),
+        CartesianDiopter(indices[1], d1 - vertices[1], indices[2], d2 - vertices[1]),
+    ]
+    rim = np.array([radius_m])
+    return [float(d.sag_superconic(rim)[0] + v) for d, v in zip(diopters, vertices)]
+
+
+def singlet_geometry(spec):
+    """Resolve a published singlet spec into laboratory conjugates and cell levels.
+
+    ``spec`` gives indices, object and image distances and thickness from the
+    first vertex (paper convention), either an intermediate point or the shape
+    factor, a geometric scale, the pinning radius and window margins. The
+    first vertex is placed at z = 0.
+    """
+    from ..optics.stigmatic import intermediate_point_from_shape_factor
+
+    n, scale = spec["indices"], spec.get("scale", 1.0)
+    d0, d2, t = (scale * spec[k] for k in ("object_m", "image_m", "thickness_m"))
+    if "intermediate_m" in spec:
+        d1 = scale * spec["intermediate_m"]
+    else:
+        d1 = intermediate_point_from_shape_factor(n[0], n[1], d0, d2, t, spec["shape_factor"])
+    pins = pinned_levels(spec["pin_radius_m"], n, [d0, d1, d2], 0.0, t)
+    margin = spec["window_margin_m"]
+    return {
+        "conjugates_m": [d0, d1, d2],
+        "thickness_m": t,
+        "levels_m": [-margin, pins[0], pins[1], t + margin],
+    }
+
+
+def targets_from_record(config, record):
+    """Target faces of a synthesis record: a pinned singlet or Cartesian patches."""
+    if "singlet" in record:
+        geometry = singlet_geometry(record["singlet"])
+        return pinned_singlet(
+            config,
+            record["singlet"]["indices"],
+            geometry["conjugates_m"],
+            0.0,
+            geometry["thickness_m"],
+        )
+    return [CartesianPatch(config, j, **f) for j, f in enumerate(record["case"]["faces"])]

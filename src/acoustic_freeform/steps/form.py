@@ -11,7 +11,7 @@ from ..apparatus.sources import export_sources
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
 from ..forward.formation import envelope, implicit_step, linearized_implicit_step
-from ..mechanics.surface import CartesianPatch, DualSurface
+from ..mechanics.surface import DualSurface, targets_from_record
 from ..mechanics.viscous import assemble_mobility
 from ..optics.raytrace import trace_pair
 
@@ -26,6 +26,8 @@ def run(configuration, output):
     if acoustic_load not in ("frozen", "linearized"):
         raise ValueError("acoustic_load must be frozen or linearized")
     material = json.loads(data_path(synthesis["material_reference"]).read_text())
+    # The lens optics of the synthesis record when present (a prescribed singlet).
+    optics = synthesis.get("optics", material)
     cfg = DualConfig(**json.loads((source / "config.json").read_text()))
     space = DualSurface(cfg, allow_volume_offsets=True)
     drive = np.load(source / "state.npz")["source_velocity_m_s"]
@@ -37,7 +39,7 @@ def run(configuration, output):
     data["material"] = material
     (output / "config.json").write_text(json.dumps(data, indent=2) + "\n")
     export_sources(output, cfg, drive)
-    targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(synthesis["case"]["faces"])]
+    targets = targets_from_record(cfg, synthesis)
     r = np.linspace(0, cfg.clear_radius_m, data["ray_count"])
     launch = cfg.levels_m[1] + targets[0].evaluate(r)
     target_h = np.array([t.evaluate(r) for t in targets])
@@ -55,9 +57,9 @@ def run(configuration, output):
         trace = trace_pair(
             space,
             q,
-            material["indices"],
-            material["stigmatic_z_m"][0],
-            material["stigmatic_z_m"][2],
+            optics["indices"],
+            optics["stigmatic_z_m"][0],
+            optics["stigmatic_z_m"][2],
             launch_radius_m=r,
             launch_height_m=launch,
         )

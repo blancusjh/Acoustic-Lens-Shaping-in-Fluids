@@ -21,7 +21,7 @@ from ..acoustics.helmholtz import DualAcoustics
 from ..apparatus.config import DualConfig
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
-from ..mechanics.surface import CartesianPatch, DualSurface
+from ..mechanics.surface import DualSurface, targets_from_record
 
 NUMERICAL = {"radial_cells", "cells_per_layer", "acoustic_order", "surface_elements"}
 PHYSICAL = {"sound_speed_m_s", "density_kg_m3", "frequency_hz", "surface_tension_n_m"}
@@ -68,7 +68,7 @@ def run(configuration, output):
     space = DualSurface(cfg, allow_volume_offsets=True)
     if q.shape != (2, space.count) or drive.shape != (cfg.channels,):
         raise ValueError("Saved geometry/command does not match the saved apparatus")
-    targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(synthesis["case"]["faces"])]
+    targets = targets_from_record(cfg, synthesis)
     radii = np.linspace(0, cfg.radius_m, inputs.get("radial_samples", 801))
     pupil = radii <= cfg.clear_radius_m
     target_h = np.array([t.evaluate(radii) for t in targets])

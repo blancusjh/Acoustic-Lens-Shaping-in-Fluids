@@ -14,7 +14,7 @@ from ..acoustics.helmholtz import DualAcoustics
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
 from ..forward.branch import startup_branch
-from ..mechanics.surface import CartesianPatch, DualSurface
+from ..mechanics.surface import DualSurface, targets_from_record
 from ..mechanics.viscous import assemble_mobility
 from .force_convergence import load_state
 
@@ -24,7 +24,7 @@ def run(configuration, output):
     cfg, _, drive, synthesis, hashes = load_state(inputs["state_directory"])
     material = json.loads(data_path(synthesis["material_reference"]).read_text())
     space = DualSurface(cfg, allow_volume_offsets=True)
-    targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(synthesis["case"]["faces"])]
+    targets = targets_from_record(cfg, synthesis)
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
     inputs["input_sha256"] = hashes

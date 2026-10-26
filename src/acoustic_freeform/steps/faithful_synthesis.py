@@ -19,7 +19,7 @@ from ..apparatus.sources import export_sources, modal_source_matrix
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
 from ..inverse.faithful import FaithfulProblem, best_fill_volumes, frozen_start
-from ..mechanics.surface import CartesianPatch
+from ..mechanics.surface import CartesianPatch, singlet_geometry, targets_from_record
 from ..mechanics.viscous import assemble_mobility
 from ..optics.stigmatic import pair_prescription
 
@@ -29,15 +29,31 @@ def run(configuration, output):
     material = json.loads(data_path(inputs["material_reference"]).read_text())
     apparatus = dict(inputs["apparatus"])
     fill = apparatus.pop("volume_offsets_m3", None)
-    cfg = DualConfig(**{**material["apparatus"], **apparatus})
-    optics = {**{k: material[k] for k in ("indices", "stigmatic_z_m", "vertex_displacement_m")}}
-    optics.update(inputs.get("optics", {}))
-    faces = pair_prescription(
-        cfg, optics["indices"], optics["stigmatic_z_m"], optics["vertex_displacement_m"]
-    )
-    for face in faces:
-        face["annulus_match_order"] = inputs.get("annulus_match_order", 4)
-    targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(faces)]
+    if "singlet" in inputs:
+        # A prescribed singlet fixes the lens; the cell (pinning ring and levels)
+        # is derived from it.
+        geometry = singlet_geometry(inputs["singlet"])
+        apparatus["radius_m"] = inputs["singlet"]["pin_radius_m"]
+        apparatus["clear_radius_m"] = inputs["singlet"]["clear_radius_m"]
+        apparatus["levels_m"] = geometry["levels_m"]
+        cfg = DualConfig(**{**material["apparatus"], **apparatus})
+        targets = targets_from_record(cfg, inputs)
+        optics = {
+            "indices": inputs["singlet"]["indices"],
+            "stigmatic_z_m": geometry["conjugates_m"],
+            "thickness_m": geometry["thickness_m"],
+        }
+        faces = None
+    else:
+        cfg = DualConfig(**{**material["apparatus"], **apparatus})
+        optics = {k: material[k] for k in ("indices", "stigmatic_z_m", "vertex_displacement_m")}
+        optics.update(inputs.get("optics", {}))
+        faces = pair_prescription(
+            cfg, optics["indices"], optics["stigmatic_z_m"], optics["vertex_displacement_m"]
+        )
+        for face in faces:
+            face["annulus_match_order"] = inputs.get("annulus_match_order", 4)
+        targets = [CartesianPatch(cfg, j, **f) for j, f in enumerate(faces)]
     pupil = np.linspace(0, cfg.clear_radius_m, inputs.get("pupil_samples", 41))
     meniscus_errors = None
     if fill == "best_fit":
