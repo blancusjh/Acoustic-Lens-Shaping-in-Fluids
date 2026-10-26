@@ -195,7 +195,7 @@ Within the declared axisymmetric, quiescent, creeping-flow model, one fixed
 machine (the water / NOA 61 / water cell, the same 112 source channels and 26
 modes, caps 1 W and 2 MPa per band) holds every one of the 68 family singlets
 that fit it: the convex bound is below 0.5 nm for all. Started from the
-acoustics-off meniscus, 67 of the 68 form within 0.25 nm (61 with one tone at
+acoustics-off meniscus, 67 of the 68 form within 1 nm (61 with one tone at
 1.5 MHz, 6 more with a second tone at 0.75 MHz). Lens 57 is the one exception
 and it is a path, not a capability, failure. The full chain (start-up,
 fixed-command refinement, coupled stability, formation at two time steps) has
