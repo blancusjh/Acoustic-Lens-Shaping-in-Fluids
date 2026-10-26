@@ -253,7 +253,8 @@ def setup_figure(data, out, prefix):
     # are the cured lens in air, not the liquids being shaped.
     singlet = "singlet" in data["record"]
     names = data["material"].get("short_names", data["material"]["material_identity"])
-    middle = (faces[0][-1] + faces[1][-1]) / 2
+    k = int(0.6 * (len(r) - 1))  # resin label where the layer is thick enough to hold it
+    middle = (faces[0][k] + faces[1][k]) / 2
     top = image_top(data) * mm
     for j, z in enumerate((levels[0] + 0.12 * u, middle, levels[3] - 0.45 * u)):
         index = f"  n={n[j]}" if not singlet else ""
@@ -261,19 +262,19 @@ def setup_figure(data, out, prefix):
     ax.text(R + 0.3 * u, levels[1] + 0.15 * u, "pinned\nrims", ha="left", fontsize=8, color=MUTED)
     ax.text(0.15 * u, faces[0][0] - 0.25 * u, f"front face, displaced volume {volumes[0]:+.3f} µL",
             fontsize=8.5, color=FACE)
-    ax.text(0.15 * u, faces[1][0] + 0.12 * u, f"back face, displaced volume {volumes[1]:+.3f} µL",
-            fontsize=8.5, color=FACE)
+    ax.text(R - 0.15 * u, faces[1][-1] + 0.12 * u, f"back face, displaced volume {volumes[1]:+.3f} µL",
+            ha="right", fontsize=8.5, color=FACE)
     z0, z1, z2 = np.array(data["conjugates"]) * mm
     source = "collimated input (object at infinity)" if np.isinf(z0) else f"rays from on-axis object at z = {z0:.1f} mm"
-    ax.text(0, levels[0] - 0.55 * u, source, ha="center", va="top", fontsize=8.5, color=RAY)
-    ax.text(0, top + 0.2 * u, f"to image at z = {z2:.2f} mm; intermediate conjugate {z1:.1f} mm",
-            ha="center", fontsize=8.5, color=RAY)
-    ax.text(0, levels[0] - 1.25 * u, f"cylinder Ø {2 * R:.2f} mm, height {levels[3] - levels[0]:.2f} mm, "
-            f"clear apertures Ø {2 * cfg.clear_radius_m * mm:.1f} mm", ha="center", fontsize=8.5, color=MUTED)
+    info = [source, f"to image at z = {z2:.2f} mm; intermediate conjugate {z1:.1f} mm"]
     if singlet:
-        ax.text(0, levels[0] - 1.6 * u, f"rays traced with the published lens indices {n[0]:g} / {n[1]:g} / {n[2]:g}",
-                ha="center", fontsize=8.5, color=RAY)
-    ax.set(xlim=(-R - 0.5 * u, R + 1.0 * u), ylim=(levels[0] - 1.9 * u, max(levels[3] + 2.0 * u, top + 0.6 * u)),
+        info.append(f"rays traced with the published lens indices {n[0]:g} / {n[1]:g} / {n[2]:g}")
+    info.append(f"cylinder Ø {2 * R:.2f} mm, height {levels[3] - levels[0]:.2f} mm, "
+                f"clear aperture Ø {2 * cfg.clear_radius_m * mm:.1f} mm")
+    # One text block in the corner of the panel: no collisions with the drawing at any cell size.
+    ax.text(0.02, 0.985, "\n".join(info), transform=ax.transAxes, va="top", fontsize=8, color=INK,
+            bbox={"fc": "white", "ec": "none", "alpha": 0.85, "pad": 2})
+    ax.set(xlim=(-R - 0.5 * u, R + 1.0 * u), ylim=(levels[0] - 0.6 * u, max(levels[3] + 2.6 * u, top + 1.6 * u)),
            aspect="equal", xlabel="x (mm)", ylabel="z (mm)")
     ax.set_title("(b) Meridional section, equal scale", loc="left", fontsize=12)
     bar = fig.colorbar(plt.cm.ScalarMappable(norm, cmap), ax=ax, orientation="horizontal",
