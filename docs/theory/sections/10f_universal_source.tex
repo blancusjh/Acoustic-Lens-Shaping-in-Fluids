@@ -1,0 +1,107 @@
+\section{A common source: load demand and convex capability}\label{sec:universal}
+
+\Cref{sec:faithful} fits a source to one prescribed lens. A machine that forms
+many lenses must instead keep its cell, liquids and source layout fixed and
+select the lens through the drive command alone (and the fill pumps, which are
+part of the machine). This section separates the two halves of that question:
+what a prescribed face \emph{demands} from the field, and what a fixed source
+\emph{can} supply. The first is a closed-form property of the lens and the
+liquids; the second is a convex program. Both are posed in the declared
+axisymmetric, quiescent, creeping-flow reduction.
+
+\subsection{Load demand of a prescribed face}
+For a face $h(r)$ pinned at $r=R$, with tension $\sigma$ and density step
+$\Delta\rho=\rho_{\text{below}}-\rho_{\text{above}}$, stationarity of the graph
+energy with fixed enclosed volumes gives
+\begin{equation}
+ -\sigma\,\frac1r\bigl(r\,\phi\bigr)'+\Delta\rho\,g\,h=t(r)+P,\qquad
+ \phi=\frac{h'}{\sqrt{1+h'^2}},
+ \label{eq:demand}
+\end{equation}
+where $t$ is the extra normal traction (positive upward) and $P$ the face's
+pressure multiplier. The \emph{demand} of a target face is the left side of
+\cref{eq:demand} evaluated on the target; the field has to supply it up to an
+additive constant, which the volume constraint absorbs. In the volume-preserving
+surface space the demand is the mechanical gradient at the projected target,
+$\bm d=\nabla_q E(q^\star)$, and an acoustic force $\bm F$ holds the target iff
+$\bm F=\bm d$.
+
+With the sag $h=h_0+\tfrac12 c\,r^2+a_4r^4+a_6r^6+\dots$, expanding $\phi$ to
+fifth order gives
+\begin{equation}
+ t(r)=\text{const}+Q_2r^2+Q_4r^4+\dots,\qquad
+ \begin{aligned}
+ Q_2&=-\sigma\,(16a_4-2c^3)+\tfrac12\Delta\rho\,g\,c,\\
+ Q_4&=-\sigma\,\bigl(36a_6-36c^2a_4+\tfrac94c^5\bigr)+\Delta\rho\,g\,a_4 .
+ \end{aligned}
+ \label{eq:demand-series}
+\end{equation}
+Both vanish for a sphere ($a_4=c^3/8$, $a_6=c^5/16$) with $\Delta\rho=0$, as
+they must. For a conic face, $a_4=(1+k)c^3/8$, the leading term vanishes when
+\begin{equation}
+ \frac{\Delta\rho\,g}{\sigma}=4\,k\,c^2 ,
+ \label{eq:matching-rule}
+\end{equation}
+so a liquid pair can match the fourth-order departure of one face from a
+sphere; the sixth- and higher-order remainder is then the whole demand. The
+two faces have independent outer liquids, hence independent conditions.
+
+\paragraph{Checks.} On the published singlets of \cref{sec:faithful}'s study
+S08, the generalized force of the exact traction \cref{eq:demand} and the
+mechanical gradient agree to $2\times10^{-3}$; the finite-element equilibrium
+under the exact traction reproduces both target faces to $3\times10^{-11}$\,m;
+\cref{eq:demand-series} matches the exact traction to $6\times10^{-4}$ within
+$r\le0.15R$; and \cref{eq:matching-rule} predicts the brine and oil choice that
+a brute-force density and tension scan found for Fig.~9b
+($-8.3\times10^4$ versus $-7.9\times10^4$\,m$^{-2}$ front, $1.0\times10^6$
+versus $7.5\times10^5$\,m$^{-2}$ back).
+
+\subsection{Convex capability of a fixed source}
+About $q^\star$, a single tone with modal amplitudes $c$ exerts
+$F_i=c^{\mathsf H}G_ic$ with Hermitian $G_i$ (\cref{sec:faithful}). Several tones
+at distinct frequencies $\omega_t$, spaced far beyond the creeping-flow
+bandwidth, exert in the time average the sum of their forces: cross terms
+oscillate at $\omega_t-\omega_s$ and the interface, a low-pass filter with
+relaxation rates of order $10\,\mathrm s^{-1}$, does not follow them. With
+$X_t=\sum c_{t}c_{t}^{\mathsf H}$ for the tones near band $t$,
+\begin{equation}
+ F_i=\sum_t\operatorname{tr}\bigl(G_{t,i}X_t\bigr),\qquad X_t\succeq0,
+ \qquad \text{power}=\sum_t\operatorname{tr}\bigl(W_tX_t\bigr),
+ \label{eq:multitone}
+\end{equation}
+is linear in the positive semidefinite matrices $X_t$: the forces reachable by
+multi-tone drives form a convex cone. With the frozen pupil response
+$\delta\bm h=O(\bm F-\bm d)+V\bm v$, $O=HK^{-1}$, and pump trims $\bm v$ acting
+through the volume columns $V$, the best pupil tolerance within a power cap,
+\begin{equation}
+ \min_{X_t\succeq0,\ \bm v}\ \norm{O(\bm F(X)-\bm d)+V\bm v}_\infty
+ \quad\text{s.t.}\quad \sum_t\operatorname{tr}(W_tX_t)\le P_{\max},
+ \label{eq:capability}
+\end{equation}
+is a semidefinite program. Its optimum is a global lower bound for any drive of
+the given bands, single-tone or not. When it is not small, no command of that
+source layout can hold the lens, and the remedy is more source freedom (bands,
+modes, placement), not more iterations. When it is small, the rank of the
+optimal $X_t$ says how many tones near each band the bound needs; the
+single-tone case is $\operatorname{rank}X=1$, and an extreme optimal point has
+rank $r$ with $r^2\le n_c$ for $n_c$ real equality constraints
+\cite{barvinok1995,pataki1998}. A local rank-one refinement from the leading
+eigenvector then gives a single-tone command.
+
+\paragraph{Why this matters.} The single-tone faithful inverse of
+\cref{sec:faithful} is a non-convex problem in $c$ and was started from frozen
+least-squares fits of random seeds. For the published Fig.~9b singlet in the
+water cell it stalled at 0.67\,\textmu m for 1\,W and for 10\,W alike, which was
+read as a reachability limit of water. \Cref{eq:capability} reports instead a
+pupil error below $10^{-11}$\,m at 0.46\,W; its leading eigenvector refines to a
+single tone of 0.17\,W, and the full nonlinear start-up branch from the
+acoustics-off meniscus under that tone ends within $5\times10^{-11}$\,m of both
+faces. The earlier limit was a local minimum of the optimizer, not a property
+of the liquids. The convex program is therefore used both as a certificate of
+impossibility and as the initializer of the faithful inverse.
+
+\paragraph{Scope.} The capability is a first-order, frozen-compliance statement
+about the target state; it ignores the acoustic shape stiffness
+($\norm{A}/\norm{K}\sim10^{-4}$ here) and the start-up path. Acceptance of a
+command remains the nonlinear chain of \cref{sec:faithful}: start-up branch,
+fixed-command refinement, coupled stability and formation.

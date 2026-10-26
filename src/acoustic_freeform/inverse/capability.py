@@ -1,0 +1,161 @@
+"""Capability of a common source: can its time-averaged force supply a lens's demand?
+
+About a target state q* the generalized acoustic force of a drive with complex
+modal amplitudes c at one frequency is F_i = c^H G_i c. Tones at distinct
+frequencies (spaced far beyond the creeping-flow bandwidth) add their
+time-averaged forces, so a multi-tone drive gives F_i = sum_t tr(G_ti X_t)
+with X_t positive semidefinite: a single tone is rank one, r tones near one
+frequency are rank r. The set of reachable forces is then a convex cone, and
+the following are semidefinite programs:
+
+- ``minimum_power``: least total source power whose force brings the frozen
+  pupil heights within a tolerance of the target,
+- ``best_tolerance``: smallest pupil tolerance reachable within a power cap.
+
+Heights are first-order, frozen-compliance predictions: delta h = O (F - d),
+O = H K^-1, with d the load demand (``mechanics.demand``). They bound what the
+source can do; acceptance still needs the nonlinear chain (start-up branch,
+coupled stability, formation).
+"""
+
+import cvxpy as cp
+import numpy as np
+
+from ..acoustics.helmholtz import DualAcoustics
+from .faithful import ModalOperators
+
+
+class Tone:
+    """Force kernels, power form and pressure rows of one frequency band at q*."""
+
+    def __init__(self, cfg, space, q, modes, pressure_samples=400):
+        self.frequency_hz = cfg.frequency_hz
+        wave = DualAcoustics(cfg, space, linear_solver="static_condensed")
+        ops = ModalOperators(wave, q, modes, pressure_samples)
+        kernels = ops.kernels
+        self.kernels = (kernels + np.conj(np.swapaxes(kernels, 1, 2))) / 2
+        self.power = ops.power
+        self.pressure = ops.all_pressure
+        self.operators = ops
+
+
+def _problem(tones, observe, demand, scale_m, volume_columns=None):
+    """Scaled SDP pieces. Each band's matrix is X_t = s_t Y_t with s_t chosen so the
+    pupil-height rows of Y_t are O(1) in units of scale_m; only the pupil heights of
+    the force enter. Pump trims are in nanolitres."""
+    variables, heights, power = [], -observe @ demand / scale_m, 0
+    for t in tones:
+        m = t.kernels.shape[1]
+        raw = observe @ np.conj(t.kernels).reshape(len(t.kernels), m * m)
+        s = scale_m / np.max(abs(raw))
+        Y = cp.Variable((m, m), hermitian=True)
+        rows = raw * (s / scale_m)
+        heights = heights + cp.real(rows @ cp.vec(Y, order="C"))
+        power = power + s * cp.real(cp.trace(t.power @ Y))
+        variables.append((Y, s))
+    pumps = None
+    if volume_columns is not None:
+        # Fill-volume trims (m^3) are free machine inputs: linear height columns.
+        pumps = cp.Variable(volume_columns.shape[1])
+        heights = heights + volume_columns @ pumps * (1e-12 / scale_m)
+    constraints = [Y >> 0 for Y, _ in variables]
+    return variables, heights, power, constraints, pumps
+
+
+def _report(tones, variables, observe, demand, status, volume_columns=None, pumps=None):
+    X = [np.asarray(Y.value) * s for Y, s in variables]
+    force = sum(
+        np.real(np.einsum("nij,ij->n", np.conj(t.kernels), x)) for t, x in zip(tones, X)
+    )
+    tones_out = []
+    for t, x in zip(tones, X):
+        values, vectors = np.linalg.eigh((x + x.conj().T) / 2)
+        values = np.clip(values, 0, None)
+        keep = values > 1e-6 * max(values.max(), 1e-300)
+        amplitudes = vectors[:, keep][:, ::-1] * np.sqrt(values[keep][::-1])
+        tones_out.append(
+            {
+                "frequency_hz": t.frequency_hz,
+                "power_w": float(np.real(np.trace(t.power @ x))),
+                "rank": int(keep.sum()),
+                "eigen_power_fraction": (values[::-1][:6] / max(values.sum(), 1e-300)).tolist(),
+                "rms_pressure_peak_pa": float(
+                    np.sqrt(np.max(np.real(np.einsum("si,ij,sj->s", t.pressure.conj(), x, t.pressure))))
+                ),
+                "worst_case_peak_pressure_pa": float(
+                    np.max(np.sum(abs(t.pressure @ amplitudes), axis=1)) if keep.any() else 0.0
+                ),
+                "amplitudes": amplitudes,
+            }
+        )
+    heights = observe @ (force - demand)
+    trims = None
+    if pumps is not None:
+        trims = np.asarray(pumps.value) * 1e-12
+        heights = heights + volume_columns @ trims
+    return {
+        "status": status,
+        "pupil_max_error_m": float(np.max(abs(heights))),
+        "total_power_w": float(sum(t["power_w"] for t in tones_out)),
+        "volume_trims_m3": None if trims is None else trims.tolist(),
+        "tones": tones_out,
+        "force": force,
+    }
+
+
+def minimum_power(tones, observe, demand, tolerance_m, volume_columns=None, solver="CLARABEL"):
+    variables, heights, power, constraints, pumps = _problem(
+        tones, observe, demand, tolerance_m, volume_columns
+    )
+    problem = cp.Problem(cp.Minimize(power), [*constraints, cp.abs(heights) <= 1])
+    problem.solve(solver=solver)
+    if variables[0][0].value is None:
+        return {"status": problem.status}
+    return _report(tones, variables, observe, demand, problem.status, volume_columns, pumps)
+
+
+def best_tolerance(
+    tones, observe, demand, power_cap_w, scale_m=1e-8, volume_columns=None, solver="CLARABEL"
+):
+    variables, heights, power, constraints, pumps = _problem(
+        tones, observe, demand, scale_m, volume_columns
+    )
+    bound = cp.Variable()
+    problem = cp.Problem(
+        cp.Minimize(bound), [*constraints, cp.abs(heights) <= bound, power / power_cap_w <= 1]
+    )
+    problem.solve(solver=solver)
+    if variables[0][0].value is None:
+        return {"status": problem.status}
+    return _report(tones, variables, observe, demand, problem.status, volume_columns, pumps)
+
+
+def single_tone_refinement(tone, observe, demand, start, power_cap_w, evaluations=400):
+    """Local rank-one fit from a starting amplitude (e.g. the leading eigenvector).
+
+    Minimizes the pupil height misfit with a soft penalty above the power cap.
+    """
+    from scipy.optimize import least_squares
+
+    m = len(start)
+    scale = np.linalg.norm(observe @ demand) + 1e-300
+
+    def unpack(x):
+        return x[:m] + 1j * x[m:]
+
+    def fun(x):
+        c = unpack(x)
+        force = np.real(np.einsum("i,nij,j->n", c.conj(), tone.kernels, c))
+        power = float(np.real(c.conj() @ tone.power @ c))
+        excess = max(0.0, power / power_cap_w - 1.0)
+        return np.r_[observe @ (force - demand) / scale, 10 * excess]
+
+    fit = least_squares(fun, np.r_[start.real, start.imag], max_nfev=evaluations)
+    c = unpack(fit.x)
+    force = np.real(np.einsum("i,nij,j->n", c.conj(), tone.kernels, c))
+    return {
+        "pupil_max_error_m": float(np.max(abs(observe @ (force - demand)))),
+        "power_w": float(np.real(c.conj() @ tone.power @ c)),
+        "peak_pressure_pa": float(np.max(abs(tone.pressure @ c))),
+        "amplitudes": c,
+    }

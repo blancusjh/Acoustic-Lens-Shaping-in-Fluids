@@ -59,6 +59,9 @@ def run(configuration, output):
     meniscus_errors = None
     if fill == "best_fit":
         fill, meniscus_errors = best_fill_volumes(cfg, targets, pupil)
+    elif fill == "target" and "singlet" in inputs:
+        # The lens's own displaced volumes: the pumps fill each layer to the target.
+        fill = [t.volume_offset() for t in targets]
     if fill is not None:
         cfg = replace(cfg, volume_offsets_m3=tuple(fill))
     modes, labels = modal_source_matrix(
@@ -99,7 +102,10 @@ def run(configuration, output):
     space_holder["space"] = problem.space
     limits = inputs["limits"]
     rng = np.random.default_rng(inputs.get("seed", 0))
-    starts = frozen_start(problem, limits, inputs.get("seeds", 4), rng)
+    if inputs.get("initial_command", "frozen") == "convex":
+        starts = convex_start(problem, modes, limits)
+    else:
+        starts = frozen_start(problem, limits, inputs.get("seeds", 4), rng)
     (output / "starts.json").write_text(
         json.dumps([{k: v for k, v in s.items() if k != "coefficients"} for s in starts], indent=2)
         + "\n"
@@ -200,6 +206,40 @@ def run(configuration, output):
         "# Faithful modal synthesis\n\nDesign-grid values; acceptance needs the independent "
         "checks.\n\n```json\n" + json.dumps(report, indent=2) + "\n```\n"
     )
+
+
+def convex_start(problem, modes, limits):
+    """Initial command from the convex multi-tone capability program at the target.
+
+    The semidefinite relaxation is global, so it avoids the local minima of a
+    frozen fit from random seeds; its leading eigenvector is refined to a single
+    tone and scaled into the caps. Acceptance is still the nonlinear branch.
+    """
+    from ..inverse.capability import Tone, best_tolerance, single_tone_refinement
+    from ..mechanics.demand import demanded_force
+
+    q, demand, stiffness = demanded_force(problem.space, problem.targets)
+    observe = np.kron(np.eye(2), problem.pupil_basis) @ np.linalg.inv(stiffness)
+    tone = Tone(problem.cfg, problem.space, q, modes)
+    convex = best_tolerance([tone], observe, demand, limits["source_power_w"])
+    lead = convex["tones"][0]["amplitudes"][:, 0]
+    single = single_tone_refinement(tone, observe, demand, lead, limits["source_power_w"])
+    c = single["amplitudes"]
+    factor = min(
+        1.0,
+        np.sqrt(limits["source_power_w"] / max(single["power_w"], 1e-30)),
+        limits["peak_pressure_pa"] / max(single["peak_pressure_pa"], 1e-30),
+    )
+    return [
+        {
+            "coefficients": c * factor,
+            "convex_multitone_pupil_error_m": convex["pupil_max_error_m"],
+            "convex_rank": convex["tones"][0]["rank"],
+            "single_tone_frozen_pupil_error_m": single["pupil_max_error_m"],
+            "single_tone_power_w": single["power_w"],
+            "cap_scale_factor": float(factor),
+        }
+    ]
 
 
 def save(output, cfg, modes, c, q, state):

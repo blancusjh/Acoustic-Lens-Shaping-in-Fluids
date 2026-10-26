@@ -375,8 +375,8 @@ def singlet_geometry(spec):
 
     ``spec`` gives indices, object and image distances and thickness from the
     first vertex (paper convention), either an intermediate point or the shape
-    factor, a geometric scale, the pinning radius and window margins. The
-    first vertex is placed at z = 0.
+    factor, a geometric scale, the pinning radius and either window margins or
+    fixed window heights ``windows_m``. The first vertex is placed at z = 0.
     """
     from ..optics.stigmatic import intermediate_point_from_shape_factor
 
@@ -388,11 +388,15 @@ def singlet_geometry(spec):
     else:
         d1 = intermediate_point_from_shape_factor(n[0], n[1], d0, d2, t, spec["shape_factor"])
     pins = pinned_levels(spec["pin_radius_m"], n, [d0, d1, d2], 0.0, t)
-    margin = spec["window_margin_m"]
+    # Either fixed (common) window heights or margins beyond this lens's vertices.
+    if "windows_m" in spec:
+        bottom, top = spec["windows_m"]
+    else:
+        bottom, top = -spec["window_margin_m"], t + spec["window_margin_m"]
     return {
         "conjugates_m": [d0, d1, d2],
         "thickness_m": t,
-        "levels_m": [-margin, pins[0], pins[1], t + margin],
+        "levels_m": [bottom, pins[0], pins[1], top],
     }
 
 

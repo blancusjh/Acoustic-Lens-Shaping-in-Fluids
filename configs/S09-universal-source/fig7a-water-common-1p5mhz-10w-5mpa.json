@@ -1,0 +1,61 @@
+{
+  "material_reference": "configs/shared/noa61-water-pressure-reference.json",
+  "singlet": {
+    "reference": "Silva-Lora and Torres, JOSA A 37, 1155 (2020), Fig. 7a (n0 = n2 = 1, n1 = 1.7; d0 = -150, d2 = 70, t = 20 mm, sigma = 0.444), scaled 1/14 to a 4 mm aperture",
+    "indices": [
+      1.0,
+      1.7,
+      1.0
+    ],
+    "object_m": -0.15,
+    "image_m": 0.07,
+    "thickness_m": 0.02,
+    "shape_factor": 0.444,
+    "scale": 0.07142857142857142,
+    "pin_radius_m": 0.00202,
+    "clear_radius_m": 0.002,
+    "windows_m": [
+      -0.0008,
+      0.0022286
+    ]
+  },
+  "apparatus": {
+    "frequency_hz": 1500000,
+    "radial_ports": 32,
+    "side_ports_per_layer": 16,
+    "radial_cells": 32,
+    "cells_per_layer": 12,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "max_source_speed_m_s": 1,
+    "volume_offsets_m3": "target"
+  },
+  "modes": {
+    "window_modes": {
+      "bottom": 8,
+      "top": 8
+    },
+    "wall_modes": 10
+  },
+  "pupil_samples": 41,
+  "height_goal_m": 1e-08,
+  "sigmas": [
+    0,
+    0.1,
+    0.2,
+    0.35,
+    0.5,
+    0.7,
+    0.85,
+    1.0
+  ],
+  "perturbations": [],
+  "max_iterations": 8,
+  "initial_radius": 0.3,
+  "limits": {
+    "source_power_w": 10.0,
+    "peak_pressure_pa": 5000000.0
+  },
+  "scope": "S09 common source: shape the water / NOA 61 / water cell into the published Fig. 7a singlet. Common windows (z = -0.8 and +2.2286 mm), common 26-mode source at 1.5 MHz, fill pumps set to the lens volumes; pin ring at the lens rim heights. Convex (semidefinite) initial command; curing not modelled.",
+  "initial_command": "convex"
+}
