@@ -67,6 +67,34 @@ def write_gif(frames, path, width, fps, max_frames=110):
                    optimize=True)
 
 
+def add_sound(args, data, frame_times, rate=44100):
+    """Mux the drive, every frequency divided by args.divider, loudness following the envelope."""
+    import subprocess
+    import wave
+
+    import imageio_ffmpeg
+
+    from acoustic_freeform.forward.formation import envelope
+
+    bands = [f for f, _ in data["field"]["bands"]]
+    weights = np.array(data["field"]["diagnostics"]["band_peaks_pa"])
+    weights = weights / weights.max()
+    per = rate // args.fps
+    drive = np.repeat([envelope(t, data["formation"]["ramp_s"]) for t in frame_times], per)
+    time = np.arange(len(drive)) / rate
+    signal = drive * sum(w * np.sin(2 * np.pi * f / args.divider * time) for f, w in zip(bands, weights))
+    signal = 0.35 * signal / max(1e-9, np.max(np.abs(signal)))
+    wav = args.out.with_name(args.out.name + "-sonified.wav")
+    with wave.open(str(wav), "wb") as handle:
+        handle.setnchannels(1)
+        handle.setsampwidth(2)
+        handle.setframerate(rate)
+        handle.writeframes((signal * 32767).astype(np.int16).tobytes())
+    subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", "-i", str(args.out.with_suffix(".mp4")),
+                    "-i", str(wav), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest",
+                    str(args.out.with_name(args.out.name + "-with-sound.mp4"))], check=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
@@ -78,6 +106,8 @@ def main():
     parser.add_argument("--hold-s", type=float, default=2.5)
     parser.add_argument("--gif-width", type=int, default=1280)
     parser.add_argument("--gif-from-mp4", action="store_true", help="only rebuild the GIF from the saved MP4")
+    parser.add_argument("--sound-only", action="store_true", help="only add the sonified drive to the saved MP4")
+    parser.add_argument("--divider", type=float, default=2000.0, help="audio = drive frequencies / divider")
     parser.add_argument("--preview", type=int, nargs="*", help="only write PNGs of these saved states")
     args = parser.parse_args()
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -118,6 +148,9 @@ def main():
     repeats = np.clip(np.round(change / 0.03), 1, 5).astype(int)
     order = [k for k in range(len(states)) for _ in range(repeats[k])]
     order += [len(states) - 1] * int(args.hold_s * args.fps)
+    if args.sound_only:
+        add_sound(args, data, [times[k] for k in order])
+        return
     dt = float(np.median(np.diff(times)))
     slow = (1 / (args.fps * dt), repeats.max() / (args.fps * dt))
     if args.preview:
