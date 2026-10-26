@@ -268,8 +268,26 @@ def best_fill_volumes(cfg, targets, radii):
             q = space.unforced_equilibrium()
             return float(np.max(abs(space.height(j, q[j], radii) - heights)))
 
-        guess = np.pi * cfg.radius_m**2 / 2 * heights[0]
-        fit = minimize_scalar(error, bracket=(0.5 * guess, guess))
+        # The pupil max error is only piecewise smooth, so Brent's parabolic steps
+        # stall; a bounded golden search around the target's own volume does not.
+        guess = (
+            target.volume_offset()
+            if hasattr(target, "volume_offset")
+            else np.pi * cfg.radius_m**2 / 2 * heights[0]
+        )
+
+        def safe(volume, error=error):
+            try:
+                return error(volume)
+            except (ValueError, RuntimeError):
+                return np.inf
+
+        fit = minimize_scalar(
+            safe,
+            bounds=sorted((0.5 * guess, 1.5 * guess)),
+            method="bounded",
+            options={"xatol": 1e-6 * abs(guess)},
+        )
         volumes.append(float(fit.x))
         errors.append(float(fit.fun))
     return volumes, errors
