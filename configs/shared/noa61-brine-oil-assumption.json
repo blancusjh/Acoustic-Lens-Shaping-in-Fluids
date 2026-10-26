@@ -1,0 +1,70 @@
+{
+  "apparatus": {
+    "gravity_m_s2": 9.81,
+    "density_kg_m3": [
+      1030.0,
+      1231.0,
+      850.0
+    ],
+    "sound_speed_m_s": [
+      1530.0,
+      1500.0,
+      1400.0
+    ],
+    "surface_tension_n_m": [
+      0.025,
+      0.005
+    ]
+  },
+  "indices": [
+    1.34,
+    1.52,
+    1.46
+  ],
+  "stigmatic_z_m": [
+    -0.101,
+    0.201,
+    0.151
+  ],
+  "vertex_displacement_m": [
+    -0.00015,
+    0.00012
+  ],
+  "surface_elements": [
+    20,
+    36,
+    52,
+    80,
+    104
+  ],
+  "load_quadrature_orders": [
+    16,
+    24
+  ],
+  "ray_count": 4001,
+  "temperature_k": 298.15,
+  "material_identity": [
+    "dilute aqueous brine (about 4.5 % NaCl)",
+    "Norland NOA 61, uncured",
+    "light oil immiscible with uncured NOA 61 (to be identified)"
+  ],
+  "viscosities_pa_s": [
+    0.00095,
+    0.3,
+    0.005
+  ],
+  "parameter_status": {
+    "purpose": "Liquid set chosen so the acoustics-off menisci approach the S08 Fig. 9b singlet faces: per-face density step and interfacial tension are apparatus choices (studies/S08-published-singlet).",
+    "resin_density_and_viscosity_and_liquid_index": "Manufacturer typical values, not lot measurements",
+    "brine": "Engineering reference values for about 4.5 % NaCl at room temperature; not measured",
+    "brine_resin_interfacial_tension": "Explicit assumption, kept equal to the water/resin assumption (0.025 N/m)",
+    "oil": "Density 850 kg/m3 is a target, typical of light mineral or silicone oils; sound speed, viscosity and index are placeholders. No specific oil has been identified that is immiscible with uncured NOA 61 and gives 5 mN/m; this is a requirement, not a claim",
+    "oil_resin_interfacial_tension": "Required value (0.005 N/m), not a measured one; could need a surfactant",
+    "resin_sound_speed": "Explicit engineering placeholder, not measured",
+    "immiscible_clean_interface_and_pinned_rims": "Model assumptions; compatibility requires qualification"
+  },
+  "sources": {
+    "resin": "https://norlandproducts.com/wp-content/uploads/2025/02/Norland-Products-NOA-61-TDS.pdf"
+  },
+  "scope": "Declared liquid assumptions for the S08 tuned-liquid Fig. 9b cell. Not measured properties."
+}
