@@ -12,7 +12,7 @@ Cartesian optical surfaces are a later worked target.
 |---|---|
 | General theory | [Canonical LaTeX and bibliography](docs/theory/README.md), including load demand and convex source capability; compiled PDF kept privately in `artifacts/theory/` |
 | Optical target and required load | Closed-form demanded traction of any prescribed face, checked against the finite-element equilibrium to 3e-11 m |
-| Common-source synthesis ([S09](studies/S09-universal-source/study.md)) | One fixed water / NOA 61 / water cell with one fixed source layout: for all 68 family singlets that fit the cell, the convex bound is below 0.5 nm within 1 W; in the nonlinear start-up branch, 61 form within 1 nm and 64 within the 10 nm goal with one command per lens |
+| Common-source synthesis ([S09](studies/S09-universal-source/study.md)) | One fixed water / NOA 61 / water cell with one fixed source layout: for all 68 family singlets that fit the cell, the convex bound is below 0.5 nm within 1 W; started from the acoustics-off meniscus, 67 form within 0.25 nm with one or two tones; for lens 57 the start-up path ends on another equilibrium |
 | Emitter-driven formation | Three S09 designs (two published singlets, one two-tone family lens) formed from the acoustics-off meniscus within 1 nm in creeping-flow trajectories at two time steps, with coupled stability and force convergence checked |
 | Physical apparatus | No experimental validation; acoustic streaming, thermal feedback, non-axisymmetric disturbances, transducer realization and curing are not assessed |
 

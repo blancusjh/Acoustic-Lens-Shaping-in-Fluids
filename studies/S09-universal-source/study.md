@@ -135,8 +135,27 @@ short lenses the convex bound is 0.003–0.03 nm (lens 57: 0.47 nm) and the
 shortfall is already in the one-tone refinement (frozen error within 30 % of
 the nonlinear one), which sits at the 2 MPa cap in six of them and at the 1 W
 cap in lens 12: a limit of the one-tone restriction under the caps, not of the
-source. Their follow-up (two
-bands, or the fold-margin constraint) is below. Only start-up branches were
+source. Their follow-up:
+
+| Lens | One tone at 1.5 MHz | Two tones, 0.75 + 1.5 MHz | One tone, fold margin ≥ 0.5 |
+|---|---:|---:|---:|
+| 3 | 2.5 nm | 0.06 nm (0.94 W, margin 0.21) | 129 nm |
+| 12 | 1.4 nm | 0.03 nm (0.69 W) | 0.23 nm |
+| 15 | 10.2 nm | 0.03 nm (0.31 W) | 0.42 nm |
+| 35 | 1.1 nm | 0.06 nm (0.57 W) | running |
+| 71 | 12.9 nm | 0.04 nm (0.42 W) | running |
+| 78 | 17.1 nm | 0.03 nm (0.53 W) | running |
+| 57 | fold, 31 nm | **start-up ends on another equilibrium: 25 / 159 µm** | running |
+
+The second band rescues six of the seven; the fold-margin inequality trades
+accuracy for margin and is not the cheap remedy (lens 3 gets worse). Lens 57
+(object −150, image 60, t 15, σ −0.5; acoustics-off error 2.5 / 76 µm) is a
+different failure: the two-tone command holds the target in the frozen model
+(0.33 nm, convex bound 0.02 nm), but the start-up branch from the meniscus
+reaches full amplitude on another equilibrium, farther from the target than
+the meniscus itself. Capability is not the issue; the path is. A finer or
+different start-up path (ramping the bands separately, or the volumes) has
+not been tried. Only start-up branches were
 run here; refinement, coupled stability and formation remain the three
 published-or-verified designs and lens 7.
 
@@ -169,6 +188,27 @@ withdrawn. The mesh now merges near-duplicate nodes (`merged_nodes`); meshes
 without such nodes, including every saved S06–S09 design except the two-band
 atlas-38 run, are unchanged. The invalid records are kept and marked
 (`atlas-2026-10-26/MESH-DEFECT.md`).
+
+## Verdict of this stage
+
+Within the declared axisymmetric, quiescent, creeping-flow model, one fixed
+machine (the water / NOA 61 / water cell, the same 112 source channels and 26
+modes, caps 1 W and 2 MPa per band) holds every one of the 68 family singlets
+that fit it: the convex bound is below 0.5 nm for all. Started from the
+acoustics-off meniscus, 67 of the 68 form within 0.25 nm (61 with one tone at
+1.5 MHz, 6 more with a second tone at 0.75 MHz). Lens 57 is the one exception
+and it is a path, not a capability, failure. The full chain (start-up,
+fixed-command refinement, coupled stability, formation at two time steps) has
+been run on three designs (Fig. 9b, Fig. 7a with a fold margin, lens 7) and all
+three form within 1 nm. Sensitivities of tens to hundreds of nanometres to a
+0.1 % sound-speed change mean a real machine needs measurement and trim. The
+channel study suggests far fewer than 112 channels suffice (first-order only).
+
+Open for the next stage, in order: the start-up path of lens 57; the full
+chain for a sample of the rescued lenses and for reduced channel counts;
+acoustic streaming, heating and non-axisymmetric stability; a measured
+NOA 61 sound speed; and a physical transducer realization of the source modes.
+Nothing here has been built or measured.
 
 ## Not assessed
 
