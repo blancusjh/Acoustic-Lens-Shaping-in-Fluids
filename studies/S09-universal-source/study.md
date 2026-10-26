@@ -92,6 +92,26 @@ The convex multi-tone bound reaches the goal for all 68 lenses within 1 W
 reachable in principle; the second band is needed only to realize it with one
 tone per band.
 
+**Nonlinear spot checks of the atlas.** Two lenses that the first (defective)
+pass called hard were taken through the nonlinear chain from the
+acoustics-off meniscus at the common machine's settings:
+
+| | Lens 45 (one tone) | Lens 7 (two bands) |
+|---|---:|---:|
+| Lens | object −300, image 120, t 10, σ −0.5 | object ∞, image 60, t 20, σ 0 (f/0.79) |
+| Acoustics-off meniscus error (front / back) | 0.48 / 13.0 µm | 1.10 / 43.8 µm |
+| Source power; peak pressure | 0.58 W; 1.44 MPa | 0.55 W; 0.98 + 1.25 MPa (bands) |
+| Fold margin along the start-up | 0.94 | 0.96 |
+| Start-up end, pupil error | 0.14 / 0.21 nm | 0.12 / 0.32 nm |
+| Formation (dt 25 and 12.5 ms) | — | 0.12 / 0.61 nm, both steps |
+| Refinement, max change | — | 0.39 nm (P3: 1.4 nm) |
+| Amplification; slowest decay (128×24) | — | 1.06; −84.8 1/s |
+| Spot RMS / max (Airy radius) | — | 0.010 / 0.125 µm (0.57 µm) |
+| Water sound speed +0.1 % | — | 147 / 78 nm |
+
+Lens 7 is the first nonlinear confirmation of a two-band drive
+(`acoustics/multiband.py`, `afl capability-synthesis`).
+
 **Mesh defect and correction.** A first pass of this atlas used a wave mesh that,
 for 20 of the 68 lens geometries, contained zero-height elements: cell and port
 grids shared layer fractions computed one rounding unit apart, so exact
