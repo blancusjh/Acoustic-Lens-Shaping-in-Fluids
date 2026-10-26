@@ -76,6 +76,11 @@ tension as a calibrated constant or remove gravity by density matching, and
 test lower frequencies. Not experimental validation; non-axisymmetric modes,
 inertia, streaming and heating are not assessed.
 
+## Apparatus
+
+A proposed build, with modelled and unmodelled parts separated and the
+requirements they imply, is in [apparatus-proposal.md](apparatus-proposal.md).
+
 ## Reproduce
 
 Configs in `configs/S07-faithful-modal-synthesis/`:
