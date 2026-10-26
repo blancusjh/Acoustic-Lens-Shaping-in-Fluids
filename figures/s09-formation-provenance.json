@@ -1,0 +1,35 @@
+{
+  "generator": "tools/presentation/render_showcase.py",
+  "command": "render_showcase.py --run artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band --formation artifacts/studies/S09-universal-source/atlas7-2band-verification-2026-10-26/formation-dt00125 --out artifacts/studies/S09-universal-source/showcase-2026-10-27/atlas7; GIF rebuilt from that MP4 with --gif-from-mp4",
+  "inputs_sha256": {
+    "artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band/config.json": "9a860b68d66d45ca623c5eb85a7ec074e1353f5bd1d83f7033fe36569c9f2d88",
+    "artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band/design/config.json": "8655db9aa61fe77617fe8ec67f6d10162459f7e86b48a5094c03f5da4d907e11",
+    "configs/shared/noa61-water-pressure-reference.json": "82029021155026678e831cbda63df0aa1a58a89d0832fb214edc2f948dff6504",
+    "artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band/design/state.npz": "92c14fc98d5e7b8a8312756044f7d3baa6d1168e907c33c372672de6bac95371",
+    "artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band/best-source.npz": "f9014032b4b42a0d336fde16c2c96facdf9a60b33416fc97476a1baf96ce776e",
+    "artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band/modes.json": "f4170c91cc8f4e616bb3792d38c952859edbf30d30794287f2abad291a69acdb",
+    "artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band/design/summary.json": "f3201b5d3670e1b5bb09f6a6152f98e59556237756d8ea1258b68d5a87d209ad",
+    "artifacts/studies/S09-universal-source/atlas7-2band-verification-2026-10-26/formation-dt00125/trajectory.npz": "3cf25909659043c26480eb2efaaf13c210e8b64e08b95133a4c120996a4f2ca1",
+    "artifacts/studies/S09-universal-source/atlas7-2band-verification-2026-10-26/formation-dt00125/config.json": "8dc04cb3e82af9de6fc4fc9cff8ca705603e63c143692aceecefd828b9427db5"
+  },
+  "render_script_sha256_at_mp4": "b62531c2c7a513fa6745d0208fa2cb525c98c0b8f27d7a591078bbdf650298ec",
+  "gif_script_sha256": "5882b24bdd2a2ec90381e7dc2f99a01b1479831122a063092db525bd3b375813",
+  "mp4_sha256": "ef481cea77184d884162c560526c5126f2183416accf888249a0cd58fd73735b",
+  "outputs": {
+    "figure": "s09-formation-two-tones.gif",
+    "sha256": "666cd4796c555ddf7934e2d5a68733b566ade4eef314941dabd0ef99b5204401",
+    "bytes": 987941
+  },
+  "deviation_magnification": 10,
+  "saved_states": 161,
+  "final_max_error_nm": [
+    0.12395405235815071,
+    0.6059171598772726
+  ],
+  "final_spot_um": 0.12465548503300637,
+  "checks": [
+    "The trajectory's first state equals the acoustics-off meniscus (checked on load)",
+    "Final pupil errors and spot match the S09 study table for lens 7 (0.12 / 0.61 nm; 0.125 um)"
+  ],
+  "scope": "Rendering of a saved numerical trajectory; not an experiment."
+}

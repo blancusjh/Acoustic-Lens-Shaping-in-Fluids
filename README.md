@@ -10,17 +10,30 @@ Cartesian optical surfaces are a later worked target.
 
 | Gate | Reviewed state |
 |---|---|
-| General theory | [Canonical LaTeX and bibliography](docs/theory/README.md); compiled PDF kept privately in `artifacts/theory/` |
-| Optical target and required load | Positive numerical ideal-load result in a declared three-fluid model; no acoustic source implied |
-| Finite emitter synthesis | A coupled design-grid root exists, but the optical gates fail and fixed-command refinement is unfinished |
-| Emitter-driven formation | The saved partial Stokes trajectory does not form the target; it does not establish physical impossibility |
-| Physical apparatus | No experimental validation or complete thermal, wall-layer mean-streaming and three-dimensional stability assessment |
+| General theory | [Canonical LaTeX and bibliography](docs/theory/README.md), including load demand and convex source capability; compiled PDF kept privately in `artifacts/theory/` |
+| Optical target and required load | Closed-form demanded traction of any prescribed face, checked against the finite-element equilibrium to 3e-11 m |
+| Common-source synthesis ([S09](studies/S09-universal-source/study.md)) | One fixed water / NOA 61 / water cell with one fixed source layout: for all 68 family singlets that fit the cell, the convex bound is below 0.5 nm within 1 W; in the nonlinear start-up branch, 61 form within 1 nm and 64 within the 10 nm goal with one command per lens |
+| Emitter-driven formation | Three S09 designs (two published singlets, one two-tone family lens) formed from the acoustics-off meniscus within 1 nm in creeping-flow trajectories at two time steps, with coupled stability and force convergence checked |
+| Physical apparatus | No experimental validation; acoustic streaming, thermal feedback, non-axisymmetric disturbances, transducer realization and curing are not assessed |
 
 [Research status](STATUS.md) gives the reviewed verdict and model scope for each
 study. [Studies](studies/README.md) link the protocol, reports and saved states.
 The active optical height goal is 10 nm maximum cycle-mean error on each fixed
 clear aperture; spot and full-ray-coverage gates are separate. A convincing
 rendering or a small frozen inverse residual is not a verified physical lens.
+
+## A lens formed by sound
+
+![Formation of an f/0.79 stigmatic singlet in the common cell under two tones: magnified face deviation, rays, spot and height error against physical time](figures/s09-formation-two-tones.gif)
+
+*Study S09, family lens 7 (f/0.79), formed in the common water / NOA 61 / water
+cell by one tone at 0.75 MHz and one at 1.5 MHz, switched on with a 1 s ramp.
+Each face is drawn as the target plus its deviation magnified ×10 (dashed:
+target); the deviation starts at 44 µm and ends below 1 nm. Rays are traced
+through the actual faces; the spot is shown at its starting scale and at the
+diffraction scale with the Airy disc. Every frame is a saved state of the
+forward creeping-flow trajectory with its physical time; nothing is
+interpolated. A numerical model, not an experiment.*
 
 ## The modeled cells and formation
 

@@ -54,6 +54,11 @@ rim heights). The fill pumps set each layer to the lens's own volume.
 Heights below about 0.2 nm (9b) and 0.5 nm (7a) are below the model's own
 discretization resolution; the geometric spots are far inside the Airy disc,
 i.e. the formed lenses are diffraction-limited in this model.
+Spots here launch rays through points on the pin plane, a pupil slightly
+inside the 2 mm clear aperture. Launched through the front face out to the full
+clear radius (as in the showcase videos), the Fig. 7a margin-0.7 maximum is
+0.86 µm (RMS 0.03 µm, wavefront PV about λ/560 at 1 nm), slightly beyond the
+Airy radius at the extreme edge ray; the 9b and lens-7 values are unchanged.
 
 **Sensitivity** (same command, coupled first-order shift, front / back):
 
@@ -112,6 +117,47 @@ acoustics-off meniscus at the common machine's settings:
 Lens 7 is the first nonlinear confirmation of a two-band drive
 (`acoustics/multiband.py`, `afl capability-synthesis`).
 
+**Nonlinear check of the whole atlas.** `atlas_nonlinear.py` repeats, for every
+lens that fits the cell, the convex program and one-tone-per-band refinement
+under both caps, then follows the coupled start-up branch from the
+acoustics-off meniscus (up to 90 µm off target) at the lens's fill volumes
+(`atlas-nonlinear-2026-10-27/`, 5.4 CPU-hours):
+
+| Start-up branch end, max pupil error (front or back) | Lenses (of 68) |
+|---|---:|
+| below 1 nm | 61 (all 10 two-band lenses among them; median of all 68: 0.16 nm) |
+| 1 to 10 nm | 3 (lenses 3, 12, 35: 2.5, 1.4, 1.1 nm) |
+| 10 to 20 nm | 3 (lenses 15, 71, 78: 10.2, 12.9, 17.1 nm) |
+| fold before full amplitude | 1 (lens 57: fold at 100 % amplitude, 31 nm) |
+
+So 64 of 68 reach the 10 nm goal with the atlas's command class. In the seven
+short lenses the convex bound is 0.003–0.03 nm (lens 57: 0.47 nm) and the
+shortfall is already in the one-tone refinement (frozen error within 30 % of
+the nonlinear one), which sits at the 2 MPa cap in six of them and at the 1 W
+cap in lens 12: a limit of the one-tone restriction under the caps, not of the
+source. Their follow-up (two
+bands, or the fold-margin constraint) is below. Only start-up branches were
+run here; refinement, coupled stability and formation remain the three
+published-or-verified designs and lens 7.
+
+**Minimum hardware: channel count** (`channel_study.py`, frozen capability and
+one-tone refinement, 1 W, 2 MPa; `channels-2026-10-27/`). The 112 channels are
+a discretization, not a requirement:
+
+| Channels (rings per window, wall bands per layer) | 112 (32, 16) | 56 (16, 8) | 42 (12, 6) | 28 (8, 4) | 21 (6, 3) | 14 (4, 2) |
+|---|---:|---:|---:|---:|---:|---:|
+| Convex bound, worst of 5 lenses | 0.010 nm | 0.010 nm | 0.010 nm | 0.011 nm | 0.011 nm | 0.025 nm |
+| One tone per band: Fig. 9b | 0.020 | 0.005 | 0.012 | 0.025 | 0.008 | 0.020 nm |
+| Fig. 7a (pressure-capped) | 0.12 | 0.57 | 11.2 | 2.8 | 11.2 | 12.3 nm |
+| Lens 22 / lens 45 | 0.01 / 0.12 | 0.02 / 0.19 | 0.01 / 0.14 | 0.01 / 0.04 | 0.04 / 0.04 | 0.34 / 0.28 nm |
+| Lens 7 (two bands) | 0.001 | 0.001 | 0.001 | 0.001 | 0.001 | 0.007 nm |
+
+With 14 channels (4 rings per window, 2 wall bands per layer) the bound is
+still 0.025 nm for every lens tried, and four of the five lenses keep a
+one-tone command below 0.4 nm. Only the pressure-limited Fig. 7a needs about
+56 channels for a sub-nanometre single tone. These are first-order numbers; no
+reduced layout has been through the nonlinear chain.
+
 **Mesh defect and correction.** A first pass of this atlas used a wave mesh that,
 for 20 of the 68 lens geometries, contained zero-height elements: cell and port
 grids shared layer fractions computed one rounding unit apart, so exact
@@ -129,9 +175,9 @@ atlas-38 run, are unchanged. The invalid records are kept and marked
 Non-axisymmetric (m ≥ 1) disturbances, inertia, acoustic streaming, heating,
 contact-line hysteresis, transducer realization, curing shrinkage and
 demoulding. All results are numerical in the declared model; nothing has been
-built or measured. Atlas coverage is a first-order capability statement;
-the nonlinear chain has been run on Fig. 9b, Fig. 7a and the atlas lenses
-below.
+built or measured. The full nonlinear chain (start-up, refinement, coupled
+stability, formation) has been run on Fig. 9b, Fig. 7a and lens 7; the
+start-up branch alone on all 68 atlas lenses.
 
 ## Reproduce
 
@@ -141,4 +187,5 @@ Configs in `configs/S09-universal-source/`: `afl faithful-synthesis` on
 `force-convergence-*`, `coupled-stability-*` and `formation-*` configs.
 Two-band: `afl capability-synthesis atlas38-water-common-2band-1w-2mpa.json`.
 Scans: `tools/analysis/universal/` (`demand_check.py`, `capability_scan.py`,
-`nonlinear_check.py`, `stability_capability.py`, `atlas.py`).
+`nonlinear_check.py`, `stability_capability.py`, `atlas.py`, `atlas_nonlinear.py`,
+`channel_study.py`). Videos: `tools/presentation/render_showcase.py`.

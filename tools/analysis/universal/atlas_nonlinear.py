@@ -4,9 +4,13 @@ For every lens that fits the common cell: the convex capability (power and
 per-band peak-pressure caps), refinement to one tone per band, then the full
 coupled quasi-static start-up branch from the acoustics-off meniscus at the
 lens's fill volumes, with all bands applied together. The bands per lens are
-the atlas classification (one tone at 1.5 MHz, or 0.75 + 1.5 MHz).
-Usage: atlas_nonlinear.py OUT.jsonl SHARD NSHARDS
+the atlas classification (one tone at 1.5 MHz, or 0.75 + 1.5 MHz), unless
+--two-bands forces 0.75 + 1.5 MHz; --margin MU adds the static fold-margin
+inequality to the convex program and the refinement.
+Usage: atlas_nonlinear.py OUT.jsonl SHARD NSHARDS [--indices I ...] [--two-bands] [--margin MU]
 """
+
+import argparse
 
 import itertools
 import json
@@ -31,13 +35,21 @@ from acoustic_freeform.inverse.capability import (
 from acoustic_freeform.mechanics.demand import demanded_force
 from acoustic_freeform.mechanics.surface import DualSurface
 
-out, shard, shards = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
+parser = argparse.ArgumentParser()
+parser.add_argument("out")
+parser.add_argument("shard", type=int)
+parser.add_argument("shards", type=int)
+parser.add_argument("--indices", type=int, nargs="*")
+parser.add_argument("--two-bands", action="store_true")
+parser.add_argument("--margin", type=float)
+args = parser.parse_args()
+out, shard, shards = args.out, args.shard, args.shards
 CAP_W, CAP_PA = 1.0, 2e6
 TWO_BANDS = {6, 7, 30, 31, 33, 34, 42, 58, 60, 61}
 grid = list(itertools.product(("-inf", -300.0, -150.0), (60.0, 90.0, 120.0), (10.0, 15.0, 20.0), (-0.5, 0.0, 0.5)))
 sigmas = [0, 0.1, 0.2, 0.35, 0.5, 0.7, 0.85, 1.0]
 for index, (d0, d2, t, shape) in enumerate(grid):
-    if index % shards != shard:
+    if index % shards != shard or (args.indices and index not in args.indices):
         continue
     singlet = {"indices": [1.0, 1.7, 1.0], "object_m": d0 if isinstance(d0, str) else d0 * 1e-3,
                "image_m": d2 * 1e-3, "thickness_m": t * 1e-3, "shape_factor": shape, "scale": 1 / 14,
@@ -52,7 +64,7 @@ for index, (d0, d2, t, shape) in enumerate(grid):
         if not (levels[0] + 1e-4 < levels[1] < levels[2] < levels[3] - 1e-4) or np.min(h[1] - h[0]) < 5e-5 \
                 or np.min(h[0]) < levels[0] + 1e-4 or np.max(h[1]) > levels[3] - 1e-4:
             raise ValueError("lens does not fit the common cell")
-        bands = [0.75e6, 1.5e6] if index in TWO_BANDS else [1.5e6]
+        bands = [0.75e6, 1.5e6] if index in TWO_BANDS or args.two_bands else [1.5e6]
         space = DualSurface(cfg, allow_volume_offsets=True)
         q, demand, stiffness = demanded_force(space, faces)
         pupil = np.linspace(0, cfg.clear_radius_m, 41)
@@ -62,9 +74,14 @@ for index, (d0, d2, t, shape) in enumerate(grid):
             band = replace(cfg, frequency_hz=f)
             modes, _ = modal_source_matrix(band, {"bottom": 8, "top": 8}, 10)
             tones.append(Tone(band, space, q, modes))
-        convex = best_tolerance(tones, observe, demand, CAP_W, pressure_cap_pa=CAP_PA)
+        stability = None
+        if args.margin is not None:
+            for tone in tones:
+                tone.shape_derivatives()
+            stability = (stiffness, args.margin)
+        convex = best_tolerance(tones, observe, demand, CAP_W, pressure_cap_pa=CAP_PA, stability=stability)
         starts = [c["amplitudes"][:, 0] for c in convex["tones"]]
-        refined = tone_per_band_refinement(tones, observe, demand, starts, CAP_W, CAP_PA)
+        refined = tone_per_band_refinement(tones, observe, demand, starts, CAP_W, CAP_PA, stability=stability)
         drive = np.array([modes @ c for c in refined["amplitudes"]])
         wave = wave_for(cfg, space, bands if len(bands) > 1 else None, linear_solver="static_condensed")
         start = space.unforced_equilibrium()
@@ -74,7 +91,7 @@ for index, (d0, d2, t, shape) in enumerate(grid):
         error = [float(np.max(abs(space.height(j, end[j], fine) - faces[j].evaluate(fine)))) for j in range(2)]
         meniscus = [float(np.max(abs(space.height(j, start[j], fine) - faces[j].evaluate(fine)))) for j in range(2)]
         row.update({
-            "status": "checked", "bands_hz": bands,
+            "status": "checked", "bands_hz": bands, "required_margin": args.margin,
             "convex_pupil_error_m": convex["pupil_max_error_m"],
             "refined_frozen_pupil_error_m": refined["pupil_max_error_m"],
             "power_w": refined["power_w"], "band_peak_pressure_pa": refined["peak_pressure_pa"],
