@@ -381,7 +381,8 @@ def singlet_geometry(spec):
     from ..optics.stigmatic import intermediate_point_from_shape_factor
 
     n, scale = spec["indices"], spec.get("scale", 1.0)
-    d0, d2, t = (scale * spec[k] for k in ("object_m", "image_m", "thickness_m"))
+    # float() admits "-inf" for a collimated input (JSON has no infinity).
+    d0, d2, t = (scale * float(spec[k]) for k in ("object_m", "image_m", "thickness_m"))
     if "intermediate_m" in spec:
         d1 = scale * spec["intermediate_m"]
     else:

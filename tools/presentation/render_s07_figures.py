@@ -80,8 +80,8 @@ def trace(data, q, rays=401):
     cfg, optics = data["cfg"], data["optics"]
     r = np.linspace(0, cfg.clear_radius_m, rays)
     return trace_pair(
-        data["space"], q, optics["indices"], optics["stigmatic_z_m"][0],
-        optics["stigmatic_z_m"][2], launch_radius_m=r,
+        data["space"], q, optics["indices"], float(optics["stigmatic_z_m"][0]),
+        float(optics["stigmatic_z_m"][2]), launch_radius_m=r,
         launch_height_m=cfg.levels_m[1] + data["targets"][0].evaluate(r),
     )
 
@@ -90,7 +90,7 @@ def ray_paths(data, q, launch):
     from acoustic_freeform.optics.raytrace import trace_pair
 
     cfg, optics = data["cfg"], data["optics"]
-    z0, z2 = optics["stigmatic_z_m"][0], optics["stigmatic_z_m"][2]
+    z0, z2 = float(optics["stigmatic_z_m"][0]), optics["stigmatic_z_m"][2]
     paths = []
     for rho in launch:
         point = np.array([abs(rho)])

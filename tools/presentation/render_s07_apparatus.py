@@ -247,7 +247,7 @@ def section(ax, cfg, space, q, drive, regions):
 
 
 def optical_path(ax, cfg, record):
-    z0, z1, z2 = np.array(record["optics"]["stigmatic_z_m"]) * 1e3
+    z0, z1, z2 = np.array([float(z) for z in record["optics"]["stigmatic_z_m"]]) * 1e3
     ax.set_xlim(-6, 6)
     ax.set_ylim(-0.5, 10.5)
     ax.axis("off")

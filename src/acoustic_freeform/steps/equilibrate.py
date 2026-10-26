@@ -172,8 +172,8 @@ def run(configuration, output):
             space,
             q,
             optics["indices"],
-            optics["stigmatic_z_m"][0],
-            optics["stigmatic_z_m"][2],
+            float(optics["stigmatic_z_m"][0]),
+            float(optics["stigmatic_z_m"][2]),
             launch_radius_m=radii,
             launch_height_m=cfg.levels_m[1] + targets[0].evaluate(radii),
         )

@@ -35,9 +35,7 @@ def fixed_detector_spot_jacobian(
     if not traced["all_rays_transmitted"]:
         raise ValueError("Spot derivative requires all base rays to transmit")
     r = np.asarray(launch_radius_m)
-    direction = np.column_stack([r, np.asarray(launch_height_m) - object_z_m])
-    direction /= np.linalg.norm(direction, axis=1)[:, None]
-    origin = np.column_stack([np.zeros(len(r)), np.full(len(r), object_z_m)])
+    direction, origin = launch_rays(space.config, object_z_m, r, launch_height_m)
     dx = np.zeros((len(r), 2, 2 * space.count))
     dd = np.zeros_like(dx)
     for face in range(2):
@@ -84,6 +82,27 @@ def fixed_detector_spot_jacobian(
     dt = (-dx[:, 1] - distance[:, None] * dd[:, 1]) / direction[:, 1, None]
     derivative = dx[:, 0] + distance[:, None] * dd[:, 0] + direction[:, 0, None] * dt
     return origin[:, 0] + distance * direction[:, 0], derivative
+
+
+def launch_rays(cfg, object_z_m, launch_radius_m, launch_height_m=None):
+    """Directions and origins of the fixed illumination.
+
+    A finite object launches a cone from the axial point through the launch
+    points. An object at z = -inf launches a collimated beam parallel to the
+    axis; the launch radius is then the ray height, starting at the lower window.
+    """
+    radius = np.asarray(launch_radius_m, float)
+    if np.isneginf(object_z_m):
+        direction = np.column_stack([np.zeros(len(radius)), np.ones(len(radius))])
+        origin = np.column_stack([radius, np.full(len(radius), cfg.levels_m[0])])
+        return direction, origin
+    launch_z = np.broadcast_to(
+        cfg.levels_m[1] if launch_height_m is None else launch_height_m, radius.shape
+    )
+    direction = np.column_stack([radius, launch_z - object_z_m])
+    direction /= np.linalg.norm(direction, axis=1)[:, None]
+    origin = np.column_stack([np.zeros(len(radius)), np.full(len(radius), object_z_m)])
+    return direction, origin
 
 
 def trace_pair(
@@ -140,12 +159,7 @@ def trace_graph_pair(
     ):
         raise ValueError("Launch radii must lie in the declared clear pupil")
     rays = len(radius)
-    launch_z = np.broadcast_to(
-        cfg.levels_m[1] if launch_height_m is None else launch_height_m, radius.shape
-    )
-    direction = np.column_stack([radius, launch_z - object_z_m])
-    direction /= np.linalg.norm(direction, axis=1)[:, None]
-    origin = np.column_stack([np.zeros(rays), np.full(rays, object_z_m)])
+    direction, origin = launch_rays(cfg, object_z_m, radius, launch_height_m)
     good = np.ones(rays, dtype=bool)
     intersections, rim_margin = [], []
     for face in range(2):

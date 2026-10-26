@@ -6,7 +6,8 @@ ray, M(rho) = prod_k (n_{k+1}/n_k) (1/(d_{k+1}-zeta_k) - 1/V_kC_k) /
 (1/(d_k-zeta_k) - 1/V_kC_k) equals one (their Eqs. 15 and 19), where V_kC_k is
 the signed distance from the vertex to the axis crossing of the surface normal
 at the ray's hit point. The same condition is the Abbe sine condition
-n_0 sin u_0 = m n_N sin u_N with constant m; both are evaluated here from an
+n_0 sin u_0 = m n_N sin u_N with constant m (h = f n_N sin u_N for an
+object at infinity); both are evaluated here from an
 independent ray trace so that each checks the other.
 """
 
@@ -36,8 +37,13 @@ def abbe_sine_condition(
         launch_height_m=launch_height_m,
     )
     hits = trace["intersections_m"]
-    first = hits[0] - np.array([0.0, z0])
-    sin_in = first[:, 0] / np.linalg.norm(first, axis=1)
+    if np.isneginf(z0):
+        # Infinite object: the sine condition is h = f n_N sin u_N, so the ray
+        # height takes the place of n_0 sin u_0 (paper's 1/(d_0 - zeta_0) = 0).
+        sin_in = np.asarray(launch_radius_m, float)
+    else:
+        first = hits[0] - np.array([0.0, z0])
+        sin_in = first[:, 0] / np.linalg.norm(first, axis=1)
     out = trace["final_directions"]
     sin_out = out[:, 0] / np.linalg.norm(out, axis=1)
     with np.errstate(divide="ignore", invalid="ignore"):

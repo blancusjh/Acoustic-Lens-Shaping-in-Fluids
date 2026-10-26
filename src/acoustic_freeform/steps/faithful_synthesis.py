@@ -40,7 +40,8 @@ def run(configuration, output):
         targets = targets_from_record(cfg, inputs)
         optics = {
             "indices": inputs["singlet"]["indices"],
-            "stigmatic_z_m": geometry["conjugates_m"],
+            # Strict JSON: an object at infinity is stored as "-inf" (read with float()).
+            "stigmatic_z_m": [z if np.isfinite(z) else str(z) for z in geometry["conjugates_m"]],
             "thickness_m": geometry["thickness_m"],
         }
         faces = None
