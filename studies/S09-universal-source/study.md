@@ -1,0 +1,114 @@
+# S09 — One common machine for many stigmatic singlets
+
+**Question.** With the cell, liquids and source layout fixed, and the lens chosen
+only by the drive command (and the fill pumps), which stigmatic singlets
+(SOSLs) can be formed faithfully, and which extra source freedom extends the
+set most cheaply?
+
+**Method.** Theory section `docs/theory/sections/10f_universal_source.tex`.
+(1) *Load demand*: the extra traction a lens face needs, exact
+(`mechanics/demand.py`) and as a series with the conic matching rule
+Δρ g/σ = 4 k c². (2) *Capability*: time-averaged forces of tones at distinct
+frequencies add, so the forces a fixed source can deliver form a convex cone
+and the best pupil tolerance within a power cap is a semidefinite program
+(`inverse/capability.py`); the fill pumps enter as free volume columns, and a
+static fold margin sym(K − A(X)) ⪰ μK is a linear matrix inequality. The
+program's leading eigenvectors are refined to one tone per band. (3) Every
+design reported below is then accepted only through the nonlinear chain:
+start-up branch from the acoustics-off meniscus, fixed-command refinement,
+coupled stability, formation at two time steps.
+
+**Common machine.** Water / NOA 61 / water; bore radius 2.02 mm (clear aperture
+4 mm); windows at z = −0.8 and +2.2286 mm for every lens; 112 source regions
+driven through the same 26 continuous modes (8 Bessel modes per window, 10
+wall cosines); caps 1 W and 2 MPa per band unless stated. One mechanical
+setting still follows the lens: the heights of the two pinning edges (the lens
+rim heights). The fill pumps set each layer to the lens's own volume.
+
+## Checks of the theory
+
+- Applying the exact demanded traction to the finite-element meniscus
+  reproduces both faces of Fig. 9b and Fig. 7a to 3e-11 m; the two
+  discretizations of the demand agree to 2e-3 (`demand_check.py`).
+- The series Q2 r² + Q4 r⁴ matches the exact demand to 6e-4 for r ≤ 0.15 R.
+- The matching rule predicts the S08 brine / oil choice for Fig. 9b
+  (−8.3e4 vs −7.9e4 m⁻², 1.0e6 vs 7.5e5 m⁻²) and explains why Fig. 7a fails
+  in water with weak fields (its back face needs the opposite sign).
+- Finite-difference acoustic shape stiffness agrees with the solver's analytic
+  shape Jacobian to 1.7e-5.
+
+## The published lenses in the plain water cell, one tone at 1.5 MHz
+
+| | Fig. 9b | Fig. 7a, unconstrained | Fig. 7a, fold margin ≥ 0.7 |
+|---|---:|---:|---:|
+| Acoustics-off meniscus error (front / back) | 0.77 / 2.07 µm | 19.4 / 23.1 µm | same |
+| Source power, sampled peak pressure | 0.17 W, 0.55 MPa | 0.91 W, 1.86 MPa | 1.12 W, 2.10 MPa |
+| Fold margin along the start-up (minimum) | 0.96 | 0.068 | 0.94 |
+| Frozen-to-coupled amplification | 1.05 | 18.5 | 1.09 |
+| Slowest creeping-flow decay (128×24 mesh) | −41.4 1/s | −7.4 1/s | −96.9 1/s |
+| Fixed-command refinement, max change | 0.18 nm | 11 nm (P3) | 2.6 nm (P3), else ≤ 0.5 nm |
+| Formed, pupil max height error (front / back) | 0.05 / 0.04 nm | 14.2 / 0.4 nm (dt 25 ms), 10.7 / 0.4 nm (12.5 ms) | 0.53 / 0.41 nm (both steps) |
+| Spot RMS / max, published indices | 0.004 / 0.071 µm | 0.033 / 0.37 µm | 0.027 / 0.45 µm |
+| Airy radius at 587.6 nm | 1.02 µm | 0.68 µm | 0.68 µm |
+
+Heights below about 0.2 nm (9b) and 0.5 nm (7a) are below the model's own
+discretization resolution; the geometric spots are far inside the Airy disc,
+i.e. the formed lenses are diffraction-limited in this model.
+
+**Sensitivity** (same command, coupled first-order shift, front / back):
+
+| Perturbation | Fig. 9b | Fig. 7a (margin 0.7) |
+|---|---:|---:|
+| Water sound speed +0.1 % | 28 / 47 nm | 299 / 330 nm |
+| Resin sound speed +1 % | 93 / 553 nm | 2.2 / 3.6 µm |
+| Frequency +100 ppm | 2.0 / 0.3 nm | 50 / 67 nm |
+| Interfacial tension +1 % | 38 / 25 nm | 161 / 113 nm |
+
+Either design needs closed-loop trim against a measured wavefront; the resin
+sound speed is still a placeholder.
+
+**Correction of S08.** S08 concluded that no reasonable field reaches Fig. 9b in
+water (674 nm at 10 W). That was a local minimum of the inverse started from
+frozen fits of random seeds; the convex start reaches it with 0.17 W.
+
+## Atlas: 81 singlets on the common machine
+
+`tools/analysis/universal/atlas.py`, figure `figures/s09-atlas.png`
+(`render_atlas.py`). Silva-Lora and Torres singlets n = 1 / 1.7 / 1 with object
+at ∞, −300, −150 mm; image at 60, 90, 120 mm; thickness 10, 15, 20 mm; shape
+factor −0.5, 0, +0.5 (paper units), scaled 1/14. Coverage means the refined
+command reaches 10 nm on both pupils within the caps (first-order capability).
+
+| Source | Lenses formed (of 68 that fit the cell) |
+|---|---:|
+| one band, 1.5 MHz | 49 |
+| + second band 0.75 MHz (one tone each) | 63 |
+| + third band 1.0 MHz | 64 |
+| + two tones per band | 65 |
+| not reached (lens 30: convex bound 0.4 nm, refinement 35–145 nm; lenses 45, 62: 18 / 39 nm even at 3 W) | 3 |
+| do not fit the common cell (faces crossing at the rim or too close to a window) | 13 |
+
+At equal source freedom on the 19 lenses one band missed, a second frequency
+band (2 × 26 modes) covers 14, doubling the spatial modes (52 modes in one
+band) covers 5, and octave spacing (0.375, 0.75, 1.5 MHz) is worse than
+0.75 / 1.0 / 1.5 MHz. The freedom that pays is frequency diversity, not finer
+emitters.
+
+## Not assessed
+
+Non-axisymmetric (m ≥ 1) disturbances, inertia, acoustic streaming, heating,
+contact-line hysteresis, transducer realization, curing shrinkage and
+demoulding. All results are numerical in the declared model; nothing has been
+built or measured. Atlas coverage is a first-order capability statement;
+the nonlinear chain has been run on Fig. 9b, Fig. 7a and the two-band lens
+below.
+
+## Reproduce
+
+Configs in `configs/S09-universal-source/`: `afl faithful-synthesis` on
+`fig9b-water-common-1p5mhz-1w-2mpa.json`,
+`fig7a-water-common-1p5mhz-10w-5mpa(-margin0p7).json`; then the
+`force-convergence-*`, `coupled-stability-*` and `formation-*` configs.
+Two-band: `afl capability-synthesis atlas38-water-common-2band-1w-2mpa.json`.
+Scans: `tools/analysis/universal/` (`demand_check.py`, `capability_scan.py`,
+`nonlinear_check.py`, `stability_capability.py`, `atlas.py`).
