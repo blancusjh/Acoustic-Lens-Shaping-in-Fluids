@@ -124,3 +124,28 @@ def modal_source_matrix(config, window_modes, wall_modes, quadrature=64):
         columns.append([average(g, profile) if g["boundary"] == "side" else 0.0 for g in regions])
         labels.append({"boundary": "side", "order": k, "function": "cos(k pi (z-z0)/H)"})
     return np.array(columns).T, labels
+
+
+def modal_source_profile(config, labels, coefficients, boundary, positions):
+    """Continuous complex source velocity of the modal command on one boundary.
+
+    ``positions`` are radii (m) on a window or heights (m) on the wall. Uses the
+    same functions and normalization as ``modal_source_matrix``; the declared
+    regions apply the region averages of this field.
+    """
+    positions = np.asarray(positions, float)
+    radius, levels = config.radius_m, config.levels_m
+    count = max((g["order"] + 1 for g in labels if g["boundary"] != "side"), default=1)
+    zeros = np.r_[0.0, jn_zeros(1, count)]
+    height = levels[-1] - levels[0]
+    field = np.zeros(positions.shape, complex)
+    for label, value in zip(labels, coefficients):
+        if label["boundary"] != boundary:
+            continue
+        k = label["order"]
+        if boundary == "side":
+            scale = 1.0 if k == 0 else np.sqrt(2.0)
+            field += value * scale * np.cos(k * np.pi * (positions - levels[0]) / height)
+        else:
+            field += value * j0(zeros[k] * positions / radius) / abs(j0(zeros[k]))
+    return field
