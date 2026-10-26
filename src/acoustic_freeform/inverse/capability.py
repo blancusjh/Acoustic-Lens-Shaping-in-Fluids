@@ -58,7 +58,9 @@ class Tone:
         return self.kernel_derivatives
 
 
-def _problem(tones, observe, demand, scale_m, volume_columns=None, stability=None):
+def _problem(
+    tones, observe, demand, scale_m, volume_columns=None, stability=None, pressure_cap_pa=None
+):
     """Scaled SDP pieces. Each band's matrix is X_t = s_t Y_t with s_t chosen so the
     pupil-height rows of Y_t are O(1) in units of scale_m; only the pupil heights of
     the force enter. Pump trims are in nanolitres."""
@@ -78,6 +80,15 @@ def _problem(tones, observe, demand, scale_m, volume_columns=None, stability=Non
         pumps = cp.Variable(volume_columns.shape[1])
         heights = heights + volume_columns @ pumps * (1e-12 / scale_m)
     constraints = [Y >> 0 for Y, _ in variables]
+    if pressure_cap_pa is not None:
+        # Per-band peak amplitude at the sampled pressure rows: p_s^H X p_s <= cap^2,
+        # linear in X (exact for one tone per band, an RMS bound for several).
+        for t, (Y, s) in zip(tones, variables):
+            rows = t.operators.pressure_rows
+            m = rows.shape[1]
+            outer = np.einsum("si,sj->sij", rows.conj(), rows).reshape(len(rows), m * m)
+            square = cp.real(outer @ cp.vec(Y, order="C")) * (s / pressure_cap_pa**2)
+            constraints.append(square <= 1)
     if stability is not None:
         # Static fold margin as a linear matrix inequality:
         # sym(K - A(X)) >= mu K  implies  Re eig(K^-1 (K - A)) >= mu.
@@ -138,9 +149,17 @@ def _report(tones, variables, observe, demand, status, volume_columns=None, pump
     }
 
 
-def minimum_power(tones, observe, demand, tolerance_m, volume_columns=None, solver="CLARABEL"):
+def minimum_power(
+    tones,
+    observe,
+    demand,
+    tolerance_m,
+    volume_columns=None,
+    pressure_cap_pa=None,
+    solver="CLARABEL",
+):
     variables, heights, power, constraints, pumps = _problem(
-        tones, observe, demand, tolerance_m, volume_columns
+        tones, observe, demand, tolerance_m, volume_columns, pressure_cap_pa=pressure_cap_pa
     )
     problem = cp.Problem(cp.Minimize(power), [*constraints, cp.abs(heights) <= 1])
     problem.solve(solver=solver)
@@ -157,11 +176,13 @@ def best_tolerance(
     scale_m=1e-8,
     volume_columns=None,
     stability=None,
+    pressure_cap_pa=None,
     solver="CLARABEL",
 ):
-    """``stability=(K, mu)`` adds the fold-margin inequality (needs shape_derivatives)."""
+    """``stability=(K, mu)`` adds the fold-margin inequality (needs shape_derivatives);
+    ``pressure_cap_pa`` bounds each band's sampled peak amplitude."""
     variables, heights, power, constraints, pumps = _problem(
-        tones, observe, demand, scale_m, volume_columns, stability
+        tones, observe, demand, scale_m, volume_columns, stability, pressure_cap_pa
     )
     bound = cp.Variable()
     problem = cp.Problem(

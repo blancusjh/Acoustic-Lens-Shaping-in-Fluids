@@ -58,6 +58,18 @@ def weighted_source_grams(weights, shape_basis, values):
     return result
 
 
+def merged_nodes(points, tolerance=1e-9):
+    """Sorted grid nodes with near-duplicates merged.
+
+    Cell and port grids share fractions of a layer (e.g. 3/12 = 4/16) that
+    floating point can place one rounding unit apart; exact ``np.unique`` then
+    keeps both and creates zero-height elements and a singular wave matrix.
+    """
+    points = np.sort(np.asarray(points, float))
+    keep = np.r_[True, np.diff(points) > tolerance * max(1.0, np.ptp(points))]
+    return points[keep]
+
+
 class LayerMapping(MappingAffine):
     def __init__(self, flat, surface, coefficients):
         super().__init__(flat)
@@ -253,14 +265,14 @@ class DualAcoustics:
         self.volume_assembly_chunk_size = volume_assembly_chunk_size
         self.config, self.surface = config, surface
         config.validate()
-        r = np.unique(
+        r = merged_nodes(
             np.r_[
                 np.linspace(0, 1, config.radial_cells + 1),
                 np.linspace(0, 1, config.radial_ports + 1),
             ]
         )
         levels = np.asarray(config.levels_m) / config.radius_m
-        z = np.unique(
+        z = merged_nodes(
             np.concatenate(
                 [
                     np.r_[
