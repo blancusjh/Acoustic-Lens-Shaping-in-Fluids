@@ -109,6 +109,8 @@ measured wavefront, not open loop.
 **Formation** (`formation-dt0025/`): forward start-up from the acoustics-off
 meniscus under the held command, linearized acoustic load, 1 s ramp, 2 s.
 It reaches the design: 27.0 / 1.3 nm, spot RMS 0.209 µm, all rays transmitted.
+Halving the step (`formation-dt00125/`) changes the transient by at most
+1.0 nm and the final state by less than 1 pm.
 
 ## Verdict
 
