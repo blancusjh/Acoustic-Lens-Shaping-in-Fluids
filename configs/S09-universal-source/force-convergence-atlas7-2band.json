@@ -1,0 +1,109 @@
+{
+  "state_directory": "artifacts/studies/S09-universal-source/synthesis-2026-10-26/atlas7-2band/design",
+  "radial_samples": 801,
+  "trials": [
+    {
+      "name": "design-32x12-p4-s36"
+    },
+    {
+      "name": "mesh-24x9",
+      "overrides": {
+        "radial_cells": 24,
+        "cells_per_layer": 9
+      },
+      "sequence": "wave-mesh"
+    },
+    {
+      "name": "mesh-32x12",
+      "sequence": "wave-mesh"
+    },
+    {
+      "name": "mesh-48x18",
+      "overrides": {
+        "radial_cells": 48,
+        "cells_per_layer": 18
+      },
+      "sequence": "wave-mesh"
+    },
+    {
+      "name": "mesh-72x27",
+      "overrides": {
+        "radial_cells": 72,
+        "cells_per_layer": 27
+      },
+      "sequence": "wave-mesh"
+    },
+    {
+      "name": "order-p3",
+      "overrides": {
+        "acoustic_order": 3
+      },
+      "sequence": "wave-order"
+    },
+    {
+      "name": "order-p4",
+      "sequence": "wave-order"
+    },
+    {
+      "name": "order-p5",
+      "overrides": {
+        "acoustic_order": 5
+      },
+      "sequence": "wave-order"
+    },
+    {
+      "name": "quadrature-plus2",
+      "integration_order": 13
+    },
+    {
+      "name": "surface-52",
+      "overrides": {
+        "surface_elements": 52
+      },
+      "sequence": "surface-space"
+    },
+    {
+      "name": "surface-72",
+      "overrides": {
+        "surface_elements": 72
+      },
+      "sequence": "surface-space"
+    },
+    {
+      "name": "water-sound-speed-plus-0.1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1498.497,
+          1500.0,
+          1498.497
+        ]
+      }
+    },
+    {
+      "name": "resin-sound-speed-plus-1pct",
+      "overrides": {
+        "sound_speed_m_s": [
+          1497.0,
+          1515.0,
+          1497.0
+        ]
+      }
+    },
+    {
+      "name": "frequency-plus-100ppm",
+      "overrides": {
+        "frequency_hz": 1500150.0
+      }
+    },
+    {
+      "name": "interfacial-tension-plus-1pct",
+      "overrides": {
+        "surface_tension_n_m": [
+          0.02525,
+          0.02525
+        ]
+      }
+    }
+  ],
+  "scope": "Fixed-state, fixed-command refinement and sensitivity of the S09 common-source atlas lens 7 two-band design (water cell)."
+}
