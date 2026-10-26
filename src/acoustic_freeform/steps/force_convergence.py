@@ -17,7 +17,7 @@ from itertools import pairwise
 
 import numpy as np
 
-from ..acoustics.helmholtz import DualAcoustics
+from ..acoustics.multiband import wave_for
 from ..apparatus.config import DualConfig
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
@@ -39,6 +39,12 @@ def load_state(directory):
     inputs = [directory / "state.npz", directory / "config.json", synthesis_path]
     hashes = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}
     return cfg, q, drive, synthesis, hashes
+
+
+def load_bands(directory):
+    """Band frequencies (Hz) of a multi-band state, or None for a single band."""
+    with np.load(data_path(directory) / "state.npz") as saved:
+        return saved["band_frequencies_hz"].tolist() if "band_frequencies_hz" in saved else None
 
 
 def reproject(space, q, target_space):
@@ -66,7 +72,8 @@ def run(configuration, output):
     inputs = json.loads(configuration.read_text())
     cfg, q, drive, synthesis, hashes = load_state(inputs["state_directory"])
     space = DualSurface(cfg, allow_volume_offsets=True)
-    if q.shape != (2, space.count) or drive.shape != (cfg.channels,):
+    bands = load_bands(inputs["state_directory"])
+    if q.shape != (2, space.count) or drive.shape[-1] != cfg.channels:
         raise ValueError("Saved geometry/command does not match the saved apparatus")
     targets = targets_from_record(cfg, synthesis)
     radii = np.linspace(0, cfg.radius_m, inputs.get("radial_samples", 801))
@@ -103,7 +110,13 @@ def run(configuration, output):
             trial_q, geometry_change = reproject(space, q, trial_space)
         else:
             trial_q, geometry_change = q, 0.0
-        wave = DualAcoustics(trial_cfg, trial_space, linear_solver="static_condensed")
+        # A frequency trial shifts every band by the same relative amount.
+        trial_bands = (
+            None
+            if bands is None
+            else [f * trial_cfg.frequency_hz / cfg.frequency_hz for f in bands]
+        )
+        wave = wave_for(trial_cfg, trial_space, trial_bands, linear_solver="static_condensed")
         wave.order = trial.get("integration_order", wave.order)
         cached = tangents.get(trial_cfg.surface_elements)
         if tangent_mode == "per_trial" or cached is None:

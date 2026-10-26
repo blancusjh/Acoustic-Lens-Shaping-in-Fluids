@@ -21,6 +21,7 @@ STEPS = {
     "screen": ("screen", "Build the frozen operator and screen source commands"),
     "synthesize": ("synthesize", "Fit bounded finite source commands"),
     "faithful-synthesis": ("faithful_synthesis", "Fit the reachable equilibrium of a modal source"),
+    "capability-synthesis": ("capability_synthesis", "Convex common-source synthesis, one tone per band"),
     "conic": ("conic", "Sequential convex frozen-target source steps"),
     "relaxation": ("relaxation", "Semidefinite source diagnostic on a frozen operator"),
     "free-annulus": ("free_annulus", "Coupled inverse with fixed pupils and free annuli"),

@@ -5,7 +5,7 @@ import json
 
 import numpy as np
 
-from ..acoustics.helmholtz import DualAcoustics
+from ..acoustics.multiband import wave_for
 from ..apparatus.config import DualConfig
 from ..apparatus.sources import export_sources
 from ..core.paths import data_path
@@ -30,7 +30,9 @@ def run(configuration, output):
     optics = synthesis.get("optics", material)
     cfg = DualConfig(**json.loads((source / "config.json").read_text()))
     space = DualSurface(cfg, allow_volume_offsets=True)
-    drive = np.load(source / "state.npz")["source_velocity_m_s"]
+    with np.load(source / "state.npz") as saved:
+        drive = saved["source_velocity_m_s"]
+        bands = saved["band_frequencies_hz"].tolist() if "band_frequencies_hz" in saved else None
     mu = np.array(material["viscosities_pa_s"])
     output.mkdir(parents=True, exist_ok=False)
     capture_execution(output)
@@ -50,7 +52,7 @@ def run(configuration, output):
     minimum_stiffness = float(np.linalg.eigvalsh(k0)[0])
     if np.max(abs(np.linalg.solve(k0, f0))) > 1e-12 or minimum_stiffness <= 0:
         raise ValueError("The acoustics-off start is not a stable mechanical equilibrium")
-    wave = DualAcoustics(cfg, space, linear_solver="static_condensed")
+    wave = wave_for(cfg, space, bands, linear_solver="static_condensed")
     times, states, rows, diagnostics, energies = [0.0], [q.copy()], [], [], [0.0]
 
     def observe():

@@ -1,0 +1,58 @@
+{
+  "material_reference": "configs/shared/noa61-water-pressure-reference.json",
+  "singlet": {
+    "reference": "Silva-Lora and Torres family (n = 1 / 1.7 / 1), S09 atlas lens 38: object -300, image 90, t = 10 mm, sigma = +0.5 (paper units), scaled 1/14 to a 4 mm aperture",
+    "indices": [
+      1.0,
+      1.7,
+      1.0
+    ],
+    "object_m": -0.3,
+    "image_m": 0.09,
+    "thickness_m": 0.01,
+    "shape_factor": 0.5,
+    "scale": 0.07142857142857142,
+    "pin_radius_m": 0.00202,
+    "clear_radius_m": 0.002,
+    "windows_m": [
+      -0.0008,
+      0.0022286
+    ]
+  },
+  "apparatus": {
+    "radial_ports": 32,
+    "side_ports_per_layer": 16,
+    "radial_cells": 32,
+    "cells_per_layer": 12,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "max_source_speed_m_s": 1
+  },
+  "bands_hz": [
+    750000.0,
+    1500000.0
+  ],
+  "modes": {
+    "window_modes": {
+      "bottom": 8,
+      "top": 8
+    },
+    "wall_modes": 10
+  },
+  "limits": {
+    "source_power_w": 1.0,
+    "peak_pressure_pa": 2000000.0
+  },
+  "stability_margin": 0.5,
+  "sigmas": [
+    0,
+    0.1,
+    0.2,
+    0.35,
+    0.5,
+    0.7,
+    0.85,
+    1.0
+  ],
+  "scope": "S09 common source, two bands (0.75 and 1.5 MHz, one tone each, same 26 continuous modes): form atlas lens 38 in the common water cell; fold margin >= 0.5 imposed; curing not modelled."
+}

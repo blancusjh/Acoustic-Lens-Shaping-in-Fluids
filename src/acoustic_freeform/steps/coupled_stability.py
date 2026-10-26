@@ -14,12 +14,12 @@ import json
 import numpy as np
 from scipy.special import jn_zeros
 
-from ..acoustics.helmholtz import DualAcoustics
+from ..acoustics.multiband import wave_for
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
 from ..mechanics.surface import DualSurface
 from ..mechanics.viscous import assemble_mobility
-from .force_convergence import load_state
+from .force_convergence import load_bands, load_state
 
 
 def growth_rates(mobility, acoustic, stiffness, scale=1.0):
@@ -78,7 +78,9 @@ def run(configuration, output):
     capture_execution(output)
     inputs["input_sha256"] = hashes
     (output / "config.json").write_text(json.dumps(inputs, indent=2) + "\n")
-    wave = DualAcoustics(cfg, space, linear_solver="static_condensed")
+    wave = wave_for(
+        cfg, space, load_bands(inputs["state_directory"]), linear_solver="static_condensed"
+    )
     response, acoustic = wave.shape_force_jacobian(q, drive)
     force = response.force(np.ones(1, complex))
     mechanical, stiffness, _ = space.mechanics(q)

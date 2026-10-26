@@ -10,13 +10,13 @@ import json
 
 import numpy as np
 
-from ..acoustics.helmholtz import DualAcoustics
+from ..acoustics.multiband import wave_for
 from ..core.paths import data_path
 from ..core.provenance import capture_execution
 from ..forward.branch import startup_branch
 from ..mechanics.surface import DualSurface, targets_from_record
 from ..mechanics.viscous import assemble_mobility
-from .force_convergence import load_state
+from .force_convergence import load_bands, load_state
 
 
 def run(configuration, output):
@@ -29,7 +29,9 @@ def run(configuration, output):
     capture_execution(output)
     inputs["input_sha256"] = hashes
     (output / "config.json").write_text(json.dumps(inputs, indent=2) + "\n")
-    wave = DualAcoustics(cfg, space, linear_solver="static_condensed")
+    wave = wave_for(
+        cfg, space, load_bands(inputs["state_directory"]), linear_solver="static_condensed"
+    )
     fluid = inputs.get("fluid_mesh")
     viscosity = np.array(material["viscosities_pa_s"])
 

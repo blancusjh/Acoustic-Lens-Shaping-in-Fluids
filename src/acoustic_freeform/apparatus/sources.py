@@ -67,13 +67,18 @@ def export_sources(directory, config, drive=None):
         + "\n"
     )
     if drive is not None:
-        if len(drive) != config.channels:
+        # A (bands, channels) drive is one command per band and region.
+        rows = np.atleast_2d(drive)
+        if rows.shape[1] != config.channels:
             raise ValueError("One command per declared source region is required.")
         with (directory / "source-commands.csv").open("w", newline="") as output:
             writer = csv.writer(output)
-            writer.writerow(["channel", "real_m_s", "imag_m_s", "peak_amplitude_m_s", "phase_rad"])
-            for j, value in enumerate(drive):
-                writer.writerow([j, value.real, value.imag, abs(value), np.angle(value)])
+            header = ["channel", "real_m_s", "imag_m_s", "peak_amplitude_m_s", "phase_rad"]
+            writer.writerow((["band"] if len(rows) > 1 else []) + header)
+            for band, values in enumerate(rows):
+                for j, value in enumerate(values):
+                    row = [j, value.real, value.imag, abs(value), np.angle(value)]
+                    writer.writerow(([band] if len(rows) > 1 else []) + row)
 
 
 def modal_source_matrix(config, window_modes, wall_modes, quadrature=64):
