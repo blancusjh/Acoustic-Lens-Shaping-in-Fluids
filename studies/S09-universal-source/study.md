@@ -77,22 +77,32 @@ frozen fits of random seeds; the convex start reaches it with 0.17 W.
 (`render_atlas.py`). Silva-Lora and Torres singlets n = 1 / 1.7 / 1 with object
 at ∞, −300, −150 mm; image at 60, 90, 120 mm; thickness 10, 15, 20 mm; shape
 factor −0.5, 0, +0.5 (paper units), scaled 1/14. Coverage means the refined
-command reaches 10 nm on both pupils within the caps (first-order capability).
+command reaches 10 nm on both pupils within the caps (first-order capability;
+nonlinear checks of individual atlas lenses below).
 
-| Source | Lenses formed (of 68 that fit the cell) |
+| Source (one tone per band, 26 modes, ≤ 1 W, ≤ 2 MPa per band) | Lenses formed (of 68 that fit the cell) |
 |---|---:|
-| one band, 1.5 MHz | 49 |
-| + second band 0.75 MHz (one tone each) | 63 |
-| + third band 1.0 MHz | 64 |
-| + two tones per band | 65 |
-| not reached (lens 30: convex bound 0.4 nm, refinement 35–145 nm; lenses 45, 62: 18 / 39 nm even at 3 W) | 3 |
+| one tone at 1.5 MHz | 58 |
+| one tone at 0.75 MHz + one at 1.5 MHz | 10 (lenses 6, 7, 30, 31, 33, 34, 42, 58, 60, 61) |
+| not formed | 0 |
 | do not fit the common cell (faces crossing at the rim or too close to a window) | 13 |
 
-At equal source freedom on the 19 lenses one band missed, a second frequency
-band (2 × 26 modes) covers 14, doubling the spatial modes (52 modes in one
-band) covers 5, and octave spacing (0.375, 0.75, 1.5 MHz) is worse than
-0.75 / 1.0 / 1.5 MHz. The freedom that pays is frequency diversity, not finer
-emitters.
+The convex multi-tone bound reaches the goal for all 68 lenses within 1 W
+(worst 0.46 nm at a single band), so every lens that fits the cell is
+reachable in principle; the second band is needed only to realize it with one
+tone per band.
+
+**Mesh defect and correction.** A first pass of this atlas used a wave mesh that,
+for 20 of the 68 lens geometries, contained zero-height elements: cell and port
+grids shared layer fractions computed one rounding unit apart, so exact
+de-duplication kept both rows and the wave matrix was singular (5 % linear
+residual with both direct solvers; force discontinuous in the shape). Those
+rows made 13 lenses look hard and 3 unreachable, and supported a claim that a
+second band beats doubling the modes (14 vs 5 rescued lenses); that claim is
+withdrawn. The mesh now merges near-duplicate nodes (`merged_nodes`); meshes
+without such nodes, including every saved S06–S09 design except the two-band
+atlas-38 run, are unchanged. The invalid records are kept and marked
+(`atlas-2026-10-26/MESH-DEFECT.md`).
 
 ## Not assessed
 
@@ -100,7 +110,7 @@ Non-axisymmetric (m ≥ 1) disturbances, inertia, acoustic streaming, heating,
 contact-line hysteresis, transducer realization, curing shrinkage and
 demoulding. All results are numerical in the declared model; nothing has been
 built or measured. Atlas coverage is a first-order capability statement;
-the nonlinear chain has been run on Fig. 9b, Fig. 7a and the two-band lens
+the nonlinear chain has been run on Fig. 9b, Fig. 7a and the atlas lenses
 below.
 
 ## Reproduce

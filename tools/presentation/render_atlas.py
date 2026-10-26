@@ -26,12 +26,14 @@ sys.path.insert(0, str(ROOT / "tools/analysis/universal"))
 from common import lens_cell
 
 BASE = ROOT / "artifacts/studies/S09-universal-source/atlas-2026-10-26"
+# Rows computed on the degenerate mesh (atlas MESH-DEFECT.md) are ignored; the
+# affected lenses are taken from the v2 records computed after the fix.
+MESH_DEFECT = {3, 7, 8, 15, 18, 21, 22, 25, 26, 30, 32, 38, 45, 49, 52, 58, 60, 62, 71, 77}
 CLASSES = [
-    ("one band (1.5 MHz)", "#1b7837", [("atlas-1p5mhz-1w.jsonl", {})]),
-    ("two bands (0.75 + 1.5 MHz)", "#5aae61", [("e3-0p75-1p5mhz-26modes.jsonl", {})]),
-    ("three bands (0.75, 1.0, 1.5 MHz)", "#a6dba0", [("e5-0p75-1p0-1p5mhz.jsonl", {})]),
-    ("three bands, two tones each", "#d9f0d3", [("e6-3band-2tones.jsonl", {})]),
-    ("three bands at 3 W", "#fee08b", [("e7-3band-3w.jsonl", {"cap": 3.0})]),
+    ("one tone at 1.5 MHz", "#1b7837",
+     [("atlas-1p5mhz-1w.jsonl", {"skip": MESH_DEFECT}), ("v2-meshfix-1p5mhz-26modes.jsonl", {})]),
+    ("one tone at 0.75 MHz + one at 1.5 MHz", "#7fbf7b",
+     [("e3-0p75-1p5mhz-26modes.jsonl", {"skip": MESH_DEFECT}), ("v2-meshfix-2band.jsonl", {})]),
 ]
 NOT_COVERED, NO_FIT = ("not reached", "#d73027"), ("does not fit the common cell", "#bdbdbd")
 inputs_used = {}
@@ -60,6 +62,8 @@ def classify(index, base, escalations):
         return NO_FIT
     for (label, colour, files), tables in zip(CLASSES, escalations):
         for (_, options), table in zip(files, tables):
+            if index in options.get("skip", ()):
+                continue
             if covered(table.get(index), options.get("cap", 1.0)):
                 return label, colour
     return NOT_COVERED
