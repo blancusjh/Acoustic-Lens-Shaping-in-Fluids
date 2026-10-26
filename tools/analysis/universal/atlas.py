@@ -42,6 +42,8 @@ parser.add_argument("--wall-modes", type=int, default=10)
 parser.add_argument("--cap", type=float, default=1.0, help="total power cap, W")
 parser.add_argument("--pressure-cap", type=float, default=2e6, help="per-band peak, Pa")
 parser.add_argument("--indices", default=None, help="comma-separated lens indices")
+parser.add_argument("--tones-per-band", type=int, default=1,
+                    help="tones refined in each band (offsets far below the band, same operator)")
 args = parser.parse_args()
 out, shard, shards, cap = args.out, args.shard, args.shards, args.cap
 bands = [float(f) for f in args.bands.split(",")]
@@ -85,15 +87,20 @@ for index, (d0, d2, t, shape) in enumerate(grid):
                                            args.wall_modes)
             tones.append(Tone(band, space, q, modes))
         convex = best_tolerance(tones, observe, demand, cap)
-        starts = [t["amplitudes"][:, 0] if t["rank"] else np.zeros(tone.kernels.shape[1], complex)
-                  for t, tone in zip(convex["tones"], tones)]
-        single = tone_per_band_refinement(tones, observe, demand, starts, cap, args.pressure_cap)
+        starts, repeated = [], []
+        for t, tone in zip(convex["tones"], tones):
+            for k in range(args.tones_per_band):
+                column = t["amplitudes"][:, k] if t["rank"] > k else np.zeros(tone.kernels.shape[1], complex)
+                starts.append(column)
+                repeated.append(tone)
+        single = tone_per_band_refinement(repeated, observe, demand, starts, cap, args.pressure_cap)
         sags = [float(faces[j].evaluate(np.array([0.0]))[0]) for j in range(2)]
         row.update({
             "status": convex["status"], "rims_m": [levels[1], levels[2]], "vertex_sag_from_rim_m": sags,
             "no_field_pupil_error_m": float(np.max(abs(observe @ demand))), "demand_range_pa": demand_range,
             "convex_pupil_error_m": convex["pupil_max_error_m"], "convex_power_w": convex["total_power_w"],
             "bands_mhz": bands, "modes_per_band": tones[0].kernels.shape[1],
+            "tones_per_band": args.tones_per_band,
             "power_cap_w": cap, "pressure_cap_pa": args.pressure_cap,
             "convex_rank": [t["rank"] for t in convex["tones"]],
             "convex_band_power_w": [t["power_w"] for t in convex["tones"]],
