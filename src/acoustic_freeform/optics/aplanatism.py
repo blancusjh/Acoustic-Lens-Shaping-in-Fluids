@@ -15,7 +15,9 @@ import numpy as np
 from .raytrace import trace_graph_pair
 
 
-def abbe_sine_condition(cfg, surface, indices, conjugates_m, vertices_m, launch_radius_m, launch_height_m):
+def abbe_sine_condition(
+    cfg, surface, indices, conjugates_m, vertices_m, launch_radius_m, launch_height_m
+):
     """Per-ray Abbe ratio and the paper's M, both normalized to their axial limit.
 
     ``surface(face, r, derivative)`` gives the height of each face relative to
@@ -23,8 +25,16 @@ def abbe_sine_condition(cfg, surface, indices, conjugates_m, vertices_m, launch_
     image points, ``vertices_m`` the laboratory vertex heights.
     """
     z0, z1, z2 = conjugates_m
-    trace = trace_graph_pair(cfg, surface, indices, z0, z2, rays=None,
-                             launch_radius_m=launch_radius_m, launch_height_m=launch_height_m)
+    trace = trace_graph_pair(
+        cfg,
+        surface,
+        indices,
+        z0,
+        z2,
+        rays=None,
+        launch_radius_m=launch_radius_m,
+        launch_height_m=launch_height_m,
+    )
     hits = trace["intersections_m"]
     first = hits[0] - np.array([0.0, z0])
     sin_in = first[:, 0] / np.linalg.norm(first, axis=1)

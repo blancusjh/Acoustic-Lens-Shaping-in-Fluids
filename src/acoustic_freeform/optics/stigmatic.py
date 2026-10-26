@@ -43,3 +43,24 @@ def pair_prescription(config, indices, stigmatic_z_m, vertex_displacement_m):
 def stigmatic_pair(config, indices, stigmatic_z_m, vertex_displacement_m):
     faces = pair_prescription(config, indices, stigmatic_z_m, vertex_displacement_m)
     return [CartesianPatch(config, j, **face) for j, face in enumerate(faces)]
+
+
+def intermediate_point_from_shape_factor(n0, n1, d0, d2, t, sigma):
+    """Intermediate stigmatic point d1 of a singlet from its shape factor sigma.
+
+    Silva-Lora and Torres, JOSA A 37, 1155 (2020), Eqs. (44), (A1)-(A5), for
+    n2 = n0; the first vertex is at the origin and the second at t. Of the two
+    roots, the one outside the lens (d1 not in [0, t]) is the paper's design
+    point; it reproduces their Fig. 7 edge thicknesses.
+    """
+    c2 = n0 * (n1 - n0) * ((sigma - 1) / d0 - (sigma + 1) / (d2 - t))
+    c1 = n0 * (sigma - 1) * (d2 * n1 / (d2 - t) - t * (n1 - n0) / d0) + (
+        2 * n1 - n0 * (sigma + 1)
+    ) * (n0 * t / (d2 - t) + n1)
+    c0 = n1 * t * (sigma - 1) * (n1 - n0)
+    disc = np.sqrt(c1**2 - 4 * c2 * c0)
+    roots = [(-c1 - disc) / (2 * c2), (-c1 + disc) / (2 * c2)]
+    outside = [d for d in roots if not 0 <= d <= t]
+    if not outside:
+        raise ValueError("No intermediate point outside the lens for this shape factor")
+    return float(outside[0])

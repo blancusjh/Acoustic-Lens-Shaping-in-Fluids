@@ -129,6 +129,48 @@ class CartesianDiopter:
             raise ValueError("This aperture leaves the physical upward-transmitting vertex branch.")
         return z
 
+    def _superconic(self, rho):
+        p = self.form_parameters()
+        o, t, s, og = p["O_m_inv"], p["T_m_inv3"], p["S_m_inv2"], p["OG_m_inv"]
+        root = np.sqrt(1 + (2 * s - o * og) * rho**2)
+        denominator = 1 + s * rho**2 + root
+        z = (o + t * rho**2) * rho**2 / denominator
+        dz = (
+            (2 * o * rho + 4 * t * rho**3) * denominator
+            - (o + t * rho**2) * rho**2 * (2 * s * rho + (2 * s - o * og) * rho / root)
+        ) / denominator**2
+        return z, dz
+
+    def sag_superconic(self, r_m, iterations=80):
+        """Sag from the closed-form superconic parametrization (paper Eqs. 10-11).
+
+        Solves r(rho) = sqrt(rho^2 - z(rho)^2) = r by bisection in the polar
+        radius rho, then returns z(rho). Independent of the Fermat continuation
+        in sag(), and valid out to large apertures; requires nonsingular GOTS.
+        """
+        r = np.abs(np.asarray(r_m, dtype=float))
+        low, high = r.copy(), 4 * r + 1e-12
+        for _ in range(iterations):
+            middle = (low + high) / 2
+            z, _ = self._superconic(middle)
+            radial = np.sqrt(np.maximum(middle**2 - z**2, 0))
+            below = radial < r
+            low, high = np.where(below, middle, low), np.where(below, high, middle)
+        z, _ = self._superconic((low + high) / 2)
+        if np.any(~np.isfinite(z)):
+            raise ValueError("The superconic parametrization is not real at this aperture.")
+        return z
+
+    def slope_superconic(self, r_m):
+        r = np.abs(np.asarray(r_m, dtype=float))
+        z = self.sag_superconic(r)
+        rho = np.hypot(r, z)
+        _, dz = self._superconic(rho)
+        dr = np.divide(rho - z * dz, r, out=np.zeros_like(r), where=r > 0)
+        return np.divide(dz, dr, out=np.zeros_like(r), where=r > 0) * np.sign(
+            np.asarray(r_m, float)
+        )
+
     def slope(self, r_m, sag_m=None):
         r = np.asarray(r_m, float)
         z = self.sag(r) if sag_m is None else np.asarray(sag_m, float)
