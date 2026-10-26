@@ -1,0 +1,17 @@
+{
+  "state_directory": "artifacts/studies/S09-universal-source/synthesis-2026-10-26/fig7a/design",
+  "fluid_meshes": [
+    {
+      "radial_cells": 64,
+      "cells_per_layer": 12
+    },
+    {
+      "radial_cells": 128,
+      "cells_per_layer": 24
+    }
+  ],
+  "difference_directions": 2,
+  "difference_step_m": 1e-09,
+  "seed": 20261026,
+  "scope": "Axisymmetric creeping-flow stability of the S09 common-source Fig. 7a design."
+}
