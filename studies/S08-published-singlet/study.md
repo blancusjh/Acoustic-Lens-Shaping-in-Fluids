@@ -27,6 +27,17 @@ exact surfaces is stigmatic to 1e-14 mm; the Abbe sine ratio h / (n sin u) and
 the paper's M agree to 2e-15. Aplanatism (M − 1)_RMS: Fig. 9a 1.9e-2,
 Fig. 9b 1.2e-4, consistent with the paper's claim that 9b reduces coma.
 
+> **Correction (S09, 2026-10-26).** The conclusion of the next section is
+> wrong. The 674 nm floor was a local minimum of the inverse started from
+> frozen least-squares fits of random seeds, not a reachability limit of the
+> water cell. The convex capability program of theory section 10f finds, for
+> the same lens, cell type, 26-mode source and frequency, a single tone of
+> 0.17 W whose nonlinear start-up branch from the acoustics-off meniscus ends
+> within 4e-11 m of both faces (studies/S09-universal-source). The multi-tone
+> figures below came from the same kind of local fit and are equally
+> unreliable. The tuned-liquid results remain valid as results, but liquid
+> tuning is not necessary for Fig. 9b.
+
 ## Water / NOA 61 / water: the field cannot close the gap
 
 | Quantity | Fig. 7a | Fig. 9b |
@@ -114,7 +125,8 @@ Halving the step (`formation-dt00125/`) changes the transient by at most
 
 ## Verdict
 
-In the declared axisymmetric, lossless-acoustics, creeping-flow model, a
+(See the correction above: the claim that water cannot reach Fig. 9b is
+withdrawn.) In the declared axisymmetric, lossless-acoustics, creeping-flow model, a
 scaled copy of the published Fig. 9b singlet is formed from the acoustics-off
 meniscus by a 0.75 W field. The state is converged in the discretization,
 stable, and near diffraction-limited when traced as the cured lens. Getting
