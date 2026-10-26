@@ -1,0 +1,40 @@
+{
+  "name": "S09 common machine: proposed physical build",
+  "study": "S09",
+  "design_state": "artifacts/studies/S09-universal-source/synthesis-2026-10-26/fig9b/design",
+  "status_meaning": {
+    "modelled": "In the S09 numerical model with these values (read from the design state)",
+    "proposed": "Needed to build the machine; not in any simulation. Dimensions are placeholders chosen for a plausible build, not designed"
+  },
+  "units": "mm; z is the vertical lens axis, the cell's coordinates (front lens vertex at z = 0)",
+  "components": [
+    {"id": "bore", "status": "modelled", "label": "Cell bore",
+     "spec": "Radius 2.02 mm between windows at z = -0.8 and +2.2286 mm; read from the design"},
+    {"id": "liquids", "status": "modelled", "label": "Water / NOA 61 / water, shaped into the lens",
+     "spec": "Interfaces drawn from the formed design state (Fig. 9b, one tone)"},
+    {"id": "pinning", "status": "proposed", "label": "Two knife-edge pinning rings",
+     "spec": "Stainless steel, 0.05 mm lip at the two lens-rim heights (the contact lines are modelled; the edges are not)",
+     "render": {"lip_mm": 0.06, "height_mm": 0.12}},
+    {"id": "window_lower", "status": "proposed", "label": "Lower transparent transducer window",
+     "spec": "Transparent piezoelectric disc (e.g. lithium niobate) with 32 transparent ring electrodes (ITO) and radial fan-out traces",
+     "render": {"radius_mm": 6.0, "thickness_mm": 2.0}},
+    {"id": "window_upper", "status": "proposed", "label": "Upper transparent transducer window",
+     "spec": "As the lower window", "render": {"radius_mm": 6.0, "thickness_mm": 2.0}},
+    {"id": "wall_tube", "status": "proposed", "label": "Segmented piezoceramic tube, 48 electrode bands",
+     "spec": "PZT tube forming the bore wall; 16 silver bands per layer", "render": {"outer_radius_mm": 3.2}},
+    {"id": "housing", "status": "proposed", "label": "Aluminium thermal housing with Peltier elements",
+     "spec": "Holds windows and tube; two Peltier plates and a thermistor", "render": {"half_width_mm": 13.0, "half_height_mm": 9.0}},
+    {"id": "ports", "status": "proposed", "label": "Three PTFE fill and vent capillaries",
+     "spec": "One per liquid layer, to syringe pumps", "render": {"radius_mm": 0.35}},
+    {"id": "flex", "status": "proposed", "label": "Flex cables, 112 channels", "spec": "From window and tube electrodes to the transmitter"},
+    {"id": "light_source", "status": "proposed", "label": "Collimated test beam: LED, pinhole, collimating lens", "spec": "Below the cell on the vertical axis"},
+    {"id": "objective", "status": "proposed", "label": "Microscope objective imaging the focal plane", "spec": "The focus lies 6.43 mm above the front vertex, above the upper window"},
+    {"id": "camera", "status": "proposed", "label": "Camera and wavefront sensor", "spec": "Beam splitter cube, image camera and Shack-Hartmann sensor for closed-loop trim"},
+    {"id": "cage", "status": "proposed", "label": "Vertical optical cage and breadboard", "spec": "Four rods holding all optics coaxial with the cell"},
+    {"id": "pumps", "status": "proposed", "label": "Three syringe pumps", "spec": "Set each layer to the lens's volume; final trim by optical feedback"},
+    {"id": "transmitter", "status": "proposed", "label": "Two-band transmitter, 112 channels", "spec": "Independent amplitude and phase per channel at 0.75 and 1.5 MHz"},
+    {"id": "control", "status": "proposed", "label": "Control computer", "spec": "Closes the loop from wavefront to command and pumps; feedback law not designed"},
+    {"id": "uv", "status": "proposed", "label": "UV LED ring for curing (optional)", "spec": "Freezes the shaped resin; curing is not modelled"}
+  ],
+  "scope": "Artist's impression of a proposed build of the S09 numerical machine. Only the bore, liquids and lens shape are modelled; everything else is unbuilt and unsimulated."
+}

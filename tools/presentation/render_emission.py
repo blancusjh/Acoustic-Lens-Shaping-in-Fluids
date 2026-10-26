@@ -73,12 +73,17 @@ def main():
     df = 1 / period
     ks = np.arange(-round(args.band * f0 / df), round(args.band * f0 / df) + 1)
     print(f"{len(ks)} frequencies, df = {df / 1e3:.1f} kHz", flush=True)
-    fields = []
-    for k in ks:
-        wave_k = DualAcoustics(replace(cfg, frequency_hz=f0 + k * df), space, linear_solver="static_condensed")
-        response = wave_k.solve(q, drive)
-        fields.append(response.solution[response.basis.nodal_dofs[0], 0])
-    fields = np.array(fields)
+    cache = args.out / f"{args.prefix}-fields.npz"
+    if cache.exists() and np.array_equal(np.load(cache)["frequencies_hz"], f0 + ks * df):
+        fields = np.load(cache)["fields"]
+    else:
+        fields = []
+        for k in ks:
+            wave_k = DualAcoustics(replace(cfg, frequency_hz=f0 + k * df), space, linear_solver="static_condensed")
+            response = wave_k.solve(q, drive)
+            fields.append(response.solution[response.basis.nodal_dofs[0], 0])
+        fields = np.array(fields)
+        np.savez_compressed(cache, fields=fields, frequencies_hz=f0 + ks * df)
     xy = data["field"]["xy"] * mm
     triangles = data["field"]["triangles"]
     # Envelope Fourier coefficients on the synthesis period.
@@ -87,7 +92,8 @@ def main():
     samples = 1 << 16
     t_grid = np.arange(samples) * period / samples
     spectrum = np.fft.fft(envelope(t_grid, rise, hold)) / samples
-    coefficients = spectrum[ks % samples] * np.exp(0j)
+    # A(t) e^{-i w0 t} = sum_k a_k e^{-i (w0 - k dw) t}: frequency f0 + k df carries a_{-k}.
+    coefficients = spectrum[(-ks) % samples]
 
     def baseband(t):
         """Complex envelope E(x, t) with p = Re[E exp(-i w0 t)], all nodes."""
@@ -113,7 +119,7 @@ def main():
     faces = [(cfg.levels_m[j + 1] + space.height(j, q[j], r)) * mm for j in range(2)]
     signed = np.r_[-r[::-1], r] * mm
     tri = mtri.Triangulation(np.r_[xy[0], -xy[0]], np.r_[xy[1], xy[1]],
-                             np.r_[triangles.T, triangles.T + xy.shape[1]].reshape(-1, 3))
+                             np.r_[triangles, triangles + xy.shape[1]])
     R, L = cfg.radius_m * mm, np.asarray(cfg.levels_m) * mm
     frames = []
     for n, t in enumerate(t_frames):
