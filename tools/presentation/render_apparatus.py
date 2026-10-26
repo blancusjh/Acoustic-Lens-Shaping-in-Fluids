@@ -80,7 +80,11 @@ def facts(cfg, space, q, drive, regions, record):
     window = [g for g in regions if g["boundary"] == "bottom"]
     pitch = float(np.median([g["r_max_m"] - g["r_min_m"] for g in window]))
     summary = record["summary"]
+    from acoustic_freeform.core.paths import data_path
+
+    material = json.loads(read(data_path(record["material_reference"])).read_text())
     return {
+        "names": material.get("short_names", material["material_identity"]),
         "volumes_ul": [x * 1e9 for x in volumes],
         "counts": count,
         "channels": len(drive),
@@ -230,7 +234,7 @@ def section(ax, cfg, space, q, drive, regions, known):
     ports = (L[0] + L[1]) / 2, (L[1] + L[2]) / 2, (L[2] + L[3]) / 2
     for z in ports:
         ax.add_patch(Rectangle((R + 0.1 * u, z - 0.15 * u), 2.3 * u, 0.3 * u, color=PROPOSED, lw=0))
-    n, vol = known["counts"], known["volumes_ul"]
+    n, vol, names = known["counts"], known["volumes_ul"], known["names"]
     # Text columns sit beside the drawing; rows are spread over its height.
     left, right = -9.6 * u, 6.6 * u
     rows = np.linspace(L[3] + 2.3 * u, L[0] - 2.3 * u, 7)
@@ -244,9 +248,9 @@ def section(ax, cfg, space, q, drive, regions, known):
         ((R, L[2]), "pinned contact lines\n(modelled; edge proposed)", MODELLED, (right, rows[1])),
         ((0, L[0] - 0.05 * u), f"{n['bottom']} source rings per window,\n{known['pitch_mm']:.3f} mm pitch (modelled)",
          MODELLED, (left, rows[6])),
-        ((-0.4 * R, ports[1]), f"NOA 61, {vol[1]:.2f} µL (modelled)", MODELLED, (left, rows[3])),
-        ((-0.6 * R, ports[0]), f"water, {vol[0]:.2f} µL (modelled)", MODELLED, (left, rows[5])),
-        ((-0.6 * R, ports[2]), f"water, {vol[2]:.2f} µL (modelled)", MODELLED, (left, rows[1])),
+        ((-0.4 * R, ports[1]), f"{names[1]}, {vol[1]:.3f} µL (modelled)", MODELLED, (left, rows[3])),
+        ((-0.6 * R, ports[0]), f"{names[0]}, {vol[0]:.3f} µL (modelled)", MODELLED, (left, rows[5])),
+        ((-0.6 * R, ports[2]), f"{names[2]}, {vol[2]:.3f} µL (modelled)", MODELLED, (left, rows[1])),
     ]
     for xy, text, colour, at in callouts:
         ax.annotate(

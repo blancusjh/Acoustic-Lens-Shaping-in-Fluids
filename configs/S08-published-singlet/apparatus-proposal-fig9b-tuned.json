@@ -1,0 +1,38 @@
+{
+  "name": "S08 apparatus proposal: tuned-liquid cell for the Silva-Lora and Torres Fig. 9b singlet",
+  "study": "S08",
+  "design_state": "artifacts/studies/S08-published-singlet/fig9b-tuned-2026-10-26/caps-1w-2mpa/design",
+  "status_meaning": {
+    "modelled": "Present in the S08 numerical model with the values quoted in the drawing (read from the design state)",
+    "proposed": "Needed to build the apparatus; not represented in any simulation yet"
+  },
+  "components": [
+    {"id": "cell", "status": "modelled", "label": "Cylindrical cell bore",
+     "spec": "Inner radius equal to the pinning radius 2.02 mm (lens clear radius 2.0 mm); rigid walls except the source surfaces; windows 0.8 mm beyond the lens vertices"},
+    {"id": "fluids", "status": "modelled", "label": "Three liquid layers",
+     "spec": "Brine (1030 kg/m3) below, NOA 61 (uncured) in the middle, light oil (850 kg/m3) above; properties are declared assumptions in configs/shared/noa61-brine-oil-assumption.json"},
+    {"id": "pinning", "status": "modelled", "label": "Pinned contact lines at the lens rim heights",
+     "spec": "Model: both contact lines fixed on the 2.02 mm ring at the heights of the published lens surfaces there. Hardware (proposed): two sharp circumferential edges at those heights"},
+    {"id": "window_sources", "status": "modelled", "label": "Window source surfaces",
+     "spec": "Concentric annular regions on both windows; ideal normal-velocity sources with impedance-matched admittance"},
+    {"id": "wall_source", "status": "modelled", "label": "Wall source surface", "spec": "Axial bands on the bore wall"},
+    {"id": "drive", "status": "modelled", "label": "Drive command",
+     "spec": "1.5 MHz, one complex amplitude per source region from 26 continuous modes (design/source-commands.csv)"},
+    {"id": "optics", "status": "modelled", "label": "Optical conjugates",
+     "spec": "Collimated input; image 6.43 mm beyond the front vertex (Fig. 9b scaled 1/14); traced with the published indices 1 / 1.7 / 1, i.e. the lens as cured, in air"},
+    {"id": "liquid_selection", "status": "proposed", "label": "Oil immiscible with uncured NOA 61, about 5 mN/m against it",
+     "spec": "Not identified. Requirement from the meniscus fit; a surfactant may be needed. Measured densities and tensions replace the assumptions before any run is trusted"},
+    {"id": "window_transducers", "status": "proposed", "label": "Transparent ring-electrode transducers as windows",
+     "spec": "Transparency, electrode-gap diffraction and window refraction not modelled"},
+    {"id": "wall_transducer", "status": "proposed", "label": "Segmented piezoelectric tube", "spec": "Inter-electrode coupling not modelled"},
+    {"id": "backing", "status": "proposed", "label": "Backing and matching layers", "spec": "Approximate the modelled admittance; per-channel calibration required"},
+    {"id": "fill", "status": "proposed", "label": "Fill and vent ports, syringe pumps", "spec": "One per layer; final trim by optical feedback"},
+    {"id": "thermal", "status": "proposed", "label": "Temperature-controlled enclosure", "spec": "Thermal expansion and sound-speed drift not modelled here"},
+    {"id": "rf", "status": "proposed", "label": "Multichannel phase-controlled transmitter", "spec": "Continuous wave, independent amplitude and phase per channel"},
+    {"id": "source", "status": "proposed", "label": "Collimated test beam", "spec": "LED, pinhole and collimating lens; entrance window not modelled"},
+    {"id": "camera", "status": "proposed", "label": "Image-plane sensor and wavefront sensor", "spec": "Spot and shape measurement for closed-loop trim"},
+    {"id": "control", "status": "proposed", "label": "Control computer", "spec": "Feedback law not designed"},
+    {"id": "curing", "status": "proposed", "label": "UV curing source", "spec": "Freezes the shaped resin; shrinkage, heating and demoulding are separate, unmodelled processes"}
+  ],
+  "scope": "Proposal for hardware that realizes the S08 tuned-liquid numerical model; not a validated or built apparatus."
+}

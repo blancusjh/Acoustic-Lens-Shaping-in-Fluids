@@ -1,0 +1,16 @@
+{
+  "source_directory": "artifacts/studies/S08-published-singlet/fig9b-tuned-2026-10-26/caps-1w-2mpa/design",
+  "synthesis_config": "artifacts/studies/S08-published-singlet/fig9b-tuned-2026-10-26/caps-1w-2mpa/config.json",
+  "acoustic_load": "linearized",
+  "tangent_refresh_steps": 10,
+  "fluid_radial_cells": 64,
+  "fluid_cells_per_layer": 12,
+  "step_s": 0.025,
+  "minimum_step_s": 0.0001,
+  "maximum_step_displacement_m": 2.5e-05,
+  "duration_s": 2.0,
+  "ramp_s": 1.0,
+  "maximum_steps": 400,
+  "ray_count": 401,
+  "scope": "Forward start-up from the acoustics-off meniscus under the held S08 tuned-liquid Fig. 9b command; linearized acoustic load, tangent refreshed every 0.25 s; creeping flow only."
+}

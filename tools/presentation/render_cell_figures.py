@@ -252,7 +252,7 @@ def setup_figure(data, out, prefix):
     # Optical indices are the lens prescription's; for a published singlet they
     # are the cured lens in air, not the liquids being shaped.
     singlet = "singlet" in data["record"]
-    names = ("water", "NOA 61 (uncured)", "water")
+    names = data["material"].get("short_names", data["material"]["material_identity"])
     middle = (faces[0][-1] + faces[1][-1]) / 2
     top = image_top(data) * mm
     for j, z in enumerate((levels[0] + 0.12 * u, middle, levels[3] - 0.45 * u)):

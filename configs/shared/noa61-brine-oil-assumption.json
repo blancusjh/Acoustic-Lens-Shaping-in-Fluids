@@ -66,5 +66,10 @@
   "sources": {
     "resin": "https://norlandproducts.com/wp-content/uploads/2025/02/Norland-Products-NOA-61-TDS.pdf"
   },
-  "scope": "Declared liquid assumptions for the S08 tuned-liquid Fig. 9b cell. Not measured properties."
+  "scope": "Declared liquid assumptions for the S08 tuned-liquid Fig. 9b cell. Not measured properties.",
+  "short_names": [
+    "brine",
+    "NOA 61 (uncured)",
+    "light oil"
+  ]
 }
