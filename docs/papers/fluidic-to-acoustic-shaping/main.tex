@@ -104,9 +104,11 @@ obtain it by choosing a frame, a volume and a density contrast.
 This paper asks what must be added to reach a prescribed surface. The answer is
 organized as an inverse problem with three steps:
 \[
- \text{target surface }h_\star\ \longrightarrow\ \text{load demand }t_\star
- \ \longrightarrow\ \text{acoustic drive }c\ \longrightarrow\
- \text{formation from the unforced meniscus}.
+ \begin{aligned}
+ &\text{target surface }h_\star\ \longrightarrow\ \text{load demand }t_\star
+ \ \longrightarrow\ \text{acoustic drive }\bm c\\
+ &\qquad\longrightarrow\ \text{formation from the unforced meniscus}.
+ \end{aligned}
 \]
 The first arrow is exact and explicit (\cref{sec:demand}). The second asks
 whether a fixed acoustic source can supply that load; under stated
@@ -125,7 +127,7 @@ declared model, not tests of the propositions and not experimental evidence.
 
 \begin{table}[ht]
 \centering\small
-\begin{tabular}{@{}p{60mm}p{94mm}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{60mm}>{\raggedright\arraybackslash}p{94mm}@{}}
 \toprule
 Result & Status \\\midrule
 Fluidic-shaping model and reported results (\cref{sec:fluidic}) &
@@ -517,9 +519,9 @@ back).
  \draw[line width=2.2pt,red!40] (6,0)--(6,4);
  \fill (0,1.5) circle (1.6pt); \fill (6,1.5) circle (1.6pt);
  \fill (0,2.3) circle (1.6pt); \fill (6,2.3) circle (1.6pt);
- \node at (3,0.55) {liquid 0};
+ \node at (4.4,0.5) {liquid 0};
  \node at (3,1.9) {lens liquid 1};
- \node at (3,3.3) {liquid 2};
+ \node at (4.4,3.45) {liquid 2};
  \node[anchor=west] at (6.2,0) {lower window source};
  \node[anchor=west] at (6.2,4) {upper window source};
  \node[anchor=west] at (6.2,2.9) {wall sources};
@@ -729,9 +731,9 @@ columns. The best pupil tolerance within the caps is
  \mathcal P(X)\le P_{\max},
  \label{eq:sdp}
 \end{equation}
-optionally with the pressure and fold constraints of
-\cref{sec:convex-constraints}. This is a semidefinite program
-\cite{vandenberghe1996}, solved to global optimality by interior-point methods.
+The pressure and fold constraints of \cref{sec:convex-constraints} can be
+added. Problem \cref{eq:sdp} is a semidefinite program, which interior-point
+methods solve to global optimality \cite{vandenberghe1996}.
 Its optimum is a lower bound on the pupil error of every drive in the given
 bands, in the frozen model.
 
