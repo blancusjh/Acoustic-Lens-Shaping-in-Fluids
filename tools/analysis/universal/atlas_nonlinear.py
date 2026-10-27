@@ -11,7 +11,6 @@ Usage: atlas_nonlinear.py OUT.jsonl SHARD NSHARDS [--indices I ...] [--two-bands
 """
 
 import argparse
-
 import itertools
 import json
 import sys

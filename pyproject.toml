@@ -15,18 +15,17 @@ dependencies = [
   "ipykernel>=6.29,<8",
   "scikit-fem>=12,<13",
   "flask>=3,<4",
+  "cvxpy>=1.6,<2",
 ]
 
 [project.scripts]
 afl = "acoustic_freeform.cli:main"
 lenslab = "acoustic_freeform.models.single_interface.cli:main"
 
-[project.optional-dependencies]
-optimization = ["cvxpy>=1.6,<2"]
-
 [dependency-groups]
 dev = [
     "playwright>=1.50,<2",
+    "pytest>=8,<10",
     "ruff>=0.11",
 ]
 
@@ -36,6 +35,11 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/acoustic_freeform"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: runs the acoustic solver (minutes); excluded by default, run with -m slow"]
+addopts = "-m 'not slow'"
 
 [tool.ruff]
 line-length = 100

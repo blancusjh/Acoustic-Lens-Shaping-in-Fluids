@@ -106,6 +106,82 @@
         "formation_verified": "failed",
         "transition_verified": "not_assessed"
       }
+    },
+    {
+      "id": "S06-surrogate",
+      "study": "S06-two-face-physical-checks",
+      "title": "Physical checks of a converged two-interface emitter surrogate",
+      "evidence_path": "artifacts/studies/S06-two-face-physical-checks/surrogate-2026-10-24/coupled-stability-224/validation.json",
+      "scope": "Axisymmetric, lossless acoustics with ideal velocity sources, creeping flow; numerical evidence only.",
+      "verdict": "Linearly stable but neither robust nor reachable: the design-grid success does not survive the surface space, the back face is not wave-resolved to 10 nm, and the target is not the state reached from flat.",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "passed",
+        "stationary_optical_gates_met": "failed",
+        "fixed_command_convergence_verified": "failed",
+        "stability_assessed": "model_limited",
+        "formation_verified": "failed",
+        "transition_verified": "not_assessed"
+      }
+    },
+    {
+      "id": "S07-meniscus-750khz",
+      "study": "S07-faithful-modal-synthesis",
+      "title": "Faithful modal synthesis from the acoustics-off meniscus",
+      "evidence_path": "artifacts/studies/S07-faithful-modal-synthesis/meniscus-2026-10-25/meniscus-750khz/validation.json",
+      "scope": "Axisymmetric, lossless acoustics with ideal velocity sources, creeping flow; numerical evidence only.",
+      "verdict": "Formed from the acoustics-off meniscus, converged and stable within 1 W / 2 MPa, but the optical gates fail (19.6 / 11.3 nm against 10 nm; spot 7.2 um).",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "passed",
+        "stationary_optical_gates_met": "failed",
+        "fixed_command_convergence_verified": "passed",
+        "stability_assessed": "model_limited",
+        "formation_verified": "model_limited",
+        "transition_verified": "not_assessed"
+      }
+    },
+    {
+      "id": "S08-fig9b-tuned",
+      "study": "S08-published-singlet",
+      "title": "Published Fig. 9b singlet in a tuned-liquid cell",
+      "evidence_path": "artifacts/studies/S08-published-singlet/fig9b-tuned-2026-10-26/caps-1w-2mpa/validation.json",
+      "scope": "Axisymmetric, lossless acoustics with ideal velocity sources, creeping flow; numerical evidence only. The liquid set is an assumption.",
+      "verdict": "Formed from the meniscus, converged and stable, near diffraction-limited; the front face misses 10 nm (27 nm). Its claim that water cannot reach Fig. 9b is withdrawn by S09.",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "passed",
+        "stationary_optical_gates_met": "failed",
+        "fixed_command_convergence_verified": "passed",
+        "stability_assessed": "model_limited",
+        "formation_verified": "model_limited",
+        "transition_verified": "not_assessed"
+      }
+    },
+    {
+      "id": "S09-common-machine-fig9b",
+      "study": "S09-universal-source",
+      "title": "Fig. 9b on the common machine (one of three fully checked designs)",
+      "evidence_path": "artifacts/studies/S09-universal-source/synthesis-2026-10-26/fig9b/validation.json",
+      "scope": "Axisymmetric, lossless acoustics with ideal velocity sources, creeping flow; numerical evidence only.",
+      "verdict": "One fixed water / NOA 61 / water machine holds all 68 fitting family singlets (convex bound below 0.5 nm); 67 form from rest within 1 nm with one or two tones. Fig. 9b, Fig. 7a (fold margin) and lens 7 pass refinement, coupled stability and formation within 1 nm; lens 57 is a start-up path failure.",
+      "evidence": {
+        "optically_constructed": "passed",
+        "apparatus_compatible": "model_limited",
+        "source_candidate_found": "passed",
+        "stationary_root_converged": "passed",
+        "stationary_optical_gates_met": "passed",
+        "fixed_command_convergence_verified": "passed",
+        "stability_assessed": "model_limited",
+        "formation_verified": "model_limited",
+        "transition_verified": "not_assessed"
+      }
     }
   ]
 }

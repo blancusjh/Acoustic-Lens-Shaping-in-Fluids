@@ -1,0 +1,66 @@
+{
+  "name": "Common acoustic lens machine, version 1",
+  "scope": "The fixed machine of study S09 in its declared numerical model: axisymmetric, quiescent, creeping flow, lossless acoustics, ideal velocity sources. Not built or measured.",
+  "evidence": "studies/S09-universal-source/study.md",
+  "units": "SI; z is the lens axis with the front lens vertex at z = 0",
+  "material_reference": "configs/shared/noa61-water-pressure-reference.json",
+  "cell": {
+    "pin_radius_m": 0.00202,
+    "clear_radius_m": 0.002,
+    "windows_m": [
+      -0.0008,
+      0.0022286
+    ]
+  },
+  "apparatus": {
+    "radial_ports": 32,
+    "side_ports_per_layer": 16,
+    "radial_cells": 32,
+    "cells_per_layer": 12,
+    "acoustic_order": 4,
+    "surface_elements": 36,
+    "max_source_speed_m_s": 1
+  },
+  "modes": {
+    "window_modes": {
+      "bottom": 8,
+      "top": 8
+    },
+    "wall_modes": 10
+  },
+  "drive_options_hz": [
+    [
+      1500000.0
+    ],
+    [
+      750000.0,
+      1500000.0
+    ]
+  ],
+  "limits": {
+    "source_power_w": 1.0,
+    "peak_pressure_pa": 2000000.0
+  },
+  "sigmas": [
+    0,
+    0.1,
+    0.2,
+    0.35,
+    0.5,
+    0.7,
+    0.85,
+    1.0
+  ],
+  "acceptance": {
+    "accept_command_m": 1e-09,
+    "formed_goal_m": 1e-08,
+    "window_clearance_m": 0.0001,
+    "minimum_lens_thickness_m": 5e-05
+  },
+  "notes": {
+    "drive_options_hz": "Tried in order: one tone at 1.5 MHz, then one tone per band at 0.75 and 1.5 MHz.",
+    "accept_command_m": "A drive option is accepted when its frozen one-tone-per-band pupil error is at most this.",
+    "formed_goal_m": "Maximum pupil height error of either face at the end of the start-up ramp for status 'formed'.",
+    "window_clearance_m": "Minimum distance from either face to either window, and of the pin heights from the windows."
+  }
+}

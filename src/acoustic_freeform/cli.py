@@ -1,8 +1,9 @@
 """Entry points for the implemented, model-specific research steps.
 
-These commands are not an end-to-end general acoustic-source compiler. Each
-configuration declares the approximation and acceptance protocol of its step.
-Every step writes one new directory under artifacts/.
+`afl design` turns a desired stigmatic singlet into settings of the fixed
+machine (configs/machine/v1.json). The other commands are the model-specific
+research steps; each configuration declares the approximation and acceptance
+protocol of its step, and every step writes one new directory under artifacts/.
 """
 
 import argparse
@@ -74,9 +75,17 @@ def main(argv=None):
     for name, (_module, help_text) in MODELS.items():
         subparsers.add_parser(name, help=help_text, add_help=False)
     subparsers.add_parser("status", help="show the reviewed research status")
+    from .design import cli as design_cli
+
+    design_cli.add_arguments(
+        subparsers.add_parser("design", help="Machine settings for a desired stigmatic singlet")
+    )
     args = parser.parse_args(argv)
     if args.command == "status":
         print((REPOSITORY / "STATUS.md").read_text(), end="")
+        return
+    if args.command == "design":
+        design_cli.run(args, parser)
         return
     for key, value in vars(args).items():
         if isinstance(value, Path) and key != "out":

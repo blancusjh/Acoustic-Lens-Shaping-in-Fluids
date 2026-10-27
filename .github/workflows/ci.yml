@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: uv sync --dev --locked
+      - name: Lint
+        run: uv run ruff check src tools tests
+      - name: Tests (fast; the solver tests are marked slow)
+        run: uv run pytest -q
+      - name: Command line
+        run: uv run afl design --help
+      - name: Status page matches the evidence ledger
+        run: python3 tools/documents/build_research_index.py --check

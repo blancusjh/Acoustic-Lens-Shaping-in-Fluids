@@ -55,11 +55,12 @@ def render_status(ledger):
     fields = ledger["evidence_fields"]
     if len(fields) != 9 or len(set(fields)) != 9:
         raise ValueError("The evidence ledger must declare nine distinct fields")
-    rows = []
+    rows, missing = [], []
     for record in ledger["records"]:
-        path = ROOT / record["evidence_path"]
-        if not path.is_file():
-            raise FileNotFoundError(path)
+        # Evidence lives in the local research data tree (or its archive), not in Git:
+        # a missing file is reported, it does not block rendering the reviewed verdicts.
+        if not (ROOT / record["evidence_path"]).is_file():
+            missing.append(record["evidence_path"])
         evidence = record["evidence"]
         if set(evidence) != set(fields) or set(evidence.values()) - STATES:
             raise ValueError(f"Invalid evidence states for {record['id']}")
@@ -100,26 +101,32 @@ def render_status(ledger):
     parts.extend(
         [
             "",
-            "The next theory gates are acoustic reachability under admissible continuous sources and stability of the driven three-dimensional state. Any numerical refinement must hold physical commands fixed before interpreting a new inverse solve. Wall-layer mean streaming and thermal feedback remain open.",
+            "Within the declared model, S09 answers source reachability for a family of stigmatic singlets on one fixed machine. Open: start-up paths (S09 lens 57), the full chain on more designs and reduced channel counts, stability of the driven three-dimensional state, wall-layer mean streaming, thermal feedback, measured material constants, transducer realization and curing. Any numerical refinement must hold physical commands fixed before interpreting a new inverse solve.",
             "",
         ]
     )
-    return "\n".join(parts)
+    return "\n".join(parts), missing
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="fail if generated files are stale")
     args = parser.parse_args()
-    index_text = json.dumps(report_index(), indent=2) + "\n"
-    status_text = render_status(json.loads(LEDGER.read_text()))
-    for path, expected in ((INDEX, index_text), (STATUS, status_text)):
+    status_text, missing = render_status(json.loads(LEDGER.read_text()))
+    outputs = [(STATUS, status_text)]
+    # The run index inventories local artifacts; without them (e.g. in CI) it is not rebuilt.
+    if STUDIES.is_dir():
+        outputs.append((INDEX, json.dumps(report_index(), indent=2) + "\n"))
+    for path in missing:
+        print(f"Evidence file not in this checkout (kept in the research archive): {path}")
+    for path, expected in outputs:
         if args.check:
             if not path.exists() or path.read_text() != expected:
                 raise SystemExit(f"Stale generated file: {relative(path)}")
         else:
             path.write_text(expected)
-    print(f"Indexed {len(json.loads(index_text)['records'])} report files")
+    if STUDIES.is_dir():
+        print(f"Indexed {len(json.loads(outputs[-1][1])['records'])} report files")
 
 
 if __name__ == "__main__":

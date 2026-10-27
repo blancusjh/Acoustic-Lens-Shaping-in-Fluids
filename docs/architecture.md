@@ -17,15 +17,17 @@ axisymmetric source and surface spaces.
 | `notebooks/` | Editable presentations; executed copies live with their study artifacts |
 | `tools/documents/` | Manuscript builds, algebra checks and the evidence index |
 | `tools/audits/` | Study-specific audits of saved data |
-| `tools/presentation/` | Notebook execution, README figures and browser playback checks |
+| `tools/presentation/` | Notebook execution, README figures, videos and browser playback checks |
+| `tests/` | Independent checks against closed-form results; `-m slow` runs the solver |
+| `configs/machine/` | The fixed machine used by `afl design` |
 | `docs/` | Program-wide theory, contract and this architecture |
 | `web/` | Browser viewer assets for the single-interface model |
 
 ## Package
 
 Library packages compute; they do not choose output directories or write run
-records. Only `steps/` reads experiment configurations and writes a run
-directory. A library module may be imported by any later package in the table,
+records. Only `steps/` (and `design`, which sits above it) reads experiment
+configurations and writes a run directory. A library module may be imported by any later package in the table,
 never by an earlier one, except that `optics.stigmatic` uses
 `mechanics.surface` to build its target patches.
 
@@ -41,6 +43,7 @@ never by an earlier one, except that `optics.stigmatic` uses
 | `verify` | Analytic limits, response algebra and acceptance metrics |
 | `present` | Read-only figures and playback from saved physical states |
 | `steps` | One module per `afl` command: load configuration, call the library, write the run |
+| `design` | User-facing layer above `steps`: desired singlet and machine file in, recipe out (`afl design`); reuses the `capability_synthesis` build, solve and write so that its output is a held-command design the verification steps accept |
 | `models.single_interface` | Earlier single liquid–air interface model (S01) with its own command line |
 | `models.planar` | Planar-interface verification limits |
 
@@ -50,7 +53,8 @@ library as each algorithm is revised and independently tested.
 
 ## Commands
 
-`afl --help` lists every step. Each step takes an existing configuration and a
+`afl design` is the user entry point ([Design a lens](design-a-lens.md)).
+`afl --help` lists every research step. Each step takes an existing configuration and a
 new `--out` directory under `artifacts/`; it records the configuration,
 provenance, validation and report there. Historical input paths in
 configurations and saved artifacts are resolved by

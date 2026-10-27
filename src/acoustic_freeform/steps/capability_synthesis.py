@@ -8,6 +8,8 @@ the target fill volumes with all bands applied together. The design is written
 in the held-command layout (``design/state.npz`` with a (bands, channels) drive
 and ``band_frequencies_hz``) so that ``force-convergence``, ``coupled-stability``
 and ``form`` apply unchanged. Acceptance remains those independent checks.
+
+``build``, ``solve`` and ``write`` are shared with ``acoustic_freeform.design``.
 """
 
 import json
@@ -26,8 +28,8 @@ from ..mechanics.demand import demanded_force
 from ..mechanics.surface import DualSurface, singlet_geometry, targets_from_record
 
 
-def run(configuration, output):
-    inputs = json.loads(configuration.read_text())
+def build(inputs):
+    """Cell, targets at their own fill volumes, demand and modal source basis."""
     material = json.loads(data_path(inputs["material_reference"]).read_text())
     singlet = inputs["singlet"]
     geometry = singlet_geometry(singlet)
@@ -52,25 +54,34 @@ def run(configuration, output):
     modes, labels = modal_source_matrix(
         cfg, inputs["modes"]["window_modes"], inputs["modes"]["wall_modes"]
     )
+    return {
+        "inputs": inputs, "geometry": geometry, "bands": bands, "cfg": cfg, "targets": targets,
+        "space": space, "q": q, "demand": demand, "stiffness": stiffness, "observe": observe,
+        "modes": modes, "labels": labels,
+    }
+
+
+def command(problem):
+    """Convex bound and its refinement to one tone per band (frozen model)."""
+    inputs, cfg, space = problem["inputs"], problem["cfg"], problem["space"]
+    bands, modes = problem["bands"], problem["modes"]
     limits = inputs["limits"]
     margin = inputs.get("stability_margin")
-    output.mkdir(parents=True, exist_ok=False)
-    capture_execution(output)
     tones = []
     for f in bands:
-        tone = Tone(replace(cfg, frequency_hz=f), space, q, modes)
+        tone = Tone(replace(cfg, frequency_hz=f), space, problem["q"], modes)
         if margin is not None:
             tone.shape_derivatives()
         tones.append(tone)
-    stability = None if margin is None else (stiffness, margin)
+    stability = None if margin is None else (problem["stiffness"], margin)
     convex = best_tolerance(
-        tones, observe, demand, limits["source_power_w"], stability=stability
+        tones, problem["observe"], problem["demand"], limits["source_power_w"], stability=stability
     )
     starts = [t["amplitudes"][:, 0] for t in convex["tones"]]
     refined = tone_per_band_refinement(
         tones,
-        observe,
-        demand,
+        problem["observe"],
+        problem["demand"],
         starts,
         limits["source_power_w"],
         limits["peak_pressure_pa"],
@@ -78,18 +89,6 @@ def run(configuration, output):
     )
     coefficients = refined["amplitudes"]
     drive = np.array([modes @ c for c in coefficients])
-    wave = MultiBandAcoustics(cfg, space, bands, linear_solver="static_condensed")
-    start = space.unforced_equilibrium()
-    branch = startup_branch(
-        wave, space, drive, inputs["sigmas"], initial=start, tolerance_m=inputs.get("tolerance_m", 1e-13)
-    )
-    end = branch["points"][-1]["coefficients_m"]
-    fine = np.linspace(0, cfg.clear_radius_m, 401)
-    errors = [float(np.max(abs(space.height(j, end[j], fine) - targets[j].evaluate(fine)))) for j in range(2)]
-    start_errors = [
-        float(np.max(abs(space.height(j, start[j], fine) - targets[j].evaluate(fine)))) for j in range(2)
-    ]
-    diagnostics = wave.solve(end, drive).diagnostics(np.ones(1, complex))
     summary = {
         "bands_hz": bands,
         "modes_per_band": modes.shape[1],
@@ -97,36 +96,78 @@ def run(configuration, output):
         "convex_ranks": [t["rank"] for t in convex["tones"]],
         "refined_frozen_pupil_error_m": refined["pupil_max_error_m"],
         "refined_fold_margin": refined["fold_margin"],
-        "acoustics_off_pupil_error_m": start_errors,
-        "branch_reached_end": branch["reached_end"],
-        "branch_stop_reason": branch["stop_reason"],
-        "branch_min_static": min(p["static_min_real"] for p in branch["points"]),
-        "pupil_max_error_m": errors,
+    }
+    return {"coefficients": coefficients, "drive": drive, "summary": summary}
+
+
+def settle(problem, commanded, startup=True):
+    """Follow the start-up branch from the acoustics-off meniscus under a command."""
+    inputs, cfg, space = problem["inputs"], problem["cfg"], problem["space"]
+    bands, targets = problem["bands"], problem["targets"]
+    drive, summary = commanded["drive"], dict(commanded["summary"])
+    fine = np.linspace(0, cfg.clear_radius_m, 401)
+    start = space.unforced_equilibrium()
+    summary["acoustics_off_pupil_error_m"] = [
+        float(np.max(abs(space.height(j, start[j], fine) - targets[j].evaluate(fine)))) for j in range(2)
+    ]
+    wave = MultiBandAcoustics(cfg, space, bands, linear_solver="static_condensed")
+    if startup:
+        branch = startup_branch(
+            wave, space, drive, inputs["sigmas"], initial=start, tolerance_m=inputs.get("tolerance_m", 1e-13)
+        )
+        end = branch["points"][-1]["coefficients_m"]
+        summary.update({
+            "branch_reached_end": branch["reached_end"],
+            "branch_stop_reason": branch["stop_reason"],
+            "branch_min_static": min(p["static_min_real"] for p in branch["points"]),
+        })
+        summary["pupil_max_error_m"] = [
+            float(np.max(abs(space.height(j, end[j], fine) - targets[j].evaluate(fine)))) for j in range(2)
+        ]
+    else:
+        # Without the branch the saved state is the projected target, not a computed
+        # equilibrium, so no formed error is reported.
+        end = problem["q"]
+        summary["pupil_max_error_m"] = None
+    diagnostics = wave.solve(end, drive).diagnostics(np.ones(1, complex))
+    summary.update({
         "source_power_w": diagnostics["source_power_w"],
         "band_source_power_w": [b["source_power_w"] for b in diagnostics["bands"]],
         "band_peak_pressure_pa": diagnostics["band_sampled_pressure_peak_pa"],
         "worst_case_peak_pressure_pa": diagnostics["sampled_pressure_peak_pa"],
-    }
+    })
+    return {**commanded, "end": end, "summary": summary, "startup": startup}
+
+
+def solve(problem, startup=True):
+    """Convex bound, one tone per band, and (optionally) the nonlinear start-up branch."""
+    return settle(problem, command(problem), startup)
+
+
+def write(output, problem, result):
+    """Held-command layout read by force-convergence, coupled-stability and form."""
+    inputs, cfg, geometry = problem["inputs"], problem["cfg"], problem["geometry"]
+    bands, drive, summary = problem["bands"], result["drive"], result["summary"]
     optics = {
-        "indices": singlet["indices"],
+        "indices": inputs["singlet"]["indices"],
         "stigmatic_z_m": [z if np.isfinite(z) else str(z) for z in geometry["conjugates_m"]],
         "thickness_m": geometry["thickness_m"],
     }
     record = {**inputs, "apparatus": cfg.as_dict(), "optics": optics, "case": {"faces": None}}
     record["source_file"] = str(output / "best-source.npz")
     (output / "config.json").write_text(json.dumps(record, indent=2) + "\n")
-    (output / "modes.json").write_text(json.dumps(labels, indent=2) + "\n")
+    (output / "modes.json").write_text(json.dumps(problem["labels"], indent=2) + "\n")
     np.savez_compressed(
         output / "best-source.npz",
         source_velocity_m_s=drive,
-        modal_coefficients_m_s=np.array(coefficients),
+        modal_coefficients_m_s=np.array(result["coefficients"]),
         band_frequencies_hz=np.array(bands),
     )
     design = output / "design"
     design.mkdir()
     np.savez_compressed(
         design / "state.npz",
-        coefficients_m=end,
+        coefficients_m=result["end"],
         source_velocity_m_s=drive,
         band_frequencies_hz=np.array(bands),
     )
@@ -139,4 +180,13 @@ def run(configuration, output):
         "branch. Acceptance needs force-convergence, coupled-stability and form.\n\n"
         "```json\n" + json.dumps(summary, indent=2) + "\n```\n"
     )
-    print(json.dumps(summary), flush=True)
+
+
+def run(configuration, output):
+    inputs = json.loads(configuration.read_text())
+    problem = build(inputs)
+    output.mkdir(parents=True, exist_ok=False)
+    capture_execution(output)
+    result = solve(problem)
+    write(output, problem, result)
+    print(json.dumps(result["summary"]), flush=True)

@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite it as below."
+title: "Acoustic Freeform Lab: shaping liquid lenses with sound"
+version: 0.1.0
+date-released: 2026-10-27
+authors:
+  - family-names: Blanco
+    given-names: Jhonatan S.
+repository-code: "https://github.com/blancusjh/Acoustic-Lens-Shaping-in-Fluids"
+abstract: >-
+  Theory, numerical model and design tool for forming stigmatic singlet lenses
+  from a UV-curable liquid between two water layers by acoustic radiation
+  stress, with one fixed machine selecting the lens through its drive command.
+  Numerical model only; nothing has been built or measured.
+keywords:
+  - acoustofluidics
+  - acoustic radiation stress
+  - liquid lens
+  - stigmatic singlet
+  - semidefinite programming
+references:
+  - type: article
+    authors:
+      - family-names: Silva-Lora
+        given-names: Alberto
+      - family-names: Torres
+        given-names: Rafael
+    title: "Superconical aplanatic ovoid singlet lenses"
+    journal: "Journal of the Optical Society of America A"
+    volume: 37
+    issue: 7
+    start: 1155
+    end: 1165
+    year: 2020
+    doi: "10.1364/JOSAA.392795"

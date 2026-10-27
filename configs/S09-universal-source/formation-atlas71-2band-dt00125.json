@@ -1,0 +1,16 @@
+{
+  "source_directory": "artifacts/studies/S09-universal-source/rescued-2026-10-27/atlas71-2band/design",
+  "synthesis_config": "artifacts/studies/S09-universal-source/rescued-2026-10-27/atlas71-2band/config.json",
+  "acoustic_load": "linearized",
+  "tangent_refresh_steps": 10,
+  "fluid_radial_cells": 64,
+  "fluid_cells_per_layer": 12,
+  "step_s": 0.0125,
+  "minimum_step_s": 0.0001,
+  "maximum_step_displacement_m": 2.5e-05,
+  "duration_s": 2.0,
+  "ramp_s": 1.0,
+  "maximum_steps": 400,
+  "ray_count": 401,
+  "scope": "Forward start-up from the acoustics-off meniscus under the held S09 atlas lens 71 two-band command (water cell); linearized acoustic load; creeping flow only. Half time step."
+}

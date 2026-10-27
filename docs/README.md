@@ -1,12 +1,14 @@
 # Documentation
 
-Start with the [reviewed status](../STATUS.md), then the five
+To design a lens, start with [Design a lens](design-a-lens.md). For the
+research record, start with the [reviewed status](../STATUS.md), then the nine
 [studies](../studies/README.md). Each study folder holds its protocol, verdict
 and detailed records. This folder keeps only material that applies to the
 whole program.
 
 | Document | Content |
 |---|---|
+| [Design a lens](design-a-lens.md) | `afl design`: inputs, machine file, statuses, recipe fields, acceptance checks and limits |
 | [General theory](theory/README.md) | Canonical LaTeX manuscript, bibliography and source map; private PDF in `artifacts/theory/` |
 | [SSL generator report](theory/ssl-generator/README.md) | Fixed-prescription compiler vision and theory; private PDF in `artifacts/theory/ssl-generator/` |
 | [Research contract](research-program.md) | Scientific architecture, two-face apparatus contract and preservation record |
@@ -24,6 +26,8 @@ whole program.
 | [S05 emitter formation](../studies/S05-emitter-formation/study.md) | [model and stepping protocol](../studies/S05-emitter-formation/protocol.md) |
 | [S06 two-face physical checks](../studies/S06-two-face-physical-checks/study.md) | Refinement, physical sensitivity, stability, formation and coverage-gate checks of a surrogate state |
 | [S07 faithful modal synthesis](../studies/S07-faithful-modal-synthesis/study.md) | Meniscus-first prescription, modal synthesis of the reachable equilibrium and its verification |
+| [S08 published singlet](../studies/S08-published-singlet/study.md) | Fig. 9b and Fig. 7a of Silva-Lora and Torres in tuned and water cells (water limit withdrawn by S09) |
+| [S09 universal source](../studies/S09-universal-source/study.md) | Load demand, convex capability, the 81-lens atlas on one machine, channel study and stage verdict |
 
 Records keep the model scope of their own study. Links into `artifacts/`
 resolve only in the local research data tree, not on GitHub.
