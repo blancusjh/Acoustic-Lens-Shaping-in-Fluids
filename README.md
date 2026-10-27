@@ -28,8 +28,8 @@ sources, quiescent liquids, creeping flow):
 | Question | Reviewed state |
 |---|---|
 | Can one fixed machine hold many lenses? | Yes for the 68 Silva-Lora and Torres singlets that fit the cell: the convex certificate is below 0.5 nm within 1 W for all ([S09](studies/S09-universal-source/study.md)) |
-| Do they form from the liquid at rest? | 67 of 68 within 1 nm, with one tone (61) or two tones (6); for lens 57 the start-up ends on another equilibrium |
-| Are the formed states converged and stable? | For three designs (Fig. 9b, Fig. 7a with a fold margin, lens 7): mesh and order refinement, coupled stability and formation at two time steps, all within 1 nm |
+| Do they form from the liquid at rest? | 67 of 68 within 1 nm, 51 with one tone and 16 with two; for lens 57 the start-up ends on another equilibrium |
+| Are the formed states converged and stable? | For three designs (Fig. 9b, Fig. 7a with a fold margin, lens 7): mesh and order refinement, coupled stability and formation at two time steps, all within 1 nm; the Fig. 7a design runs at 1.12 W / 2.10 MPa, slightly above the 1 W / 2 MPa caps |
 | How many source channels are needed? | First-order only: the certificate stays at 0.025 nm down to 14 channels |
 | Physical machine | Not assessed: acoustic streaming, heating, non-axisymmetric disturbances, transducers, curing; a 0.1 % sound-speed change moves the faces by tens to hundreds of nm |
 

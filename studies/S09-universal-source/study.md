@@ -195,12 +195,15 @@ Within the declared axisymmetric, quiescent, creeping-flow model, one fixed
 machine (the water / NOA 61 / water cell, the same 112 source channels and 26
 modes, caps 1 W and 2 MPa per band) holds every one of the 68 family singlets
 that fit it: the convex bound is below 0.5 nm for all. Started from the
-acoustics-off meniscus, 67 of the 68 form within 1 nm (61 with one tone at
-1.5 MHz, 6 more with a second tone at 0.75 MHz). Lens 57 is the one exception
+acoustics-off meniscus, 67 of the 68 form within 1 nm: 51 with one tone at
+1.5 MHz and 16 with tones at 0.75 and 1.5 MHz (10 classified two-tone by the
+atlas, 6 rescued by the second tone). Lens 57 is the one exception
 and it is a path, not a capability, failure. The full chain (start-up,
 fixed-command refinement, coupled stability, formation at two time steps) has
 been run on three designs (Fig. 9b, Fig. 7a with a fold margin, lens 7) and all
-three form within 1 nm. Sensitivities of tens to hundreds of nanometres to a
+three form within 1 nm. The Fig. 7a fold-margin design was synthesized with
+10 W / 5 MPa limits and runs at 1.12 W and 2.10 MPa, slightly above the
+machine's 1 W / 2 MPa caps. Sensitivities of tens to hundreds of nanometres to a
 0.1 % sound-speed change mean a real machine needs measurement and trim. The
 channel study suggests far fewer than 112 channels suffice (first-order only).
 

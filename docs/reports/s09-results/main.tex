@@ -1,0 +1,746 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,enumitem,needspace,tabularx,threeparttable}
+\usepackage{graphicx,xcolor}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=numeric,sorting=none,maxbibnames=20,giveninits=true,doi=true,url=false,isbn=false]{biblatex}
+\addbibresource{../../theory/references.bib}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Acoustic Freeform Lab}
+\fancyhead[R]{\small S09 results report}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\AtBeginBibliography{\small}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\numberwithin{equation}{section}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\um}{\,\textmu m}
+\newcommand{\nm}{\,nm}
+\def\UrlBreaks{\do\/\do-\do\_\do.\do,}
+\renewcommand{\UrlFont}{\ttfamily\small}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\figdir}{../../../artifacts/studies/S09-universal-source}
+\newcommand{\genfig}{../../../artifacts/reports/s09-results/figures}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\sym}{sym}
+\DeclareMathOperator{\Rea}{Re}
+\hypersetup{pdftitle={One machine, many stigmatic singlets: numerical results of study S09},pdfauthor={Acoustic Freeform Lab},pdfsubject={Acoustic shaping of a UV-curable liquid lens: results report}}
+\title{One machine, many stigmatic singlets\\[0.5em]
+\large Numerical results of study S09 on acoustic shaping of NOA~61 between two water layers}
+\author{Acoustic Freeform Lab\\\small Results report for colleagues; private draft}
+\date{27 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We report the numerical results of study S09: whether one fixed acoustic machine
+(a 4\,mm water / NOA~61 / water cell with fixed windows and 112 source channels)
+can shape the two liquid interfaces into the faces of the stigmatic singlets of
+Silva-Lora and Torres~\cite{silva2020}, with the lens selected only by the drive
+command, the heights of two pinning edges and the fill volumes. Within a declared
+axisymmetric, lossless-acoustics, quiescent creeping-flow model the answer is yes
+for every one of the 68 family lenses that fit the cell: a convex certificate
+bounds the reachable pupil error below 0.5\,nm, and 67 of the 68 are formed from
+the liquid at rest within 1\,nm by one or two tones. Three designs passed the full
+chain of independent numerical checks. All results are numerical; no machine has
+been built and nothing has been measured. Sensitivities of tens to hundreds of
+nanometres to a 0.1\,\% sound-speed change, and unmodelled acoustic streaming,
+heating and three-dimensional disturbances, separate these numbers from a
+physical lens.
+\end{abstract}
+{\small\tableofcontents}
+\clearpage
+
+%======================================================================
+\section{Summary}\label{sec:summary}
+
+\paragraph{Question.} With the cell, liquids and source layout fixed, which
+stigmatic singlets (SOSLs) of the Silva-Lora and Torres family~\cite{silva2020}
+can be formed faithfully from the liquid at rest, if the lens is chosen only by
+the drive command, the two pin heights and the three fill volumes? Which extra
+source freedom extends the set most cheaply?
+
+\paragraph{Answer within the model.} Everything below holds only in the declared
+numerical model of \cref{sec:model}, which is axisymmetric and has lossless longitudinal acoustics
+with ideal velocity sources, time-averaged radiation stress as the only acoustic
+load, quiescent liquids and creeping flow.
+\begin{itemize}
+\item \textbf{Capability.} Of the 81 family singlets scanned (scaled 1/14 to a
+4\,mm aperture), 68 fit the common cell. For all 68 the convex capability
+certificate is below 0.5\,nm within 1\,W (largest 0.47\,nm, lens 57 with one
+band), so every lens that fits is reachable in principle by this source.
+\item \textbf{Formation from rest.} Started from the acoustics-off meniscus, the
+nonlinear start-up branch ends within 1\,nm of both faces for 61 lenses with the
+first command class tried (51 with one tone at 1.5\,MHz, 10 with one tone at
+0.75\,MHz plus one at 1.5\,MHz), and for 6 more once a second tone at 0.75\,MHz
+is added: 67 of 68. Lens 57 is the one exception, and it is a failure of the
+start-up path, not of capability.
+\item \textbf{Full chain.} Fig.~9b, Fig.~7a with a static fold margin and family
+lens 7 (two tones, f/0.79) passed fixed-command refinement, coupled linear
+stability and formation in time at two steps, and form within 1\,nm
+(\cref{tab:published}). For two rescued lenses (15 and 71) refinement and
+stability are done; their formation runs are pending.
+\item \textbf{Hardware.} A first-order channel study suggests that 14 channels
+already keep the certificate at 0.025\,nm for five representative lenses.
+\item \textbf{Design tool.} \texttt{afl design} reproduced the Fig.~9b result end
+to end from the lens prescription alone (status \enquote{formed},
+0.044\,/\,0.033\,nm).
+\end{itemize}
+
+\paragraph{Main numbers.} Fig.~9b on the common machine: one tone of 0.17\,W,
+sampled peak pressure 0.55\,MPa, formed pupil error 0.05\,/\,0.04\,nm
+(front\,/\,back), from an acoustics-off meniscus 0.77\,/\,2.07\um\ away; Fig.~7a
+with fold margin 0.7: 1.12\,W, 2.10\,MPa, formed 0.53\,/\,0.41\,nm; lens 7: two
+tones, 0.55\,W, formed 0.12\,/\,0.61\,nm from 1.10\,/\,43.8\um.
+
+\paragraph{Main limits.} (i) A 0.1\,\% change of the water sound speed moves the
+faces by 28--299\,nm (front) depending on the design (\cref{tab:sensitivity}); any
+physical machine would need wavefront measurement and closed-loop trim, and the
+NOA~61 sound speed is a placeholder. (ii) Acoustic streaming, heating,
+non-axisymmetric disturbances, inertia, contact-line hysteresis, transducers and
+curing are not modelled. (iii) The full chain has been run on three designs, the
+start-up branch alone on all 68. (iv) The Fig.~7a fold-margin design uses 1.12\,W
+and 2.10\,MPa, slightly above the machine's nominal 1\,W\,/\,2\,MPa caps.
+(v) Nothing has been built or measured: this is numerical evidence for a model,
+not experimental validation.
+
+%======================================================================
+\section{The model in brief}\label{sec:model}
+
+The formulation is the project's theory document (LaTeX source
+\file{docs/theory/}); the steps used here are its sections \enquote{Faithful
+two-face shaping: reachable equilibria of a modal source}
+(\file{sections/10e_faithful_inverse.tex}) and \enquote{A common source: load
+demand and convex capability} (\file{sections/10f_universal_source.tex}). We do
+not re-derive them. Acoustic radiation pressure deforming a liquid interface is
+established experimentally and numerically~\cite{bertin2012,chesneau2022,sisombat2023};
+fluidic shaping of optical components by other means is reported
+in~\cite{elgarisi2021}. Neither source tests the multi-interface, multi-lens
+machine considered here.
+
+\paragraph{Cell.} A cylinder of pinning radius 2.02\,mm (clear aperture 4\,mm)
+with windows at $z=-0.8$ and $+2.2286$\,mm, the front lens vertex at $z=0$, holds
+three layers: water, uncured Norland NOA~61, water. Both interfaces are pinned on
+edges at the lens rim heights; each layer is filled to the volume that the target
+faces enclose (\file{configs/machine/v1.json}). The windows are the same for every
+lens; only the pin heights and fill volumes follow the lens.
+
+\paragraph{Liquids.} \Cref{tab:materials} lists the material record
+\file{configs/shared/noa61-water-pressure-reference.json}. Its own status notes
+say that the resin values are manufacturer typical values, the resin--water
+interfacial tension is an engineering assumption, and the resin sound speed is a
+placeholder.
+
+\begin{table}[htbp]\centering\small
+\caption{Material constants of the model (SI). Status as declared in the material record.}\label{tab:materials}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+ & Water (lower, upper) & NOA 61, uncured & Status \\
+\midrule
+Density (kg\,m$^{-3}$) & 997 & 1231 & typical values \\
+Sound speed (m\,s$^{-1}$) & 1497 & 1500 & resin: placeholder \\
+Viscosity (Pa\,s) & 0.00089 & 0.30 & typical values \\
+Interfacial tension, both faces (N\,m$^{-1}$) & \multicolumn{2}{c}{0.025} & assumption \\
+Gravity (m\,s$^{-2}$) & \multicolumn{2}{c}{9.81} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Sources.} Ideal normal-velocity sources on both windows and the wall:
+32 ring regions per window and 16 wall bands per layer (112 channels), driven
+through the same 26 continuous low-order modes for every lens (8 Bessel modes
+$J_0(j'_{0,k}r/R)$ per window and 10 cosines on the wall). The region count is a
+quadrature of the continuous source space, not an apparatus property; the
+channel study (\cref{sec:channels}) tests it. Drive options: one tone at
+1.5\,MHz, or one tone each at 0.75 and 1.5\,MHz. Limits: 1\,W source power and
+2\,MPa sampled peak pressure per band.
+
+\paragraph{Physics implemented.} Time-harmonic, axisymmetric, lossless
+longitudinal acoustics in the three layers with passive ports; the time-averaged
+radiation stress on the two interfaces is the only acoustic load. Tones at
+distinct frequencies far apart compared with the interface bandwidth add their
+time-averaged forces. Statics: capillary--gravity energy of two pinned,
+volume-constrained interfaces. Dynamics: inertia-free three-fluid Stokes flow
+(creeping flow) on a moving axisymmetric domain. Optics: rays traced through the
+modelled faces with the published indices $n=1/1.7/1$, i.e.\ as the cured lens in
+air, 401 rays; Airy radii at 587.6\,nm.
+
+\paragraph{Approximations and what is not modelled.} Non-axisymmetric ($m\ge1$)
+disturbances, fluid inertia and convection, acoustic streaming (bulk and
+boundary-layer driven~\cite{bach2018,jorgensen2021}), absorption heating and
+thermal feedback, contact-line hysteresis, the transducers that would realize the
+source modes, curing shrinkage and demoulding. The theory document notes that
+streaming stresses at these pressures may be comparable to the 0.1--1\,Pa
+traction demands of the lens faces. Formation runs use a linearized acoustic
+load with the tangent refreshed every 10 steps.
+
+\paragraph{Accuracy goal.} The specification is the maximum absolute height
+error of each face over the clear pupil, 10\,nm; the design tool accepts a
+command at 1\,nm. A small frozen residual, a convincing rendering or a converged
+mesh is not a verified lens; acceptance is the chain of \cref{sec:method}.
+
+%======================================================================
+\section{Method}\label{sec:method}
+
+\paragraph{1. Load demand.} For a face $h(r)$ pinned at $r=R$, with tension
+$\sigma$ and density step $\Delta\rho$, stationarity of the graph energy at fixed
+volume requires the extra normal traction
+\begin{equation}
+ t(r)+P=-\sigma\,\tfrac1r\bigl(r\,\phi\bigr)'+\Delta\rho\,g\,h,\qquad \phi=h'/\sqrt{1+h'^2},
+ \label{eq:demand}
+\end{equation}
+which a prescribed face \enquote{demands} from the field up to a constant. With
+$h=h_0+\tfrac12cr^2+a_4r^4+\dots$ the demand is a series
+$t=\text{const}+Q_2r^2+Q_4r^4+\dots$; for a conic face its leading term vanishes
+when $\Delta\rho\,g/\sigma=4kc^2$ (the conic matching rule). The checks recorded
+in the study are: the finite-element meniscus under the exact demanded traction
+reproduces both faces of Fig.~9b and Fig.~7a to $3\times10^{-11}$\,m; the two
+discretizations of the demand agree to $2\times10^{-3}$; the series matches the
+exact demand to $6\times10^{-4}$ for $r\le0.15R$; the matching rule predicts the
+brine\,/\,oil choice found by brute force in S08 ($-8.3\times10^4$ vs
+$-7.9\times10^4$\,m$^{-2}$, $1.0\times10^6$ vs $7.5\times10^5$\,m$^{-2}$); and
+the finite-difference acoustic shape stiffness agrees with the analytic shape
+Jacobian to $1.7\times10^{-5}$.
+
+\paragraph{2. Convex capability certificate.} About the target, a tone with modal
+amplitudes $c$ exerts generalized forces $F_i=c^{\mathsf H}G_ic$. For several
+tones at distinct frequencies the time-averaged forces add, so with
+$X_t\succeq0$ per band
+\begin{equation}
+ \min_{X_t\succeq0,\ \bm v}\ \bigl\lVert O(\bm F(X)-\bm d)+V\bm v\bigr\rVert_\infty
+ \quad\text{s.t.}\quad \textstyle\sum_t\tr(W_tX_t)\le P_{\max},\quad
+ \bm p_{t,s}^{\mathsf H}X_t\bm p_{t,s}\le p_{\max}^2,
+ \label{eq:capability}
+\end{equation}
+is a semidefinite program; $O=HK^{-1}$ maps forces to pupil heights, $\bm d$ is
+the demand and the fill-pump trims $\bm v$ act through volume columns $V$. Its
+optimum lower-bounds the error of any drive in those bands. It is a relaxation in
+the sense of~\cite{luo2010}; rank bounds for extreme optimal points follow
+from~\cite{barvinok1995,pataki1998}. A static fold margin $\mu$ at the target
+can be imposed as the linear matrix inequality
+$\sym(K-A(X))\succeq\mu K$~\cite{boyd1994}. The certificate is first-order: it
+ignores the acoustic shape stiffness and the path to the target.
+
+\paragraph{3. One tone per band.} The leading eigenvectors of the optimal $X_t$
+are refined locally to exactly one tone per band within both caps. If the
+one-tone error exceeds the goal, the next drive option (a second band) is tried.
+
+\paragraph{4. Start-up from the acoustics-off meniscus.} The command is ramped
+as $s\,c$, $s:0\to1$, and the coupled equilibrium
+$s^2F_{\mathrm{ac}}(q;c)=\nabla E(q)$ is continued from the capillary--gravity
+meniscus $q_0$ at the lens's fill volumes. The smallest real part of the
+eigenvalues of $K^{-1}(K-s^2A)$ along the branch is the \emph{fold margin} (1:
+no acoustic softening; 0: fold). Under a slow ramp and a uniformly stable branch,
+creeping-flow start-up follows this branch (theory document, Proposition
+\enquote{Slow start-up follows the branch}).
+
+\paragraph{5. Independent checks at the held command.}
+(a) \emph{Fixed-command refinement}: the same physical command is re-evaluated on
+wave meshes $24\times9$ to $72\times27$, element orders P3--P5, quadrature $+2$ and
+36 to 72 surface elements; the first-order coupled shift $(K-A)^{-1}r$ of the
+saved state is reported. No new inverse is solved.
+(b) \emph{Coupled stability}: static spectrum of $K^{-1}(K-A)$, frozen-to-coupled
+amplification $\lVert(K-A)^{-1}K\rVert$, and the creeping-flow spectrum on
+$64\times12$ and $128\times24$ fluid meshes.
+(c) \emph{Formation}: forward creeping-flow start-up from the acoustics-off
+meniscus under the held command, 1\,s ramp, 2\,s total, at time steps of 25 and
+12.5\,ms. Every displayed frame is a saved state; nothing is interpolated toward
+the target.
+The same checks also give first-order physical sensitivities at the fixed command
+(\cref{tab:sensitivity}).
+
+%======================================================================
+\section{Results}\label{sec:results}
+
+\subsection{Published lenses on the common machine}\label{sec:published}
+
+Fig.~9b of~\cite{silva2020} has the object at infinity, $t=10$\,mm and an
+aperture of 56\,mm (T/D 0.18); scaled 1/14 it is a 0.714\,mm thick lens with
+f/1.42 at the image. Fig.~7a has $d_0=-150$, $d_2=70$, $t=20$\,mm and shape
+factor 0.444 (T/D 0.36). \Cref{tab:published} collects the four fully checked
+designs; \cref{fig:fig9b-setup,fig:fig9b-faces} show the Fig.~9b design and
+\cref{fig:formation} the formation histories.
+
+\begin{table}[htbp]\centering\small
+\caption{Fully checked designs on the common machine (front\,/\,back where two
+values are given). Rows marked $^\ast$ are quoted from the S09 study text; the
+others were read from the run records listed in \cref{sec:provenance}. Fold
+margin: minimum along the start-up branch. Decay: slowest creeping-flow rate on
+the $128\times24$ mesh. Refinement: largest change of the predicted equilibrium
+over all numerical trials (in brackets: excluding the P3 order).}\label{tab:published}
+\begin{tabularx}{\textwidth}{@{}LRRRR@{}}
+\toprule
+ & Fig.~9b & Fig.~7a, unconstrained & Fig.~7a, margin $\ge0.7$ & Lens 7, two tones \\
+\midrule
+Acoustics-off error (\textmu m) & 0.77\,/\,2.07 & 19.4\,/\,23.1 & 19.4\,/\,23.1 & 1.10\,/\,43.8 \\
+Bands (MHz) & 1.5 & 1.5 & 1.5 & 0.75 + 1.5 \\
+Source power (W) & 0.17 & 0.91 & 1.12 & 0.55 \\
+Sampled peak pressure (MPa) & 0.55 & 1.86 & 2.10 & 0.98 + 1.25 \\
+Fold margin, start-up & 0.96 & 0.068 & 0.94 & 0.96 \\
+Frozen-to-coupled amplification & 1.05 & 18.5 & 1.09 & 1.06 \\
+Slowest decay (s$^{-1}$) & $-41.4$ & $-7.4$ & $-96.9$ & $-84.8$ \\
+Refinement, max change (nm) & 0.18 (0.06) & 11.4 (3.8) & 2.6 (0.55) & 1.4 (0.39) \\
+Formed, dt 25\,ms (nm) & 0.05\,/\,0.04 & 14.2\,/\,0.36 & 0.53\,/\,0.41 & 0.12\,/\,0.61 \\
+Formed, dt 12.5\,ms (nm) & 0.05\,/\,0.04 & 10.7\,/\,0.36 & 0.53\,/\,0.41 & 0.12\,/\,0.61 \\
+Spot max, formation record (\textmu m) & 0.071 & 0.71 & 0.86 & 0.125 \\
+Spot RMS\,/\,max, pin-plane pupil$^\ast$ (\textmu m) & 0.004\,/\,0.071 & 0.033\,/\,0.37 & 0.027\,/\,0.45 & 0.010\,/\,0.125 \\
+Airy radius at 587.6\,nm$^\ast$ (\textmu m) & 1.02 & 0.68 & 0.68 & 0.57 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Reading the table.} Fig.~9b needs a weak field: 0.17\,W against a
+meniscus that is already within 2.1\um\ of the target, and every check moves it
+by less than 0.2\,nm. Heights below about 0.2\,nm (Fig.~9b) and 0.5\,nm
+(Fig.~7a) are below the model's own discretization resolution, which the
+refinement rows measure. The unconstrained single tone for Fig.~7a reaches the
+target but sits within 7\,\% of a fold (margin 0.068, amplification 18.5): its
+refinement moves the front face by up to 11\,nm and its formation is still
+decaying at the end of the run. The saved front-face error decays at a
+log-slope of $-7.0$\,s$^{-1}$ between 1.5 and 2.0\,s, close to the slowest decay
+rate $-7.4$\,s$^{-1}$, so the 14.2 vs 10.7\,nm difference between the two time
+steps is an unsettled transient rather than two different end states. With the
+fold-margin inequality at $\mu=0.7$ the refined tone has margin 0.94 and
+amplification 1.09, refinement within 0.55\,nm apart from the P3 order, and both
+time steps give the same formed state to the digits shown. The price is power:
+1.12\,W and 2.10\,MPa, above the machine's nominal caps (both Fig.~7a syntheses
+were run with limits of 10\,W and 5\,MPa).
+
+On the coarse $64\times12$ fluid mesh every design also shows two decay rates
+near $-10^{-3}$\,s$^{-1}$. S08 traced these to the 20\um\ annulus between the
+clear aperture and the pinned rim, narrower than one coarse cell; they vanish on
+the $128\times24$ mesh, which is the one quoted. No design has an unstable
+creeping-flow mode or a negative static eigenvalue.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\textwidth]{\figdir/figures/fig9b/s09-fig9b-setup.png}
+\caption{Fig.~9b on the common machine (rendering of the saved numerical design
+state, not an experiment). (a) Modelled cell, front half removed, equal scale;
+(b) meridional section at equal scale with rays traced with the published
+indices; (c--e) source velocity amplitude and phase of the 26-mode command on the
+lower window, upper window and wall; (f) acoustic pressure at one instant,
+1.5\,MHz. Source power 0.17\,W, sampled peak pressure 0.55\,MPa.}\label{fig:fig9b-setup}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\textwidth]{\figdir/figures/fig9b/s09-fig9b-faces.png}
+\caption{Fig.~9b faces over the clear aperture: sag (left; Cartesian target,
+acoustics-off meniscus and design overlap at this scale), height error to the
+target (middle; the green band is the $\pm10$\,nm goal) and geometric spot
+(right; green circle 1\um). Note the different axis scales: the acoustics-off
+spot spans about $\pm6.5$\um, the design spot about 0.05\um. Cycle-mean
+heights, no piston removed.}\label{fig:fig9b-faces}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\textwidth]{\genfig/formation-histories.png}
+\caption{Formation in physical time for the four fully checked designs: maximum
+pupil height error of each face against time, at time steps 25\,ms (solid) and
+12.5\,ms (dashed), log scale. The drive ramps up over the first second (dotted
+line). Generated by \file{make_figures.py} from the saved
+\file{observations.json} of each formation run.}\label{fig:formation}
+\end{figure}
+
+\subsection{Sensitivities}\label{sec:sensitivities}
+
+\Cref{tab:sensitivity} gives the coupled first-order shift of each face when one
+physical parameter changes and the command is held. These are the numbers that
+decide whether a physical machine could run open loop.
+
+\begin{table}[htbp]\centering\small
+\caption{Coupled first-order shift of the pupil (nm, front\,/\,back) at the held
+command, from the force-convergence records ($c$: sound speed; tension: both
+interfacial tensions). Lenses 15 and 71 are the two-tone
+rescued designs of \cref{sec:followup}.}\label{tab:sensitivity}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}lRRRRRR@{}}
+\toprule
+Perturbation & Fig.~9b & Fig.~7a uncon. & Fig.~7a $\mu=0.7$ & Lens 7 & Lens 15 & Lens 71 \\
+\midrule
+Water $c$ $+0.1$\,\% & 28\,/\,47 & 11400\,/\,103 & 299\,/\,330 & 147\,/\,78 & 362\,/\,50 & 56\,/\,36 \\
+Resin $c$ $+1$\,\% & 93\,/\,553 & 267000\,/\,3820 & 2160\,/\,3610 & 400\,/\,331 & 4470\,/\,1100 & 409\,/\,1100 \\
+Frequency $+100$\,ppm & 2.0\,/\,0.3 & 1460\,/\,27 & 50\,/\,67 & 13\,/\,9.2 & 8.2\,/\,6.9 & 9.0\,/\,14 \\
+Tension $+1$\,\% & 38\,/\,25 & 4270\,/\,188 & 161\,/\,113 & 27\,/\,367 & 2.3\,/\,187 & 153\,/\,83 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+A 0.1\,\% change of the water sound speed (a fraction of a kelvin) moves the faces
+by tens to hundreds of nanometres, and the near-fold Fig.~7a tone by 11\um. The
+resin sound speed, still a placeholder, enters at the micrometre level for most
+designs. These are linear predictions of the model; they say that the predicted
+nanometres are only meaningful together with measured constants and closed-loop
+trim against a measured wavefront.
+
+\subsection{Atlas: 81 singlets on the common machine}\label{sec:atlas}
+
+The family is Silva-Lora and Torres singlets with $n=1/1.7/1$; object at
+infinity, $-300$ or $-150$\,mm; image at 60, 90 or 120\,mm; thickness 10, 15 or
+20\,mm; shape factor $-0.5$, 0 or $+0.5$ (paper units), scaled 1/14: 81 lenses.
+Thirteen do not fit the common cell (faces crossing at the rim or too close to a
+window): lenses 0, 1, 2, 27, 28, 29, 54, 55, 56, 59, 63, 64 and 65.
+
+\paragraph{First-order atlas.} \Cref{fig:atlas} shows the corrected first-order
+survey (after the mesh fix of \cref{sec:mesh}): with one tone per band, 26
+modes, $\le1$\,W and $\le2$\,MPa per band, a single tone at 1.5\,MHz reaches the
+10\,nm goal for 58 lenses and a tone at 0.75\,MHz plus one at 1.5\,MHz for the
+other 10 (lenses 6, 7, 30, 31, 33, 34, 42, 58, 60, 61); none is out of reach.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.92\textwidth]{\figdir/atlas-2026-10-26/figures/s09-atlas.png}
+\caption{First-order atlas: least source freedom with which the refined command
+reaches the 10\,nm goal for each of the 81 singlets (dark green: one tone at
+1.5\,MHz; light green: two tones; grey: does not fit). Each lens is drawn at
+equal scale in the common cell. This is a frozen-compliance result; the
+nonlinear start-up check is \cref{fig:atlas-nonlinear}.}\label{fig:atlas}
+\end{figure}
+
+\paragraph{Nonlinear check of the whole atlas.} For every lens that fits, the
+convex program and the one-tone-per-band refinement were repeated under both caps
+and the coupled start-up branch was followed from the acoustics-off meniscus,
+which lies 3 to 90\um\ from the target (worse face) depending on the lens (5.4 CPU-hours in
+total). \Cref{tab:atlas,fig:atlas-nonlinear} summarize the end of the branch.
+
+\begin{table}[htbp]\centering\small
+\caption{End of the start-up branch, maximum pupil error over both faces, with the
+command class of the first-order atlas (\file{atlas-nonlinear.jsonl}).}\label{tab:atlas}
+\begin{tabular}{@{}lrl@{}}
+\toprule
+Start-up end error & Lenses & Detail \\
+\midrule
+below 1\,nm & 61 & 51 one tone, 10 two tones; median of all 68: 0.16\,nm \\
+1 to 10\,nm & 3 & lenses 3, 12, 35: 2.5, 1.4, 1.1\,nm \\
+10 to 20\,nm & 3 & lenses 15, 71, 78: 10.2, 12.9, 17.1\,nm \\
+fold before full amplitude & 1 & lens 57: fold at $s=1$, 31\,nm \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\textwidth]{\genfig/atlas-nonlinear.png}
+\caption{(a) Maximum pupil error at the end of the start-up branch for each of
+the 68 lenses that fit (circles: one tone; squares: two tones; cross: fold). Arrows
+lead to the two-tone follow-up of the seven lenses that missed 1\,nm
+(\cref{sec:followup}); for lens 57 the follow-up ends on another equilibrium.
+(b) Frozen (first-order) error of the refined command against the nonlinear
+start-up error. Below about 0.3\,nm the nonlinear values sit above the frozen
+ones, at the level of the discretization resolution of \cref{tab:published}.
+Log scales. Generated by \file{make_figures.py}.}\label{fig:atlas-nonlinear}
+\end{figure}
+
+For the seven lenses that missed 1\,nm the convex bound is 0.003--0.03\,nm (lens
+57: 0.47\,nm), so the shortfall is not in the source. It is already present in
+the one-tone refinement: the frozen error of the refined command is within 30\,\%
+of the nonlinear one (\cref{fig:atlas-nonlinear}b), and the refined tone sits at
+the 2\,MPa cap in six of the seven and at the 1\,W cap in lens 12. It is a limit
+of the one-tone restriction under the caps.
+
+\subsection{Two-tone follow-up and the lens 57 path failure}\label{sec:followup}
+
+The seven short lenses were rerun with one tone at 0.75\,MHz plus one at 1.5\,MHz
+and, separately, with one tone and a fold-margin inequality $\mu\ge0.5$
+(\cref{tab:followup}).
+
+\begin{table}[htbp]\centering\small
+\caption{Follow-up of the seven lenses that missed 1\,nm (start-up end, maximum
+pupil error). Two-tone column: power and the minimum fold margin along the
+branch. The fold-margin run was interrupted after lenses 3, 12 and 15.}\label{tab:followup}
+\begin{tabular}{@{}rrlr@{}}
+\toprule
+Lens & One tone, 1.5\,MHz & Two tones, 0.75 + 1.5\,MHz & One tone, $\mu\ge0.5$ \\
+\midrule
+3 & 2.5\,nm & 0.06\,nm (0.94\,W, margin 0.21) & 129\,nm \\
+12 & 1.4\,nm & 0.03\,nm (0.69\,W, margin 0.72) & 0.23\,nm \\
+15 & 10.2\,nm & 0.03\,nm (0.31\,W, margin 0.93) & 0.42\,nm \\
+35 & 1.1\,nm & 0.055\,nm (0.57\,W, margin 1.00) & not run \\
+71 & 12.9\,nm & 0.04\,nm (0.42\,W, margin 0.99) & not run \\
+78 & 17.1\,nm & 0.03\,nm (0.53\,W, margin 0.94) & not run \\
+57 & fold, 31\,nm & \textbf{other equilibrium: 25\,/\,159\um} & not run \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The second band rescues six of the seven, so 67 of 68 lenses form within 1\,nm
+from rest. The fold-margin inequality trades accuracy for margin and is not the
+cheap remedy: lens 3 gets worse (129\,nm).
+
+\paragraph{Lens 57} (object $-150$, image 60, $t=15$, shape factor $-0.5$;
+acoustics-off error 2.5\,/\,76\um) fails differently. Its two-tone command holds
+the target in the frozen model (0.33\,nm; convex bound 0.019\,nm) and the branch
+does reach full amplitude (minimum fold margin 0.32), but on another equilibrium,
+25\,/\,159\um\ from the target, i.e.\ farther than the meniscus it started from.
+Capability is not the issue; the path is. A finer uniform ramp (40 steps) is
+being tested: at the time of writing \file{lens57-fine-ramp.jsonl} does not exist
+and the run's log contains no result, so this test is \textbf{pending}. Ramping
+the bands separately or ramping the volumes has not been tried.
+
+\paragraph{Full checks of the rescued lenses 15 and 71.} Both were re-synthesized
+(two tones) with the command \texttt{afl}~\file{capability-synthesis} and taken into the independent
+checks (\cref{tab:rescued}). Note that these are separate synthesis runs: their
+commands differ from those of the follow-up table (for lens 15, 0.59\,W instead
+of 0.31\,W).
+
+\begin{table}[htbp]\centering\small
+\caption{Independent checks of the two-tone designs of lenses 15 and 71
+(\file{rescued-2026-10-27/}).}\label{tab:rescued}
+\begin{tabularx}{\textwidth}{@{}p{0.36\textwidth}LL@{}}
+\toprule
+ & Lens 15 & Lens 71 \\
+\midrule
+Lens (object, image, $t$ in paper mm; shape factor) & $\infty$, 90, 20; $-0.5$ & $-150$, 90, 20; $+0.5$ \\
+Acoustics-off error (\textmu m) & 1.07\,/\,23.3 & 12.5\,/\,11.4 \\
+Power (W); band peak pressures (MPa) & 0.59; 0.63 + 0.97 & 0.55; 0.59 + 0.79 \\
+Start-up end (nm); fold margin & 0.058\,/\,0.207; 0.86 & 0.089\,/\,0.044; 1.00 \\
+Refinement, max change (nm) & 1.0 (P3); 0.19 otherwise & 0.37 (P3); 0.12 otherwise \\
+Amplification; slowest decay $128\times24$ (s$^{-1}$) & 1.19; $-77.1$ & 1.01; $-87.2$ \\
+Unstable modes; negative static eigenvalues & 0; 0 & 0; 0 \\
+Formation, dt 25\,ms & \textbf{pending} (last saved state $t=0.825$\,s) & \textbf{pending} (last saved state $t=0.900$\,s) \\
+Formation, dt 12.5\,ms & \textbf{pending} (not started) & \textbf{pending} (not started) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The formation runs were in progress when this report was written; no
+\file{validation.json} exists for either, and no result is claimed. The partial
+trajectories are mid-ramp and say nothing yet about the formed state.
+
+\subsection{Minimum hardware: channel count}\label{sec:channels}
+
+The 112 channels discretize the continuous source. \Cref{tab:channels,fig:channels}
+repeat the frozen capability and the one-tone refinement with fewer rings per
+window and wall bands per layer (below 26 channels the mode count equals the
+channel count).
+
+\begin{table}[htbp]\centering\small
+\caption{Channel study (first order, 1\,W, 2\,MPa; \file{channel-study.jsonl}).
+Channels $=2\times$rings per window $+\,3\times$wall bands per layer. Errors are
+frozen maximum pupil errors in nm.}\label{tab:channels}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+ & Convex bound, & \multicolumn{5}{c}{One tone per band (refined)} \\
+\cmidrule(l){3-7}
+Channels (rings, wall bands) & worst of 5 & Fig.~9b & Fig.~7a & Lens 22 & Lens 45 & Lens 7 (2 tones) \\
+\midrule
+112 (32, 16) & 0.010 & 0.020 & 0.12 & 0.01 & 0.12 & 0.001 \\
+56 (16, 8) & 0.010 & 0.005 & 0.57 & 0.02 & 0.19 & 0.001 \\
+42 (12, 6) & 0.010 & 0.012 & 11.2 & 0.01 & 0.14 & 0.001 \\
+28 (8, 4) & 0.011 & 0.025 & 2.8 & 0.01 & 0.04 & 0.001 \\
+21 (6, 3) & 0.011 & 0.008 & 11.2 & 0.04 & 0.04 & 0.001 \\
+14 (4, 2) & 0.025 & 0.020 & 12.3 & 0.34 & 0.28 & 0.007 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=\textwidth]{\genfig/channel-study.png}
+\caption{Channel study: (a) convex bound and (b) one-tone-per-band error against
+the number of source channels, five lenses, log scales. First-order results;
+none of the reduced layouts has been through the nonlinear chain.}\label{fig:channels}
+\end{figure}
+
+With 14 channels the bound is still 0.025\,nm for every lens tried and four of
+the five keep a one-tone command below 0.4\,nm. Only the pressure-limited Fig.~7a
+needs about 56 channels for a sub-nanometre single tone. These are first-order
+numbers.
+
+\subsection{The design tool \texttt{afl design}}\label{sec:design}
+
+\texttt{afl design} turns a lens prescription into machine settings: it places
+the lens with its front vertex 0.8\,mm above the bottom window, checks the fit,
+sets the pin heights to the rim heights and the fills to the enclosed volumes,
+computes the certificate, refines one tone per band (trying 1.5\,MHz, then
+0.75 + 1.5\,MHz, accepting at 1\,nm) and ramps the command from rest.
+
+\paragraph{Fig.~9b end to end.} From the prescription alone (object collimated,
+image 90, $t=10$, intermediate point 137.95\,mm, scale 1/14) the tool returned
+status \enquote{formed} (\file{artifacts/designs/fig9b-2026-10-27/recipe.json};
+\cref{tab:recipe}). The run took 4239\,s (71\,min) on a shared 4-core machine.
+The recipe reproduces the S09 nonlinear check of Fig.~9b
+(\file{nonlinear-2026-10-26/fig9b-1.5mhz-26modes.json}) to all printed digits.
+Two cautions: the status means that the ramp from rest ends within the goal, not
+that the independent checks were run (the recipe says so); and the recipe's
+command (0.1715\,W) is close to but not identical with the separately verified
+S09 Fig.~9b command (0.1712\,W), so the checks of \cref{tab:published} apply to a
+neighbouring command.
+
+\begin{table}[htbp]\centering\small
+\caption{Recipe of the end-to-end Fig.~9b design (SI; volumes in \textmu L $=10^{-9}$\,m$^3$).}\label{tab:recipe}
+\begin{tabularx}{\textwidth}{@{}p{0.45\textwidth}L@{}}
+\toprule
+Pin heights above the bottom window & 1.3251\,mm and 1.5539\,mm \\
+Fill volumes (lower, lens, upper) & 13.57, 6.08, 19.17\,\textmu L \\
+Drive & one tone, 1.5\,MHz, 112 channels; 0.1715\,W; 0.545\,MPa \\
+Convex bound; frozen error of the command & 0.0022\,nm; 0.0080\,nm \\
+Start-up end error (front\,/\,back); fold margin & 0.044\,/\,0.033\,nm; 0.956 \\
+Spot RMS\,/\,max; Airy radius; working f-number & 0.0034\,/\,0.054\um; 1.017\um; 1.42 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Lens 7.} The user guide records a \texttt{--no-startup} run for lens 7
+in which one tone was tried and then two (17\,min). No recipe file of that run is
+in the artifacts tree, so we give no numbers for it here; the nonlinear evidence
+for lens 7 is the S09 synthesis and its full checks (\cref{tab:published}).
+
+\subsection{What an outside listener would hear}\label{sec:sound}
+
+For presentation only, the harmonic fields of Fig.~9b (lens A) and lens 7 (lens
+B) were carried to a listener on the axis 50\,mm above the cell by a
+Kirchhoff--Helmholtz integral over the revolved cell boundary, assuming a water
+bath outside (the model has no exterior medium). The predicted amplitudes are
+5.4\,kPa for lens A at 1.5\,MHz and 2.0 and 1.9\,kPa for lens B at 0.75 and
+1.5\,MHz; doubling the listener distance multiplies them by 0.47--0.51, as
+expected in the far field. The soundtrack plays each band at its frequency
+divided by 2000. This is a sonification of the model, not a recording, and it
+adds an assumption (the bath) that the shaping results do not use.
+
+%======================================================================
+\section{Corrections made along the way}\label{sec:corrections}
+
+\paragraph{S08: \enquote{water cannot reach Fig.~9b} withdrawn.} S08 found that
+the single-tone faithful inverse stalled at 674--676\,nm for Fig.~9b in the water
+cell, at 1\,W and at 10\,W alike, and concluded that the liquids had to be tuned
+(brine below, a hypothetical 5\,mN\,m$^{-1}$ oil above). That floor was a local
+minimum of a non-convex inverse started from frozen least-squares fits of random
+seeds. The convex program, for the same lens, cell type, 26-mode source and
+frequency, gives a single tone of 0.17\,W whose start-up branch ends within
+$5\times10^{-11}$\,m of both faces. The S08 multi-tone figures came from the same
+kind of local fit and are equally unreliable; the tuned-liquid design remains
+valid as a result, but tuning is not necessary. \emph{Why it matters:} a stalled
+local optimizer is not evidence of unreachability. A reachability claim needs a
+certificate, and the convex bound now serves both as that certificate and as the
+initializer.
+
+\paragraph{S09 mesh defect.}\label{sec:mesh} A first pass of the atlas used a wave
+mesh that, for 20 of the 68 geometries (lenses 3, 7, 8, 15, 18, 21, 22, 25, 26,
+30, 32, 38, 45, 49, 52, 58, 60, 62, 71, 77), contained zero-height elements: cell
+and port grids shared layer fractions computed one rounding unit apart, so exact
+de-duplication kept both rows and the wave matrix was singular (about 5\,\% linear
+residual with both direct solvers; force discontinuous in the shape). Those rows
+made 13 lenses look hard and 3 unreachable, and supported a claim that a second
+band beats doubling the modes (14 vs 5 rescued lenses); that claim is withdrawn.
+The mesh now merges near-duplicate nodes; meshes without such nodes, including
+every saved S06--S09 design except the two-band atlas-38 run (marked invalid),
+are bit-identical after the fix. The invalid records are kept and marked.
+\emph{Why it matters:} an optimizer's small residual does not certify the forward
+solve. The wave solve's linear residual (now 1--3$\times10^{-13}$ in every coupled-stability record
+read for this report) belongs in every acceptance.
+
+\paragraph{Pupil convention of the spot.} The spot values marked $^\ast$ in
+\cref{tab:published} launch rays through points on the pin plane, a pupil slightly
+inside the 2\,mm clear radius. Launched through the front face out to the full
+clear radius, the Fig.~7a margin-0.7 maximum is 0.86\um\ (RMS 0.03\um, wavefront
+PV about $\lambda/560$ at 1\,nm), slightly beyond the 0.68\um\ Airy radius at the
+extreme edge ray; the Fig.~9b and lens-7 values are unchanged. The formation
+records' spot maxima (0.855\um\ for the margin design, 0.705--0.712\um\ for the
+unconstrained one) coincide with this full-aperture value. \emph{Why it matters:}
+\enquote{diffraction-limited} holds for Fig.~9b and lens 7 under either
+convention, but for Fig.~7a only for the pin-plane pupil; a spot claim must state
+its pupil.
+
+\paragraph{Radiation integral: first to second order.} The first version of the
+outside-listener integral took $\partial p/\partial n$ from the gradient of the
+linear interpolant on each boundary triangle, which is first-order accurate. It
+was replaced by a local quadratic least-squares fit of $p$ and $\nabla p$ at each
+boundary-edge midpoint (\file{src/acoustic_freeform/acoustics/radiation.py}),
+tested against the exact field of a monopole inside the cell: the error is below
+0.5\,\% at two listener distances and falls by more than a factor 3.5 when the
+mesh is refined twofold (\file{tests/test_radiation.py}). The listener numbers of
+\cref{sec:sound} were regenerated with the second-order version; the first-order
+values are not in the artifacts tree, so the size of the change is not reported.
+\emph{Why it matters:} it affects only the presentation soundtrack, not any
+shaping result, but the test against an independent exact solution is the kind
+of check the project requires.
+
+\paragraph{Two points of bookkeeping in this report.} (i) The S09 verdict text and
+the README state \enquote{61 with one tone at 1.5\,MHz, 6 more with a second
+tone}. The records give 61 lenses below 1\,nm with the first command class, of
+which 51 use one tone and 10 already use two tones, plus 6 rescued by a second
+tone: 67 in all, 51 with one tone and 16 with two. This report uses the record
+values. (ii) The Fig.~7a designs were synthesized with limits of 10\,W and
+5\,MPa; the margin-0.7 design exceeds the machine's 1\,W\,/\,2\,MPa caps by 12\,\%
+and 5\,\%.
+
+%======================================================================
+\section{Limits, open questions and next steps}\label{sec:limits}
+
+\paragraph{What is established, and how.} Implemented physics: axisymmetric
+lossless acoustics with ideal velocity sources, radiation stress, capillarity,
+gravity, pinned rims, fixed volumes and creeping flow. Numerical verification:
+fixed-command refinement of mesh, order, quadrature and surface space; coupled
+static and creeping-flow stability; formation at two time steps; closed-form and
+independent checks of the demand, the matching rule and the shape Jacobian. Not
+done: experimental validation of any kind.
+
+\paragraph{Limits.}
+\begin{itemize}
+\item \emph{Model scope.} Acoustic streaming, absorption heating and thermal
+feedback, the stability of the driven state under non-axisymmetric ($m\ge1$) disturbances, inertia,
+contact-line hysteresis, transducer realization of the source modes, curing
+shrinkage and demoulding are not assessed. A quiescent spectrum is not the
+stability of a streaming base flow.
+\item \emph{Coverage of the checks.} The full chain has been run on three designs;
+the start-up branch alone on all 68 atlas lenses; formation of the rescued lenses
+15 and 71 is pending; the channel study is first order only.
+\item \emph{Sensitivity.} Tens to hundreds of nanometres per 0.1\,\% of sound
+speed; the resin sound speed and the interfacial tension are not measured.
+\item \emph{Optics.} The lenses are stigmatic by construction; axial stigmatism
+does not imply aplanatism or achromatism, and the spots are traced with the
+published indices as the cured lens in air, not through the liquid cell.
+\item \emph{Liquid optics vs.\ a product.} The results concern a driven liquid
+equilibrium and its formation. Curing is a separate, unmodelled process.
+\end{itemize}
+
+\paragraph{Next steps} (in the order of the S09 verdict).
+\begin{enumerate}
+\item The start-up path of lens 57: the finer uniform ramp (pending), then
+separate band ramps or volume ramps.
+\item The full chain for a sample of the rescued lenses (15 and 71 under way) and
+for reduced channel counts.
+\item Acoustic streaming, heating and non-axisymmetric stability.
+\item A measured NOA~61 sound speed.
+\item A physical transducer realization of the source modes.
+\end{enumerate}
+Nothing in this report has been built or measured.
+
+%======================================================================
+\section*{Provenance of the numbers}\label{sec:provenance}
+\addcontentsline{toc}{section}{Provenance of the numbers}
+\begingroup\small\raggedright
+Study texts: \file{studies/S09-universal-source/study.md},
+\file{studies/S08-published-singlet/study.md}, \file{STATUS.md},
+\file{studies/ledger.json}, \file{docs/design-a-lens.md}. Run records under
+\file{artifacts/studies/S09-universal-source/} (private): synthesis
+\file{synthesis-2026-10-26/<run>/validation.json}; start-up checks
+\file{nonlinear-2026-10-26/*.json}; full checks in
+\file{fig9b-verification-2026-10-26/}, \file{fig7a-verification-2026-10-26/},
+\file{fig7a-margin0p7-verification-2026-10-26/} and
+\file{atlas7-2band-verification-2026-10-26/}, each with
+\file{force-convergence/}, \file{coupled-stability/}, \file{formation-dt0025/}
+and \file{formation-dt00125/} (\file{validation.json}, \file{observations.json}); atlas \file{atlas-nonlinear-2026-10-27/atlas-nonlinear.jsonl},
+\file{followup-two-bands.jsonl}, \file{followup-margin0p5.jsonl}; rescued lenses
+\file{rescued-2026-10-27/}; channels \file{channels-2026-10-27/channel-study.jsonl};
+listener \file{story-2026-10-27/story-listener.json}; design tool
+\file{artifacts/designs/fig9b-2026-10-27/recipe.json}. Values quoted only from
+the study text (marked $^\ast$ in \cref{tab:published}, the theory checks of
+\cref{sec:method}, and the full-aperture spot RMS and wavefront PV) were not found
+in a separate run record. Configurations: \file{configs/S09-universal-source/}.
+Generated plots: \file{docs/reports/s09-results/make_figures.py}.
+\par\endgroup
+
+\printbibliography[heading=bibintoc,title={References}]
+\end{document}
