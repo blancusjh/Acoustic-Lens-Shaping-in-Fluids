@@ -1,0 +1,1043 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,needspace}
+\usepackage{graphicx,xcolor,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=numeric,sorting=none,maxbibnames=20,giveninits=true,doi=true,url=false,isbn=false]{biblatex}
+\addbibresource{../../theory/references.bib}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Acoustic Freeform Lab}
+\fancyhead[R]{\small From fluidic to acoustic shaping}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\AtBeginBibliography{\small}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\numberwithin{equation}{section}
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\nn}{\bm n}
+\newcommand{\Id}{\bm I}
+\newcommand{\Pg}{\bm P_\Gamma}
+\newcommand{\Gs}{\nabla_\Gamma}
+\newcommand{\jump}[1]{\left[\!\left[#1\right]\!\right]}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\inner}[2]{\left\langle#1,#2\right\rangle}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\sym}{sym}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\hypersetup{pdftitle={From fluidic shaping to acoustic shaping},pdfauthor={Acoustic Freeform Lab},pdfsubject={The load that produces a prescribed liquid surface}}
+\title{From fluidic shaping to acoustic shaping:\\[0.4em]
+\large the load that produces a prescribed liquid surface}
+\author{Acoustic Freeform Lab\\\small Private research manuscript (theory)}
+\date{27 October 2026 \quad---\quad Draft 1}
+\begin{document}
+\maketitle
+\begin{abstract}
+Fluidic shaping, introduced by Bercovici and co-workers, forms optical
+components from a curable liquid pinned on a bounding frame inside a
+nearly density-matched immersion liquid; the interface is a minimum of
+interfacial plus gravitational energy at fixed volumes, and it is then cured.
+The reachable surfaces are therefore solutions of the capillary--gravity
+(Young--Laplace) equation: spherical caps at neutral buoyancy, Bessel-type
+aspheres at finite Bond number, and Fourier--Bessel freeforms set by the
+frame height. We pose the extension as an inverse problem: add a normal
+traction field to the interface and ask which traction holds a prescribed
+surface. Stationarity of the pinned, volume-constrained energy gives this
+\emph{load demand} in closed form, unique up to one constant per independent
+volume constraint. Near the axis it reduces to a short series; for conic faces
+the leading term vanishes when $\Delta\rho g/\sigma=4kc^2$, and the remainder
+shows that no non-spherical conic is an unforced equilibrium. We then propose
+acoustic radiation stress as the means of applying the load. In a cylinder
+with ideal velocity sources the generalized force is a Hermitian form in the
+source amplitudes; multi-tone drives turn the reachable forces into a convex
+cone, so the best attainable tolerance is a semidefinite program with a dual
+certificate of impossibility, a rank bound on the number of tones, and convex
+pressure and fold-margin constraints. A fold-margin inequality also implies
+creeping-flow stability for every symmetric positive mobility. Holding a target
+does not imply reaching it from the unforced meniscus; we give a sufficient
+monotonicity condition for the start-up path. All statements are theoretical
+and conditional on an axisymmetric, bulk-lossless, ideal-source, creeping-flow
+reduction; acoustic streaming, heating, three-dimensional disturbances,
+transducers and curing remain open. Nothing described here has been built or
+measured.
+\end{abstract}
+
+{\small\tableofcontents}
+
+\section{Introduction}\label{sec:intro}
+
+Frumkin and Bercovici showed that a curable liquid injected into a bounding
+frame immersed in a second, immiscible liquid of nearly equal density takes a
+shape set by interfacial tension, the injected volume and the frame, and can
+then be cured into a lens with nanometric surface roughness
+\cite{frumkin2021}. Elgarisi \emph{et al.} extended the method to freeform
+surfaces by giving the frame an azimuthally varying height
+\cite{elgarisi2021,elgarisi2021preprint}. The surfaces that this
+\emph{fluidic shaping} reaches are, by construction, equilibria of the
+capillary--gravity energy. They form a rich but restricted family: an optical
+designer cannot in general prescribe an arbitrary asphere or freeform and
+obtain it by choosing a frame, a volume and a density contrast.
+
+This paper asks what must be added to reach a prescribed surface. The answer is
+organized as an inverse problem with three steps:
+\[
+ \text{target surface }h_\star\ \longrightarrow\ \text{load demand }t_\star
+ \ \longrightarrow\ \text{acoustic drive }c\ \longrightarrow\
+ \text{formation from the unforced meniscus}.
+\]
+The first arrow is exact and explicit (\cref{sec:demand}). The second asks
+whether a fixed acoustic source can supply that load; under stated
+approximations it becomes a convex feasibility problem with certificates
+(\cref{sec:acoustic,sec:capability}). The third asks whether the held
+equilibrium is actually the state reached when the drive is switched on from
+the fluidic-shaping meniscus, and whether it is stable
+(\cref{sec:formation}). \Cref{sec:validity} states the regime in which these
+statements hold and the physics that remains open.
+
+\Cref{tab:status} records the status of each result. We use SI units
+throughout. The derivations specialize the canonical theory of this project;
+where a result is new to this paper it is marked as derived here. Numerical
+values quoted from the project's study S09 are illustrations computed in a
+declared model, not tests of the propositions and not experimental evidence.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{60mm}p{94mm}@{}}
+\toprule
+Result & Status \\\midrule
+Fluidic-shaping model and reported results (\cref{sec:fluidic}) &
+Literature \cite{frumkin2021,elgarisi2021,elgarisi2021preprint}, summarized
+from the verified texts.\\
+Load demand, gauge, two faces (\cref{sec:demand}) & Exact within constant
+$\sigma$, uniform gravity, quiescent liquids, pinned graphs.\\
+Series, matching rule, conic remainder (\cref{sec:series}) & Exact Taylor
+coefficients (checked in exact rational arithmetic); local near the axis.\\
+Radiation traction as a Hermitian form (\cref{sec:acoustic}) & Exact within
+linear, inviscid, cycle-averaged acoustics with a high-frequency transmission
+reduction.\\
+Multi-tone convex cone (\cref{sec:multitone}) & Approximation: tone separation
+beyond the interface bandwidth, and a band kernel independent of frequency
+within each band.\\
+Duality, rank and LMI statements (\cref{sec:capability}) & Exact for the
+frozen, first-order finite-dimensional model.\\
+Reachability and stability (\cref{sec:formation}) & Exact sufficient conditions
+in the axisymmetric creeping-flow reduction; not three-dimensional.\\
+Numbers from S09 & Numerical illustrations in a declared model; nothing built
+or measured.\\
+\bottomrule
+\end{tabular}
+\caption{What kind of claim each part of the paper makes.}
+\label{tab:status}
+\end{table}
+
+\section{Fluidic shaping}\label{sec:fluidic}
+
+\subsection{The model of Frumkin and Bercovici}
+In the configuration of \cite{frumkin2021}, a ring-shaped bounding surface of
+radius $R_0$ and vertical thickness $d$ is placed in a chamber filled with an
+immersion liquid of density $\rho_{\rm im}$. A curable lens liquid of density
+$\rho_{\rm lens}$ is injected into the ring and pins on its edges, forming a
+top and a bottom interface with the immersion liquid. Pinning requires only
+that the lens liquid adhere to the inner side of the frame more strongly than
+the immersion liquid does. Interfacial tension $\gamma$ (we write $\sigma$
+below) is taken constant under isothermal conditions. The capillary length
+$\ell_c=\sqrt{\gamma/(\Delta\rho g)}$ diverges at neutral buoyancy, so that
+interfacial forces dominate at every scale; this is what removes the
+millimetre size limit of droplet-based lenses. A thin cylindrical enclosure
+beneath the lens traps immersion liquid, and adding or removing it inflates or
+deflates the lens from below.
+
+The equilibrium shapes minimize a free-energy functional containing the two
+interfacial areas, the gravitational energy of the lens liquid relative to the
+immersion liquid, and two Lagrange multipliers: one for the lens volume and one
+for the volume enclosed under the lens \cite[eq.~(1)]{frumkin2021}. The
+resulting Euler--Lagrange equations are axisymmetric Young--Laplace equations
+for the two interfaces, closed by the pinning heights and the two volumes. At
+neutral buoyancy both interfaces are spherical caps; the lens is convex when
+the injected volume exceeds the frame volume $\pi R_0^2d$ and concave when it
+is smaller. A small density mismatch breaks the up--down symmetry while the
+surfaces remain close to spherical. For larger mismatch, the authors expand in
+$\varepsilon=(h_c/R_0)^2\ll1$, with $h_c$ a characteristic sag, and obtain at
+leading order Bessel equations in $x=(r/R_0)\sqrt{\mathrm{Bo}}$, with Bond
+number $\mathrm{Bo}=\Delta\rho gR_0^2/\gamma$. One interface is a $J_0$ profile
+and the other an $I_0$ profile; in the notation of \cref{sec:twoface} this
+reflects the opposite signs of the density step seen by the two faces. They identify four design degrees of freedom: lens
+volume, enclosed volume, Bond number and shape of the bounding surface
+\cite{frumkin2021}.
+
+The experiments in \cite{frumkin2021} include convex, concave and meniscus
+spherical lenses, cylindrical and saddle (toroidal) lenses from a rectangular
+frame, bifocal and doublet lenses made in two steps, Bessel-type aspheres, and
+a 200\,mm spherical lens. Curing was thermal (PDMS) or by UV
+(optical adhesive), and the authors note that curing stresses and shrinkage can
+alter the final shape. They report an AFM roughness of 1.15\,nm RMS over
+$20\times20$\,\textmu m. They state that the fluidic shapes are stable to
+significant disturbances for Bond numbers of order one.
+
+\subsection{Freeform surfaces from the frame}
+Elgarisi \emph{et al.} \cite{elgarisi2021,elgarisi2021preprint} let the height
+of a cylindrical frame of radius $R_0$ vary with azimuth, $h(R_0,\theta)=
+f(\theta)$, and minimize the same kind of energy for a single interface at fixed
+volume. In the arXiv version \cite{elgarisi2021preprint}, from which the
+following details are taken, the small-slope limit gives a Helmholtz equation
+whose solution is a Fourier--Bessel series: each Fourier mode
+$a_n\cos n\theta+b_n\sin n\theta$ of the frame height generates a surface mode
+proportional to $J_n\bigl((r/R_0)\sqrt{\mathrm{Bo}}\bigr)$, and the volume
+enters only through the axisymmetric baseline. As $\mathrm{Bo}\to0$ the modes
+become $r^n\cos n\theta$ and $r^n\sin n\theta$, equivalent to the Zernike
+polynomials $Z_n^{\pm n}$, on top of a spherical (paraboloidal) baseline. They
+fabricated a 36\,mm quatrefoil element at $\mathrm{Bo}=0.2$ with sub-nanometre
+RMS roughness in about 40 minutes, and they discuss two-sided freeforms in
+different immersion liquids, larger amplitudes by solving the nonlinear
+equation, and adaptive elements with deformable frames
+\cite{elgarisi2021preprint}. The published article presents an analytical
+solution for the topography given a predefined boundary and reports
+sub-nanometre roughness \cite{elgarisi2021}; we have not compared its full text
+with the preprint line by line.
+
+The authors state two limitations themselves \cite{elgarisi2021preprint}.
+Superposition is allowed only over modes sharing one Bond number, which limits
+the surfaces that can be fabricated. Also, because the $n$-th mode decays like
+$r^n$ toward the centre, the method cannot create high-resolution features at
+the centre of the component. The same property makes the surface insensitive
+to fine-scale roughness of the frame.
+
+\subsection{What the boundary can and cannot reach}\label{sec:reach}
+The following consequence of the model is derived here. Take a face $z=h(x,y)$
+over the frame domain $D$, with upward normal, density step
+$\Delta\rho=\rho_{\rm below}-\rho_{\rm above}$ and gravitational acceleration
+$g$. Define the \emph{capillary--gravity operator}
+\begin{equation}
+ \mathcal D[h]=-\sigma\,\nabla\cdot\frac{\nabla h}{\sqrt{1+|\nabla h|^2}}
+       +\Delta\rho\,g\,h ,
+ \label{eq:cg-operator}
+\end{equation}
+in pascals. Every unforced equilibrium satisfies
+$\mathcal D[h]=\lambda$ in $D$ for a constant $\lambda$, whatever the frame,
+volume or density contrast. The frame enters only through the boundary trace
+$h|_{\partial D}$, the volume through $\lambda$, and the liquids through
+$\sigma$ and $\Delta\rho$. Hence a target $h_\star$ with a nonconstant
+$\mathcal D[h_\star]$ in the interior of $D$ cannot be produced by any frame,
+volume or immersion liquid with the same $\sigma,\Delta\rho$. In the small-slope
+limit, $\mathcal D[h]\simeq-\sigma\Delta h+\Delta\rho gh$: the frame is
+boundary control of a linear elliptic equation, and the reachable surfaces at
+fixed $\Delta\rho$ form an affine space (one particular solution plus the
+homogeneous solutions with arbitrary boundary data). \Cref{prop:conic} below
+gives a concrete instance: no conic other than a sphere is an unforced
+equilibrium of any liquid pair.
+
+\section{The load demand of a prescribed surface}\label{sec:demand}
+
+\subsection{Energy with an applied traction}
+Add to the fluidic-shaping problem a normal traction $t$ on the interface,
+in pascals, positive along the upward normal. Under a virtual normal
+displacement $\eta$ it does work $\int_\Gamma t\eta\dd A$. For a graph,
+$\eta\dd A=\delta h\dd x\dd y$, since the normal component of a vertical
+displacement $\delta h$ is $\delta h/\sqrt{1+|\nabla h|^2}$ and the area element
+is $\sqrt{1+|\nabla h|^2}\dd x\dd y$. With the face pinned on $\partial D$ and
+its enclosed volume fixed, consider
+\begin{equation}
+ \mathscr L[h]=\int_D\Bigl(\sigma\sqrt{1+|\nabla h|^2}
+   +\tfrac12\Delta\rho\,g\,h^2-t\,h\Bigr)\dd x\dd y
+   -\lambda\Bigl(\int_Dh\dd x\dd y-V_0\Bigr),
+ \label{eq:lagrangian}
+\end{equation}
+for a load $t$ that is held fixed as a function of $(x,y)$ during the
+variation. This is the standard capillary variational structure
+\cite{finn1986} with an added dead load; the treatment of acoustic loads that
+depend on the shape is deferred to \cref{sec:formation}.
+
+\begin{proposition}[Load demand]\label{prop:demand}
+Let $h_\star\in C^2(\bar D)$ satisfy the pinning condition on $\partial D$ and
+the volume constraint. Then $h_\star$ is a stationary point of
+\cref{eq:lagrangian} if and only if
+\begin{equation}
+ \boxed{\;t=\mathcal D[h_\star]-\lambda\quad\text{in }D\;}
+ \label{eq:demand}
+\end{equation}
+for some constant $\lambda$. The function $t_\star=\mathcal D[h_\star]$, the
+\emph{load demand} of the target, is explicit; the traction that holds $h_\star$
+is unique up to the additive constant $\lambda$, which the volume constraint
+absorbs.
+\end{proposition}
+\begin{proof}
+For admissible variations $\delta h$ vanishing on $\partial D$, integration by
+parts of the area term gives
+$\delta\mathscr L=\int_D(\mathcal D[h_\star]-t-\lambda)\delta h\dd x\dd y$,
+and variation of $\lambda$ restores the volume constraint. The bracket must
+vanish for all such $\delta h$, which is \cref{eq:demand}. Conversely, any two
+tractions holding the same $h_\star$ differ by $\lambda-\lambda'$, a constant.
+\end{proof}
+
+The demand is a property of the target and the liquid pair only. It does not
+depend on the frame, provided the frame is compatible with the target's
+boundary trace. Equation \cref{eq:demand} is the same as the required traction
+of the canonical theory, $\Pi_{\rm req}=\sigma\kappa+\Delta\rho\Phi-\lambda_V$
+with $\kappa=-\nabla\cdot(\nabla h/\sqrt{1+|\nabla h|^2})$ and $\Phi=gz$; it
+also equals the Lagrange-multiplier field that enforces the prescribed geometry
+pointwise. The equivalence of the multiplier and the required load is the
+reason the inverse map in this direction is explicit rather than a solution of
+a partial differential equation. For a surface with overhangs the same result
+holds with $\sigma\kappa+\Delta\rho g z$ evaluated on a parametric surface.
+
+Three practical consequences follow. First, unforced fluidic shaping is the
+special case $t=\text{const}$: \cref{sec:reach} is the statement that
+$t_\star$ must be constant there. Second, a load can only be bounded where the
+target is $C^2$: a slope jump, for instance at the edge of an optical pupil
+joined to an arbitrary outer annulus, demands a line force. The non-optical
+annulus between pupil and frame is therefore a design variable that should be
+chosen with matched slope and curvature. Third, $t_\star$ involves second
+derivatives of the target. A height feature of amplitude $\delta h$ and lateral
+wavenumber $k_\perp$ on a nearly flat surface demands a load of order
+$\sigma k_\perp^2\delta h$, so fine detail is expensive regardless of how the
+load is produced.
+
+\subsection{Boundary control and interior control}\label{sec:decomp}
+In the small-slope limit the operator is linear,
+$\mathcal D[h]\simeq\mathcal L h$ with $\mathcal L=-\sigma\Delta+\Delta\rho g$,
+and a target splits into two parts, each with its own actuator:
+\begin{equation}
+ h_\star=h_B+h_L,\qquad
+ \mathcal Lh_B=\lambda_B,\ \ h_B|_{\partial D}=h_\star|_{\partial D};\qquad
+ \mathcal Lh_L=t_\star-\lambda_B,\ \ h_L|_{\partial D}=0 .
+ \label{eq:decomposition}
+\end{equation}
+The part $h_B$ is fluidic shaping: frame trace plus volume. The part $h_L$ is
+driven by the interior residual of the target and must be supplied as a load.
+The two are complementary; neither replaces the other. A frame cannot create
+an interior residual, and a bounded load cannot change the pinned trace. In
+the cylindrical cell considered later the frame is a circular pinning edge of
+constant height, so the frame contributes only the volume mode and the load
+must supply all the rest. Combining an azimuthally shaped frame
+\cite{elgarisi2021preprint} with an applied load is a natural option that this
+paper does not develop.
+
+\subsection{Two faces, three liquids}\label{sec:twoface}
+A lens has two faces. Number the liquids from bottom to top $0,1,2$, with
+the lens liquid $1$ between the front face $z=h_f$ and the back face
+$z=h_b$, both pinned. Use upward normals on both faces and upward tractions
+$t_f,t_b$. The density steps are $\Delta\rho_f=\rho_0-\rho_1$ and
+$\Delta\rho_b=\rho_1-\rho_2$, and the tensions $\sigma_f,\sigma_b$. In a
+sealed cell, the volume of liquid $0$ fixes $\int_Dh_f$ and the lens volume
+fixes $\int_D(h_b-h_f)$; the volume of liquid $2$ then follows. With
+multipliers $p_0$ and $p_1$ for these two constraints, the argument of
+\cref{prop:demand} gives
+\begin{equation}
+ t_f=\mathcal D_f[h_f]-(p_0-p_1),\qquad
+ t_b=\mathcal D_b[h_b]-p_1,
+ \label{eq:two-face}
+\end{equation}
+where $\mathcal D_j$ uses $\sigma_j$ and $\Delta\rho_j$. The two constants
+$\lambda_f=p_0-p_1$ and $\lambda_b=p_1$ are independent, so each face has its
+own demand, unique up to its own constant. This is the structure of the
+Frumkin--Bercovici energy with its lens-volume and enclosed-volume multipliers
+\cite{frumkin2021}, with liquids $0$ and $2$ both equal to the immersion liquid
+in their experiments.
+
+If instead liquids $0$ and $2$ are one hydraulically connected bath of density
+$\rho_e$, only the lens volume is constrained. Then
+$\lambda_f=-p_1=-\lambda_b$: one shared constant, so the relative level of the
+two loads is physical and sets the lens thickness. Subtracting a separate mean
+from each face would discard it. Moreover $\Delta\rho_f=\rho_e-\rho_1=
+-\Delta\rho_b$, so whenever the lens is not density matched one of its faces is
+inversely stratified. This is the origin of the $J_0$/$I_0$ pair of
+\cite{frumkin2021}.
+
+\subsection{Existence, uniqueness and sign}\label{sec:uniqueness}
+For the demand itself, existence is trivial and uniqueness holds modulo the
+constants of \cref{sec:twoface}. The converse question, whether a prescribed
+dead load produces a unique shape, depends on stratification.
+
+\begin{proposition}[Uniqueness under a dead load]\label{prop:convex}
+Under a load $t(x,y)$ held fixed in horizontal position, with pinned
+boundaries, fixed volumes, $\sigma_j>0$ and $\Delta\rho_j\ge0$, the energy
+\cref{eq:lagrangian}, summed over the faces, is strictly convex on the convex
+set of admissible graphs. A stationary graph is therefore its unique global
+minimizer.
+\end{proposition}
+\begin{proof}
+The integrand $\sqrt{1+|\bm p|^2}$ is strictly convex in $\bm p$, the term
+$\frac12\Delta\rho gh^2$ is convex for $\Delta\rho\ge0$, the load and volume
+terms are linear, and the pinning excludes nonzero gradient-free variations.
+\end{proof}
+
+The canonical theory uses the same convexity argument; it holds for every
+angular order of perturbation, not only axisymmetric ones. Inverse stratification,
+$\Delta\rho_j<0$, removes it. A small-slope estimate shows how far capillarity
+still protects the face. For a nearly flat pinned face whose mean displacement
+is fixed by a sealed volume, the second variation
+$\int_D(\sigma|\nabla\eta|^2+\Delta\rho g\eta^2)\dd x\dd y$ is positive for all
+zero-mean $\eta$ vanishing on the circle of radius $R$ if and only if
+\begin{equation}
+ \mathrm{Bo}=\frac{|\Delta\rho|gR^2}{\sigma}<j_{1,1}^2\approx14.68 ,
+ \label{eq:rt-threshold}
+\end{equation}
+where $j_{1,1}\approx3.8317$ is the first zero of $J_1$. The minimizing
+perturbation is $J_1(j_{1,1}r/R)\cos\theta$, which has zero mean
+automatically; the best axisymmetric zero-mean competitor has the larger value
+$j_{2,1}^2\approx26.37$. This elementary bound, derived here, has two
+consequences. It is consistent with the stability at $\mathrm{Bo}\sim1$ reported
+in \cite{frumkin2021}. And the first mode to lose passive stiffness on an
+inverted face is non-axisymmetric, which an axisymmetric analysis cannot see.
+
+Sign constraints on the load are a separate matter. The free constant means
+that a pointwise sign restriction of the actuator, such as a load that can only
+push, is not by itself an obstruction: it costs a uniform offset, which has its
+own price in field amplitude and absolute pressure. The real restriction is the
+set of load \emph{patterns} the actuator can produce. For acoustic actuation
+this set is characterized in \cref{sec:capability}, where the demand must lie in
+a convex cone; positivity of a demand is then a condition to be tested, not an
+automatic property.
+
+\section{Series form near the axis and the conic matching rule}\label{sec:series}
+
+For an axisymmetric face, $h(r)$, write $\phi=h'/\sqrt{1+h'^2}$; then
+$\mathcal D[h]=-\sigma r^{-1}(r\phi)'+\Delta\rho gh$. Expand the sag as
+$h=h_0+\tfrac12cr^2+a_4r^4+a_6r^6+\dots$, with vertex curvature $c$ in
+$\mathrm m^{-1}$, $a_4$ in $\mathrm m^{-3}$ and $a_6$ in $\mathrm m^{-5}$.
+
+\begin{proposition}[Series demand]\label{prop:series}
+\begin{equation}
+ t_\star(r)=(\Delta\rho gh_0-2\sigma c)+Q_2r^2+Q_4r^4+O(r^6),
+ \qquad
+ \begin{aligned}
+ Q_2&=-\sigma\,(16a_4-2c^3)+\tfrac12\Delta\rho\,g\,c,\\
+ Q_4&=-\sigma\,\bigl(36a_6-36c^2a_4+\tfrac94c^5\bigr)+\Delta\rho\,g\,a_4 .
+ \end{aligned}
+ \label{eq:series}
+\end{equation}
+\end{proposition}
+\begin{proof}
+With $h'=cr+4a_4r^3+6a_6r^5+\dots$ and
+$\phi=h'-\tfrac12h'^3+\tfrac38h'^5+\dots$, one finds
+$\phi=cr+(4a_4-\tfrac12c^3)r^3+(6a_6-6c^2a_4+\tfrac38c^5)r^5+\dots$.
+Then $r^{-1}(r\phi)'=2c+(16a_4-2c^3)r^2+(36a_6-36c^2a_4+\tfrac94c^5)r^4+\dots$;
+adding the gravity term gives \cref{eq:series}.
+\end{proof}
+The constant is absorbed by the volume multiplier, so $Q_2$ and $Q_4$, in
+$\mathrm{Pa\,m^{-2}}$ and $\mathrm{Pa\,m^{-4}}$, are the leading demand. Both
+vanish for a sphere ($a_4=c^3/8$, $a_6=c^5/16$) when $\Delta\rho=0$, as they
+must. We checked the coefficients, and \cref{prop:conic} below, in exact
+rational arithmetic, independently of the project's implementation.
+
+For a conic face, $h=cr^2/\bigl(1+\sqrt{1-(1+k)c^2r^2}\bigr)$ with conic
+constant $k$, the coefficients are $a_4=(1+k)c^3/8$ and
+$a_6=(1+k)^2c^5/16$. Then $Q_2=-2\sigma kc^3+\tfrac12\Delta\rho gc$, and the
+leading demand vanishes when
+\begin{equation}
+ \boxed{\frac{\Delta\rho\,g}{\sigma}=4\,k\,c^2 .}
+ \label{eq:matching}
+\end{equation}
+This \emph{matching rule} chooses the liquid pair so that gravity supplies the
+fourth-order departure of the face from a sphere. Its sign is that of $k$: an
+oblate-ellipsoidal face ($k>0$) needs the denser liquid below, while prolate
+ellipsoidal, paraboloidal and hyperboloidal faces ($k<0$) need inverse
+stratification, and then
+\cref{eq:rt-threshold} applies with $\mathrm{Bo}=4|k|c^2R^2$. For an even
+asphere with additional coefficient $A_4$ on top of the conic,
+$a_4=(1+k)c^3/8+A_4$, the rule becomes
+$\Delta\rho g/\sigma=4kc^2+32A_4/c$.
+
+\begin{proposition}[Conic remainder]\label{prop:conic}
+Under \cref{eq:matching},
+\begin{equation}
+ Q_4=\tfrac14\,\sigma\,k\,(2-7k)\,c^5 .
+ \label{eq:conic-remainder}
+\end{equation}
+Consequently a conic graph with $c\neq0$ is an unforced capillary--gravity
+equilibrium near its axis only if $k=0$ and $\Delta\rho=0$.
+\end{proposition}
+\begin{proof}
+Substituting $a_4,a_6$ and $\Delta\rho g=4\sigma kc^2$ into \cref{eq:series}
+gives $36a_6-36c^2a_4+\tfrac94c^5=\tfrac94k^2c^5$ and
+$\Delta\rho ga_4=\tfrac12\sigma k(1+k)c^5$, whose difference is
+\cref{eq:conic-remainder}. An unforced equilibrium requires $Q_2=0$, hence
+\cref{eq:matching}, and $Q_4=0$, hence $k\in\{0,\tfrac27\}$. For $k=0$ the
+rule gives $\Delta\rho=0$. For $k=\tfrac27$ the next coefficient is
+$Q_6=\tfrac{41}{686}\sigma c^7\neq0$.
+\end{proof}
+
+So the matching rule can remove the leading demand but not all of it; for a
+conic the remainder starts at $r^4$ with the explicit coefficient
+\cref{eq:conic-remainder}. The pupil of an optical face is a small part of
+$D$ in many designs, and there the series is a quick guide to which liquid pair
+leaves the smallest load. For two faces in a three-liquid cell, the two rules
+are independent because $\Delta\rho_f$ and $\Delta\rho_b$ involve different
+outer liquids. In a single connected bath, $\Delta\rho_f=-\Delta\rho_b$, and if
+$\sigma_f=\sigma_b$ the two rules can hold together only when $k_f$ and $k_b$
+have opposite signs and $|k_f|c_f^2=|k_b|c_b^2$.
+
+As an illustration, in the project's study S09 the exact demand
+\cref{eq:demand} applied as a dead load to a finite-element meniscus
+reproduced two published stigmatic singlets \cite{silva2020} to
+$3\times10^{-11}$\,m. The series matched the exact demand to $6\times10^{-4}$
+within $r\le0.15R$. And \cref{eq:matching} predicted the brine and oil pair that
+an earlier brute-force scan had selected
+($-8.3\times10^4$ versus $-7.9\times10^4\,\mathrm m^{-2}$ for $\Delta\rho g/\sigma$
+on the front face; $1.0\times10^6$ versus $7.5\times10^5\,\mathrm m^{-2}$ on the
+back).
+
+\section{Acoustic radiation stress as the load}\label{sec:acoustic}
+
+\subsection{The cell and its regime}
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=11mm,y=11mm,font=\small]
+ \fill[blue!6] (0,0) rectangle (6,4);
+ \fill[orange!25] plot[domain=0:6,samples=40] (\x,{1.5-0.35*(1-((\x-3)/3)^2)})
+   -- plot[domain=6:0,samples=40] (\x,{2.3+0.45*(1-((\x-3)/3)^2)}) -- cycle;
+ \draw[thick] plot[domain=0:6,samples=40] (\x,{1.5-0.35*(1-((\x-3)/3)^2)});
+ \draw[thick] plot[domain=0:6,samples=40] (\x,{2.3+0.45*(1-((\x-3)/3)^2)});
+ \draw[line width=2.2pt,red!60!black] (0,0)--(6,0);
+ \draw[line width=2.2pt,red!60!black] (0,4)--(6,4);
+ \draw[line width=2.2pt,red!40] (0,0)--(0,4);
+ \draw[line width=2.2pt,red!40] (6,0)--(6,4);
+ \fill (0,1.5) circle (1.6pt); \fill (6,1.5) circle (1.6pt);
+ \fill (0,2.3) circle (1.6pt); \fill (6,2.3) circle (1.6pt);
+ \node at (3,0.55) {liquid 0};
+ \node at (3,1.9) {lens liquid 1};
+ \node at (3,3.3) {liquid 2};
+ \node[anchor=west] at (6.2,0) {lower window source};
+ \node[anchor=west] at (6.2,4) {upper window source};
+ \node[anchor=west] at (6.2,2.9) {wall sources};
+ \node[anchor=west] at (6.2,1.9) {pinning edges (dots)};
+ \node[anchor=south] at (1.6,2.85) {back face $h_b$};
+ \node[anchor=north] at (1.6,1.15) {front face $h_f$};
+ \draw[-{Latex}] (-0.4,0.3)--(-0.4,1.1) node[left] {$z$};
+\end{tikzpicture}
+\caption{Schematic of the declared cell, axial section, not to scale; face
+curvature exaggerated. Three liquids fill a rigid cylinder. The two faces are
+pinned at the wall. Ideal velocity sources act on the two end windows and on
+bands of the cylinder wall. Nothing in this figure has been built.}
+\label{fig:cell}
+\end{figure}
+
+\Cref{fig:cell} shows the apparatus of the remaining sections: a rigid
+cylinder of radius $R$, three liquids, two pinned faces, and prescribed
+normal velocity on the end windows and on wall bands. We work in the following
+regime, each item of which is an approximation stated in the canonical theory
+and revisited in \cref{sec:validity}. The acoustic field is harmonic at angular
+frequency $\omega$ and settles fast compared with the interface motion, so that
+cycle averages are taken at fixed geometry. Bulk liquids are inviscid and
+lossless; dissipation enters only through a declared admittance on parts of the
+boundary. The interface is treated in the high-frequency transmission
+reduction: acoustic pressure and normal velocity are continuous across it,
+which neglects first-order capillary and gravity restoring terms at the carrier
+frequency \cite{chesneau2022}. Sources are ideal: their normal velocity is
+prescribed regardless of acoustic loading. Everything is axisymmetric.
+
+With the peak-phasor convention $p_1=\Rea\{Pe^{-\mathrm i\omega t}\}$ and
+$\bm v_1=\Rea\{\bm Ve^{-\mathrm i\omega t}\}$, each liquid $\ell$ with density
+$\rho_\ell$ and sound speed $c_\ell$ obeys
+$-\mathrm i\omega\rho_\ell\bm V=-\nabla P$ and
+$\nabla\cdot(\rho_\ell^{-1}\nabla P)+\omega^2(\rho_\ell c_\ell^2)^{-1}P=0$.
+On the source boundary the outward normal velocity is
+$\bm V\cdot\bm n_a=YP+v_s$, with $v_s$ the source velocity and $Y$ the declared
+admittance ($Y=0$ on rigid or ideal-source parts). Away from resonances of the
+cell this linear problem is well posed; a closed lossless cavity at an
+eigenfrequency is excluded.
+
+\subsection{Normal radiation traction}
+For this reduction the cycle-averaged acoustic momentum flux in liquid $\ell$
+is \cite{chesneau2022}
+\begin{equation}
+ \bm R_\ell=\Bigl(\frac{|P|^2}{4\rho_\ell c_\ell^2}
+            -\frac{\rho_\ell|\bm V|^2}{4}\Bigr)\Id
+   +\frac{\rho_\ell}{2}\Rea(\bm V\otimes\bm V^*),
+ \label{eq:momentum-flux}
+\end{equation}
+which is minus the radiation-stress convention of \cite{chesneau2022}. The
+cycle-averaged traction on the interface along the upward normal $\nn$, from
+the lower liquid ($-$) to the upper ($+$), is
+$\Pi=\nn\cdot(\bm R_--\bm R_+)\nn$; it enters the interface balance as the
+load $t$ of \cref{sec:demand}. Writing $V_n=\bm V\cdot\nn$, the surface
+gradient $\Gs$, and the compressibility $\beta_\ell=1/(\rho_\ell c_\ell^2)$, the
+continuity of $P$, $V_n$ and $\Gs P$ across the interface gives (derived in
+\cref{app:traction})
+\begin{equation}
+ \Pi=\tfrac14(\beta_--\beta_+)|P|^2
+    +\tfrac14(\rho_--\rho_+)|V_n|^2
+    +\frac{1}{4\omega^2}\Bigl(\frac1{\rho_+}-\frac1{\rho_-}\Bigr)|\Gs P|^2 .
+ \label{eq:traction}
+\end{equation}
+Each term has a sign fixed by a material contrast, and the three contrasts need
+not agree, so the local stress can push or pull depending on the field
+structure. Two independent checks follow. For a plane wave crossing an
+impedance-matched interface at normal incidence ($\rho_-c_-=\rho_+c_+$, so
+$V_n=P/(\rho c)$ on both sides and $\Gs P=0$), \cref{eq:traction} becomes
+$\Pi=\tfrac12(\beta_--\beta_+)|P|^2$, the difference of the mean acoustic energy
+densities on the two sides. This is the Langevin radiation pressure on a
+transparent interface, which Issenmann \emph{et al.} found to describe small
+deformations of a transparent chloroform--water interface
+\cite{issenmann2008}. In the one-sided pressure-release limit with negligible
+tangential velocity, \cref{eq:momentum-flux} instead gives
+$\Pi\simeq\rho_-|V_n|^2/4$, the canonical theory's limit. Deformation of liquid
+interfaces by acoustic radiation pressure is established experimentally and
+numerically \cite{issenmann2008,bertin2012,chesneau2022,sisombat2023}; what
+follows uses it as a distributed actuator.
+
+For scale, with $p_{\max}=1$\,MPa in water ($\rho c^2\approx2.2$\,GPa),
+$p_{\max}^2/(4\rho c^2)\approx1\times10^2$\,Pa, multiplied by contrast factors
+of order $|\beta_--\beta_+|/\beta$. Demands of the illustrative singlets in S09
+are of order $0.1$--$1$\,Pa. The required load is therefore a small, structured
+part of the available stress, which is why parameter sensitivity and the
+precision of the wave model matter.
+
+\subsection{The force is a Hermitian form in the source amplitudes}
+Let the source velocity be a finite combination of fixed real boundary
+functions, $v_s=\sum_{k=1}^mc_k\psi_k$ with $\bm c\in\C^m$; the canonical
+choice is Neumann--Bessel modes on each window and cosines along the wall, each
+normalized so that $|c_k|$ is a velocity amplitude in $\mathrm{m\,s^{-1}}$.
+Finite arrays are restrictions of this continuous source space. By linearity,
+$P=\sum_kc_kP_k$, and likewise $V_n$ and $\Gs P$. Inserting into
+\cref{eq:traction} gives $\Pi(\bm x)=\bm c^{\mathsf H}\bm Q(\bm x)\bm c$ with a
+Hermitian matrix field $\bm Q$.
+
+Let $q\in\R^n$ be coordinates of both faces in a space that already enforces
+the pinned rims and the conserved volumes, with dimensionless basis functions
+$\varphi_i$ for normal displacement. The energy $E(q)$ has gradient
+$\nabla E$ in newtons and Hessian $K=\nabla^2E$. The generalized acoustic force
+on coordinate $i$ is
+\begin{equation}
+ F_i(q;\bm c)=\int_\Gamma\varphi_i\,\Pi\dd A=\bm c^{\mathsf H}G_i(q)\,\bm c,
+ \qquad G_i=\int_\Gamma\varphi_i\bm Q\dd A=G_i^{\mathsf H}.
+ \label{eq:hermitian-force}
+\end{equation}
+In these coordinates the load demand of \cref{prop:demand} is the vector
+$\bm d=\nabla E(q_\star)$, already free of the volume constants, and an
+acoustic drive holds the target exactly when $F(q_\star;\bm c)=\bm d$.
+The global phase $\bm c\mapsto e^{\mathrm i\vartheta}\bm c$ leaves every force
+unchanged, and $G_i$ is indefinite in general, consistent with
+\cref{eq:traction}. The source power is also a Hermitian form,
+$\mathcal P=\bm c^{\mathsf H}W\bm c$: in this lossless-bulk model it equals
+the power absorbed by the declared boundary admittance. Below we assume
+$W\succ0$, meaning that every nonzero drive dissipates power. Peak pressure at
+a sample point $s$ is $|p_s|=|\bm p_s^{\mathsf H}\bm c|$ for a fixed row
+$\bm p_s$.
+
+Finding $\bm c$ with $\bm c^{\mathsf H}G_i\bm c=d_i$ for all $i$ is a system
+of indefinite quadratic equations: nonconvex, possibly without solutions, and
+with spurious local minima for least-squares solvers. In the project's
+study S08 a single-tone inverse started from random seeds stalled at
+$0.67$\,\textmu m for one published singlet and was read as a reachability
+limit; the convex formulation below later showed that this was a local minimum
+(S09). The next section removes the nonconvexity at the cost of using more
+than one tone.
+
+\section{Convex capability of a fixed source}\label{sec:capability}
+
+\subsection{Multi-tone drives give a convex cone}\label{sec:multitone}
+Drive the same source modes with several tones,
+$v_s(\bm x,t)=\Rea\sum_\mu\sum_kc_{\mu k}\psi_k(\bm x)e^{-\mathrm i\omega_\mu t}$.
+Products of tones $\mu\neq\nu$ oscillate at $\omega_\mu-\omega_\nu$. If
+every such difference is far above the bandwidth of the interface response
+(in creeping flow, its slowest relaxation rates; of order
+$10\,\mathrm s^{-1}$ in S09), and far enough from mechanical resonances of the
+interface, the interface responds only to the sum of single-tone averages,
+$F_i=\sum_\mu\bm c_\mu^{\mathsf H}G_i(\omega_\mu)\bm c_\mu$. Group the tones
+into bands $t$ in each of which the kernels are approximately constant,
+$G_i(\omega_\mu)\simeq G_{t,i}$; this requires the tone spread in a band to be
+small compared with the frequency scale on which the cell response varies, for
+example the width of a nearby resonance. Then
+\begin{equation}
+ F_i(X)=\sum_t\tr(G_{t,i}X_t),\qquad
+ X_t=\sum_{\mu\in t}\bm c_\mu\bm c_\mu^{\mathsf H}\succeq0,\qquad
+ \mathcal P(X)=\sum_t\tr(W_tX_t).
+ \label{eq:multitone}
+\end{equation}
+Conversely, any $X_t\succeq0$ of rank $r_t$ is realized by $r_t$ tones in band
+$t$ through its eigendecomposition. The reachable forces
+$\mathcal K=\{F(X):X_t\succeq0\}$ therefore form a convex cone, the linear
+image of a product of positive semidefinite cones. Single-tone drives are the
+rank-one points. Fast time-multiplexing between single-tone commands, slower
+than acoustic ring-down and faster than the interface, gives convex
+combinations of single-tone forces as well; it is an alternative realization of
+the same cone with its own transient errors.
+
+\subsection{Exact reachability and its certificate}
+For a vector $\bm a\in\R^n$ write $G_{t,\bm a}=\sum_ia_iG_{t,i}$.
+\begin{proposition}[Theorem of alternatives]\label{prop:alternatives}
+(i) Without a power limit, $\bm d$ lies in the closure of $\mathcal K$ if and
+only if $\bm a^{\mathsf T}\bm d\ge0$ for every $\bm a$ with
+$G_{t,\bm a}\succeq0$ for all $t$.
+(ii) With $W_t\succ0$ and power cap $P_{\max}$, the set
+$\mathcal K_{P}=\{F(X):X_t\succeq0,\ \mathcal P(X)\le P_{\max}\}$ is compact
+and convex, and $\bm d\in\mathcal K_P$ if and only if, for every $\bm a$,
+\begin{equation}
+ \bm a^{\mathsf T}\bm d\le P_{\max}\max_t\,\lambda_{\max}^+\bigl(
+   W_t^{-1/2}G_{t,\bm a}W_t^{-1/2}\bigr),
+ \label{eq:support}
+\end{equation}
+where $\lambda_{\max}^+=\max(0,\lambda_{\max})$. The least multi-tone power
+that holds $\bm d$ is the supremum over $\bm a$ of the ratio of the two sides
+with $P_{\max}=1$.
+\end{proposition}
+\begin{proof}
+(i) $\bm a^{\mathsf T}F(X)=\sum_t\tr(G_{t,\bm a}X_t)$, which is nonnegative
+for all $X_t\succeq0$ exactly when every $G_{t,\bm a}\succeq0$. This set of
+$\bm a$ is the dual cone of $\mathcal K$, and the bipolar theorem gives the
+closure of $\mathcal K$. (ii) $W_t\succ0$ bounds $\tr X_t$ on the feasible
+set, which is closed, so $\mathcal K_P$ is compact. With
+$Y_t=W_t^{1/2}X_tW_t^{1/2}$, the maximum of the linear function
+$\sum_t\tr(W_t^{-1/2}G_{t,\bm a}W_t^{-1/2}Y_t)$ over $Y_t\succeq0$,
+$\sum_t\tr Y_t\le P_{\max}$, is the right-hand side of \cref{eq:support}. This
+is the support function of $\mathcal K_P$, and a point belongs to a compact
+convex set if and only if it satisfies all its supporting half-spaces.
+\end{proof}
+A vector $\bm a$ violating \cref{eq:support} is a certificate that no drive in
+those bands, single-tone or multi-tone, holds the target within the power
+cap. For single tones the same inequality is only necessary, as in the
+canonical source-effort bounds; for multi-tone drives it is also sufficient.
+The closure in (i) is needed because the image of a semidefinite cone need not
+be closed. The certificate also makes precise the remark of
+\cref{sec:uniqueness}: sign or positivity of a demand is the conic condition
+(i), and it is not automatic.
+
+\subsection{The best-tolerance program}
+An exact match is neither expected nor needed. Let $H$ sample the pupils of both
+faces, and use the frozen first-order response at the target,
+$\delta\bm h=O(F-\bm d)+V\bm v$ with $O=HK^{-1}$. Here $\bm v$ are trims of
+the fill volumes (the pumps are part of the machine) and $V$ their height
+columns. The best pupil tolerance within the caps is
+\begin{equation}
+ \tau_\star=\min_{X_t\succeq0,\ \bm v,\ \tau}\ \tau
+ \quad\text{s.t.}\quad
+ \bigl|\bigl(O(F(X)-\bm d)+V\bm v\bigr)_k\bigr|\le\tau\ \forall k,\quad
+ \mathcal P(X)\le P_{\max},
+ \label{eq:sdp}
+\end{equation}
+optionally with the pressure and fold constraints of
+\cref{sec:convex-constraints}. This is a semidefinite program
+\cite{vandenberghe1996}, solved to global optimality by interior-point methods.
+Its optimum is a lower bound on the pupil error of every drive in the given
+bands, in the frozen model.
+
+\begin{proposition}[Dual certificate]\label{prop:dual}
+For any $\bm y$ with $\norm{\bm y}_1\le1$ and $V^{\mathsf T}\bm y=0$, and any
+$\nu\ge0$ with $G_{t,\bm a}\preceq\nu W_t$ for all $t$, where
+$\bm a=O^{\mathsf T}\bm y$,
+\begin{equation}
+ \tau_\star\ \ge\ \bm a^{\mathsf T}\bm d-\nu P_{\max}.
+ \label{eq:dual}
+\end{equation}
+Since $X_t=\epsilon\Id$ is strictly feasible for small $\epsilon>0$, Slater's
+condition holds, there is no duality gap, and the best such bound equals
+$\tau_\star$.
+\end{proposition}
+\begin{proof}
+For feasible $(X,\bm v,\tau)$, the height constraints and $V^{\mathsf T}\bm y=0$
+give $\bm y^{\mathsf T}O(\bm d-F(X))\le\norm{\bm y}_1\tau\le\tau$, so
+$\tau\ge\bm a^{\mathsf T}\bm d-\sum_t\tr(G_{t,\bm a}X_t)
+\ge\bm a^{\mathsf T}\bm d-\nu\,\mathcal P(X)\ge\bm a^{\mathsf T}\bm d-\nu P_{\max}$.
+Strong duality under Slater's condition is standard \cite{vandenberghe1996}.
+\end{proof}
+When $\tau_\star$ exceeds the goal, the dual pair is a checkable proof that the
+source layout cannot hold the lens in this model; the remedy is more source
+freedom (bands, modes, placement), not more optimizer iterations. The
+certificate is a statement about the frozen linearization at $q_\star$. It
+neglects the acoustic shape stiffness $A=\partial_qF$, which S09 estimated at
+$\norm A/\norm K\sim10^{-4}$ for its cell, and the start-up path; both are
+treated in \cref{sec:formation}.
+
+\subsection{How many tones}
+\begin{proposition}[Rank of an optimal drive]\label{prop:rank}
+Assume $W_t\succ0$ and no fold constraint. There is an optimal solution of
+\cref{eq:sdp} whose ranks satisfy
+\begin{equation}
+ \sum_tr_t^2\le n+1+n_p ,
+ \label{eq:rank}
+\end{equation}
+where $n$ is the number of generalized forces and $n_p$ the number of
+pressure caps active at that solution.
+\end{proposition}
+\begin{proof}
+Fix an optimal $X^\star$ and let $\mathcal S$ be the set of $X\succeq0$ with
+$F(X)=F(X^\star)$, $\mathcal P(X)=\mathcal P(X^\star)$, and all pressure caps.
+Every element of $\mathcal S$ is optimal with the same $\bm v,\tau$, and
+$\mathcal S$ is compact and convex, so it has an extreme point $X^e$. The face
+of the product cone at $X^e$ consists of $U_tZ_tU_t^{\mathsf H}$ with
+$Z_t$ Hermitian of size $r_t$, a real vector space of dimension
+$\sum_tr_t^2$. If this exceeded the number of real equality and active
+inequality constraints, a nonzero direction in the face would satisfy all of
+them, and $X^e\pm\epsilon D\in\mathcal S$ for small $\epsilon$, contradicting
+extremality.
+\end{proof}
+This is the Hermitian form of the dimension count of Barvinok and Pataki, who
+state it for real symmetric matrices as $r(r+1)/2\le m$
+\cite{barvinok1995,pataki1998}; see \cite{luo2010} for its role in
+semidefinite relaxation. The bound is weak when the face space is rich, since
+$n$ can be large. It does not promise a single tone. A rank-one optimum, when it
+occurs, is an observation; otherwise the leading eigenvector of $X_t^\star$
+initializes a local, nonconvex refinement to one tone per band. In S09 the
+convex bound for one published singlet was below $10^{-11}$\,m at 0.46\,W, and
+its leading eigenvector refined to a single tone of 0.17\,W. For 68 singlets
+of a stigmatic family in one fixed cell the bound was below 0.5\,nm within
+1\,W, and a refined command with one tone per band, using one or two bands,
+met the 10\,nm first-order goal for each of them.
+
+\subsection{Pressure caps and fold margin are convex}\label{sec:convex-constraints}
+The squared pressure amplitude of band $t$ at sample $s$ is
+$\bm p_{t,s}^{\mathsf H}X_t\bm p_{t,s}$, linear in $X_t$. A cap
+$\bm p_{t,s}^{\mathsf H}X_t\bm p_{t,s}\le p_{\max}^2$ is exact for one tone per
+band and a root-mean-square bound for several tones. The acoustic shape
+stiffness is linear in the drive as well,
+$A_{ij}(X)=\sum_t\tr(\partial_{q_j}G_{t,i}X_t)$, and need not be symmetric.
+
+\begin{proposition}[Fold margin and creeping-flow stability]\label{prop:lmi}
+Let $K$ be symmetric positive definite, $A$ real, and $0<\mu\le1$. If
+\begin{equation}
+ \sym(K-A)\succeq\mu K,\qquad \sym(B)=\tfrac12(B+B^{\mathsf T}),
+ \label{eq:lmi}
+\end{equation}
+then (i) every eigenvalue of $K^{-1}(K-A)$ has real part at least $\mu$, so
+$K-A$ is nonsingular (no fold); (ii) in the $K$-energy norm the coupled
+response $(K-A)^{-1}\delta F$ is at most $1/\mu$ times the frozen response
+$K^{-1}\delta F$; (iii) for every symmetric positive definite mobility $M$, the
+creeping-flow linearization $\dot{\bm\chi}=-M(K-A)\bm\chi$ is asymptotically
+stable with decay rate at least $\mu\,\lambda_{\min}(M^{1/2}KM^{1/2})$, that is,
+$\mu$ times the slowest passive relaxation rate.
+\end{proposition}
+\begin{proof}
+(i) If $(K-A)\bm x=\lambda K\bm x$ with $\bm x\ne0$, then
+$\bm x^{\mathsf H}(K-A)\bm x=\lambda\,\bm x^{\mathsf H}K\bm x$; the real part
+of the left side is $\bm x^{\mathsf H}\sym(K-A)\bm x\ge\mu\,\bm x^{\mathsf H}K\bm x$.
+(ii) If $(K-A)\bm y=K\bm z$, then
+$\mu\norm{\bm y}_K^2\le\bm y^{\mathsf T}(K-A)\bm y=\bm y^{\mathsf T}K\bm z
+\le\norm{\bm y}_K\norm{\bm z}_K$. (iii) If $M(K-A)\bm x=\lambda\bm x$, then
+$\bm x^{\mathsf H}(K-A)\bm x=\lambda\,\bm x^{\mathsf H}M^{-1}\bm x$, and taking
+real parts gives
+$\Rea\lambda\ge\mu\,\bm x^{\mathsf H}K\bm x/\bm x^{\mathsf H}M^{-1}\bm x
+\ge\mu\lambda_{\min}(M^{1/2}KM^{1/2})$.
+\end{proof}
+Because $A(X)$ is linear in $X$, \cref{eq:lmi} is a linear matrix inequality
+in the drive \cite{boyd1994} and can be added to \cref{eq:sdp}. It is
+sufficient, not necessary: it guarantees a margin at the target, independent
+of the unknown viscous mobility, but says nothing about the path to the target.
+The weaker condition that the eigenvalues of $K^{-1}(K-A)$ be positive does not
+by itself give (iii) for a non-symmetric $A$. In S09 an unconstrained single
+tone for one published singlet lay within 7\,\% of a fold (margin 0.068,
+frozen-to-coupled amplification 18.5); with \cref{eq:lmi} at $\mu=0.7$ the
+refined tone had margin 0.94 and amplification 1.09 at similar power. The
+constraint can also cost accuracy: for another lens of that survey it made the
+pupil error larger, not smaller.
+
+\section{From the meniscus to the held state}\label{sec:formation}
+
+\subsection{A held equilibrium is not automatically reached}
+Under a fixed drive, the equilibria solve
+\begin{equation}
+ F(q;\bm c)=\nabla E(q).
+ \label{eq:held}
+\end{equation}
+The inverse fixes the force only at $q_\star$; away from it, $F(q;\bm c)$ is
+whatever the wave field produces. A standing-wave stress varies on the length
+$\pi/k_{\rm ac}$, half an acoustic wavelength, so \cref{eq:held} typically has
+several solutions, separated by displacements of order a quarter wavelength. The
+physical start is the acoustics-off equilibrium $q_0$, $\nabla E(q_0)=0$, at
+the declared fill volumes: exactly the fluidic-shaping meniscus of
+\cref{sec:fluidic}. Starting the drive as $s(t)\bm c$ with a ramp $s$ from 0
+to 1 scales every force by $s^2$, and the start-up branch $q_{\mathcal B}(s)$
+solves
+\begin{equation}
+ s^2F(q_{\mathcal B};\bm c)=\nabla E(q_{\mathcal B}),\qquad
+ q_{\mathcal B}(0)=q_0,\qquad
+ \bigl(K-s^2A\bigr)\frac{\dd q_{\mathcal B}}{\dd s}=2sF .
+ \label{eq:branch}
+\end{equation}
+If $K-s^2A$ becomes singular at some $s_f<1$, the branch folds and the state
+jumps to another attractor. The branch is a property of the physical start-up,
+not continuation in the target, and it is checked independently by integrating
+the forward dynamics from $q_0$. In creeping flow, a slow ramp keeps the state
+within $O(\epsilon/\lambda)$ of a uniformly stable branch, with ramp rate
+$\epsilon$ and decay margin $\lambda$; this is the standard slow-manifold
+estimate \cite{fenichel1979} used in the canonical theory. In S09, one lens of
+the 68-lens survey shows the failure plainly: the two-tone drive holds the
+target in the frozen model (0.33\,nm, convex bound 0.02\,nm), yet the start-up
+branch from the meniscus ends on another equilibrium, 25 and
+159\,\textmu m from the target faces. The limit was the path, not the
+capability.
+
+Choosing the fill volumes so that the meniscus is as close as possible to the
+target reduces the acoustic task to correcting the residual asphericity. It
+also scales down the first-order parameter shifts, which are proportional to
+the acoustic load, and shortens the path.
+
+\subsection{A sufficient condition for reaching the target}
+The following condition, derived here, turns the pointwise fold margin of
+\cref{prop:lmi} into a statement about the path.
+\begin{proposition}[Monotone start-up]\label{prop:reach}
+Let $\mathcal C\subset\R^n$ be convex and contain $q_0$ and $q_\star$, and let
+$F(\cdot;\bm c)$ and $\nabla E$ be $C^1$ on $\mathcal C$. Suppose that for all
+$q\in\mathcal C$, $K(q)\succeq\kappa\Id$ with $\kappa>0$ and
+\begin{equation}
+ \sym\bigl(K(q)-A(q;\bm c)\bigr)\succeq\mu K(q),\qquad 0<\mu\le1 .
+ \label{eq:region-lmi}
+\end{equation}
+If the closed ball of radius $\norm{F(q_0;\bm c)}/(\mu\kappa)$ about $q_0$
+lies in the interior of $\mathcal C$, then the start-up branch exists for all
+$s\in[0,1]$, has no fold, stays in that ball, and ends at the unique solution
+of \cref{eq:held} in $\mathcal C$, which is $q_\star$ when $\bm c$ holds the
+target.
+\end{proposition}
+\begin{proof}
+Let $\mathcal G_s(q)=\nabla E(q)-s^2F(q;\bm c)$. Its Jacobian satisfies
+$\sym(K-s^2A)=(1-s^2)K+s^2\sym(K-A)\succeq(1-s^2+s^2\mu)K\succeq\mu\kappa\Id$,
+so $\mathcal G_s$ is strongly monotone on $\mathcal C$ with constant
+$m=\mu\kappa$. It therefore has at most one zero in $\mathcal C$, and its
+Jacobian is nonsingular there. For a zero $q$ in the convex set
+$\mathcal C$, monotonicity against $q_0$ gives
+$m\norm{q-q_0}^2\le\inner{\mathcal G_s(q)-\mathcal G_s(q_0)}{q-q_0}
+=s^2\inner{F(q_0;\bm c)}{q-q_0}$, hence
+$\norm{q-q_0}\le s^2\norm{F(q_0;\bm c)}/m$. The set of $s\in[0,1]$ for which
+the branch exists in $\mathcal C$ contains $0$, is open by the implicit function
+theorem, and is closed because the a priori bound keeps limits inside the ball,
+where the Jacobian is nonsingular. It is therefore all of $[0,1]$.
+\end{proof}
+Verifying \cref{eq:region-lmi} on a whole region is harder than at one point,
+and the proposition is only sufficient. It explains the failure modes, though:
+a fold or a jump to another well requires the acoustic stiffness to overcome a
+fraction of the capillary stiffness somewhere between meniscus and target.
+Because $A(q;X)$ is linear in $X$ for each $q$, imposing \cref{eq:region-lmi}
+at sampled states along a planned path, for example the segment from $q_0$ to
+$q_\star$, adds convex constraints to \cref{eq:sdp}. Sampling is not a proof,
+and this path-margin program has not yet been tested.
+
+\subsection{Stability in creeping flow}
+In the creeping-flow reduction, $\dot q=M(q)\bigl(F(q;\bm c)-\nabla E(q)\bigr)$
+with a symmetric positive definite mobility $M$, the viscous mobility of the
+interfaces under the volume constraints. Its symmetry and positivity follow from
+the reciprocal theorem and positive viscous dissipation, as for the resistance
+matrices of rigid particles \cite{happel1983}. The linearization at a held state
+is $\dot{\bm\chi}=-M(K-A)\bm\chi$. \Cref{prop:lmi}(iii) gives a
+mobility-independent certificate of axisymmetric linear stability. Without it,
+stability requires the eigenvalues of $M(K-A)$ to have positive real parts for
+the actual $M$; a static fold test alone does not suffice when $A$ is not
+symmetric, because a non-conservative acoustic stiffness can destabilize
+through the mobility.
+
+The scope of this statement is narrow. It concerns axisymmetric perturbations
+in the reduced coordinates, with instantaneous acoustics and no fluid inertia.
+The cylinder admits perturbations of every azimuthal order $m$; when the base
+state is axisymmetric they decouple by order, and each sector needs its own
+operator. The passive bound \cref{eq:rt-threshold} shows that on an inversely
+stratified face the first mode to soften is an $m=1$ mode. Acoustic memory
+replaces $A$ by a frequency-dependent response, and beat forcing of multi-tone
+drives calls for a periodic (Floquet) analysis when the separation conditions
+of \cref{sec:multitone} are only marginally met.
+
+\section{Regime of validity and open questions}\label{sec:validity}
+
+\paragraph{What is exact.} \Cref{prop:demand,prop:series,prop:conic} are
+exact for constant $\sigma$, uniform gravity, quiescent liquids and pinned
+graphs. \Cref{prop:alternatives,prop:dual,prop:rank,prop:lmi,prop:reach} are
+exact statements about the stated finite-dimensional models.
+
+\paragraph{What is approximated.} The acoustic model is linear, inviscid in
+the bulk, cycle-averaged, harmonic with fast settling, with ideal velocity
+sources and the high-frequency transmission reduction at the interfaces. The
+multi-tone cone needs tone separation beyond the interface bandwidth and
+frequency-flat kernels within a band. The capability program is a first-order,
+frozen-compliance statement at the target. Formation and stability use an
+axisymmetric creeping-flow reduction. The validity of each item is a matter of
+scales (Mach number, boundary-layer thickness, ring-down time, Reynolds number,
+Ohnesorge and Bond numbers) that must be checked for a given cell.
+
+\paragraph{What is open.}
+\begin{enumerate}
+ \item \emph{Acoustic streaming.} Fields of the amplitude needed here drive
+ steady streaming in the bulk and in viscous boundary layers
+ \cite{lighthill1978,bach2018,bruus2012perturbation}. Its viscous stresses on
+ the interfaces may be comparable to demands of $0.1$--$1$\,Pa, and a steady
+ base flow changes both the equilibrium and its stability. A quiescent
+ spectrum is not the stability of a streaming base flow.
+ \item \emph{Heating.} Absorption heats the liquids, changing sound speeds,
+ densities and interfacial tension, and gradients of $\sigma$ produce
+ Marangoni stresses. S09 found coupled shifts of tens to hundreds of
+ nanometres for a $0.1$\,\% change of one sound speed: a physical machine would
+ need measurement and closed-loop trim.
+ \item \emph{Three-dimensional disturbances.} Non-axisymmetric modes, with the
+ $m=1$ mode singled out by \cref{eq:rt-threshold}, have not been analysed for
+ driven states.
+ \item \emph{Transducers.} Real sources are not ideal: the delivered velocity
+ depends on acoustic loading, electrical drive and transducer dynamics, and
+ holding a command fixed does not hold $v_s$ fixed. The modal source space
+ must be realized by hardware with calibrated response.
+ \item \emph{Curing.} Fluidic shaping cures the liquid
+ \cite{frumkin2021,elgarisi2021}. With acoustic shaping, the field would have
+ to be held during curing while density, sound speed and stiffness of the lens
+ liquid change, which alters the load; shrinkage and residual stress then act on
+ the solid. Driven liquid optics, transient formation and curing are distinct
+ problems; this paper treats only the driven liquid equilibrium.
+ \item \emph{Contact lines and inertia.} Pinning is assumed perfect; hysteresis
+ and depinning, as well as inertial capillary oscillations during start-up, are
+ outside the reduction.
+\end{enumerate}
+
+\paragraph{Optics.} A held surface that matches a stigmatic target is
+stigmatic on axis for the design conjugates only. Axial stigmatism does not
+imply aplanatism or achromatism, and those require their own analysis.
+
+\section{Conclusions}\label{sec:conclusions}
+Fluidic shaping reaches the surfaces on which the capillary--gravity operator
+is constant: spheres, Bessel aspheres and Fourier--Bessel freeforms selected by
+frame, volume and Bond number. Adding a normal traction removes that
+restriction, and the traction needed is explicit: the load demand, the residual
+of the target in the capillary--gravity operator, unique up to one constant per
+conserved volume. Near the axis the demand is a short series; a matching rule
+can remove its leading term with the right liquid pair, and an explicit
+remainder shows what is left. Acoustic radiation stress is a candidate actuator.
+In a cylinder with ideal sources its generalized force is a Hermitian form, and
+multi-tone drives make the capability question convex, with certificates of
+impossibility, a bound on the number of tones, and convex constraints for
+pressure and fold margin, the last of which also certifies creeping-flow
+stability for any symmetric positive mobility. Holding a target and reaching it
+from the meniscus are different conditions; a regional monotonicity condition
+links them. All of this is theory in a declared reduction. Streaming, heating,
+three-dimensional modes, real transducers and curing decide whether an
+apparatus could work, and none has been built or measured.
+
+\appendix
+\section{Normal radiation traction}\label{app:traction}
+Write $\bm V=V_n\nn+\bm V_t$ with $\bm V_t\perp\nn$. From
+\cref{eq:momentum-flux},
+\[
+ \nn\cdot\bm R_\ell\nn=\frac{|P|^2}{4\rho_\ell c_\ell^2}
+   -\frac{\rho_\ell}{4}\bigl(|V_n|^2+|\bm V_t|^2\bigr)
+   +\frac{\rho_\ell}{2}|V_n|^2
+ =\frac{\beta_\ell}{4}|P|^2+\frac{\rho_\ell}{4}\bigl(|V_n|^2-|\bm V_t|^2\bigr).
+\]
+The momentum equation gives $\bm V_t=\Gs P/(\mathrm i\omega\rho_\ell)$, so
+$\rho_\ell|\bm V_t|^2=|\Gs P|^2/(\omega^2\rho_\ell)$. In the transmission
+reduction $P$, hence $\Gs P$, and $V_n$ are continuous across the interface.
+Subtracting the $+$ side from the $-$ side gives \cref{eq:traction}. Each term
+is $\bm c^{\mathsf H}(\cdot)\bm c$ for a Hermitian matrix because $P$, $V_n$
+and $\Gs P$ depend linearly on $\bm c$; for example
+$|P|^2=\bm c^{\mathsf H}\bm P^*\bm P^{\mathsf T}\bm c$ with
+$\bm P=(P_1,\dots,P_m)^{\mathsf T}$ and $\bm P^*$ its complex conjugate.
+
+\clearpage
+\printbibliography[heading=bibintoc,title={References}]
+\end{document}
