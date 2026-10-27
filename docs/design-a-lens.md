@@ -127,11 +127,16 @@ with the full creeping flow, and simulate the formation in time at two steps.
 
 Most of the time goes into the acoustic kernels of the 26 source modes at each
 frequency, and into the start-up ramp. Measured on a 4-core machine that was
-also running two other solver jobs: 17 minutes for the two-tone lens 7 with
-`--no-startup` (the one-tone option is tried first). It has not been timed on
-an idle machine; the S09 atlas runs, which include the ramp, took 3 to 30
-minutes per lens, two-tone designs taking longest. The independent checks take
-hours.
+also running two or three other solver jobs:
+
+| Run | Wall time |
+|---|---:|
+| Lens 7, `--no-startup` (one tone tried, then two) | 17 min |
+| Fig. 9b, `--no-startup` (slow regression test) | 13 min |
+| Fig. 9b, full run with the start-up ramp (status `formed`) | 71 min |
+
+It has not been timed on an idle machine; the S09 atlas runs, which include the
+ramp, took 3 to 30 minutes per lens there. The independent checks take hours.
 
 ## Limits
 
