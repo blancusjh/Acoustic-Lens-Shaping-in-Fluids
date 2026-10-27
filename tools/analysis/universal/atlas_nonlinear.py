@@ -6,8 +6,9 @@ coupled quasi-static start-up branch from the acoustics-off meniscus at the
 lens's fill volumes, with all bands applied together. The bands per lens are
 the atlas classification (one tone at 1.5 MHz, or 0.75 + 1.5 MHz), unless
 --two-bands forces 0.75 + 1.5 MHz; --margin MU adds the static fold-margin
-inequality to the convex program and the refinement.
-Usage: atlas_nonlinear.py OUT.jsonl SHARD NSHARDS [--indices I ...] [--two-bands] [--margin MU]
+inequality to the convex program and the refinement; --steps N ramps in N
+uniform load steps.
+Usage: atlas_nonlinear.py OUT.jsonl SHARD NSHARDS [--indices I ...] [--two-bands] [--margin MU] [--steps N]
 """
 
 import argparse
@@ -41,12 +42,15 @@ parser.add_argument("shards", type=int)
 parser.add_argument("--indices", type=int, nargs="*")
 parser.add_argument("--two-bands", action="store_true")
 parser.add_argument("--margin", type=float)
+parser.add_argument("--steps", type=int, help="uniform start-up load steps instead of the default 8")
 args = parser.parse_args()
 out, shard, shards = args.out, args.shard, args.shards
 CAP_W, CAP_PA = 1.0, 2e6
 TWO_BANDS = {6, 7, 30, 31, 33, 34, 42, 58, 60, 61}
 grid = list(itertools.product(("-inf", -300.0, -150.0), (60.0, 90.0, 120.0), (10.0, 15.0, 20.0), (-0.5, 0.0, 0.5)))
 sigmas = [0, 0.1, 0.2, 0.35, 0.5, 0.7, 0.85, 1.0]
+if args.steps:
+    sigmas = list(np.linspace(0, 1, args.steps + 1))
 for index, (d0, d2, t, shape) in enumerate(grid):
     if index % shards != shard or (args.indices and index not in args.indices):
         continue
@@ -90,7 +94,7 @@ for index, (d0, d2, t, shape) in enumerate(grid):
         error = [float(np.max(abs(space.height(j, end[j], fine) - faces[j].evaluate(fine)))) for j in range(2)]
         meniscus = [float(np.max(abs(space.height(j, start[j], fine) - faces[j].evaluate(fine)))) for j in range(2)]
         row.update({
-            "status": "checked", "bands_hz": bands, "required_margin": args.margin,
+            "status": "checked", "bands_hz": bands, "required_margin": args.margin, "load_steps": len(sigmas) - 1,
             "convex_pupil_error_m": convex["pupil_max_error_m"],
             "refined_frozen_pupil_error_m": refined["pupil_max_error_m"],
             "power_w": refined["power_w"], "band_peak_pressure_pa": refined["peak_pressure_pa"],
