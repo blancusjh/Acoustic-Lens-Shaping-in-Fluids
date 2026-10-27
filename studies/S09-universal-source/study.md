@@ -142,10 +142,13 @@ source. Their follow-up:
 | 3 | 2.5 nm | 0.06 nm (0.94 W, margin 0.21) | 129 nm |
 | 12 | 1.4 nm | 0.03 nm (0.69 W) | 0.23 nm |
 | 15 | 10.2 nm | 0.03 nm (0.31 W) | 0.42 nm |
-| 35 | 1.1 nm | 0.06 nm (0.57 W) | running |
-| 71 | 12.9 nm | 0.04 nm (0.42 W) | running |
-| 78 | 17.1 nm | 0.03 nm (0.53 W) | running |
-| 57 | fold, 31 nm | **start-up ends on another equilibrium: 25 / 159 µm** | running |
+| 35 | 1.1 nm | 0.06 nm (0.57 W) | not run |
+| 71 | 12.9 nm | 0.04 nm (0.42 W) | not run |
+| 78 | 17.1 nm | 0.03 nm (0.53 W) | not run |
+| 57 | fold, 31 nm | **start-up ends on another equilibrium: 25 / 159 µm** | not run |
+
+The fold-margin column was stopped by a container restart after lenses 3, 12
+and 15; given lens 3, it was not restarted.
 
 The second band rescues six of the seven; the fold-margin inequality trades
 accuracy for margin and is not the cheap remedy (lens 3 gets worse). Lens 57
@@ -155,9 +158,27 @@ different failure: the two-tone command holds the target in the frozen model
 reaches full amplitude on another equilibrium, farther from the target than
 the meniscus itself. Capability is not the issue; the path is. A finer or
 different start-up path (ramping the bands separately, or the volumes) has
-not been tried. Only start-up branches were
-run here; refinement, coupled stability and formation remain the three
-published-or-verified designs and lens 7.
+not been tried. A 40-step uniform ramp (instead of 8 steps) is running, to tell
+a branch jump of the continuation from a genuine path failure
+(`lens57-fine-ramp.jsonl`; the first attempt was stopped by a container
+restart).
+
+**Full checks of two rescued lenses** (`rescued-2026-10-27/`, configs
+`*-atlas15-2band*`, `*-atlas71-2band*`): the same chain as lens 7.
+
+| | Lens 15 | Lens 71 |
+|---|---:|---:|
+| Lens | object ∞, image 90, t 20, σ −0.5 | object −150, image 90, t 20, σ 0.5 |
+| Refinement (mesh, order, quadrature, surface), max change | 1.0 nm | 0.37 nm |
+| Static fold margin at the design | 0.86 | 0.996 |
+| Frozen-to-coupled amplification | 1.19 | 1.01 |
+| Slowest creeping-flow decay, 128×24 mesh | −77 1/s | −87 1/s |
+| Formation, dt 25 and 12.5 ms | running | running |
+
+On the coarse 64×12 fluid mesh both show two nearly neutral modes
+(−0.001 1/s) that are absent on the 128×24 mesh; the S09 stability verdicts use
+the fine mesh. The first formation runs were stopped by a container restart at
+t = 0.83 s and 0.90 s and are kept as partial records (`INTERRUPTED.md`).
 
 **Minimum hardware: channel count** (`channel_study.py`, frozen capability and
 one-tone refinement, 1 W, 2 MPa; `channels-2026-10-27/`). The 112 channels are
