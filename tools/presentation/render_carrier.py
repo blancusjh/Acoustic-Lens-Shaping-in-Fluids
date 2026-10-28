@@ -9,7 +9,7 @@ oscillation is dh = i v / (omega n_z), and the instantaneous face is
 to first order in the field (the second-order mean shift is in h_mean). Rays
 are traced through the instantaneous faces at each phase of the slowest band's
 cycle. Writes a figure, a slowed animation and a JSON summary.
-Usage: render_carrier.py RUN FORMATION OUT_PREFIX TITLE
+Usage: render_carrier.py RUN FORMATION OUT_PREFIX TITLE [--lens-only]
 """
 
 import json
@@ -63,6 +63,9 @@ def splines(r, dh):
 
 def main():
     run, formation, prefix, title = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]), sys.argv[4]
+    global PHASES, CYCLES
+    if "--preview" in sys.argv:
+        PHASES, CYCLES = 4, 1
     prefix.parent.mkdir(parents=True, exist_ok=True)
     data = cell.load(run.resolve(), formation.resolve())
     cfg, space, targets = data["cfg"], data["space"], data["targets"]
@@ -188,9 +191,112 @@ def main():
         plt.close(fig)
         return image
 
-    frames = [frame(k) for k in range(PHASES * CYCLES)]
-    imageio.mimsave(prefix.with_suffix(".mp4"), frames, fps=FPS, quality=9, macro_block_size=1)
-    imageio.imwrite(prefix.with_suffix(".png"), frames[PHASES // 4])
+    # The lens itself: true-scale section, the same section with only the vibration
+    # magnified, both faces in 3D coloured by their displacement, and the spot.
+    mm, R = 1e3, cfg.radius_m
+    r_full = np.linspace(0, R, 300)
+    mean_faces = [cfg.levels_m[j + 1] + space.height(j, q[j], r_full) for j in range(2)]
+    peak = max(float(np.max(e)) for e in envelope)
+    magnify = show.nice_factor(0.25e-3 / peak)
+    launch_rays = np.linspace(-0.92, 0.92, 17) * cfg.clear_radius_m
+    paths_mean = cell.ray_paths(data, q, launch_rays)
+    theta = np.linspace(0, 1.5 * np.pi, 60)  # three quarters of the revolution, cut open
+    rr, th = np.meshgrid(r_full[::6], theta)
+    colour_limit = peak * 1e9
+    levels_mm = np.asarray(cfg.levels_m) * mm
+    signed = np.r_[-r_full[::-1], r_full] * mm
+
+    def mirror(h):
+        return np.r_[h[::-1], h] * mm
+
+    def section(ax, faces, title_text, dashed=None):
+        ax.fill_between(signed, levels_mm[0], mirror(faces[0]), color=show.WATER, lw=0)
+        ax.fill_between(signed, mirror(faces[0]), mirror(faces[1]), color=show.RESIN, lw=0)
+        ax.fill_between(signed, mirror(faces[1]), levels_mm[3], color=show.WATER, lw=0)
+        if dashed is not None:
+            for h in dashed:
+                ax.plot(signed, mirror(h), color=show.INK, lw=0.9, ls=(0, (4, 3)))
+        for h, colour in zip(faces, colours):
+            ax.plot(signed, mirror(h), color=colour, lw=2.4)
+        ax.plot([-R * mm, -R * mm, R * mm, R * mm, -R * mm],
+                [levels_mm[0], levels_mm[3], levels_mm[3], levels_mm[0], levels_mm[0]], color=show.INK, lw=2.5)
+        ax.set_aspect("equal")
+        ax.set_xlim(-R * mm - 0.2, R * mm + 0.2)
+        ax.set_xlabel("x (mm)")
+        ax.set_ylabel("z (mm)")
+        ax.set_title(title_text, loc="left", fontsize=11)
+
+    def frame_lens(k):
+        rec = cycle[k % PHASES]
+        t = rec["t"]
+        moving = [oscillation(j, r_full, t) for j in range(2)]
+        fig = plt.figure(figsize=(16, 9), dpi=120)
+        g = fig.add_gridspec(2, 3, width_ratios=[0.95, 1.3, 0.75], left=0.05, right=0.97, top=0.86, bottom=0.1,
+                             wspace=0.2, hspace=0.42)
+        fig.text(0.05, 0.95, title, fontsize=20, weight="bold", color=show.INK)
+        bands_text = " + ".join(f"{f / 1e6:g} MHz" for f, _ in bands)
+        fig.text(0.05, 0.912, f"The liquid lens during one acoustic cycle ({bands_text}); peak vibration of the faces "
+                 f"{peak * 1e9:.0f} nm", fontsize=12.5, color=show.MUTED)
+        fig.text(0.97, 0.95, f"t = {t * 1e9:6.1f} ns", fontsize=20, ha="right", family="monospace", color=show.INK)
+        fig.text(0.97, 0.912, f"of a {period * 1e9:.0f} ns cycle, slowed about {PHASES * period ** -1 / FPS:.0e}×",
+                 fontsize=11, ha="right", color=show.MUTED)
+        a = fig.add_subplot(g[:, 0])
+        section(a, mean_faces, "The lens at true scale, with the light it focuses\n(the vibration is invisible here)")
+        for path in paths_mean:
+            a.plot(path[:, 0] * mm, path[:, 1] * mm, color=show.RAY, lw=0.8, alpha=0.85)
+        a.set_ylim(levels_mm[0] - 0.3, max(levels_mm[3], z2 * mm) + 0.3)
+        b = fig.add_subplot(g[0, 1])
+        shown = [mean_faces[j] + magnify * moving[j] for j in range(2)]
+        section(b, shown, f"Same section, vibration magnified ×{magnify:,}\n(dashed: the mean faces, which hold the lens)",
+                dashed=mean_faces)
+        b.set_ylim(levels_mm[0] - 0.3, levels_mm[3] + 0.3)
+        c = fig.add_subplot(g[1, 1], projection="3d")
+        cmap = plt.get_cmap("RdBu_r")
+        for j in range(2):
+            z_mean = np.interp(rr, r_full, mean_faces[j])
+            dz = np.interp(rr, r_full, moving[j])
+            c.plot_surface(rr * np.cos(th) * mm, rr * np.sin(th) * mm, (z_mean + magnify * dz) * mm,
+                           facecolors=cmap(0.5 + 0.5 * dz * 1e9 / colour_limit), linewidth=0, antialiased=False,
+                           shade=False, rstride=1, cstride=1, alpha=0.95 if j == 0 else 0.8)
+            ring = np.linspace(0, 1.5 * np.pi, 120)
+            c.plot(R * np.cos(ring) * mm, R * np.sin(ring) * mm, np.full_like(ring, mean_faces[j][-1] * mm),
+                   color=colours[j], lw=1.5)
+        lens_low = float(np.min(mean_faces[0]) * mm) - 0.15
+        lens_high = float(np.max(mean_faces[1]) * mm) + 0.15
+        c.set_box_aspect((1, 1, 0.55), zoom=1.3)
+        c.view_init(elev=14, azim=-58)
+        c.set_xlim(-R * mm, R * mm)
+        c.set_ylim(-R * mm, R * mm)
+        c.set_zlim(lens_low, lens_high)
+        c.set_axis_off()
+        c.set_title(f"Both faces in 3D, vibration ×{magnify:,}\ncolour: displacement now, ±{colour_limit:.0f} nm",
+                    fontsize=11, loc="left")
+        d = fig.add_subplot(g[:, 2])
+        d.add_patch(plt.Circle((0, 0), airy * 1e6, color=show.GOOD, alpha=0.28, lw=0))
+        d.scatter(all_spots[:, 0] * 1e6, all_spots[:, 1] * 1e6, s=2, color="#c9ced6", lw=0)
+        d.scatter(rec["spots"][:, 0] * 1e6, rec["spots"][:, 1] * 1e6, s=6, color=show.RAY, lw=0)
+        d.set_xlim(-lim, lim)
+        d.set_ylim(-lim, lim)
+        d.set_aspect("equal")
+        d.set_xlabel("screen x (µm)")
+        d.set_title(f"Focus now: spot (red), all instants (grey),\nAiry disc (green, {airy * 1e6:.2f} µm)",
+                    loc="left", fontsize=11)
+        fig.text(0.05, 0.02, "Numerical model (axisymmetric, lossless acoustics, ideal sources); first-order "
+                 "vibration from the harmonic solve of the saved design. Not an experiment. Rays traced through the "
+                 f"actual faces with the published indices {n[0]:g}/{n[1]:g}/{n[2]:g}.", fontsize=9.5, color=show.MUTED)
+        fig.canvas.draw()
+        image = np.asarray(fig.canvas.buffer_rgba())[..., :3].copy()
+        plt.close(fig)
+        return image
+
+    if "--lens-only" not in sys.argv:
+        frames = [frame(k) for k in range(PHASES * CYCLES)]
+        imageio.mimsave(prefix.with_suffix(".mp4"), frames, fps=FPS, quality=9, macro_block_size=1)
+        imageio.imwrite(prefix.with_suffix(".png"), frames[PHASES // 4])
+    lens_frames = [frame_lens(k) for k in range(PHASES * CYCLES)]
+    lens_path = prefix.with_name(prefix.name + "-lens")
+    imageio.mimsave(lens_path.with_suffix(".mp4"), lens_frames, fps=FPS, quality=9, macro_block_size=1)
+    imageio.imwrite(lens_path.with_suffix(".png"), lens_frames[PHASES // 4])
     print(json.dumps(summary, indent=1))
 
 
