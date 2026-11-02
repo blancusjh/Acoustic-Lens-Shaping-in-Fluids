@@ -103,3 +103,9 @@ preserved separately in the local research archive. The public
 GitHub repository contains the source, LaTeX theory, reviewed study summaries
 and README figures. Compiled PDFs, detailed numerical runs and private papers
 remain in the local research data tree.
+
+## License
+
+Original project code and documentation are licensed under the [Apache License 2.0](LICENSE).
+Third-party code, publications, datasets, fonts, and other assets retain their
+respective licenses and copyright notices; this license does not replace them.
