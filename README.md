@@ -69,6 +69,19 @@ full time-dependent formation checks. Its
 The [status on main](STATUS.md) and [study index on main](studies/README.md)
 currently cover the earlier S01–S05 work.
 
+## Single-interface array and formation
+
+![Single-interface acoustic array driving the evolving lens surface, with height error and geometric spot](figures/interface-formation-and-spots.gif)
+
+*Study S01 shows the 16 coherent rows of the acoustic array and the
+fixed-command evolution of one fluid interface from its unforced state. The
+animation contains all 321 saved ALE states from 0 to 200 ms; the dashed curve
+is the Cartesian target, while the rays, pupil-height error and fixed-detector
+spot follow the computed surface. The run ends at 228.5 nm maximum height
+error, above the 10 nm goal, so it is retained as a particularly clear view of
+the array and formation dynamics rather than as the best achieved lens.
+[Formation notes](studies/S01-single-interface/formation-notebook.md).*
+
 ## Research path
 
 ```text
@@ -127,7 +140,7 @@ These earlier studies document intermediate results; S09 above is the featured
 lens example.
 
 <details>
-<summary>Show the earlier cell renderings and formation run</summary>
+<summary>Show the earlier static cell renderings</summary>
 
 ![Single-interface cell: 3D cutaway, annotated meridional section and focusing ray diagram](figures/single-interface-cell.png)
 
@@ -137,15 +150,6 @@ of the declared components: wall, base window, NOA 61 liquid, pinned rim and the
 (b) Section at equal scale; dashed lines are the goal (Cartesian) surface, and
 the inset shows the 152 µm acoustic lift of the vertex. (c) Rays traced through the saved surface to the image point 20 mm above
 the vertex.*
-
-![Recorded forward formation of the single-interface surface with evolving height error and geometric spot](figures/interface-formation-and-spots.gif)
-
-*Fixed-command formation from the unforced surface, from all 321 saved ALE states
-(0–200 ms). The section (dashed: goal surface), rays, pupil height error and fixed-detector spot update
-with the displayed physical time. Playback runs about 180× slower than real time
-during formation and about 40× slower afterwards. The run ends at 228.5 nm
-maximum height error, above the 10 nm goal.
-[Formation notes](studies/S01-single-interface/formation-notebook.md).*
 
 ![Two-face NOA 61 and water cell: 3D cutaway, meridional section with rays, and harmonic pressure field](figures/two-face-cell.png)
 
@@ -157,7 +161,7 @@ pressure. (d) Geometric spot of 4001 rays at the fixed image plane. This is a st
 gates fail, and fixed-command refinement is unfinished.
 [Emitter study](studies/S04-emitter-synthesis/study.md).*
 
-These three historical figures are numerical renderings at equal geometric scale unless a panel
+These historical figures are numerical renderings at equal geometric scale unless a panel
 says otherwise; none is a photograph or an experiment.
 `tools/render_readme_figures.py` regenerates them from the local saved states
 and records input hashes in `figures/provenance.json`.
